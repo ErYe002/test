@@ -1,0 +1,76 @@
+{
+  "pages": [
+    "pages/index/main",
+    "pages/classmenu/main",
+    "pages/cart/main",
+    "pages/home/main",
+    "pages/counter/main"
+  ],
+  "subpackages": [
+    {
+      "root": "pages/account",
+      "pages": [
+        "login/main",
+        "bindMobile/main",
+        "order/list/main",
+        "order/detail/main"
+      ]
+    },
+    {
+      "root": "pages/search",
+      "pages": [
+        "index/main",
+        "results/main",
+        "screen/main",
+        "screen/filterRules/main"
+      ]
+    }
+  ],
+  "preloadRule": {
+    "pages/classmenu/main": {
+      "packages": ["pages/search"]
+    },
+    "pages/home/main": {
+      "packages": ["pages/account"]
+    }
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#000",
+    "navigationBarTitleText": "可得眼镜",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#000",
+    "backgroundColor": "#ffffff",
+    "selectedColor": "#AE9C7D",
+    "borderStyle": "black",
+    "list": [
+      {
+        "text": "首页",
+        "pagePath": "pages/index/main",
+        "iconPath": "static/tabs/index.png",
+        "selectedIconPath": "static/tabs/index-active.png"
+      },
+      {
+        "text": "分类",
+        "pagePath": "pages/classmenu/main",
+        "iconPath": "static/tabs/classmenu.png",
+        "selectedIconPath": "static/tabs/classmenu-active.png"
+      },
+      {
+        "text": "购物车",
+        "pagePath": "pages/cart/main",
+        "iconPath": "static/tabs/cart.png",
+        "selectedIconPath": "static/tabs/cart-active.png"
+      },
+      {
+        "text": "我的",
+        "pagePath": "pages/home/main",
+        "iconPath": "static/tabs/home.png",
+        "selectedIconPath": "static/tabs/home-active.png"
+      }
+    ],
+    "position": "bottom"
+  }
+}

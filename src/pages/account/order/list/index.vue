@@ -1,0 +1,346 @@
+<template>
+  <article class="container" :style="'padding-top:'+(listQuery.queryString != '' ? 43 : 83)+'px'">
+    <article class="fixed-top">
+      <section class="search-box">
+        <img class="icon" src="/static/images/icon_search.png" />
+        <input class="input" v-model="listQuery.queryString" placeholder="商品名称/订单号" @confirm="searchEvent" confirm-type="搜索"/>
+        <img v-if="listQuery.queryString != ''" @click="clearInputEvent" class="icon-clear" src="/static/images/icon_clear.png" />
+      </section>
+      <section class="type-box" v-if="listQuery.queryString == ''">
+        <ul class="type-list">
+          <li
+            :class="{'t-item':true, 'current': listQuery.queryState == 0}"
+            @click="switchTypeEvent(0)"
+          >全部</li>
+          <li
+            :class="{'t-item':true, 'current': listQuery.queryState == 3}"
+            @click="switchTypeEvent(3)"
+          >待付款</li>
+          <li
+            :class="{'t-item':true, 'current': listQuery.queryState == 4}"
+            @click="switchTypeEvent(4)"
+          >待发货</li>
+          <li
+            :class="{'t-item':true, 'current': listQuery.queryState == 6}"
+            @click="switchTypeEvent(6)"
+          >待评价</li>
+        </ul>
+      </section>
+    </article>
+    <section class="order-box">
+      <ul class="order-list">
+        <li class="o-item" v-for="(item, idx) in orderList" :key="idx">
+          <a :href="'/pages/account/order/detail/main?orderId=' + item.OrderId" class="link">
+            <div class="title">
+              <span class="order-no">订单编号：{{item.OrderNo}}</span>
+              <span class="ops">
+                <span class="status">{{item.OrderState}}</span>
+                <img class="icon" src="/static/images/icon_right_grey.png" />
+              </span>
+            </div>
+            <div class="goods-list">
+              <img
+                class="g-img"
+                :src="imgItem.Img"
+                mode="aspectFill"
+                v-for="imgItem in item.Details"
+                :key="imgItem.GoodsId"
+              />
+            </div>
+          </a>
+          <p class="amount-box">
+            共{{item.Quantity}}件，实付款：
+            <span class="amount">¥{{item.OrderPayment}}</span>
+          </p>
+          <ul class="btn-list">
+            <li class="b-item" v-if="item.IsCancel">
+              <button class="kd-btn btn-default btn-small">取消订单</button>
+            </li>
+            <li class="b-item" v-if="item.ShopId != 2 && item.IsAfterSale">
+              <button class="kd-btn btn-default btn-small">退换货</button>
+            </li>
+            <li class="b-item" v-if="item.IsLogistics">
+              <button class="kd-btn btn-default btn-small">查看物流</button>
+            </li>
+            <li class="b-item" v-if="item.IsAppraise">
+              <button class="kd-btn btn-default btn-small">评价</button>
+            </li>
+            <li class="b-item" v-if="item.IsContactAirlines">
+              <button class="kd-btn btn-default btn-small">联系客服</button>
+            </li>
+            <li class="b-item" v-if="item.IsPayment">
+              <button class="kd-btn btn-small">付款</button>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <img
+        class="loading"
+        v-if="listQuery.page == 1 && isLoading"
+        src="/static/images/mu_loading.gif"
+      />
+      <p class="no-data-box" v-else-if="isNoData">抱歉，没有找到你想要的商品哦</p>
+      <p class="no-more-tips" v-if="listQuery.page == totalPage">没有更多了</p>
+    </section>
+  </article>
+</template>
+
+<script>
+import api from "@/api/order";
+
+export default {
+  data() {
+    return {
+      fixedTopHeight: 83,
+      orderList: [],
+      isLoading: false,
+      totalPage: 0,
+      isNoData: false,
+      listQuery: {
+        queryState: 0, //0全部,1.处理中,2已完成,3待付款,4待发货,5待收货,6待评价
+        isFreshCache: false,
+        page: 1,
+        queryString: ""
+      }
+    };
+  },
+  onLoad(options) {
+    if(options && options.queryState){
+      this.listQuery.queryState = options.queryState
+    }
+    this._getListEvent();
+  },
+  /**
+   * 上拉加载
+   */
+  onReachBottom() {
+    if (this.listQuery.page < this.totalPage) {
+      this.listQuery.page++;
+      this._getListEvent();
+    }
+  },
+  methods: {
+    switchTypeEvent(state) {
+      this.listQuery.queryState = state;
+      this.listQuery.page = 1
+      this.isNoData = false
+      this.orderList = []
+      this._getListEvent();
+    },
+    searchEvent(){
+      this.listQuery.queryState = 0;
+      this.listQuery.page = 1
+      this.isNoData = false
+      this.orderList = []
+      this._getListEvent();
+    },
+    clearInputEvent(){
+      this.listQuery.queryString = ''
+      this.listQuery.queryState = 0;
+      this.listQuery.page = 1
+      this.isNoData = false
+      this._getListEvent();
+    },
+    _getListEvent() {
+      this._reuqest().then(({ Data, TotalPage }) => {
+        this.orderList =
+          this.listQuery.page > 1 ? this.orderList.concat(Data) : Data;
+        this.totalPage = TotalPage;
+        //没有搜索到任何数据
+        if (!Data || Data.length <= 0) {
+          this.isNoData = true;
+        }
+      });
+    },
+    _reuqest() {
+      return new Promise((resolve, reject) => {
+        if (!this.isLoading) {
+          this.isLoading = true;
+          if (this.listQuery.queryState == 0) {
+            //查询全部订单或按关键字查询订单
+            api
+              .searchOrderList({ ...this.listQuery })
+              .then(res => {
+                resolve(res);
+              })
+              .finally(() => {
+                this.isLoading = false;
+              });
+          } else {
+            //按订单状态查询订单
+            api
+              .getOrderList({ ...this.listQuery })
+              .then(res => {
+                resolve(res);
+              })
+              .finally(() => {
+                this.isLoading = false;
+              });
+          }
+        } else {
+          reject("正在请求数据，请稍候");
+        }
+      });
+    }
+  }
+};
+</script>
+
+<style lang="less">
+page {
+  height: 100%;
+}
+.container {
+  min-height: 100%;
+  background: #f7f7f7;
+  // padding-top: 83px;
+  box-sizing: border-box;
+}
+
+.fixed-top {
+  background: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  position: relative;
+  font-size: 12px;
+  padding: 10px 15px;
+  box-sizing: border-box;
+  border-bottom: 0.5px solid #e5e5e5;
+  .icon {
+    position: absolute;
+    display: block;
+    width: 14px;
+    height: 15px;
+    left: 25px;
+    top: 50%;
+    transform: translate3d(0, -50%, 0);
+  }
+  .icon-clear {
+    display: block;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 25px;
+    top: 50%;
+    transform: translate3d(0, -50%, 0);
+  }
+  .input {
+    flex: 1;
+    background: #f7f7f7;
+    height: 25px;
+    line-height: 25px;
+    border-radius: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}
+
+.type-box {
+  font-size: 14px;
+  .type-list {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    .t-item {
+      padding: 10px 0;
+      color: #888;
+      box-sizing: border-box;
+      &.current {
+        font-weight: bold;
+        color: #cab894;
+        border-bottom: 2px solid #cab894;
+      }
+    }
+  }
+}
+
+.order-box {
+  padding: 20px 10px;
+  box-sizing: border-box;
+  .order-list {
+    .o-item {
+      background: #fff;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+      .link {
+        .title {
+          font-size: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          border-bottom: 0.5px solid #e5e5e5;
+          padding: 10px;
+          .ops {
+            display: flex;
+            align-items: center;
+            color: #fe7e7d;
+            .icon {
+              display: block;
+              width: 8px;
+              height: 14px;
+              margin-left: 5px;
+            }
+          }
+        }
+        .goods-list {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          padding: 10px 10px 0;
+          .g-img {
+            display: block;
+            width: 62px;
+            height: 62px;
+            margin: 0 10px 10px;
+            border: 0.5px solid #dcdcdc;
+            box-sizing: border-box;
+          }
+        }
+      }
+      .amount-box {
+        font-size: 12px;
+        color: #888;
+        padding: 5px 10px;
+        border-top: 0.5px solid #e5e5e5;
+        .amount {
+          color: #cab894;
+          font-size: 14px;
+        }
+      }
+      .btn-list {
+        display: flex;
+        justify-content: flex-end;
+        padding: 10px 15px 0;
+        flex-wrap: wrap;
+        .b-item {
+          margin-bottom: 10px;
+          margin-left: 10px;
+          width: 90px;
+        }
+      }
+    }
+  }
+  .no-more-tips,
+  .no-data-box {
+    color: #666;
+    font-size: 12px;
+    text-align: center;
+    margin: 20px 0;
+  }
+  .loading {
+    margin: 20px auto;
+    display: block;
+    width: 20px;
+    height: 20px;
+  }
+}
+</style>

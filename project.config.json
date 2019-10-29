@@ -1,0 +1,125 @@
+{
+	"description": "项目配置文件。",
+	"setting": {
+		"urlCheck": false,
+		"es6": true,
+		"postcss": true,
+		"minified": true,
+		"newFeature": true,
+		"coverView": true,
+		"autoAudits": false,
+		"checkInvalidKey": true,
+		"checkSiteMap": true,
+		"uploadWithSourceMap": true,
+		"babelSetting": {
+			"ignore": [],
+			"disablePlugins": [],
+			"outputPath": ""
+		}
+	},
+	"miniprogramRoot": "dist/wx/",
+	"compileType": "miniprogram",
+	"appid": "wx59914c27d9618111",
+	"projectname": "kede",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"currentL": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": 10,
+			"list": [
+				{
+					"id": -1,
+					"name": "pages/classmenu/main",
+					"pathName": "pages/classmenu/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/account/login/main",
+					"pathName": "pages/account/login/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/home/main",
+					"pathName": "pages/home/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/account/bindMobile/main",
+					"pathName": "pages/account/bindMobile/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/search/index/main",
+					"pathName": "pages/search/index/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/search/results/main",
+					"pathName": "pages/search/results/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/search/screen/main",
+					"pathName": "pages/search/screen/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/search/screen/filterRules/main",
+					"pathName": "pages/search/screen/filterRules/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/account/order/list/main",
+					"pathName": "pages/account/order/list/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 9,
+					"name": "pages/account/order/detail/main",
+					"pathName": "pages/account/order/detail/main",
+					"query": "orderId=94cf4898-cd13-40b2-addc-fd4ccfed9eb4",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/cart/main",
+					"pathName": "pages/cart/main",
+					"scene": null
+				}
+			]
+		}
+	}
+}
