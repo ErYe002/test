@@ -6,12 +6,12 @@
 export default {
   data(){
     return {
-      
+
     }
   }
 }
 </script>
 
-<style>
+<style lang="less">
 
 </style>
