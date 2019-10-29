@@ -4,14 +4,14 @@
     "pages/classmenu/main",
     "pages/cart/main",
     "pages/home/main",
+    "pages/login/main",
+    "pages/bindMobile/main",
     "pages/counter/main"
   ],
   "subpackages": [
     {
       "root": "pages/account",
       "pages": [
-        "login/main",
-        "bindMobile/main",
         "order/list/main",
         "order/detail/main"
       ]

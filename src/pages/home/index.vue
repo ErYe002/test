@@ -170,14 +170,21 @@ export default {
         CountOfCoupon: 0,
         Score: 0
       },
-      loginUrl: "/pages/account/login/main"
+      loginUrl: "/pages/login/main"
     };
   },
   computed: {
     ...mapState("user", ["token"])
   },
-  mounted() {
-    // console.log(this.token);
+  // watch:{
+  //   token: {
+  //     handler: function(val){
+  //       console.log('token==',val)
+  //     },
+  //     immediate: true
+  //   }
+  // },
+  onShow() {
     if (this.token) {
       this._getPageData();
     }
@@ -401,6 +408,7 @@ export default {
 }
 
 .function-box:extend(.service-box all) {
+  overflow: hidden;
   border-bottom: none;
 }
 </style>
