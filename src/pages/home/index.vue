@@ -103,7 +103,7 @@
           </a>
         </li>
         <li class="item">
-          <a :href="!token ? loginUrl:'/pages/index/main'" class="link">
+          <a :href="!token ? loginUrl:'/pages/account/address/addressList/main'" class="link">
             <img src="/static/images/home_address.png" class="icon" />
             <p class="text">收货地址</p>
           </a>
