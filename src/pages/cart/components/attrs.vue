@@ -4,7 +4,12 @@
       <p class="title">{{info.SelectedGoodsHint}}</p>
       <div class="style-box" v-if="info.GoodsItems != null && info.GoodsItems.length > 0">
         <p class="text">款式花色</p>
-        <scroll-view class="style-list" enable-flex="true" scroll-x="true" :scroll-into-view="'sItem'+selectedGoodsId">
+        <scroll-view
+          class="style-list"
+          enable-flex="true"
+          scroll-x="true"
+          :scroll-into-view="'sItem'+selectedGoodsId"
+        >
           <li
             :class="{'s-item': true, 'selected': selectedGoodsId == item.GoodsId}"
             v-for="item in info.GoodsItems"
@@ -17,7 +22,7 @@
           </li>
         </scroll-view>
       </div>
-      <div class="attr-box" v-if="info.HasProperty">
+      <div class="attr-box">
         <p class="text">
           <span class="left">{{info.HasProperty ? '光度及':''}}数量</span>
           <span class="right" v-if="info.MaxQuantity > 0">最大限购数量：{{info.MaxQuantity}}</span>
@@ -31,11 +36,14 @@
             :range="info.GDFieldProperty.Children"
             range-key="Value"
             :value="selectedGDIdx"
-            v-if="info.HasProperty"
+            v-if="info.HasProperty && info.GDFieldProperty != null"
           >
-            <view class="picker" v-if="selectedGDIdx > 0">{{info.GDFieldProperty.Children[selectedGDIdx]['Value']}}</view>
+            <view
+              class="picker"
+              v-if="selectedGDIdx > 0"
+            >{{info.GDFieldProperty.Children[selectedGDIdx]['Value']}}</view>
             <view class="empty" v-else>请选择光度</view>
-            <img src="/static/images/icon_attr_down.png" class="icon"/>
+            <img src="/static/images/icon_attr_down.png" class="icon" />
           </picker>
           <div class="num-box">
             <i class="cut" @click="modifyQuantityEvent(0)">-</i>
@@ -77,7 +85,7 @@ export default {
       info: null,
       selectedGDIdx: 0,
       newQuantity: 1,
-      selectedGoodsId: ''
+      selectedGoodsId: ""
     };
   },
   props: {
@@ -101,7 +109,7 @@ export default {
       type: String,
       default: ""
     },
-    quantity:{
+    quantity: {
       type: Number,
       default: 1
     }
@@ -119,7 +127,7 @@ export default {
     },
     quantity: {
       handler: function(val) {
-        this.newQuantity = val
+        this.newQuantity = val;
       },
       immediate: true
     }
@@ -137,74 +145,91 @@ export default {
           realGoodsId: this.realGoodsId
         })
         .then(({ Data }) => {
-          Data.GDFieldProperty.Children.forEach((ele, idx) => {
-            if (ele.IsSelected) {
-              this.selectedGDIdx = idx+1;
-            }
-          });
-          Data.GDFieldProperty.Children.unshift({
-            Id: "",
-            IsSelected: false,
-            Quantity: 0,
-            Value: "请选择光度"
-          });
-          Data.GoodsItems.forEach(ele => {
-            if(ele.Selected){
-              this.selectedGoodsId = ele.GoodsId
-            }
-          })
+          if (Data.GDFieldProperty) {
+            Data.GDFieldProperty.Children.forEach((ele, idx) => {
+              if (ele.IsSelected) {
+                this.selectedGDIdx = idx + 1;
+              }
+            });
+            Data.GDFieldProperty.Children.unshift({
+              Id: "",
+              IsSelected: false,
+              Quantity: 0,
+              Value: "请选择光度"
+            });
+          }
+
+          if (Data.GoodsItems) {
+            Data.GoodsItems.forEach(ele => {
+              if (ele.Selected) {
+                this.selectedGoodsId = ele.GoodsId;
+              }
+            });
+          }
           this.info = Data;
         });
     },
     //修改款式花色
-    changeStyleEvent(gid){
+    changeStyleEvent(gid) {
       // this.info.GoodsItems = this.info.GoodsItems.map(ele => {
       //   ele.Selected = ele.GoodsId == gid
       //   return ele
       // })
-      this.selectedGoodsId = gid
+      this.selectedGoodsId = gid;
     },
     //修改数量  type：0减数量  1加数量
-    modifyQuantityEvent(type){
-      if(type == 0){
-        if(this.newQuantity == 1){
-          return
-        } 
-        this.newQuantity--
+    modifyQuantityEvent(type) {
+      if (type == 0) {
+        if (this.newQuantity == 1) {
+          return;
+        }
+        this.newQuantity--;
       } else {
-        this.newQuantity++
+        this.newQuantity++;
       }
     },
     //修改光度
     gdPickerChangeEvent(e) {
       let index = e.mp.detail.value;
-      this.selectedGDIdx = index
+      this.selectedGDIdx = index;
     },
     //保存修改
-    saveEvent(){
-      if(this.selectedGDIdx == 0){
+    saveEvent() {
+      if (this.info.HasProperty && this.selectedGDIdx == 0) {
         wx.showToast({
-          title: '请先选择一个光度',
-          icon: 'none'
-        })
-        return
+          title: "请先选择一个光度",
+          icon: "none"
+        });
+        return;
       }
-      let selectedProperty = [], quantity = 0
-      if(this.info.HasProperty){
+      let selectedProperty = [],
+        quantity = 0;
+      if (this.info.HasProperty) {
         selectedProperty.push({
           GD: this.info.GDFieldProperty.Children[this.selectedGDIdx].Id,
           Quantity: this.newQuantity
-        })
+        });
       } else {
-        quantity = this.newQuantity
+        quantity = this.newQuantity;
       }
-      console.log(selectedProperty)
-      this._saveChangeRequest(selectedProperty, quantity)
+      console.log(selectedProperty);
+      this._saveChangeRequest(selectedProperty, quantity);
     },
-    _saveChangeRequest(selectedProperty, quantity, isConfirmedBuy = false){
-      cartApi.editGoodsInCart({uniqueId: this.uniqueId, goodsId: this.selectedGoodsId, isConfirmedBuy, shopId: this.shopId, deleteRealGoodsId: this.realGoodsId, hasProperty: this.info.HasProperty, selectedProperty, quantity}).then(({Data}) => {
-        this.$emit('done')
-      })
+    _saveChangeRequest(selectedProperty, quantity, isConfirmedBuy = false) {
+      cartApi
+        .editGoodsInCart({
+          uniqueId: this.uniqueId,
+          goodsId: this.selectedGoodsId,
+          isConfirmedBuy,
+          shopId: this.shopId,
+          deleteRealGoodsId: this.realGoodsId,
+          hasProperty: this.info.HasProperty,
+          selectedProperty,
+          quantity
+        })
+        .then(({ Data }) => {
+          this.$emit("done");
+        });
     }
   }
 };
@@ -232,6 +257,7 @@ export default {
       .s-item {
         text-align: center;
         margin: 0 5.5px;
+        width: 68px;
         .s-img {
           display: block;
           width: 68px;
@@ -290,14 +316,14 @@ export default {
         .empty {
           color: #b6b6b6ff;
         }
-        .icon{
+        .icon {
           display: block;
           width: 13px;
           height: 8px;
           position: absolute;
           right: 10px;
           top: 50%;
-          transform: translate3d(0, -50%, 0)
+          transform: translate3d(0, -50%, 0);
         }
       }
       .num-box {
