@@ -5,8 +5,7 @@
     "pages/cart/main",
     "pages/home/main",
     "pages/login/main",
-    "pages/bindMobile/main",
-    "pages/counter/main"
+    "pages/bindMobile/main"
   ],
   "subpackages": [
     {
@@ -23,6 +22,18 @@
         "results/main",
         "screen/main",
         "screen/filterRules/main"
+      ]
+    },
+    {
+      "root": "pages/product",
+      "pages": [
+        "index/main"
+      ]
+    },
+    {
+      "root": "pages/order",
+      "pages": [
+        "index/main"
       ]
     }
   ],
