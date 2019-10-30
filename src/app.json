@@ -13,7 +13,9 @@
         "login/main",
         "bindMobile/main",
         "order/list/main",
-        "order/detail/main"
+        "order/detail/main",
+        "setting/home/main",
+        "setting/role/main"
       ]
     },
     {

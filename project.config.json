@@ -19,8 +19,8 @@
 	},
 	"miniprogramRoot": "dist/wx/",
 	"compileType": "miniprogram",
-	"appid": "wx59914c27d9618111",
-	"projectname": "kede",
+	"appid": "wx4f9ee5e03dbcb554",
+	"projectname": "Kede.Minprogram",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
 	"condition": {
