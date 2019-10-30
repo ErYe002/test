@@ -42,7 +42,7 @@
 
 <script>
 import api from "@/api/search";
-import searchList from "@/components/search_list";
+import searchList from "@/components/searchList";
 
 export default {
   data() {

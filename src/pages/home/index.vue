@@ -103,7 +103,7 @@
           </a>
         </li>
         <li class="item">
-          <a :href="!token ? loginUrl:'/pages/index/main'" class="link">
+          <a :href="!token ? loginUrl:'/pages/account/address/addressList/main'" class="link">
             <img src="/static/images/home_address.png" class="icon" />
             <p class="text">收货地址</p>
           </a>
@@ -170,14 +170,21 @@ export default {
         CountOfCoupon: 0,
         Score: 0
       },
-      loginUrl: "/pages/account/login/main"
+      loginUrl: "/pages/login/main"
     };
   },
   computed: {
     ...mapState("user", ["token"])
   },
-  mounted() {
-    // console.log(this.token);
+  // watch:{
+  //   token: {
+  //     handler: function(val){
+  //       console.log('token==',val)
+  //     },
+  //     immediate: true
+  //   }
+  // },
+  onShow() {
     if (this.token) {
       this._getPageData();
     }
@@ -401,6 +408,7 @@ export default {
 }
 
 .function-box:extend(.service-box all) {
+  overflow: hidden;
   border-bottom: none;
 }
 </style>

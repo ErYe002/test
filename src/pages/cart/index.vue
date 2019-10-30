@@ -514,8 +514,10 @@
               >
                 <div class="goods-box">
                   <span class="check-btn">
-                    <img v-if="eItem.IsSelected" src="/static/images/icon_checked.png" class="icon" />
-                    <img v-else src="/static/images/icon_no_checked.png" class="icon" />
+                    <img v-if="eItem.IsSelected" src="/static/images/icon_checked.png" class="icon" @click="unSelectGoodsEvent(eItem.UniqueId)"/>
+                    <img v-else-if="!eItem.IsSelected && eItem.IsSpecificationGoods && eItem.SpecificationItems == null" src="/static/images/icon_no_checked.png" class="icon" @click="editCartItemEvent(eItem.UniqueId, '', '', 1)"/>
+                    <img v-else-if="!eItem.IsSelected && !eItem.IsSpecificationGoods && eItem.TotalQuantity == 0" src="/static/images/icon_no_checked.png" class="icon" @click="editCartItemEvent(eItem.UniqueId, '', '', 1)"/>
+                    <img v-else src="/static/images/icon_no_checked.png" class="icon" @click="selectGoodsEvent(eItem.UniqueId)"/>
                   </span>
                   <div class="g-info">
                     <p class="g-name">{{eItem.PromotionTheme}}</p>
@@ -531,16 +533,16 @@
                             v-for="spItem in eItem.SpecificationItems"
                             :key="spItem.RealGoodsId"
                           >
-                            <span class="attr">
+                            <span class="attr" @click="editCartItemEvent(eItem.UniqueId, '', spItem.RealGoodsId, spItem.Quantity)">
                               <em
                                 class="text"
                               >{{spItem.Specification}} {{spItem.AnotherName == null ? '' : spItem.AnotherName}}</em>
                               <img class="icon" src="/static/images/icon_attr_down.png" />
                             </span>
                             <span class="modify">
-                              <i class="cut">-</i>
+                              <i class="cut" @click="editCartItemEvent(eItem.UniqueId, '', spItem.RealGoodsId, spItem.Quantity)">-</i>
                               <input class="input" :value="spItem.Quantity" disabled/>
-                              <i class="add">+</i>
+                              <i class="add" @click="editCartItemEvent(eItem.UniqueId, '', spItem.RealGoodsId, spItem.Quantity)">+</i>
                             </span>
                           </p>
                         </template>
@@ -549,9 +551,9 @@
                             class="attr-text"
                           >{{eItem.Attributes == null ? '' : eItem.Attributes}}</span>
                           <span class="modify">
-                            <i class="cut">-</i>
+                            <i class="cut" @click="editCartItemEvent(eItem.UniqueId, '', '00000000-0000-0000-0000-000000000000', eItem.TotalQuantity)">-</i>
                             <input class="input" :value="eItem.TotalQuantity" disabled/>
-                            <i class="add">+</i>
+                            <i class="add" @click="editCartItemEvent(eItem.UniqueId, '', '00000000-0000-0000-0000-000000000000', eItem.TotalQuantity)">+</i>
                           </span>
                         </p>
                         <div class="g-price">
@@ -583,7 +585,7 @@
         </span>
       </div>
       <div class="right">
-        <button class="kd-btn btn-big">结算（{{model.Carts[0].GoodsQuantity}}）</button>
+        <button class="kd-btn btn-big" @click="toOrderEvent">结算（{{model.Carts[0].GoodsQuantity}}）</button>
         <!-- <div class="btn">移入收藏</div>
         <div class="btn">删除</div>-->
       </div>
@@ -728,6 +730,20 @@ export default {
         _request()
       }
     },
+
+    toOrderEvent(){
+      if(this.model.Carts[0].GoodsQuantity <= 0){
+        wx.showToast({
+          title: "请先选择要结算的商品",
+          icon: "none"
+        });
+      } else {
+        api.toBalance(this.shopId).then(() => {
+
+        })
+      }
+    },
+
     //获取购物车数据
     _getPageData() {
       this.selectedItemCount = 0

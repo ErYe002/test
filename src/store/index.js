@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import user from './modules/user'
 import search from './modules/search'
 import filterRules from './modules/filterRules'
+import wxinfo from './modules/wxinfo'
 
 Vue.use(Vuex)
 
@@ -20,6 +21,10 @@ const store = new Vuex.Store({
         filterRules: {
             namespaced: true,
             ...filterRules
+        },
+        wxinfo: {
+            namespaced: true,
+            ...wxinfo
         }
     }
 })

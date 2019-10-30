@@ -4,19 +4,17 @@
     "pages/classmenu/main",
     "pages/cart/main",
     "pages/home/main",
-    "pages/counter/main"
+    "pages/login/main",
+    "pages/bindMobile/main"
   ],
   "subpackages": [
     {
       "root": "pages/account",
       "pages": [
-        "login/main",
-        "bindMobile/main",
         "order/list/main",
-        "order/detail/main",
-        "setting/home/main",
-        "setting/role/main"
-      ]
+        "address/addressList/main",
+        "address/editAddress/main",        "setting/home/main",
+        "setting/role/main"      ]
     },
     {
       "root": "pages/search",
@@ -25,6 +23,19 @@
         "results/main",
         "screen/main",
         "screen/filterRules/main"
+      ]
+    },
+    {
+      "root": "pages/product",
+      "pages": [
+        "index/main",
+        "frameAttr/main"
+      ]
+    },
+    {
+      "root": "pages/order",
+      "pages": [
+        "index/main"
       ]
     }
   ],

@@ -40,6 +40,10 @@
 			"currentL": -1,
 			"list": []
 		},
+		"gamePlugin": {
+			"current": -1,
+			"list": []
+		},
 		"miniprogram": {
 			"current": 10,
 			"list": [
@@ -117,6 +121,13 @@
 					"id": -1,
 					"name": "pages/cart/main",
 					"pathName": "pages/cart/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/product/frameAttr/main",
+					"pathName": "pages/product/frameAttr/main",
 					"scene": null
 				}
 			]
