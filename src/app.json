@@ -4,7 +4,8 @@
     "pages/classmenu/main",
     "pages/cart/main",
     "pages/home/main",
-    "pages/counter/main"
+    "pages/counter/main",
+    "pages/product/main"
   ],
   "subpackages": [
     {
