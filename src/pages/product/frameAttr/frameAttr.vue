@@ -55,7 +55,7 @@
         <img src='/static/images/frame_new_customer_suggest.png' class="frame_old_customer_suggest_text"/>
       </div>
 
-      <a class="gd_choose_click">
+      <a class="gd_choose_click" @click="openGdpop('L')">
         右眼(R)
       </a>
       <a class="gd_choose_click">
@@ -104,15 +104,29 @@
         立即购买
       </a>
     </section>
+    <gdSelectPop :is-show.sync="isShowGdSelectPop"/>
   </article>
 </template>
 
 <script>
+  import gdSelectPop from "../components/gdSelectPop"
+  import api from "@/api/attr";
+
   export default {
     data() {
       return {
-        buyType: 1
+        buyType: 1,
+        isShowGdSelectPop: false
       };
+    },
+
+    components: {
+      gdSelectPop
+    },
+
+    onLoad() {
+
+      this._getFrameData();
     },
 
     methods: {
@@ -135,9 +149,22 @@
             return '/static/images/a_frame_unselect.png';
           }
         }
+      },
+      openGdpop(side) {
+        if (side === 'L') {
+          this.isShowGdSelectPop = true;
+        } else if (side === 'R') {
+          this.isShowGdSelectPop = true;
+        }
+      },
+      _getFrameData() {
+        api.getFrameJoinCart('665cc444-4bd4-4f63-80b4-78bb58a00116', false).then(({Data}) => {
+          console.log(Data)
+        });
       }
+
     }
-  }
+  };
 </script>
 
 <style lang="less">
