@@ -6,7 +6,7 @@
         class="head"
         :src="userInfoModel.HeadUrl || '/static/images/default_img.gif'"
       />
-      <a href="/pages/account/login/main" v-if="!token" class="btn">立即登录</a>
+      <a href="/pages/login/main" v-if="!token" class="btn">立即登录</a>
       <div v-else class="info-box">
         <p class="name">{{userInfoModel.Nick}}</p>
         <p class="level">
