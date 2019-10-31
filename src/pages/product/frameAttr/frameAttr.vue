@@ -55,11 +55,11 @@
         <img src='/static/images/frame_new_customer_suggest.png' class="frame_old_customer_suggest_text"/>
       </div>
 
-      <a class="gd_choose_click" @click="openGdpop('L')">
+      <a class="gd_choose_click" @click="openGdpop('R')">
         右眼(R)
       </a>
-      <a class="gd_choose_click">
-        左眼(R)
+      <a class="gd_choose_click" @click="openGdpop('L')">
+        左眼(L)
       </a>
       <a class="gd_choose_click black">
         瞳距：62
@@ -104,7 +104,10 @@
         立即购买
       </a>
     </section>
-    <gdSelectPop :is-show.sync="isShowGdSelectPop"/>
+    <gdSelectPop :is-show.sync="isShowGdSelectPop" :sphere-range="SphereRange"
+                 :cylinder-range="CylinderRange"
+                 :axis-range="AxisRange"
+                 :PD-range="PDRange"/>
   </article>
 </template>
 
@@ -116,7 +119,11 @@
     data() {
       return {
         buyType: 1,
-        isShowGdSelectPop: false
+        isShowGdSelectPop: false,
+        SphereRange: [],
+        CylinderRange: [],
+        AxisRange: [],
+        PDRange: []
       };
     },
 
@@ -125,8 +132,8 @@
     },
 
     onLoad() {
-
       this._getFrameData();
+      this._getOptometryBillBaiscDataLibrary();
     },
 
     methods: {
@@ -159,7 +166,17 @@
       },
       _getFrameData() {
         api.getFrameJoinCart('665cc444-4bd4-4f63-80b4-78bb58a00116', false).then(({Data}) => {
-          console.log(Data)
+          console.log("主数据", Data)
+
+        });
+      },
+      _getOptometryBillBaiscDataLibrary() {
+        api.getOptometryBillBaiscDataLibrary().then((Data) => {
+          console.log('光度信息', Data);
+          this.SphereRange = Data.Data.SphereRange;
+          this.CylinderRange = Data.Data.CylinderRange;
+          this.AxisRange = Data.Data.AxisRange;
+          this.PDRange = Data.Data.PDRange;
         });
       }
 
