@@ -7,7 +7,18 @@ const api = {
   },
   getAddressDetail(consigneeId){
     return http.post(`/Account/GetWaitEditConsignee?consigneeId=${consigneeId}`)
-  }
+  },
+  addNewAddress(ConsigneeName,ContactMobile,ProvinceId,ProvinceName,CityId,CityName,DistrictId,DistrictName,Address,PostalCode,IsDefault){
+    return http.post(`/Account/AddConsignee?&ConsigneeName=${ConsigneeName}&ContactMobile=${ContactMobile}&ProvinceId=${ProvinceId}&ProvinceName=${ProvinceName}&CityId=${CityId}&CityName=${CityName}&DistrictId=${DistrictId}&DistrictName=${DistrictName}&Address=${Address}&PostalCode=${PostalCode}&IsDefault=${IsDefault}`)
+  },
+  editAddresss(consigneeId,ConsigneeName,ContactMobile,ProvinceId,ProvinceName,CityId,CityName,DistrictId,DistrictName,Address,PostalCode,IsDefault){
+    return http.post(`/Account/ModifyConsignee?ID=${consigneeId}&ConsigneeName=${ConsigneeName}&ContactMobile=${ContactMobile}&ProvinceId=${ProvinceId}&ProvinceName=${ProvinceName}&CityId=${CityId}&CityName=${CityName}&DistrictId=${DistrictId}&DistrictName=${DistrictName}&Address=${Address}&PostalCode=${PostalCode}&IsDefault=${IsDefault}`)
+  },
+  //拉取省市区级联数据
+  getAddressListLib() {
+    return http.post('/Account/GetAddressLibrary')
+  },
+
 }
 
 export default api

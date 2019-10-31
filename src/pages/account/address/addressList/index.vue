@@ -43,6 +43,9 @@ export default {
     };
   },
   onLoad(options) {
+    // this.getListData();
+  },
+  onShow(){
     this.getListData();
   },
   methods: {
