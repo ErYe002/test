@@ -79,7 +79,7 @@
         v-if="listQuery.page == 1 && isLoading"
         src="/static/images/mu_loading.gif"
       />
-      <p class="no-data-box" v-else-if="isNoData">抱歉，没有找到你想要的商品哦</p>
+      <p class="no-data-box" v-else-if="isNoData">抱歉，没有此类订单哦</p>
       <p class="no-more-tips" v-if="listQuery.page == totalPage">没有更多了</p>
     </section>
   </article>

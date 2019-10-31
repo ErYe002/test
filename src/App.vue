@@ -18,8 +18,16 @@ export default {
     if(!flag){
       this.removeToken()
     } else {
-      this.setToken()
+      this.setTokenByStorage()
     }
+
+    // 登录
+    wx.login({
+      success: res => {
+        // 发送 res.code 到后台换取 openId, sessionKey
+        this._getWXinfo(res.code)
+      }
+    })
 
     //储存当前机型信息到本地
     // const sysInfo = wx.getSystemInfoSync()
@@ -27,7 +35,10 @@ export default {
   },
   methods: {
     ...mapActions('user', [
-        'setToken', 'removeToken'
+        'setTokenByStorage', 'removeToken'
+    ]),
+    ...mapActions('wxinfo', [
+        'setWXinfo'
     ]),
     _checkToken(){
       return new Promise((resolve, reject) => {
@@ -36,6 +47,11 @@ export default {
         }).catch(() => {
           reject()
         })
+      })
+    },
+    _getWXinfo(code){
+      api.getAppMainInfo(code).then((Data) => {
+        this.setWXinfo(Data)
       })
     }
   }

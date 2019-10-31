@@ -6,7 +6,7 @@
         class="head"
         :src="userInfoModel.HeadUrl || '/static/images/default_img.gif'"
       />
-      <a href="/pages/account/login/main" v-if="!token" class="btn">立即登录</a>
+      <a href="/pages/login/main" v-if="!token" class="btn">立即登录</a>
       <div v-else class="info-box">
         <p class="name">{{userInfoModel.Nick}}</p>
         <p class="level">
@@ -103,13 +103,13 @@
           </a>
         </li>
         <li class="item">
-          <a :href="!token ? loginUrl:'/pages/index/main'" class="link">
+          <a :href="!token ? loginUrl:'/pages/account/address/addressList/main'" class="link">
             <img src="/static/images/home_address.png" class="icon" />
             <p class="text">收货地址</p>
           </a>
         </li>
         <li class="item">
-          <a :href="!token ? loginUrl:'/pages/index/main'" class="link">
+          <a :href="!token ? '/pages/account/setting/role/main':'/pages/index/main'" class="link">
             <img src="/static/images/home_set.png" class="icon" />
             <p class="text">设置</p>
           </a>
@@ -170,14 +170,21 @@ export default {
         CountOfCoupon: 0,
         Score: 0
       },
-      loginUrl: "/pages/account/login/main"
+      loginUrl: "/pages/login/main"
     };
   },
   computed: {
     ...mapState("user", ["token"])
   },
-  mounted() {
-    // console.log(this.token);
+  // watch:{
+  //   token: {
+  //     handler: function(val){
+  //       console.log('token==',val)
+  //     },
+  //     immediate: true
+  //   }
+  // },
+  onShow() {
     if (this.token) {
       this._getPageData();
     }
@@ -401,6 +408,7 @@ export default {
 }
 
 .function-box:extend(.service-box all) {
+  overflow: hidden;
   border-bottom: none;
 }
 </style>

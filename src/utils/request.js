@@ -36,7 +36,8 @@ const request = (url, method, data, header, showLoading = true, isNeedErrorTips 
           if(isNeedErrorTips){
             wx.showToast({
               title: data['Msg'] || '请求异常，请稍后再试',
-              icon: 'none'
+              icon: 'none',
+              duration: 5000
             });
           }
           reject(data['Msg']);

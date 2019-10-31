@@ -18,8 +18,11 @@ const mutations = {
 }
 
 const actions = {
-    setToken({ commit }) {
-        let token = wx.getStorageSync(TOKEN_STORAGE_KEY)
+    setToken({ commit }, token) {
+        commit(TOKEN_SET, token)
+    },
+    setTokenByStorage({ commit }) {
+        let token = wx.getStorageSync(TOKEN_STORAGE_KEY) || ''
         commit(TOKEN_SET, token)
     },
     removeToken({ commit }){
