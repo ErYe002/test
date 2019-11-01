@@ -2,18 +2,17 @@
   <article>
     <section class="user-box">
       <img class="bg" src="/static/images/member_bg.jpg" mode="aspectFit" />
-      <img
-        class="head"
-        :src="userInfoModel.HeadUrl || '/static/images/default_img.gif'"
-      />
-      <a href="/pages/login/main" v-if="!token" class="btn">立即登录</a>
+      <img class="head" :src="userInfoModel.HeadUrl || '/static/images/default_img.gif'" />
+      <button
+        open-type="getUserInfo"
+        @getuserinfo="getUserInfo"
+        v-if="!token"
+        class="kd-btn btn btn-small"
+      >立即登录</button>
       <div v-else class="info-box">
         <p class="name">{{userInfoModel.Nick}}</p>
         <p class="level">
-          <img
-            class="icon"
-            :src="'/static/images/level_0'+userInfoModel.levelNum+'.jpg'"
-          />
+          <img class="icon" :src="'/static/images/level_0'+userInfoModel.levelNum+'.jpg'" />
           <span class="text">会员</span>
         </p>
       </div>
@@ -21,19 +20,43 @@
     <section class="assets-box">
       <ul class="assets-list">
         <li class="assets-item">
-          <a :href="!token ? loginUrl:'/pages/index/main'" class="link">
+          <button
+            open-type="getUserInfo"
+            @getuserinfo="getUserInfo"
+            data-link="/pages/index/main"
+            v-if="!token"
+            class="link"
+          >
+            <p class="number">0.00</p>
+            <p class="text">余额</p>
+          </button>
+          <a v-else href="/pages/index/main" class="link">
             <p class="number">{{walletModel.Balance || 0.00}}</p>
             <p class="text">余额</p>
           </a>
         </li>
         <li class="assets-item">
-          <a :href="!token ? loginUrl:'/pages/index/main'" class="link">
+          <button
+            open-type="getUserInfo"
+            @getuserinfo="getUserInfo"
+            data-link="/pages/index/main"
+            v-if="!token"
+            class="link"
+          >
+            <p class="number">0</p>
+            <p class="text">优惠券</p>
+          </button>
+          <a v-else href="/pages/index/main" class="link">
             <p class="number">{{walletModel.CountOfCoupon || 0}}</p>
             <p class="text">优惠券</p>
           </a>
         </li>
         <li class="assets-item">
-          <a :href="!token ? loginUrl:'/pages/index/main'" class="link">
+          <button open-type="getUserInfo" @getuserinfo="getUserInfo" v-if="!token" class="link">
+            <p class="number">0</p>
+            <p class="text">积分</p>
+          </button>
+          <a v-else @click="toAppTips('下载可得眼镜APP可查看积分明细')" class="link">
             <p class="number">{{walletModel.Score || 0}}</p>
             <p class="text">积分</p>
           </a>
@@ -43,14 +66,33 @@
     <section class="order-nav-box">
       <div class="title">
         <div class="text">我的订单</div>
-        <a :href="!token ? loginUrl:'/pages/account/order/list/main?queryState=0'" class="link">
+        <button
+          open-type="getUserInfo"
+          @getuserinfo="getUserInfo"
+          v-if="!token"
+          data-link="/pages/account/order/list/main?queryState=0"
+          class="link"
+        >
+          <span>查看全部</span>
+          <img src="/static/images/icon_right_grey.png" class="icon" />
+        </button>
+        <a v-else href="/pages/account/order/list/main?queryState=0" class="link">
           <span>查看全部</span>
           <img src="/static/images/icon_right_grey.png" class="icon" />
         </a>
       </div>
       <ul class="list">
         <li class="item">
-          <a :href="!token ? loginUrl:'/pages/account/order/list/main?queryState=3'" class="link">
+          <button
+            open-type="getUserInfo"
+            @getuserinfo="getUserInfo"
+            v-if="!token"
+            data-link="/pages/account/order/list/main?queryState=3"
+            class="link"
+          >
+            <img class="icon" src="/static/images/home_waitpay.png" />
+          </button>
+          <a v-else href="/pages/account/order/list/main?queryState=3" class="link">
             <span
               class="dot"
               v-if="userInfoModel.OrderCountOfWaitPay > 0"
@@ -59,7 +101,16 @@
           </a>
         </li>
         <li class="item">
-          <a :href="!token ? loginUrl:'/pages/account/order/list/main?queryState=4'" class="link">
+          <button
+            open-type="getUserInfo"
+            @getuserinfo="getUserInfo"
+            v-if="!token"
+            data-link="/pages/account/order/list/main?queryState=4"
+            class="link"
+          >
+            <img class="icon" src="/static/images/home_waitdeliver.png" />
+          </button>
+          <a v-else href="/pages/account/order/list/main?queryState=4" class="link">
             <span
               class="dot"
               v-if="userInfoModel.OrderCountOfWaitDeliver > 0"
@@ -68,7 +119,16 @@
           </a>
         </li>
         <li class="item">
-          <a :href="!token ? loginUrl:'/pages/account/order/list/main?queryState=6'" class="link">
+          <button
+            open-type="getUserInfo"
+            @getuserinfo="getUserInfo"
+            v-if="!token"
+            data-link="/pages/account/order/list/main?queryState=6"
+            class="link"
+          >
+            <img class="icon" src="/static/images/home_waitEvaluate.png" />
+          </button>
+          <a v-else href="/pages/account/order/list/main?queryState=6" class="link">
             <span
               class="dot"
               v-if="userInfoModel.OrderCountOfWaitEvaluate > 0"
@@ -77,7 +137,10 @@
           </a>
         </li>
         <li class="item">
-          <a :href="!token ? loginUrl:'/pages/account/order/list/main'" class="link">
+          <button open-type="getUserInfo" @getuserinfo="getUserInfo" v-if="!token" class="link">
+            <img class="icon" src="/static/images/home_tuihuan.png" />
+          </button>
+          <a v-else @click="toAppTips('可得小程序暂时不支持退换货功能哦，请下载可得眼镜APP使用此功能')" class="link">
             <span
               class="dot"
               v-if="userInfoModel.OrderCountOfCustomerService > 0"
@@ -91,25 +154,65 @@
       <p class="title">我的服务</p>
       <ul class="list">
         <li class="item">
-          <a :href="!token ? loginUrl:'/pages/index/main'" class="link">
+          <button open-type="getUserInfo" @getuserinfo="getUserInfo" v-if="!token" class="link">
+            <img src="/static/images/home_mygroup.png" class="icon" />
+            <p class="text">我的拼团</p>
+          </button>
+          <a
+            v-else
+            open-type="navigate"
+            target="miniProgram"
+            app-id="wx59914c27d9618111"
+            class="link"
+          >
             <img src="/static/images/home_mygroup.png" class="icon" />
             <p class="text">我的拼团</p>
           </a>
         </li>
         <li class="item">
-          <a :href="!token ? loginUrl:'/pages/index/main'" class="link">
+          <button
+            open-type="getUserInfo"
+            @getuserinfo="getUserInfo"
+            v-if="!token"
+            data-link="/pages/index/main"
+            class="link"
+          >
+            <img src="/static/images/home_collection.png" class="icon" />
+            <p class="text">我的收藏</p>
+          </button>
+          <a v-else href="/pages/index/main" class="link">
             <img src="/static/images/home_collection.png" class="icon" />
             <p class="text">我的收藏</p>
           </a>
         </li>
         <li class="item">
-          <a :href="!token ? loginUrl:'/pages/account/address/addressList/main'" class="link">
+          <button
+            open-type="getUserInfo"
+            @getuserinfo="getUserInfo"
+            v-if="!token"
+            data-link="/pages/account/address/addressList/main"
+            class="link"
+          >
+            <img src="/static/images/home_address.png" class="icon" />
+            <p class="text">收货地址</p>
+          </button>
+          <a v-else href="/pages/account/address/addressList/main" class="link">
             <img src="/static/images/home_address.png" class="icon" />
             <p class="text">收货地址</p>
           </a>
         </li>
         <li class="item">
-          <a :href="!token ? '/pages/account/setting/role/main':'/pages/index/main'" class="link">
+          <button
+            open-type="getUserInfo"
+            @getuserinfo="getUserInfo"
+            v-if="!token"
+            data-link="/pages/account/setting/role/main"
+            class="link"
+          >
+            <img src="/static/images/home_set.png" class="icon" />
+            <p class="text">设置</p>
+          </button>
+          <a v-else href="/pages/account/setting/role/main" class="link">
             <img src="/static/images/home_set.png" class="icon" />
             <p class="text">设置</p>
           </a>
@@ -120,25 +223,35 @@
       <p class="title">更多功能</p>
       <ul class="list">
         <li class="item">
-          <a :href="!token ? loginUrl:'/pages/index/main'" class="link">
+          <button open-type="contact" class="link">
             <img src="/static/images/home_customeonline.png" class="icon" />
             <p class="text">在线客服</p>
-          </a>
+          </button>
         </li>
         <li class="item">
-          <a :href="!token ? loginUrl:'/pages/index/main'" class="link">
+          <a @click="contactServiceByPhone" class="link">
             <img src="/static/images/home_callcustome.png" class="icon" />
             <p class="text">电话客服</p>
           </a>
         </li>
-        <li class="item">
+        <!-- <li class="item">
           <a :href="!token ? loginUrl:'/pages/index/main'" class="link">
             <img src="/static/images/home_feedback.png" class="icon" />
             <p class="text">我要告状</p>
           </a>
-        </li>
+        </li>-->
         <li class="item">
-          <a :href="!token ? loginUrl:'/pages/index/main'" class="link">
+          <button
+            open-type="getUserInfo"
+            @getuserinfo="getUserInfo"
+            v-if="!token"
+            data-link="/pages/index/main"
+            class="link"
+          >
+            <img src="/static/images/home_security.png" class="icon" />
+            <p class="text">账户安全</p>
+          </button>
+          <a v-else href="/pages/index/main" class="link">
             <img src="/static/images/home_security.png" class="icon" />
             <p class="text">账户安全</p>
           </a>
@@ -150,6 +263,7 @@
 
 <script>
 import api from "@/api/user";
+import authorization from "@/utils/authorization";
 import { mapState } from "vuex";
 
 export default {
@@ -158,7 +272,7 @@ export default {
       //填充userInfoModel和walletModel的默认字段，以免控制台报错
       userInfoModel: {
         GradeName: "普通会员",
-        HeadUrl: "https://pic.keede.com//app/images/login_img.png",
+        HeadUrl: "https://pic.keede.com/app/images/login_img.png",
         Nick: "可得会员",
         OrderCountOfCustomerService: 0,
         OrderCountOfWaitDeliver: 0,
@@ -166,30 +280,55 @@ export default {
         OrderCountOfWaitPay: 0
       },
       walletModel: {
-        Balance: 0.00,
+        Balance: 0.0,
         CountOfCoupon: 0,
         Score: 0
-      },
-      loginUrl: "/pages/login/main"
+      }
     };
   },
   computed: {
     ...mapState("user", ["token"])
   },
-  // watch:{
-  //   token: {
-  //     handler: function(val){
-  //       console.log('token==',val)
-  //     },
-  //     immediate: true
-  //   }
-  // },
-  onShow() {
-    if (this.token) {
-      this._getPageData();
+  watch: {
+    token: {
+      handler: function(val) {
+        console.log("token==", val);
+        if (val != "") {
+          this._getPageData();
+        }
+      },
+      immediate: true
     }
   },
   methods: {
+    getUserInfo(e) {
+      const link = e.mp.currentTarget.dataset.link || "";
+      authorization.doLogin(e.mp.detail.encryptedData, e.mp.detail.iv, () => {
+        if (link) {
+          if(link.indexOf('/pages/index/main') != -1 || link.indexOf('/pages/classmenu/main') != -1 || link.indexOf('/pages/cart/main') != -1){
+            wx.switchTab({
+              url: link
+            });
+          } else {
+            wx.navigateTo({
+              url: link
+            });
+          }
+        }
+      });
+    },
+    contactServiceByPhone() {
+      wx.makePhoneCall({
+        phoneNumber: "4006-20-20-20"
+      });
+    },
+    toAppTips(content) {
+      wx.showModal({
+        title: "提示",
+        content,
+        confirmColor: "#cab894"
+      });
+    },
     _getPageData() {
       api.getHomePageOfPersonnel().then(({ Data }) => {
         Data.OrderCountOfWaitPay = this._changeOverflowNum(
@@ -208,7 +347,7 @@ export default {
         this.userInfoModel = Object.assign({}, Data);
       });
       api.getWalletOfPersonnel().then(({ Data }) => {
-        this.walletModel = Object.assign({}, Data);;
+        this.walletModel = Object.assign({}, Data);
       });
     },
     _getLevelNum(gradeName) {
@@ -252,6 +391,25 @@ export default {
 </script>
 
 <style lang="less" scoped>
+/* 去除按钮默认样式 */
+.link {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-size: inherit;
+  border-radius: 0;
+  line-height: initial;
+  color: inherit;
+  &::after {
+    border: none;
+    border-radius: 0;
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
+}
+
 .user-box {
   display: flex;
   align-items: center;
@@ -275,10 +433,7 @@ export default {
     border-radius: 50%;
   }
   .btn {
-    background: #cab894;
-    color: #fff;
-    padding: 4px 7px;
-    border-radius: 2px;
+    width: 80px;
     margin-left: 10px;
   }
   .info-box {
@@ -362,7 +517,7 @@ export default {
     align-items: center;
     margin: 10px 0;
     .item {
-      flex: 1;
+      flex: 0 0 25%;
       .link {
         position: relative;
         .dot {

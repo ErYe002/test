@@ -4,7 +4,13 @@ const request = (url, method, data, header, showLoading = true, isNeedErrorTips 
   console.log('当前请求连接：', url);
   return new Promise((resolve, reject) => {
     if(showLoading){
-      wx.showLoading();
+      if(url.indexOf('WechatSamllApplciationLogin') != -1){
+        wx.showLoading({
+          title: '正在登录'
+        });
+      } else {
+        wx.showLoading();
+      }
     } else {
       wx.showNavigationBarLoading();
     }

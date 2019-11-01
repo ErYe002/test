@@ -5,18 +5,18 @@
     "pages/cart/main",
     "pages/cart/addBuy/main",
     "pages/home/main",
-    "pages/counter/main",
-	  "pages/login/main",
     "pages/bindMobile/main"
-],
+  ],
   "subpackages": [
     {
       "root": "pages/account",
       "pages": [
         "order/list/main",
         "address/addressList/main",
-        "address/editAddress/main",        "setting/home/main",
-        "setting/role/main"      ]
+        "address/editAddress/main",
+        "setting/home/main",
+        "setting/role/main"
+      ]
     },
     {
       "root": "pages/search",
@@ -43,10 +43,14 @@
   ],
   "preloadRule": {
     "pages/classmenu/main": {
-      "packages": ["pages/search"]
+      "packages": [
+        "pages/search"
+      ]
     },
     "pages/home/main": {
-      "packages": ["pages/account"]
+      "packages": [
+        "pages/account"
+      ]
     }
   },
   "window": {
