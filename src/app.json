@@ -5,9 +5,10 @@
     "pages/cart/main",
     "pages/cart/addBuy/main",
     "pages/home/main",
-    "pages/login/main",
+    "pages/counter/main",
+	  "pages/login/main",
     "pages/bindMobile/main"
-  ],
+],
   "subpackages": [
     {
       "root": "pages/account",
