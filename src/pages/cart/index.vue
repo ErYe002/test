@@ -303,14 +303,14 @@
                         元，换购{{fItem.GoodsName}}
                       </span>
                       <span class="num">×{{fItem.SumQuantity}}</span>
-                      <a class="link">去切换></a>
+                      <a :href="'/pages/cart/addBuy/main?shopId='+shopId+'&uniqueId='+gItem.UniqueId" class="link">去切换></a>
                     </template>
                   </p>
                 </template>
                 <p class="repurchase-tips" v-else-if="gItem.IsFillFreedomCollocation">
                   <span class="tag">加钱换购</span>
                   <span class="title">该商品参与加钱换购</span>
-                  <a class="link">去换购></a>
+                  <a :href="'/pages/cart/addBuy/main?shopId='+shopId+'&uniqueId='+gItem.UniqueId" class="link">去换购></a>
                 </p>
               </li>
             </ul>
@@ -484,14 +484,14 @@
                         元，换购{{fItem.GoodsName}}
                       </span>
                       <span class="num">×{{fItem.SumQuantity}}</span>
-                      <a class="link">去切换></a>
+                      <a :href="'/pages/cart/addBuy/main?shopId='+shopId+'&uniqueId='+nItem.UniqueId" class="link">去切换></a>
                     </template>
                   </p>
                 </template>
                 <p class="repurchase-tips" v-else-if="nItem.IsFillFreedomCollocation">
                   <span class="tag">加钱换购</span>
                   <span class="title">该商品参与加钱换购</span>
-                  <a class="link">去换购></a>
+                  <a :href="'/pages/cart/addBuy/main?shopId='+shopId+'&uniqueId='+nItem.UniqueId" class="link">去换购></a>
                 </p>
               </li>
             </ul>

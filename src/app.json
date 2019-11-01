@@ -3,6 +3,7 @@
     "pages/index/main",
     "pages/classmenu/main",
     "pages/cart/main",
+    "pages/cart/addBuy/main",
     "pages/home/main",
     "pages/login/main",
     "pages/bindMobile/main"
