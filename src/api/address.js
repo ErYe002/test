@@ -18,6 +18,12 @@ const api = {
   getAddressListLib() {
     return http.post('/Account/GetAddressLibrary')
   },
+  doSetDefaultAddress(consigneeId) {
+    return http.post(`/Account/SetDefaultConsignee?consigneeId=${consigneeId}`)
+  },
+  doDeleteAddress(consigneeId){
+    return http.post(`/Account/DeleteConsignee?consigneeId=${consigneeId}`)
+  }
 
 }
 
