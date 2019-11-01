@@ -24,9 +24,10 @@
         数量
       </span>
       <div style="display: flex;margin-top: 13px">
-        <img src="/static/images/cart_sub_icon.png" class="change-num-btn"/>
-        <input type="tel" value="1" autocomplete="off" class="input-only-buy-num"/>
-        <img src="/static/images/cart_add_icon.png" class="change-num-btn"/>
+        <img src="/static/images/cart_sub_icon.png" class="change-num-btn" @click="onlyBuyFrameChangeNumEvent(-1)"/>
+        <input type="tel" :value="onlyBuyFrameNum" v-model="onlyBuyFrameNum" autocomplete="off"
+               class="input-only-buy-num"/>
+        <img src="/static/images/cart_add_icon.png" class="change-num-btn" @click="onlyBuyFrameChangeNumEvent(1)"/>
       </div>
     </div>
     <!--验光单选择-->
@@ -135,7 +136,8 @@
         PDRange: [],
         postInfoBean: {sphR: '', sphL: '', cylR: '', cylL: '', axisR: '', axisL: '', pd: '62'},
         gdStartSide: '',
-        openGdPopState: 1
+        openGdPopState: 1,
+        onlyBuyFrameNum: 1
       };
     },
 
@@ -146,6 +148,14 @@
     onLoad() {
       this._getFrameData();
       this._getOptometryBillBaiscDataLibrary();
+    },
+
+    watch: {
+      onlyBuyFrameNum: function (val, oldVal) {
+        if (val < 1) {
+          this.onlyBuyFrameNum = 1;
+        }
+      }
     },
 
     methods: {
@@ -221,6 +231,9 @@
         }
 
       },
+      onlyBuyFrameChangeNumEvent(addOrSub) {
+        this.onlyBuyFrameNum += addOrSub;
+      }
 
     }
   };
