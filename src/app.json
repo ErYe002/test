@@ -5,9 +5,8 @@
     "pages/cart/main",
     "pages/home/main",
     "pages/counter/main",
-	"pages/login/main",
+	  "pages/login/main",
     "pages/bindMobile/main"
-	"pages/product/main"
 ],
   "subpackages": [
     {
