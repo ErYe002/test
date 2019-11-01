@@ -738,9 +738,13 @@ export default {
           icon: "none"
         });
       } else {
-        api.toBalance(this.shopId).then(() => {
-
+        wx.navigateTo({
+         url: '/pages/order/index/main?shopId='+this.shopId
         })
+        // toBalance 方法弃用
+        // api.toBalance(this.shopId).then(() => {
+
+        // })
       }
     },
 

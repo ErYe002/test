@@ -13,9 +13,15 @@
       "pages": [
         "order/list/main",
         "address/addressList/main",
+<<<<<<< HEAD
         "address/editAddress/main",
         "setting/home/main",
         "setting/role/main"
+=======
+        "address/editAddress/main",        
+        "setting/home/main",
+        "setting/role/main"      
+>>>>>>> 确认订单页
       ]
     },
     {

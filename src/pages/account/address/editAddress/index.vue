@@ -50,20 +50,6 @@ export default {
       cities: [], //省市区级联市原始数据
       districts: [],  //省市区级联区原始数据
       isLoadRegion: true,
-      formModel: {
-        ID: '',
-        ConsigneeName: '',
-        ProvinceId: '',
-        ProvinceName: '',
-        CityId: '',
-        CityName: '',
-        DistrictId: '',
-        DistrictName: '',
-        Address: '',
-        PostalCode: '',
-        ContactMobile: '',
-        IsDefault: true
-      },
       isEdit:false,
       consigneeId: "",
       addressInfo: null,
@@ -343,14 +329,14 @@ page {
 }
 .input {
   color: #717171;
-  background: #dcdcdc;
+  // background: #dcdcdc;
   margin-left: 0rpx;
   margin-right: 20rpx;
   flex: 1
 }
 .pickerInput {
   color: #717171;
-  background: #dcdcdc;
+  // background: #dcdcdc;
   margin-left: 0rpx;
   margin-right: 20rpx;
   flex: 1

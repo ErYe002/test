@@ -8,7 +8,7 @@
           <p class="default" v-if="item.IsDefault">默认</p>
           <!-- <p class="tag" v-if="item.Tag != null">{{item.Tag}}</p> -->
         </div>
-        <div class="address">{{item.Address + item.Address}}</div>
+        <div class="address">{{item.Address}}</div>
         <div class="editBtns">
           <div @click="doSetDefaultAddress(item.ID)">
             <radio class="radio" :disabled="true" color="#cab894" :checked="item.IsDefault" />设置默认
@@ -54,7 +54,6 @@ export default {
       api.getAddressList().then(({ Data }) => {
         //重新整理数据
         this.addressList = [...Data];
-        console.log('删除后刷新数据')
       });
       if (this.addressList.leng) {
         this.isNoData = true;
@@ -85,7 +84,6 @@ export default {
             api.doDeleteAddress(consigneeId).then(({ Data, State, Msg }) => {
               let tempMsg = "";
               if (State){
-                console.log('删除---成功----')
                 _this.getListData();
               }else{
                 wx.showToast({
