@@ -63,7 +63,7 @@
             </div>
           </div>
 
-          <div v-for="(item,index) in PDRange" v-bind:key="item" style="padding:5px;box-sizing:border-box;width: 20%"
+          <div v-for="(item,index) in pdRange" v-bind:key="item" style="padding:5px;box-sizing:border-box;width: 20%"
                v-if="displayType===5">
             <div :class="{'item-gd':true,'select':selectPD===item}" @click="pdSelectEvent(index)">
               {{item}}
@@ -88,7 +88,8 @@
         上一步
       </div>
 
-      <div class="bottom-btn yellow" @click="changeStape()" v-if="displayType===3 || displayType===4">
+      <div class="bottom-btn yellow" @click="changeStape()"
+           v-if="displayType===3 || displayType===4 || displayType===5">
         确定
       </div>
 
@@ -108,7 +109,9 @@
       sphereRange: [String],
       cylinderRange: [String],
       axisRange: [String],
-      PDRange: [String]
+      pdRange: [String],
+      openState: Number,//1L 2R 3PD
+      selectBean: Object
     },
     data() {
       return {
@@ -133,9 +136,12 @@
           //父与子组件同步isShow值
           this.$emit('update:isShow', val);
           if (val === true) {
+            //数据初始化
             this.sphMinus = ['0.00'];
             this.sphpositive = ['0.00'];
 
+
+            //数据整理
             for (let sph of this.sphereRange) {
               if (sph.startsWith('-')) {
                 this.sphMinus.push(sph);
@@ -143,7 +149,33 @@
                 this.sphpositive.push(sph);
               }
             }
-            this.displayType = 1;
+            //打开状态
+            if (this.openState === 3) {
+              this.displayType = 5;
+              this.selectPD = this.selectBean.pd;
+            } else if (this.openState === 2) {
+              this.displayType = 1;
+              if (this.selectBean.sphR !== '' && this.selectBean.cylR !== '' && this.selectBean.axisR !== '') {
+                this.selectSPH = this.selectBean.sphR;
+                this.selectCYL = this.selectBean.cylR;
+                this.selectAXIS = this.selectBean.axisR;
+              } else {
+                this.selectSPH = '0.00';
+                this.selectCYL = '无';
+                this.selectAXIS = '';
+              }
+            } else {
+              this.displayType = 1;
+              if (this.selectBean.sphL !== '' && this.selectBean.cylL !== '' && this.selectBean.axisL !== '') {
+                this.selectSPH = this.selectBean.sphL;
+                this.selectCYL = this.selectBean.cylL;
+                this.selectAXIS = this.selectBean.axisL;
+              } else {
+                this.selectSPH = '0.00';
+                this.selectCYL = '无';
+                this.selectAXIS = '';
+              }
+            }
           }
         },
         immediate: true
@@ -178,7 +210,7 @@
         this.selectAXIS = this.axisRange[index];
       },
       pdSelectEvent(index) {
-        this.selectPD = this.PDRange[index];
+        this.selectPD = this.pdRange[index];
       },
       changeStape() {
         if (this.displayType === 1 || this.displayType === 2) {
@@ -186,6 +218,20 @@
         } else if (this.displayType === 3 && this.selectCYL !== '无') {
           this.displayType = 4;
         } else {
+
+          if (this.displayType === 4) {
+            if (this.selectAXIS === '') {
+              wx.showToast({title: '请选择轴位', icon: 'none'});
+              return;
+            }
+          }
+
+          this.$emit('backData', {
+            selectSPH: this.selectSPH,
+            selectCYL: this.selectCYL,
+            selectAXIS: this.selectAXIS,
+            selectPD: this.selectPD
+          });
           this.hideEvent();
         }
       },

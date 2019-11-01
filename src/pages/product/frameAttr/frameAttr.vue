@@ -55,14 +55,20 @@
         <img src='/static/images/frame_new_customer_suggest.png' class="frame_old_customer_suggest_text"/>
       </div>
 
-      <a class="gd_choose_click" @click="openGdpop('R')">
+      <a class="gd_choose_click" @click="openGdpop('R')" v-if="postInfoBean.sphR===''">
         右眼(R)
       </a>
-      <a class="gd_choose_click" @click="openGdpop('L')">
+      <a class="gd_choose_click" @click="openGdpop('R')" v-if="postInfoBean.sphR!==''">
+        {{'右眼 光度:'+postInfoBean.sphR+' 散光:'+postInfoBean.cylR+' 轴位:'+postInfoBean.axisR}}
+      </a>
+      <a class="gd_choose_click" @click="openGdpop('L')" v-if="postInfoBean.sphL===''">
         左眼(L)
       </a>
-      <a class="gd_choose_click black">
-        瞳距：62
+      <a class="gd_choose_click" @click="openGdpop('L')" v-if="postInfoBean.sphL!==''">
+        {{'右眼 光度:'+postInfoBean.sphL+' 散光:'+postInfoBean.cylL+' 轴位:'+postInfoBean.axisL}}
+      </a>
+      <a class="gd_choose_click black" @click="openGdpop('P')">
+        {{'瞳距：'+postInfoBean.pd}}
       </a>
     </section>
     <!--精品选择-->
@@ -107,7 +113,10 @@
     <gdSelectPop :is-show.sync="isShowGdSelectPop" :sphere-range="SphereRange"
                  :cylinder-range="CylinderRange"
                  :axis-range="AxisRange"
-                 :PD-range="PDRange"/>
+                 :pd-range="PDRange"
+                 :open-state="openGdPopState"
+                 :select-bean="postInfoBean"
+                 @backData="gdBackInfo"/>
   </article>
 </template>
 
@@ -123,7 +132,10 @@
         SphereRange: [],
         CylinderRange: [],
         AxisRange: [],
-        PDRange: []
+        PDRange: [],
+        postInfoBean: {sphR: '', sphL: '', cylR: '', cylL: '', axisR: '', axisL: '', pd: '62'},
+        gdStartSide: '',
+        openGdPopState: 1
       };
     },
 
@@ -158,11 +170,19 @@
         }
       },
       openGdpop(side) {
+
         if (side === 'L') {
-          this.isShowGdSelectPop = true;
+          this.openGdPopState = 1;
+          this.gdStartSide = 'L';
         } else if (side === 'R') {
-          this.isShowGdSelectPop = true;
+          this.openGdPopState = 2;
+          this.gdStartSide = 'R';
+        } else {
+          this.gdStartSide = 'P';
+          this.openGdPopState = 3;
         }
+
+        this.isShowGdSelectPop = true;
       },
       _getFrameData() {
         api.getFrameJoinCart('665cc444-4bd4-4f63-80b4-78bb58a00116', false).then(({Data}) => {
@@ -178,7 +198,29 @@
           this.AxisRange = Data.Data.AxisRange;
           this.PDRange = Data.Data.PDRange;
         });
-      }
+      },
+      gdBackInfo(data) {
+        if (this.gdStartSide === 'L') {
+          this.postInfoBean.sphL = data.selectSPH;
+          this.postInfoBean.cylL = data.selectCYL;
+          if (data.selectCYL === '无') {
+            this.postInfoBean.axisL = '无';
+          } else {
+            this.postInfoBean.axisL = data.selectAXIS;
+          }
+        } else if (this.gdStartSide === 'R') {
+          this.postInfoBean.sphR = data.selectSPH;
+          this.postInfoBean.cylR = data.selectCYL;
+          if (data.selectCYL === '无') {
+            this.postInfoBean.axisR = '无';
+          } else {
+            this.postInfoBean.axisR = data.selectAXIS;
+          }
+        } else if (this.gdStartSide === 'P') {
+          this.postInfoBean.pd = data.selectPD;
+        }
+
+      },
 
     }
   };
