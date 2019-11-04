@@ -92,7 +92,7 @@
     </div>
     <section class="footer">
       <div class="text">已换购<b>{{selectEdGoodsCount}}/{{model.length}}件</b></div>
-      <a class="kd-btn btn-lg">确定</a>
+      <a class="kd-btn btn-lg" @click="confirmEvent">确定</a>
     </section>
     <attrs :is-show.sync="isShowAttr" :shop-id="shopId" :unique-id="editCartItemInfo.uniqueId" :goods-id="editCartItemInfo.goodsId" :real-goods-id="editCartItemInfo.realGoodsId" @done="changeAttrDone" :quantity="editCartItemInfo.quantity"/>
   </article>
@@ -132,6 +132,11 @@ export default {
     changeAttrDone(){
       this.isShowAttr = false
       this._getPageData();
+    },
+    confirmEvent(){
+      wx.navigateBack({
+        delta: 1
+      })
     },
     //取消商品选中
     cancelSelectedEvent(uniqueId){

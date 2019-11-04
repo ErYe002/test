@@ -76,8 +76,18 @@
           >
             <p class="tips">
               <span class="check-btn" v-if="packItem.IsDisplayDelete">
-                <img v-if="packItem.IsSelected" src="/static/images/icon_checked.png" class="icon" @click="unSelectGoodsEvent(packItem.UniqueId)"/>
-                <img v-else src="/static/images/icon_no_checked.png" class="icon" @click="selectGoodsEvent(packItem.UniqueId)"/>
+                <img
+                  v-if="packItem.IsSelected"
+                  src="/static/images/icon_checked.png"
+                  class="icon"
+                  @click="unSelectGoodsEvent(packItem.UniqueId)"
+                />
+                <img
+                  v-else
+                  src="/static/images/icon_no_checked.png"
+                  class="icon"
+                  @click="selectGoodsEvent(packItem.UniqueId)"
+                />
               </span>
               <span class="tag">套餐</span>
               <span class="title" v-if="packItem.IsDisplayChangeQuantity">
@@ -85,7 +95,7 @@
                   class="cut"
                   @click="modifyQuantityEvent(packItem.UniqueId, '', packItem.Quantity, 0)"
                 >-</em>
-                <input class="input" :value="packItem.Quantity" disabled/>
+                <input class="input" :value="packItem.Quantity" disabled />
                 <em
                   class="add"
                   @click="modifyQuantityEvent(packItem.UniqueId, '', packItem.Quantity, 1)"
@@ -116,7 +126,7 @@
                   <div class="g-info">
                     <img class="g-img" :src="goodItem.ImageUrl" />
                     <div class="info">
-                      <p class="g-name">{{goodItem.GoodsName}}</p>
+                      <p class="g-name"><span class="oversea-tag" v-if="shopId == 2">海淘</span>{{goodItem.GoodsName}}</p>
                       <template v-if="goodItem.Specifications">
                         <p class="g-attr" v-for="spItem in goodItem.Specifications" :key="spItem">
                           <span class="attr-text">{{spItem}}</span>
@@ -143,20 +153,30 @@
             <p class="tips">
               <span class="tag">{{mpItem.MeetPromotionType == 2 ? '满赠':'满减'}}</span>
               <span class="title">{{mpItem.MeetPriceHint}}</span>
-              <a class="link">{{mpItem.IsMeet ? '再逛逛':'去凑单'}}></a>
+              <a :href="'/pages/search/pieceTogether/main?shopId='+shopId+'&promotionId='+mpItem.PromotionId+'&title=满减'" class="link">{{mpItem.IsMeet ? '再逛逛':'去凑单'}}></a>
             </p>
             <!-- 商品列表 -->
             <ul class="goods-list">
               <li class="g-item" v-for="(gItem, gidx) in mpItem.BuyGoodsList" :key="gItem.UniqueId">
                 <div class="goods-box">
                   <span class="check-btn" v-if="gItem.IsDisplayDelete">
-                    <img v-if="gItem.IsSelected" src="/static/images/icon_checked.png" class="icon" @click="unSelectGoodsEvent(gItem.UniqueId)"/>
-                    <img v-else src="/static/images/icon_no_checked.png" class="icon" @click="selectGoodsEvent(gItem.UniqueId)"/>
+                    <img
+                      v-if="gItem.IsSelected"
+                      src="/static/images/icon_checked.png"
+                      class="icon"
+                      @click="unSelectGoodsEvent(gItem.UniqueId)"
+                    />
+                    <img
+                      v-else
+                      src="/static/images/icon_no_checked.png"
+                      class="icon"
+                      @click="selectGoodsEvent(gItem.UniqueId)"
+                    />
                   </span>
                   <div class="g-info">
                     <img class="g-img" :src="gItem.ImageUrl" />
                     <div class="info">
-                      <p class="g-name">{{gItem.GoodsName}}</p>
+                      <p class="g-name"><span class="oversea-tag" v-if="shopId == 2">海淘</span>{{gItem.GoodsName}}</p>
                       <!-- 有属性商品光度和数量 -->
                       <template
                         v-if="gItem.SpecificationItems != null && gItem.SpecificationItems.length > 0"
@@ -170,7 +190,7 @@
                               class="cut"
                               @click="modifyQuantityEvent(gItem.UniqueId, '', gItem.Quantity, 0)"
                             >-</i>
-                            <input class="input" :value="gItem.Quantity" disabled/>
+                            <input class="input" :value="gItem.Quantity" disabled />
                             <i
                               class="add"
                               @click="modifyQuantityEvent(gItem.UniqueId, '', gItem.Quantity, 1)"
@@ -201,7 +221,7 @@
                               class="cut"
                               @click="modifyQuantityEvent(gItem.UniqueId, spItem.RealGoodsId, spItem.Quantity, 0)"
                             >-</i>
-                            <input class="input" :value="spItem.Quantity" disabled/>
+                            <input class="input" :value="spItem.Quantity" disabled />
                             <i
                               class="add"
                               @click="modifyQuantityEvent(gItem.UniqueId, spItem.RealGoodsId, spItem.Quantity, 1)"
@@ -221,7 +241,7 @@
                               class="cut"
                               @click="modifyQuantityEvent(gItem.UniqueId, '', gItem.Quantity, 0)"
                             >-</i>
-                            <input class="input" :value="gItem.Quantity" disabled/>
+                            <input class="input" :value="gItem.Quantity" disabled />
                             <i
                               class="add"
                               @click="modifyQuantityEvent(gItem.UniqueId, '', gItem.Quantity, 1)"
@@ -296,21 +316,25 @@
                     :key="fItem.UniqueId"
                   >
                     <span class="tag">换购</span>
-                    <template v-if="fItem.IsSpecificationGoods">
-                      <span class="title">
-                        已
-                        <b>+{{fItem.SumPrice}}</b>
-                        元，换购{{fItem.GoodsName}}
-                      </span>
-                      <span class="num">×{{fItem.SumQuantity}}</span>
-                      <a :href="'/pages/cart/addBuy/main?shopId='+shopId+'&uniqueId='+gItem.UniqueId" class="link">去切换></a>
-                    </template>
+                    <span class="title">
+                      已
+                      <b>+{{fItem.SumPrice}}</b>
+                      元，换购{{fItem.GoodsName}}
+                    </span>
+                    <span class="num">×{{fItem.SumQuantity}}</span>
+                    <a
+                      :href="'/pages/cart/addBuy/main?shopId='+shopId+'&uniqueId='+gItem.UniqueId"
+                      class="link"
+                    >去切换></a>
                   </p>
                 </template>
                 <p class="repurchase-tips" v-else-if="gItem.IsFillFreedomCollocation">
                   <span class="tag">加钱换购</span>
                   <span class="title">该商品参与加钱换购</span>
-                  <a :href="'/pages/cart/addBuy/main?shopId='+shopId+'&uniqueId='+gItem.UniqueId" class="link">去换购></a>
+                  <a
+                    :href="'/pages/cart/addBuy/main?shopId='+shopId+'&uniqueId='+gItem.UniqueId"
+                    class="link"
+                  >去换购></a>
                 </p>
               </li>
             </ul>
@@ -327,13 +351,23 @@
               >
                 <div class="goods-box">
                   <span class="check-btn" v-if="nItem.IsDisplayDelete">
-                    <img v-if="nItem.IsSelected" src="/static/images/icon_checked.png" class="icon" @click="unSelectGoodsEvent(nItem.UniqueId)"/>
-                    <img v-else src="/static/images/icon_no_checked.png" class="icon" @click="selectGoodsEvent(nItem.UniqueId)"/>
+                    <img
+                      v-if="nItem.IsSelected"
+                      src="/static/images/icon_checked.png"
+                      class="icon"
+                      @click="unSelectGoodsEvent(nItem.UniqueId)"
+                    />
+                    <img
+                      v-else
+                      src="/static/images/icon_no_checked.png"
+                      class="icon"
+                      @click="selectGoodsEvent(nItem.UniqueId)"
+                    />
                   </span>
                   <div class="g-info">
                     <img class="g-img" :src="nItem.ImageUrl" />
                     <div class="info">
-                      <p class="g-name">{{nItem.GoodsName}}</p>
+                      <p class="g-name"><span class="oversea-tag" v-if="shopId == 2">海淘</span>{{nItem.GoodsName}}</p>
                       <!-- 有属性商品光度和数量 -->
                       <template
                         v-if="nItem.SpecificationItems != null && nItem.SpecificationItems.length > 0"
@@ -347,7 +381,7 @@
                               class="cut"
                               @click="modifyQuantityEvent(nItem.UniqueId, '', nItem.Quantity, 0)"
                             >-</i>
-                            <input class="input" :value="nItem.Quantity" disabled/>
+                            <input class="input" :value="nItem.Quantity" disabled />
                             <i
                               class="add"
                               @click="modifyQuantityEvent(nItem.UniqueId, '', nItem.Quantity, 1)"
@@ -359,7 +393,10 @@
                           v-for="spItem in nItem.SpecificationItems"
                           :key="spItem.RealGoodsId"
                         >
-                          <span :class="{attr: true, line: nItem.BuyType == 3}" @click="editCartItemEvent(nItem.UniqueId, nItem.GoodsId, spItem.RealGoodsId, spItem.Quantity)">
+                          <span
+                            :class="{attr: true, line: nItem.BuyType == 3}"
+                            @click="editCartItemEvent(nItem.UniqueId, nItem.GoodsId, spItem.RealGoodsId, spItem.Quantity)"
+                          >
                             <em
                               class="text"
                             >{{spItem.Specification}} {{spItem.AnotherName == null ? '' : spItem.AnotherName}}</em>
@@ -378,7 +415,7 @@
                               class="cut"
                               @click="modifyQuantityEvent(nItem.UniqueId, spItem.RealGoodsId, spItem.Quantity, 0)"
                             >-</i>
-                            <input class="input" :value="spItem.Quantity" disabled/>
+                            <input class="input" :value="spItem.Quantity" disabled />
                             <i
                               class="add"
                               @click="modifyQuantityEvent(nItem.UniqueId, spItem.RealGoodsId, spItem.Quantity, 1)"
@@ -398,7 +435,7 @@
                               class="cut"
                               @click="modifyQuantityEvent(nItem.UniqueId, '', nItem.Quantity, 0)"
                             >-</i>
-                            <input class="input" :value="nItem.Quantity" disabled/>
+                            <input class="input" :value="nItem.Quantity" disabled />
                             <i
                               class="add"
                               @click="modifyQuantityEvent(nItem.UniqueId, '', nItem.Quantity, 1)"
@@ -477,21 +514,25 @@
                     :key="fItem.UniqueId"
                   >
                     <span class="tag">换购</span>
-                    <template v-if="fItem.IsSpecificationGoods">
-                      <span class="title">
-                        已
-                        <b>+{{fItem.SumPrice}}</b>
-                        元，换购{{fItem.GoodsName}}
-                      </span>
-                      <span class="num">×{{fItem.SumQuantity}}</span>
-                      <a :href="'/pages/cart/addBuy/main?shopId='+shopId+'&uniqueId='+nItem.UniqueId" class="link">去切换></a>
-                    </template>
+                    <span class="title">
+                      已
+                      <b>+{{fItem.SumPrice}}</b>
+                      元，换购{{fItem.GoodsName}}
+                    </span>
+                    <span class="num">×{{fItem.SumQuantity}}</span>
+                    <a
+                      :href="'/pages/cart/addBuy/main?shopId='+shopId+'&uniqueId='+nItem.UniqueId"
+                      class="link"
+                    >去切换></a>
                   </p>
                 </template>
                 <p class="repurchase-tips" v-else-if="nItem.IsFillFreedomCollocation">
                   <span class="tag">加钱换购</span>
                   <span class="title">该商品参与加钱换购</span>
-                  <a :href="'/pages/cart/addBuy/main?shopId='+shopId+'&uniqueId='+nItem.UniqueId" class="link">去换购></a>
+                  <a
+                    :href="'/pages/cart/addBuy/main?shopId='+shopId+'&uniqueId='+nItem.UniqueId"
+                    class="link"
+                  >去换购></a>
                 </p>
               </li>
             </ul>
@@ -514,10 +555,30 @@
               >
                 <div class="goods-box">
                   <span class="check-btn">
-                    <img v-if="eItem.IsSelected" src="/static/images/icon_checked.png" class="icon" @click="unSelectGoodsEvent(eItem.UniqueId)"/>
-                    <img v-else-if="!eItem.IsSelected && eItem.IsSpecificationGoods && eItem.SpecificationItems == null" src="/static/images/icon_no_checked.png" class="icon" @click="editCartItemEvent(eItem.UniqueId, '', '', 1)"/>
-                    <img v-else-if="!eItem.IsSelected && !eItem.IsSpecificationGoods && eItem.TotalQuantity == 0" src="/static/images/icon_no_checked.png" class="icon" @click="editCartItemEvent(eItem.UniqueId, '', '', 1)"/>
-                    <img v-else src="/static/images/icon_no_checked.png" class="icon" @click="selectGoodsEvent(eItem.UniqueId)"/>
+                    <img
+                      v-if="eItem.IsSelected"
+                      src="/static/images/icon_checked.png"
+                      class="icon"
+                      @click="unSelectGoodsEvent(eItem.UniqueId)"
+                    />
+                    <img
+                      v-else-if="!eItem.IsSelected && eItem.IsSpecificationGoods && eItem.SpecificationItems == null"
+                      src="/static/images/icon_no_checked.png"
+                      class="icon"
+                      @click="editCartItemEvent(eItem.UniqueId, '', '', 1)"
+                    />
+                    <img
+                      v-else-if="!eItem.IsSelected && !eItem.IsSpecificationGoods && eItem.TotalQuantity == 0"
+                      src="/static/images/icon_no_checked.png"
+                      class="icon"
+                      @click="editCartItemEvent(eItem.UniqueId, '', '', 1)"
+                    />
+                    <img
+                      v-else
+                      src="/static/images/icon_no_checked.png"
+                      class="icon"
+                      @click="selectGoodsEvent(eItem.UniqueId)"
+                    />
                   </span>
                   <div class="g-info">
                     <p class="g-name">{{eItem.PromotionTheme}}</p>
@@ -533,16 +594,25 @@
                             v-for="spItem in eItem.SpecificationItems"
                             :key="spItem.RealGoodsId"
                           >
-                            <span class="attr" @click="editCartItemEvent(eItem.UniqueId, '', spItem.RealGoodsId, spItem.Quantity)">
+                            <span
+                              class="attr"
+                              @click="editCartItemEvent(eItem.UniqueId, '', spItem.RealGoodsId, spItem.Quantity)"
+                            >
                               <em
                                 class="text"
                               >{{spItem.Specification}} {{spItem.AnotherName == null ? '' : spItem.AnotherName}}</em>
                               <img class="icon" src="/static/images/icon_attr_down.png" />
                             </span>
                             <span class="modify">
-                              <i class="cut" @click="editCartItemEvent(eItem.UniqueId, '', spItem.RealGoodsId, spItem.Quantity)">-</i>
-                              <input class="input" :value="spItem.Quantity" disabled/>
-                              <i class="add" @click="editCartItemEvent(eItem.UniqueId, '', spItem.RealGoodsId, spItem.Quantity)">+</i>
+                              <i
+                                class="cut"
+                                @click="editCartItemEvent(eItem.UniqueId, '', spItem.RealGoodsId, spItem.Quantity)"
+                              >-</i>
+                              <input class="input" :value="spItem.Quantity" disabled />
+                              <i
+                                class="add"
+                                @click="editCartItemEvent(eItem.UniqueId, '', spItem.RealGoodsId, spItem.Quantity)"
+                              >+</i>
                             </span>
                           </p>
                         </template>
@@ -551,9 +621,15 @@
                             class="attr-text"
                           >{{eItem.Attributes == null ? '' : eItem.Attributes}}</span>
                           <span class="modify">
-                            <i class="cut" @click="editCartItemEvent(eItem.UniqueId, '', '00000000-0000-0000-0000-000000000000', eItem.TotalQuantity)">-</i>
-                            <input class="input" :value="eItem.TotalQuantity" disabled/>
-                            <i class="add" @click="editCartItemEvent(eItem.UniqueId, '', '00000000-0000-0000-0000-000000000000', eItem.TotalQuantity)">+</i>
+                            <i
+                              class="cut"
+                              @click="editCartItemEvent(eItem.UniqueId, '', '00000000-0000-0000-0000-000000000000', eItem.TotalQuantity)"
+                            >-</i>
+                            <input class="input" :value="eItem.TotalQuantity" disabled />
+                            <i
+                              class="add"
+                              @click="editCartItemEvent(eItem.UniqueId, '', '00000000-0000-0000-0000-000000000000', eItem.TotalQuantity)"
+                            >+</i>
                           </span>
                         </p>
                         <div class="g-price">
@@ -576,12 +652,25 @@
     <!-- 底部结算 -->
     <article class="bottom-box" v-if="isHasCartData">
       <div class="left">
-        <img v-if="selectedItemCount == canSelectedCartItem.length" src="/static/images/icon_checked.png" class="icon" @click="selectOrNotByIdsEvent(0)"/>
-        <img v-else class="icon" src="/static/images/icon_no_checked.png" @click="selectOrNotByIdsEvent(1)"/>
+        <img
+          v-if="selectedItemCount == canSelectedCartItem.length"
+          src="/static/images/icon_checked.png"
+          class="icon"
+          @click="selectOrNotByIdsEvent(0)"
+        />
+        <img
+          v-else
+          class="icon"
+          src="/static/images/icon_no_checked.png"
+          @click="selectOrNotByIdsEvent(1)"
+        />
         <span class="check-all">全选</span>
         <span class="amount">
           应付：¥{{model.Carts[0].RealTotalPrice}}
-          <em class="small" v-if="model.Carts[0].TotalGoodsPrice > 0">(不含运费)</em>
+          <em
+            class="small"
+            v-if="model.Carts[0].TotalGoodsPrice > 0"
+          >(不含运费)</em>
         </span>
       </div>
       <div class="right">
@@ -591,7 +680,15 @@
       </div>
     </article>
     <coupon :is-show.sync="isShowCouponList" :shop-id="shopId" />
-    <attrs :is-show.sync="isShowAttr" :shop-id="shopId" :unique-id="editCartItemInfo.uniqueId" :goods-id="editCartItemInfo.goodsId" :real-goods-id="editCartItemInfo.realGoodsId" @done="changeAttrDone" :quantity="editCartItemInfo.quantity"/>
+    <attrs
+      :is-show.sync="isShowAttr"
+      :shop-id="shopId"
+      :unique-id="editCartItemInfo.uniqueId"
+      :goods-id="editCartItemInfo.goodsId"
+      :real-goods-id="editCartItemInfo.realGoodsId"
+      @done="changeAttrDone"
+      :quantity="editCartItemInfo.quantity"
+    />
   </article>
 </template>
 
@@ -611,10 +708,15 @@ export default {
       isHasCartData: false, //购物车数据是否为空
       likeGoodsList: [], //猜你喜欢商品列表
       isShowCouponList: false, //是否显示可使用礼券的弹窗
-      canSelectedCartItem: [],  //可以进行选中操作的商品（排除满赠换类商品）
+      canSelectedCartItem: [], //可以进行选中操作的商品（排除满赠换类商品）
       selectedItemCount: 0,
-      isShowAttr: false,  //是否显示选择属性弹窗
-      editCartItemInfo: {uniqueId: '', goodsId: '', realGoodsId: '', quantity: 1}, //正在编辑的商品信息
+      isShowAttr: false, //是否显示选择属性弹窗
+      editCartItemInfo: {
+        uniqueId: "",
+        goodsId: "",
+        realGoodsId: "",
+        quantity: 1
+      } //正在编辑的商品信息
     };
   },
   computed: {
@@ -624,7 +726,7 @@ export default {
     coupon,
     attrs
   },
-  onLoad() {
+  onShow() {
     //如果已经登录，则获取购物车信息
     if (this.token) {
       this._getPageData();
@@ -660,33 +762,35 @@ export default {
       });
     },
     //选中单个商品
-    selectGoodsEvent(uniqueId){
-      api.selectGoods(uniqueId, this.shopId).then(res=>{
+    selectGoodsEvent(uniqueId) {
+      api.selectGoods(uniqueId, this.shopId).then(res => {
         this._getPageData();
-      })
+      });
     },
     //取消选择单个商品
-    unSelectGoodsEvent(uniqueId){
-      api.unSelectGoods(uniqueId, this.shopId).then(res=>{
+    unSelectGoodsEvent(uniqueId) {
+      api.unSelectGoods(uniqueId, this.shopId).then(res => {
         this._getPageData();
-      })
+      });
     },
 
     //选中所有商品：type:0取消选中   1选中所有
-    async selectOrNotByIdsEvent(type){
+    async selectOrNotByIdsEvent(type) {
       // console.log(ids)
-      let result = await (type == 0 ? api.unSelectGoodsByIds(JSON.stringify(this.canSelectedCartItem)): api.selectGoodsByIds(JSON.stringify(this.canSelectedCartItem)))
-      this._getPageData()
+      let result = await (type == 0
+        ? api.unSelectGoodsByIds(JSON.stringify(this.canSelectedCartItem))
+        : api.selectGoodsByIds(JSON.stringify(this.canSelectedCartItem)));
+      this._getPageData();
     },
 
     //在购物车编辑商品属性
-    editCartItemEvent(uniqueId, goodsId, realGoodsId, quantity){
-      this.editCartItemInfo = {uniqueId, goodsId, realGoodsId, quantity}
-      this.isShowAttr = true
+    editCartItemEvent(uniqueId, goodsId, realGoodsId, quantity) {
+      this.editCartItemInfo = { uniqueId, goodsId, realGoodsId, quantity };
+      this.isShowAttr = true;
     },
 
-    changeAttrDone(){
-      this.isShowAttr = false
+    changeAttrDone() {
+      this.isShowAttr = false;
       this._getPageData();
     },
 
@@ -703,19 +807,19 @@ export default {
     _modifyQuantity(uniqueId, realGoodsId, quantity) {
       let _request = () => {
         api
-        .modifyQuantity({
-          shopId: this.shopId,
-          uniqueId,
-          realGoodsId,
-          quantity
-        })
-        .then(() => {
-          this._getPageData();
-          this._getCartItemsCount();
-        });
-      }
+          .modifyQuantity({
+            shopId: this.shopId,
+            uniqueId,
+            realGoodsId,
+            quantity
+          })
+          .then(() => {
+            this._getPageData();
+            this._getCartItemsCount();
+          });
+      };
       //当减完之后商品数量等于0时，提示用户即将删除此商品
-      if(quantity == 0){
+      if (quantity == 0) {
         wx.showModal({
           title: "提示",
           content: "将删除该规格的商品，是否继续？",
@@ -723,24 +827,24 @@ export default {
           success({ confirm }) {
             if (confirm) {
               _request();
-            } 
+            }
           }
         });
       } else {
-        _request()
+        _request();
       }
     },
 
-    toOrderEvent(){
-      if(this.model.Carts[0].GoodsQuantity <= 0){
+    toOrderEvent() {
+      if (this.model.Carts[0].GoodsQuantity <= 0) {
         wx.showToast({
           title: "请先选择要结算的商品",
           icon: "none"
         });
       } else {
         wx.navigateTo({
-         url: '/pages/order/index/main?shopId='+this.shopId
-        })
+          url: "/pages/order/index/main?shopId=" + this.shopId
+        });
         // toBalance 方法弃用
         // api.toBalance(this.shopId).then(() => {
 
@@ -750,28 +854,28 @@ export default {
 
     //获取购物车数据
     _getPageData() {
-      this.selectedItemCount = 0
+      this.selectedItemCount = 0;
       api.getCartDetail(this.shopId).then(({ Data }) => {
         let newData = Object.assign({}, Data);
         if (newData.Carts.length > 0) {
-          let ids = []
+          let ids = [];
           newData.Carts.forEach(ele => {
             //处理打包商品
-            if(ele.Packages.length > 0){
-                ele.Packages.forEach(item => {
-                  ids.push(item.UniqueId)
-                  if(item.IsSelected){
-                    this.selectedItemCount++
-                  }
-                })
+            if (ele.Packages.length > 0) {
+              ele.Packages.forEach(item => {
+                ids.push(item.UniqueId);
+                if (item.IsSelected) {
+                  this.selectedItemCount++;
+                }
+              });
             }
             //处理普通商品中的换购商品数据
             if (ele.NormalGoods.length > 0) {
               ele.NormalGoods.forEach(nItem => {
-                ids.push(nItem.UniqueId)
-                if(nItem.IsSelected){
-                    this.selectedItemCount++
-                  }
+                ids.push(nItem.UniqueId);
+                if (nItem.IsSelected) {
+                  this.selectedItemCount++;
+                }
                 if (nItem.FreedomCollocations.length > 0) {
                   nItem.FreedomCollocations.forEach(fItem => {
                     fItem.SumQuantity = 0;
@@ -795,28 +899,32 @@ export default {
               ele.MeetPromotions.forEach(nItem => {
                 if (nItem.BuyGoodsList.length > 0) {
                   nItem.BuyGoodsList.forEach(fItem => {
-                    ids.push(fItem.UniqueId)
-                    if(fItem.IsSelected){
-                      this.selectedItemCount++
+                    ids.push(fItem.UniqueId);
+                    if (fItem.IsSelected) {
+                      this.selectedItemCount++;
                     }
-                    fItem.SumQuantity = 0;
-                    if (fItem.IsSpecificationGoods) {
-                      //计算有属性换购商品的价格和数量
-                      fItem.SpecificationItems.forEach(spItem => {
-                        fItem.SumQuantity += spItem.Quantity;
+                    if (fItem.FreedomCollocations.length > 0) {
+                      fItem.FreedomCollocations.forEach(fdItem => {
+                        fdItem.SumQuantity = 0;
+                        if (fdItem.IsSpecificationGoods) {
+                          //计算有属性换购商品的价格和数量
+                          fdItem.SpecificationItems.forEach(spItem => {
+                            fdItem.SumQuantity += spItem.Quantity;
+                          });
+                          fdItem.SumPrice = fdItem.SumQuantity * fdItem.Price;
+                        } else {
+                          //计算无属性换购商品的价格和数量
+                          fdItem.SumQuantity = fdItem.Quantity;
+                          fdItem.SumPrice = fdItem.SumQuantity * fdItem.Price;
+                        }
                       });
-                      fItem.SumPrice = fItem.SumQuantity * fItem.Price;
-                    } else {
-                      //计算无属性换购商品的价格和数量
-                      fItem.SumQuantity = fItem.Quantity;
-                      fItem.SumPrice = fItem.SumQuantity * fItem.Price;
                     }
                   });
                 }
               });
             }
           });
-          this.canSelectedCartItem = ids
+          this.canSelectedCartItem = ids;
         }
         this.model = Object.assign({}, newData);
         this.isHasCartData =
