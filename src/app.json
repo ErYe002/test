@@ -18,7 +18,8 @@
         "setting/role/main",
         "setting/userInfo/main",
         "setting/modifyUserName/main",
-        "setting/modifyUserNick/main"    
+        "setting/modifyUserNick/main",
+        "favorites/main"
       ]},
     {
       "root": "pages/search",

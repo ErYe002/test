@@ -61,7 +61,11 @@ const api = {
   //获取个人中心钱包等信息
   getWalletOfPersonnel() {
     return http.post('Account/GetWalletOfPersonnel');
-  }
+  },
+  //获取我的收藏列表
+  getFavoriteList(pageIndex, pageSize) {
+    return http.post(`Account/GetFavoriteList?pageSize=${pageSize}&pageIndex=${pageIndex}&shopId=0`);
+  },
 };
 
 export default api;
