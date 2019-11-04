@@ -38,7 +38,8 @@
     {
       "root": "pages/order",
       "pages": [
-        "index/main"
+        "index/main",
+        "logistics/main"
       ]
     }
   ],
