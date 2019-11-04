@@ -24,9 +24,10 @@
         数量
       </span>
       <div style="display: flex;margin-top: 13px">
-        <img src="/static/images/cart_sub_icon.png" class="change-num-btn"/>
-        <input type="tel" value="1" autocomplete="off" class="input-only-buy-num"/>
-        <img src="/static/images/cart_add_icon.png" class="change-num-btn"/>
+        <img src="/static/images/cart_sub_icon.png" class="change-num-btn" @click="onlyBuyFrameChangeNumEvent(-1)"/>
+        <input type="tel" :value="onlyBuyFrameNum" v-model="onlyBuyFrameNum" autocomplete="off"
+               class="input-only-buy-num"/>
+        <img src="/static/images/cart_add_icon.png" class="change-num-btn" @click="onlyBuyFrameChangeNumEvent(1)"/>
       </div>
     </div>
     <!--验光单选择-->
@@ -55,14 +56,20 @@
         <img src='/static/images/frame_new_customer_suggest.png' class="frame_old_customer_suggest_text"/>
       </div>
 
-      <a class="gd_choose_click">
+      <a class="gd_choose_click" @click="openGdpop('R')" v-if="postInfoBean.sphR===''">
         右眼(R)
       </a>
-      <a class="gd_choose_click">
-        左眼(R)
+      <a class="gd_choose_click" @click="openGdpop('R')" v-if="postInfoBean.sphR!==''">
+        {{'右眼 光度:'+postInfoBean.sphR+' 散光:'+postInfoBean.cylR+' 轴位:'+postInfoBean.axisR}}
       </a>
-      <a class="gd_choose_click black">
-        瞳距：62
+      <a class="gd_choose_click" @click="openGdpop('L')" v-if="postInfoBean.sphL===''">
+        左眼(L)
+      </a>
+      <a class="gd_choose_click" @click="openGdpop('L')" v-if="postInfoBean.sphL!==''">
+        {{'右眼 光度:'+postInfoBean.sphL+' 散光:'+postInfoBean.cylL+' 轴位:'+postInfoBean.axisL}}
+      </a>
+      <a class="gd_choose_click black" @click="openGdpop('P')">
+        {{'瞳距：'+postInfoBean.pd}}
       </a>
     </section>
     <!--精品选择-->
@@ -104,15 +111,51 @@
         立即购买
       </a>
     </section>
+    <gdSelectPop :is-show.sync="isShowGdSelectPop" :sphere-range="SphereRange"
+                 :cylinder-range="CylinderRange"
+                 :axis-range="AxisRange"
+                 :pd-range="PDRange"
+                 :open-state="openGdPopState"
+                 :select-bean="postInfoBean"
+                 @backData="gdBackInfo"/>
   </article>
 </template>
 
 <script>
+  import gdSelectPop from "../components/gdSelectPop"
+  import api from "@/api/attr";
+
   export default {
     data() {
       return {
-        buyType: 1
+        buyType: 1,
+        isShowGdSelectPop: false,
+        SphereRange: [],
+        CylinderRange: [],
+        AxisRange: [],
+        PDRange: [],
+        postInfoBean: {sphR: '', sphL: '', cylR: '', cylL: '', axisR: '', axisL: '', pd: '62'},
+        gdStartSide: '',
+        openGdPopState: 1,
+        onlyBuyFrameNum: 1
       };
+    },
+
+    components: {
+      gdSelectPop
+    },
+
+    onLoad() {
+      this._getFrameData();
+      this._getOptometryBillBaiscDataLibrary();
+    },
+
+    watch: {
+      onlyBuyFrameNum: function (val, oldVal) {
+        if (val < 1) {
+          this.onlyBuyFrameNum = 1;
+        }
+      }
     },
 
     methods: {
@@ -135,9 +178,65 @@
             return '/static/images/a_frame_unselect.png';
           }
         }
+      },
+      openGdpop(side) {
+
+        if (side === 'L') {
+          this.openGdPopState = 1;
+          this.gdStartSide = 'L';
+        } else if (side === 'R') {
+          this.openGdPopState = 2;
+          this.gdStartSide = 'R';
+        } else {
+          this.gdStartSide = 'P';
+          this.openGdPopState = 3;
+        }
+
+        this.isShowGdSelectPop = true;
+      },
+      _getFrameData() {
+        api.getFrameJoinCart('665cc444-4bd4-4f63-80b4-78bb58a00116', false).then(({Data}) => {
+          console.log("主数据", Data)
+
+        });
+      },
+      _getOptometryBillBaiscDataLibrary() {
+        api.getOptometryBillBaiscDataLibrary().then((Data) => {
+          console.log('光度信息', Data);
+          this.SphereRange = Data.Data.SphereRange;
+          this.CylinderRange = Data.Data.CylinderRange;
+          this.AxisRange = Data.Data.AxisRange;
+          this.PDRange = Data.Data.PDRange;
+        });
+      },
+      gdBackInfo(data) {
+        if (this.gdStartSide === 'L') {
+          this.postInfoBean.sphL = data.selectSPH;
+          this.postInfoBean.cylL = data.selectCYL;
+          if (data.selectCYL === '无') {
+            this.postInfoBean.axisL = '无';
+          } else {
+            this.postInfoBean.axisL = data.selectAXIS;
+          }
+        } else if (this.gdStartSide === 'R') {
+          this.postInfoBean.sphR = data.selectSPH;
+          this.postInfoBean.cylR = data.selectCYL;
+          if (data.selectCYL === '无') {
+            this.postInfoBean.axisR = '无';
+          } else {
+            this.postInfoBean.axisR = data.selectAXIS;
+          }
+        } else if (this.gdStartSide === 'P') {
+          this.postInfoBean.pd = data.selectPD;
+        }
+
+      },
+      onlyBuyFrameChangeNumEvent(addOrSub) {
+        this.onlyBuyFrameNum += addOrSub;
       }
+
     }
-  }
+  };
 </script>
 
 <style lang="less">

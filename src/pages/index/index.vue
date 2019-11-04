@@ -6,13 +6,11 @@
       <img class="userinfo-avatar" src="/static/images/user.png" background-size="cover" />
 
       <div class="userinfo-nickname">
-        <card :text="userInfo.nickName"></card>
       </div>
     </div>
 
     <div class="usermotto">
       <div class="user-motto">
-        <card :text="motto"></card>
       </div>
     </div>
 
@@ -34,7 +32,6 @@
 </template>
 
 <script>
-import card from '@/components/card'
 
 export default {
   data () {
@@ -46,11 +43,6 @@ export default {
       }
     }
   },
-
-  components: {
-    card
-  },
-
   methods: {
     bindViewTap () {
       const url = '../logs/main'

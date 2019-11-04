@@ -79,6 +79,7 @@ export default {
   position: initial;
   padding: 0;
   text-align: center;
+  box-sizing: border-box;
   .generate_btn_type();
   .generate_btn_size();
   &.btn-black {

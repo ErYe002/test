@@ -23,19 +23,19 @@ const api = {
   },
   //批量选中商品
   selectGoodsByIds(uniqueIds){
-    return http.post(`/Cart/SelectCartItems?uniqueIds=${uniqueIds}`)
+    return http.post(`/Cart/SelectCartItems?uniqueIds=${JSON.stringify(uniqueIds)}`)
   },
   //批量取消选中商品
   unSelectGoodsByIds(uniqueIds){
-    return http.post(`/Cart/UnSelectCartItems?uniqueIds=${uniqueIds}`)
+    return http.post(`/Cart/UnSelectCartItems?uniqueIds=${JSON.stringify(uniqueIds)}`)
   },
   //批量收藏
   collectionCartGoods(uniqueIds){
-    return http.post(`/Cart/CollectionCartGoods?uniqueIds=${uniqueIds}`)
+    return http.post(`/Cart/CollectionCartGoods?uniqueIds=${JSON.stringify(uniqueIds)}`)
   },
   //批量删除购物车项
   deleteCartGoods(uniqueIds){
-    return http.post(`/Cart/DeleteCartItems?uniqueIds=${uniqueIds}`)
+    return http.post(`/Cart/DeleteCartItems?uniqueIds=${JSON.stringify(uniqueIds)}`)
   },
   //获取商品编辑的数据
   getEditGoodsInCartData({uniqueId, goodsId, shopId, realGoodsId} = {}){

@@ -3,8 +3,8 @@
     "pages/index/main",
     "pages/classmenu/main",
     "pages/cart/main",
+    "pages/cart/addBuy/main",
     "pages/home/main",
-    "pages/login/main",
     "pages/bindMobile/main"
   ],
   "subpackages": [
@@ -18,16 +18,15 @@
         "setting/role/main",
         "setting/userInfo/main",
         "setting/modifyUserName/main",
-        "setting/modifyUserNick/main"
-      ]
-    },
+        "setting/modifyUserNick/main"    },
     {
       "root": "pages/search",
       "pages": [
         "index/main",
         "results/main",
         "screen/main",
-        "screen/filterRules/main"
+        "screen/filterRules/main",
+        "pieceTogether/main"
       ]
     },
     {
@@ -40,16 +39,21 @@
     {
       "root": "pages/order",
       "pages": [
-        "index/main"
+        "index/main",
+        "logistics/main"
       ]
     }
   ],
   "preloadRule": {
     "pages/classmenu/main": {
-      "packages": ["pages/search"]
+      "packages": [
+        "pages/search"
+      ]
     },
     "pages/home/main": {
-      "packages": ["pages/account"]
+      "packages": [
+        "pages/account"
+      ]
     }
   },
   "window": {

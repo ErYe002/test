@@ -9,7 +9,7 @@ function doLogin(encryptedData, iv, callback) {
             if (!res.Data.IsBindMobile) {
                 //绑定手机号
                 wx.navigateTo({
-                    url: '/pages/bindMobile/bindMobile?isNewUser=' + res.Data.IsNewUser + '&partnerId=' + res.Data.UnionId
+                    url: '/pages/bindMobile/main?isNewUser=' + res.Data.IsNewUser + '&partnerId=' + res.Data.UnionId
                 })
             } else {
                 // wx.setStorageSync('TOKEN', res.Data.Token)  //保存token到本地

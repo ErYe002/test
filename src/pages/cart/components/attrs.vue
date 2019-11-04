@@ -120,6 +120,7 @@ export default {
         //父与子组件同步isShow值
         this.$emit("update:isShow", val);
         if (val == true) {
+          this.info = null
           this._getData();
         }
       },

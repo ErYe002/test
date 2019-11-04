@@ -11,7 +11,11 @@ const api = {
   },
   //搜索商品
   searchGoods({sort = 1, keywords = '', size = 6, page = 1, shopId = 1} = {}){
-    return http.postByNoLoading(`/Goods/SearchSimilar?Sort=${sort}&KeyWord=${keywords}&Size=${size}&Page=${page}&ShopId=${shopId}`)
+    let url = `/Goods/SearchSimilar?Sort=${sort}&KeyWord=${keywords}&Size=${size}&Page=${page}&ShopId=${shopId}`
+    if(page > 1){
+      return http.post(url);
+    }
+    return http.postByNoLoading(url);
   },
   //筛选条件
   getScreening(classId){
@@ -26,7 +30,19 @@ const api = {
       })
     }
     // console.log(attrsParam)
-    return http.postByNoLoading(`/Goods/Items?Page=${page}&Sort=${sort}&Cid=${classId}&Bid=${brandId}&Seocode=${seoCode}&ClassName=${className}&UPrice=${uPrice}&LPrice=${lPrice}&Size=${size}&IsNewVersion=${isNewVersion}${attrsParam}`);
+    let url = `/Goods/Items?Page=${page}&Sort=${sort}&Cid=${classId}&Bid=${brandId}&Seocode=${seoCode}&ClassName=${className}&UPrice=${uPrice}&LPrice=${lPrice}&Size=${size}&IsNewVersion=${isNewVersion}${attrsParam}`
+    if(page > 1){
+      return http.post(url);
+    }
+    return http.postByNoLoading(url);
+  },
+  //查找促销商品列表
+  searchPromotionGoods({shopId, promotionId, settingId, keyWord, sort, page, size} = {}){
+    let url = `/Goods/SearchPromotionGoods?shopId=${shopId}&promotionId=${promotionId}&settingId=${settingId}&keyWord=${keyWord}&sort=${sort}&page=${page}&size=${size}`
+    if(page > 1){
+      return http.post(url);
+    }
+    return http.postByNoLoading(url);
   },
 };
 
