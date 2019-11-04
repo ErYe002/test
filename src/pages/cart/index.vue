@@ -11,7 +11,7 @@
           @click="changeShopEvent(2)"
         >海淘({{overseasShop}})</li>
       </ul>
-      <span class="edit-btn">编辑</span>
+      <span class="edit-btn" @click="editCartEvent">{{isEdit ? '完成':'编辑'}}</span>
     </article>
     <!-- 购物车为空 -->
     <article v-if="!isHasCartData" class="no-data-box">
@@ -540,7 +540,7 @@
         </template>
         <!-- 满赠换专区 -->
         <template
-          v-if="cartItem.AllExchangeAndGifts != null && cartItem.AllExchangeAndGifts.length > 0"
+          v-if="cartItem.AllExchangeAndGifts != null && cartItem.AllExchangeAndGifts.length > 0 && !isEdit"
         >
           <div class="cart-list-box promotion-box" :key="idx">
             <p class="tips">
@@ -653,7 +653,7 @@
     <article class="bottom-box" v-if="isHasCartData">
       <div class="left">
         <img
-          v-if="selectedItemCount == canSelectedCartItem.length"
+          v-if="selectedCartItem.length == canSelectedCartItem.length"
           src="/static/images/icon_checked.png"
           class="icon"
           @click="selectOrNotByIdsEvent(0)"
@@ -674,9 +674,11 @@
         </span>
       </div>
       <div class="right">
-        <button class="kd-btn btn-big" @click="toOrderEvent">结算（{{model.Carts[0].GoodsQuantity}}）</button>
-        <!-- <div class="btn">移入收藏</div>
-        <div class="btn">删除</div>-->
+        <template v-if="isEdit">
+          <div class="btn" @click="moveInFavoritesEvent">移入收藏</div>
+          <div class="btn" @click="delGoodsEvent">删除</div>
+        </template>
+        <button v-else class="kd-btn btn-big" @click="toOrderEvent">结算（{{model.Carts[0].GoodsQuantity}}）</button>
       </div>
     </article>
     <coupon :is-show.sync="isShowCouponList" :shop-id="shopId" />
@@ -709,8 +711,10 @@ export default {
       likeGoodsList: [], //猜你喜欢商品列表
       isShowCouponList: false, //是否显示可使用礼券的弹窗
       canSelectedCartItem: [], //可以进行选中操作的商品（排除满赠换类商品）
-      selectedItemCount: 0,
+      selectedCartItem: [],
+      // selectedItemCount: 0,
       isShowAttr: false, //是否显示选择属性弹窗
+      isEdit: false,  //是否正在编辑购物车
       editCartItemInfo: {
         uniqueId: "",
         goodsId: "",
@@ -778,8 +782,8 @@ export default {
     async selectOrNotByIdsEvent(type) {
       // console.log(ids)
       let result = await (type == 0
-        ? api.unSelectGoodsByIds(JSON.stringify(this.canSelectedCartItem))
-        : api.selectGoodsByIds(JSON.stringify(this.canSelectedCartItem)));
+        ? api.unSelectGoodsByIds(this.canSelectedCartItem)
+        : api.selectGoodsByIds(this.canSelectedCartItem));
       this._getPageData();
     },
 
@@ -845,16 +849,32 @@ export default {
         wx.navigateTo({
           url: "/pages/order/index/main?shopId=" + this.shopId
         });
-        // toBalance 方法弃用
-        // api.toBalance(this.shopId).then(() => {
-
-        // })
       }
+    },
+
+    //编辑购物车
+    editCartEvent(){
+      this.isEdit = !this.isEdit
+    },
+
+    //移入收藏夹
+    moveInFavoritesEvent(){
+      api.collectionCartGoods(this.selectedCartItem).then(() => {
+        this._getPageData()
+      })
+    },
+
+    //删除选中商品
+    delGoodsEvent(){
+      api.deleteCartGoods(this.selectedCartItem).then(() => {
+        this._getPageData()
+      })
     },
 
     //获取购物车数据
     _getPageData() {
-      this.selectedItemCount = 0;
+      // this.selectedItemCount = 0;
+      this.selectedCartItem = []
       api.getCartDetail(this.shopId).then(({ Data }) => {
         let newData = Object.assign({}, Data);
         if (newData.Carts.length > 0) {
@@ -865,7 +885,8 @@ export default {
               ele.Packages.forEach(item => {
                 ids.push(item.UniqueId);
                 if (item.IsSelected) {
-                  this.selectedItemCount++;
+                  this.selectedCartItem.push(item.UniqueId)
+                  // this.selectedItemCount++;
                 }
               });
             }
@@ -874,7 +895,8 @@ export default {
               ele.NormalGoods.forEach(nItem => {
                 ids.push(nItem.UniqueId);
                 if (nItem.IsSelected) {
-                  this.selectedItemCount++;
+                  // this.selectedItemCount++;
+                  this.selectedCartItem.push(nItem.UniqueId)
                 }
                 if (nItem.FreedomCollocations.length > 0) {
                   nItem.FreedomCollocations.forEach(fItem => {
@@ -901,7 +923,8 @@ export default {
                   nItem.BuyGoodsList.forEach(fItem => {
                     ids.push(fItem.UniqueId);
                     if (fItem.IsSelected) {
-                      this.selectedItemCount++;
+                      // this.selectedItemCount++;
+                      this.selectedCartItem.push(fItem.UniqueId)
                     }
                     if (fItem.FreedomCollocations.length > 0) {
                       fItem.FreedomCollocations.forEach(fdItem => {
