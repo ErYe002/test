@@ -22,7 +22,7 @@
             <p>提现记录</p>
           </div>
         </div>
-        <div class="record_detail">
+        <div class="record_detail" v-if="NotClear">
           <ul id="record_detail" v-if="IsDetail">
             <li class="record_item" v-for="(item,index) in balanceDetailList" :key="index">
               <div class="record_detail_item_one">
@@ -61,8 +61,12 @@
             </div>
           </ul>
         </div>
+        <div class="footer" v-if="!NotClear">
+            <span class="line"></span>
+            <span class="text">暂时没有记录</span>
+            <span class="line"></span>
+        </div>
       </div>
-      
     </div>
 </template>
 
@@ -99,7 +103,8 @@ export default {
       IsDetailEnd:false,
       IsHistoryEnd:false,
       //提现页面是否第一次加载
-      IsHistoryFirstLoad:true
+      IsHistoryFirstLoad:true,
+      NotClear:true
     }
   },
 
@@ -159,6 +164,7 @@ export default {
         else{
           this.balanceDetailList = this.balanceDetailList.concat(Data);
         }
+        this.NotClear = this.balanceDetailList.length > 0;
         if(pageIndex >= TotalPage){
           this.IsDetailEnd = true;
         }
@@ -173,6 +179,7 @@ export default {
         else{
           this.cashHistoryList = this.cashHistoryList.concat(Data)
         }
+        this.NotClear = this.cashHistoryList.length > 0;
         if(pageIndex >= TotalPage){
           this.IsHistoryEnd = true;
         }
