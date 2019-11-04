@@ -35,7 +35,8 @@
       "root": "pages/product",
       "pages": [
         "index/main",
-        "frameAttr/main"
+        "frameAttr/main",
+        "glassSelect/main"
       ]
     },
     {

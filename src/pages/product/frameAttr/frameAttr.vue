@@ -78,7 +78,7 @@
         Step3 请选择镜片
       </div>
       <div class="view_chose_glass_layout">
-        <a class="btn_chose_glass disable">
+        <a class="btn_chose_glass disable" href="../glassSelect/main">
           选择镜片
         </a>
       </div>
@@ -124,6 +124,7 @@
 <script>
   import gdSelectPop from "../components/gdSelectPop"
   import api from "@/api/attr";
+  import {mapState, mapActions} from 'vuex'
 
   export default {
     data() {
@@ -162,6 +163,7 @@
       changeTypeEvent(type) {
         this.buyType = type;
       },
+      ...mapActions('groupGlassList', ['setAttrGlassList']),
 
       _getImageUrlByType(whichUse) {
 
@@ -195,9 +197,9 @@
         this.isShowGdSelectPop = true;
       },
       _getFrameData() {
-        api.getFrameJoinCart('665cc444-4bd4-4f63-80b4-78bb58a00116', false).then(({Data}) => {
-          console.log("主数据", Data)
-
+        api.getFrameJoinCart('53c107dd-f456-4383-8aa9-a5efb8ac83c7', false).then(({Data}) => {
+          console.log("主数据", Data);
+          this.setAttrGlassList(Data.GlassGroup);
         });
       },
       _getOptometryBillBaiscDataLibrary() {
@@ -233,6 +235,9 @@
       },
       onlyBuyFrameChangeNumEvent(addOrSub) {
         this.onlyBuyFrameNum += addOrSub;
+      },
+      selectGlassEvent() {
+
       }
 
     }
