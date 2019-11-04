@@ -15,7 +15,9 @@
         "address/addressList/main",
         "address/editAddress/main",
         "setting/home/main",
-        "setting/role/main"
+        "setting/role/main",
+        "balance/main",
+        "cash/main"
       ]
     },
     {
@@ -93,5 +95,6 @@
       }
     ],
     "position": "bottom"
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }
