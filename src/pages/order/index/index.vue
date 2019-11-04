@@ -73,7 +73,7 @@
             <view v-if='orderInfo.ShopId != 2' class="sub-text">全国送 预计2-5工作日送达</view>
           </view>
           <view class='goods-info'>
-            <scroll-view class="scroll-view_H" scroll-x="true" bindscroll="scroll">
+            <scroll-view class="scroll-view_H" scroll-x="true" @scroll="scroll">
               <div class="scroll-item" v-for="(item, idx) in orderInfo.Goods" :key="idx">
                 <div class="goods-item">
                   <img class="goodsImg" mode="aspectFit" :src="item.ImageUrl">
@@ -107,13 +107,13 @@
           <view class='label'>支付方式</view>
           <view class='text'>{{orderInfo.Payment}}</view>
         </view> -->
-      <navigator class='flex-line' url=''>
+      <view class='flex-line' @click="jumpToLogistics">
         <view class='label'>物流配送</view>
         <view class='text'>
           {{orderInfo.Delivery}}
           <text class='icon'></text>
         </view>
-      </navigator>
+      </view>
       <view class='flex-line' bindtap='showInvoice'>
         <view class='label'>发票信息</view>
         <view class='text'>
@@ -199,10 +199,10 @@ export default {
       formModel: {
         isUseScore : true, 
         isUseBalance : true,
-        selectShopId : 1,
-        selectConsigneeId : "", 
+        SelectShopId : 1,
+        SelectedConsigneeId : "", 
         selectPayMode: "",
-        selectExpressId : "", 
+        SelectedExpressId : "", 
         invoiceType : "", 
         invoiceTitle : "", 
         invoiceItemId : "", 
@@ -228,6 +228,9 @@ export default {
       api.getConfirmOrderDetail({...this.formModel}).then(({ Data, State, Msg }) => {
         console.log(Data); 
         this.orderInfo = Object.assign({}, Data);
+        this.formModel.SelectedConsigneeId = this.orderInfo.SelectedConsigneeId;
+        this.formModel.SelectedExpressId = this.orderInfo.SelectedExpressId
+        this.formModel.shopId = this.orderInfo.ShopId;
         console.log(this.orderInfo.Goods)
       });
     },
@@ -292,6 +295,19 @@ export default {
     //     })
     //   }
     // },
+    //实现跳转的A页面
+    jumpToLogistics: function () {
+      
+      if (!this.formModel.SelectedConsigneeId) {
+         wx.showToast({
+            title: "请选择收货地址",
+            icon: 'none',
+        });
+      }
+      wx.navigateTo({
+          url: '/pages/order/logistics/main?ShopId='+this.formModel.SelectShopId+'&SelectedConsigneeId='+this.formModel.SelectedConsigneeId+'&SelectedExpressId='+this.formModel.SelectedExpressId,
+      })
+    }
   }
 }
 </script>
