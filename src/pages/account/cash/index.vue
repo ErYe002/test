@@ -100,7 +100,7 @@ export default {
         this.inputInfo = "请选择账户类型";
       }
       else if(this.ApplyMoney <= 0){
-        this.inputInfo = "请确认申请金额大于等于0"
+        this.inputInfo = "请确认申请金额大于0"
       }
       else if(this.PayeeName == ''){
         this.inputInfo = "请输入收款姓名"
