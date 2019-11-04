@@ -13,8 +13,13 @@
       "pages": [
         "order/list/main",
         "address/addressList/main",
-        "address/editAddress/main",        "setting/home/main",
-        "setting/role/main"      ]
+        "address/editAddress/main",
+        "setting/home/main",
+        "setting/role/main",
+        "setting/userInfo/main",
+        "setting/modifyUserName/main",
+        "setting/modifyUserNick/main"
+      ]
     },
     {
       "root": "pages/search",

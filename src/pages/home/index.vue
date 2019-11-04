@@ -109,7 +109,7 @@
           </a>
         </li>
         <li class="item">
-          <a :href="!token ? '/pages/account/setting/role/main':'/pages/index/main'" class="link">
+          <a :href="!token ? '/pages/account/setting/home/main':'/pages/index/main'" class="link">
             <img src="/static/images/home_set.png" class="icon" />
             <p class="text">设置</p>
           </a>

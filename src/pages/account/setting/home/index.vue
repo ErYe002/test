@@ -1,6 +1,7 @@
 <template>
   <article>
     <section class="user-box">
+      <a href="/pages/account/setting/userInfo/main">
       <img
         class="head"
         :src="userInfoModel.HeadUrl || '/static/images/default_img.gif'"
@@ -14,13 +15,14 @@
             />
         </p>
         <p class="name">
-          
+          {{userInfoModel.UserName}}
         </p>
       </div>
       <img
         class="go-right-icon"
         src="/static/images/icon_jt_rt.png"
       />
+      </a>
     </section>
     <section class="setting">
         <p class="line">
@@ -61,7 +63,7 @@ export default {
     data(){
         return {
             userInfoModel:{
-                userName:"kaikai666",
+                UserName:"kaikai666",
                 Nick: "凯凯",
                 levelNum: 6,
                 sex: "男"
@@ -73,11 +75,15 @@ export default {
 
 <style lang="less">
 .user-box {
-  display: flex;
-  align-items: center;
-  height: 100px;
   font-size: 12px;
   border-bottom: 15rpx solid #e5e5e5!important;
+  a{
+    display: flex;
+    align-items: center;
+    .go-right-icon{
+      margin-top: 0px;
+    }
+  }
   .head {
     display: block;
     width: 64px;
@@ -105,8 +111,10 @@ export default {
   .line{
     height: 50px;
     line-height: 50px;
-    padding-left: 10px;
     border-bottom: 2rpx solid #e5e5e5!important;
+    a{
+      padding-left: 10px;
+    }
     .tips {
         display:inline-block;
         width: 100px;
@@ -119,11 +127,12 @@ export default {
   }
 }
 .logout{
-    border-bottom: 2rpx solid #e5e5e5!important;
+    border-bottom: 15rpx solid #e5e5e5!important;
     a {
         display: block;
         line-height: 50px;
         text-align: center;
+        font-size: 14px;
     }
 }
 .go-right-icon {
