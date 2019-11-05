@@ -73,14 +73,32 @@
       </a>
     </section>
     <!--精品选择-->
-    <section v-if="buyType===1">
+    <section v-if="buyType===1&& groupGlassData.length>0">
       <div class="black_line">
         Step3 请选择镜片
       </div>
       <div class="view_chose_glass_layout">
-        <a class="btn_chose_glass disable" @click="startGlassAct">
+        <a :class="glassBtnCanClick?'btn_chose_glass': 'btn_chose_glass disable'" @click="startGlassAct"
+           v-if="!glassSelected">
           选择镜片
         </a>
+
+        <div class="glass-choosed-layout" v-else>
+          <img :src="glassBean.ImageUrl" class="glass-image"/>
+          <div class="mid-text-view">
+            <div class="glass-text">
+              {{glassBean.GoodsName}}
+            </div>
+
+            <div class="text-pair">
+              一对 ￥{{glassBean.SellPrice}}
+            </div>
+          </div>
+
+          <div class="text-change" @click="startGlassAct">
+            更换 >
+          </div>
+        </div>
       </div>
       <div class="line"/>
     </section>
@@ -95,10 +113,10 @@
     <section class="bottom-buy-btn-layout">
       <div class="btn-50-percent black" v-if="buyType===1">
         <span style="color: white;font-size: 13px">
-          实际付款：￥0.00
+          实际付款：￥{{frameSalePrice+glassSalePrice}}
         </span>
         <span style="color: white;font-size: 10px">
-          (镜架：￥0.00+镜片：￥0.00)
+          (镜架：￥{{frameSalePrice}}+镜片：￥{{glassSalePrice}})
         </span>
 
       </div>
@@ -139,9 +157,21 @@
         gdStartSide: '',
         openGdPopState: 1,
         onlyBuyFrameNum: 1,
-        mainData:{}
+        mainData: {},
+        groupGlassData: [],
+        glassSelected: false,
+        glassBean: {},
+        frameSalePrice: 0,
+        glassSalePrice: 0,
+        glassBtnCanClick: false
+
       };
     },
+
+    computed: {
+      ...mapState("groupGlassList", ["glassGroupSelectPosition"]),
+    },
+
 
     components: {
       gdSelectPop
@@ -157,6 +187,24 @@
         if (val < 1) {
           this.onlyBuyFrameNum = 1;
         }
+      },
+      glassGroupSelectPosition: {
+        handler: function (val, oldVal) {
+          if (this.groupGlassData.length > 0) {
+            let glassList = this.groupGlassData[val.groupPosition].EyeGlassList;
+            if (glassList.length > val.glassosition) {
+              this.glassBean = glassList[val.glassosition];
+              this.glassSelected = true;
+              this.glassSalePrice = glassList[val.glassosition].SellPrice;
+            }
+          }
+        },
+      },
+      postInfoBean: {
+        handler: function (val, oldVal) {
+          console.log('光度',val);
+          this.glassBtnCanClick = (val.cylL !== '' && val.cylR !== '');
+        },
       }
     },
 
@@ -201,6 +249,8 @@
         api.getFrameJoinCart('53c107dd-f456-4383-8aa9-a5efb8ac83c7', false).then(({Data}) => {
           console.log("主数据", Data);
           this.mainData = Data;
+          this.groupGlassData = Data.GlassGroup;
+          this.frameSalePrice = Data.MainGoods.SalePrice;
         });
       },
       _getOptometryBillBaiscDataLibrary() {
@@ -238,12 +288,14 @@
         this.onlyBuyFrameNum += addOrSub;
       },
       startGlassAct() {
-        // this.setEyeInfoFrame(this.postInfoBean);
-        this.setAttrGlassList({GlassGroup: this.mainData.GlassGroup, frameEyeInfo: this.postInfoBean});
 
-        wx.navigateTo({
-          url: '/pages/product/glassSelect/main',
-        });
+        if (this.postInfoBean.cylR !== '' && this.postInfoBean.cylL !== '') {
+          this.setAttrGlassList({GlassGroup: this.mainData.GlassGroup, frameEyeInfo: this.postInfoBean});
+          wx.navigateTo({
+            url: '/pages/product/glassSelect/main',
+          });
+        }
+
       },
       selectGlassEvent() {
 
@@ -380,6 +432,41 @@
         background-color: #cab894;
       }
 
+    }
+  }
+
+  .glass-choosed-layout {
+    display: flex;
+    flex-direction: row;
+
+    .glass-image {
+      width: 80px;
+      height: 80px;
+    }
+
+    .mid-text-view {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      margin: 5px 10px;
+
+      .glass-text {
+        font-size: 14px;
+        color: #333333;
+      }
+
+      .text-pair {
+        font-size: 14px;
+        color: red;
+        margin-top: 3px;
+      }
+
+    }
+
+    .text-change {
+      font-size: 14px;
+      color: #cab894;
+      margin-top: 5px;
     }
   }
 

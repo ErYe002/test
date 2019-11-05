@@ -37,7 +37,7 @@ const actions = {
         }
       }
     }
-    console.log("疏忽", obj.GlassGroup);
+    // console.log("疏忽", obj.GlassGroup);
     commit(ATTR_SELCT_GLASSES, obj.GlassGroup)
   },
   setGroupSelectPosition({commit}, obj) {
