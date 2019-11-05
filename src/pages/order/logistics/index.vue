@@ -18,7 +18,6 @@
               @click="changeDeliver"
             >{{ditem.ExpressName}}
             </view>
-            
           </view>
         </view>
         <view class="freight-box">
@@ -33,11 +32,10 @@
   </view>
 </template>
 
-
 <script>
 
 import api from "@/api/cart";
-
+import {mapActions} from "vuex"
 
 export default {
     data: {
@@ -51,53 +49,40 @@ export default {
     if (options) {
       this.SelectConsigneeId = options.SelectedConsigneeId
       this.SelectedExpressId = options.SelectedExpressId
-
-      console.log("--SelectedExpressId-"+this.SelectedExpressId)
-      console.log("--SelectConsigneeId-"+this.SelectConsigneeId)
       this.shopId = options.ShopId
       api.getPaymentAndDelivery(this.SelectConsigneeId, this.shopId).then(({ Data }) => {
-        console.log(Data)
-        this.model = Object.assign({}, Data);
-
+        // console.log(Data)
+        this.model = Data;
         this._setFreight()
       })
     }
   },
-  changeDeliver(e) {
-    this.setData({
-      SelectedExpressId: e.currentTarget.dataset.id
-    })
-    this._setFreight()
-  },
-  saveChange() {
-    api.editPayment(this.data.SelectConsigneeId, this.data.freight).then(() => {
-      let groupCartInfo = wx.getStorageSync('GroupCartInfo')
-      let newInfo = {
-        ...groupCartInfo,
-        SelectExpressId: this.data.SelectedExpressId,
-        SelectPayMode: 1
-      }
-      wx.setStorageSync('GroupCartInfo', newInfo)
-      wx.navigateBack({
-        delta: 1
-      })
-    })
-  },
-  _setFreight() {
-    this.data.model.forEach((val) => {
-      if (val.PayMode == 1) {
-        val.Delivers.forEach((childVal) => {
-          if (childVal.ExpressId == this.data.SelectedExpressId) {
-            this.setData({
-              freight: childVal.Price
-            })
-          }
+  methods: {
+    ...mapActions("order",["setSelectedExpressId"]),
+    changeDeliver(e) {
+      this.SelectedExpressId = e.currentTarget.dataset.id
+      this._setFreight()
+    },
+    saveChange() {
+      api.editPaymentAndDelivery(this.SelectConsigneeId, this.freight).then(() => {
+        this.setSelectedExpressId(this.SelectedExpressId)
+        wx.navigateBack({
+          delta: 1
         })
-      }
-    })
+      })
+    },
+    _setFreight() {
+      this.model.forEach((val) => {
+        if (val.PayMode == 1) {
+          val.Delivers.forEach((childVal) => {
+            if (childVal.ExpressId == this.SelectedExpressId) {
+              this.freight = childVal.Price
+            }
+          })
+        }
+      })
+    }
   }
-
-
 
 };
 </script>

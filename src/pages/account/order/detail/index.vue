@@ -41,7 +41,7 @@
           </li>
           <li class="item">
             <b class="lable">发票信息</b>
-            <span class="text">{{orderInfo.ShopId == 2 ? '海外商品暂不支付开具发票': orderInfo.InvoiceStr}}</span>
+            <span class="text">请到可得眼镜APP查看发票</span>
           </li>
         </ul>
       </section>
@@ -79,16 +79,16 @@
       <section class="btn-box">
         <ul class="btn-list">
           <li class="b-item" v-if="orderInfo.ShopId != 2 && orderInfo.IsAfterSale">
-            <button class="kd-btn btn-default btn-small">退换货</button>
+            <button class="kd-btn btn-default btn-small" @click="toAppTips('可得小程序暂时不支持退换货功能哦，请下载可得眼镜APP使用此功能')">退换货</button>
           </li>
           <li class="b-item" v-if="orderInfo.IsAppraise">
             <button class="kd-btn btn-default btn-small">评价</button>
           </li>
           <li class="b-item" v-if="orderInfo.IsCancel">
-            <button class="kd-btn btn-default btn-small">取消订单</button>
+            <button class="kd-btn btn-default btn-small" @click="cancelOrderEvent">取消订单</button>
           </li>
           <li class="b-item" v-if="orderInfo.IsContactAirlines">
-            <button class="kd-btn btn-default btn-small">联系客服</button>
+            <button class="kd-btn btn-default btn-small" open-type="contact">联系客服</button>
           </li>
           <li class="b-item" v-if="orderInfo.IsLogistics">
             <button class="kd-btn btn-default btn-small">查看物流</button>
@@ -128,6 +128,29 @@ export default {
     _getPageData() {
       api.getOrderDetail(this.orderId).then(({ Data }) => {
         this.orderInfo = Object.assign({}, Data);
+      });
+    },
+    toAppTips(content) {
+      wx.showModal({
+        title: "提示",
+        content,
+        confirmColor: "#cab894"
+      });
+    },
+    //取消订单
+    cancelOrderEvent(){
+      const _this = this
+      wx.showModal({
+        title: "提示",
+        content: '您确定要取消订单吗？',
+        confirmColor: "#cab894",
+        success (res) {
+          if (res.confirm) {
+            api.cancelOrder(this.orderId).then(() => {
+              _this._getPageData()
+            })
+          } 
+        }
       });
     }
   }

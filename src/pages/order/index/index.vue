@@ -12,21 +12,12 @@
       <view class='address-box'>
         <!-- 收货地址没有验证通过 -->
         <view class='empty' v-if='!orderInfo.IsValidConsignee || !orderInfo.Address'>
-          <block v-if="(orderInfo.ConsigneeList !=null ? orderInfo.ConsigneeList.length : 0)>0 ">
             <!-- 没有设置过默认收货地址 -->
-            <navigator url='/pages/account/address/addressList/main'>
-              <view>
-                <img src=""> />请选择收货地址</view>
-              <text class="icon"></text>
-            </navigator>
-          </block>
-          <block v-else>
-            <navigator url='/pages/account/address/editAddress/main?isEdit=fasle'>
-              <view>
-                <img src="" />请先手动添加收货地址</view>
-              <text class="icon"></text>
-            </navigator>
-          </block>
+          <navigator url='/pages/order/chooseAddress/main'>
+            <view>
+              <img src="" />请选择收货地址</view>
+            <text class="icon"></text>
+          </navigator>
           <view class="getadd" @click="getadd">
             <view>
               <img src="" />一键获取微信收货地址</view>
@@ -34,7 +25,7 @@
           </view>
         </view>
         <!-- 添加过收货地址且已设置默认地址 -->
-        <navigator v-else url='/pages/account/address/addressList/main' class='info-box'>
+        <navigator v-else :url="'/pages/order/chooseAddress/main?SelectedConsigneeId='+formModel.selectedConsigneeId" class='info-box'>
           <view class='info'>
             <view class='contact-name'>
               {{orderInfo.Consignee}}
@@ -191,6 +182,7 @@
 <script>
 
 import api from "@/api/cart";
+import {mapState} from "vuex"
 
 export default {
   data(){
@@ -199,10 +191,10 @@ export default {
       formModel: {
         isUseScore : true, 
         isUseBalance : true,
-        SelectShopId : 1,
-        SelectedConsigneeId : "", 
-        selectPayMode: "",
-        SelectedExpressId : "", 
+        selectShopId : 1,
+        selectedConsigneeId : "", 
+        selectedPayMode: "1",
+        selectedExpressId : "", 
         invoiceType : "", 
         invoiceTitle : "", 
         invoiceItemId : "", 
@@ -215,23 +207,40 @@ export default {
         IDCard : "", 
       },
     }
+
   },
+  computed :{...mapState("order",["SelectedExpressId","SelectedConsigneeId"])},
+
   onLoad(options) {
     if(options){
       this.formModel.selectShopId = options.shopId;
     }
     this.getConfirmOrderDetail();
   },
-
+  //监测地址，快递变化
+  watch: {
+    SelectedConsigneeId:{
+      handler: function(val,oldVal){
+        this.formModel.selectedConsigneeId = val;
+        this.getConfirmOrderDetail();
+      },immediate: true
+    },
+    SelectedExpressId:{
+      handler: function(val,oldVal){
+        this.formModel.selectedExpressId = val;
+        this.getConfirmOrderDetail();
+      },immediate: true
+    }
+  },
   methods: {
     getConfirmOrderDetail(){
+      console.log('-----------')
       api.getConfirmOrderDetail({...this.formModel}).then(({ Data, State, Msg }) => {
-        console.log(Data); 
         this.orderInfo = Object.assign({}, Data);
-        this.formModel.SelectedConsigneeId = this.orderInfo.SelectedConsigneeId;
-        this.formModel.SelectedExpressId = this.orderInfo.SelectedExpressId
+        this.formModel.selectedConsigneeId = this.orderInfo.SelectedConsigneeId;
+        this.formModel.selectedExpressId = this.orderInfo.SelectedExpressId
         this.formModel.shopId = this.orderInfo.ShopId;
-        console.log(this.orderInfo.Goods)
+        console.log(Data)
       });
     },
     getadd(){
@@ -298,14 +307,19 @@ export default {
     //实现跳转的A页面
     jumpToLogistics: function () {
       
-      if (!this.formModel.SelectedConsigneeId) {
-         wx.showToast({
+      console.log("-----"+this.formModel.selectedConsigneeId)
+
+      if (this.formModel.selectedConsigneeId.length > 0 && this.formModel.selectedConsigneeId != "00000000-0000-0000-0000-000000000000") {
+         
+      }else{
+        wx.showToast({
             title: "请选择收货地址",
             icon: 'none',
         });
+        return;
       }
       wx.navigateTo({
-          url: '/pages/order/logistics/main?ShopId='+this.formModel.SelectShopId+'&SelectedConsigneeId='+this.formModel.SelectedConsigneeId+'&SelectedExpressId='+this.formModel.SelectedExpressId,
+          url: '/pages/order/logistics/main?ShopId='+this.formModel.selectShopId+'&SelectedConsigneeId='+this.formModel.selectedConsigneeId+'&SelectedExpressId='+this.formModel.selectedExpressId,
       })
     }
   }

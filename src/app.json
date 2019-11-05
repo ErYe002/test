@@ -12,13 +12,17 @@
       "root": "pages/account",
       "pages": [
         "order/list/main",
+        "order/detail/main",
         "address/addressList/main",
         "address/editAddress/main",
         "setting/home/main",
         "setting/role/main",
         "setting/userInfo/main",
         "setting/modifyUserName/main",
-        "setting/modifyUserNick/main"    
+        "setting/modifyUserNick/main",
+        "favorites/main",
+        "balance/main",
+        "cash/main"
       ]},
     {
       "root": "pages/search",
@@ -34,14 +38,16 @@
       "root": "pages/product",
       "pages": [
         "index/main",
-        "frameAttr/main"
+        "frameAttr/main",
+        "glassSelect/main"
       ]
     },
     {
       "root": "pages/order",
       "pages": [
         "index/main",
-        "logistics/main"
+        "logistics/main",
+        "chooseAddress/main"
       ]
     }
   ],
@@ -95,5 +101,6 @@
       }
     ],
     "position": "bottom"
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }

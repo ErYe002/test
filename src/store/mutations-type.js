@@ -15,3 +15,9 @@ export const IS_NEED_FILTER_SET = 'IS_NEED_FILTER_SET'
 
 //用户的access_token、openid、session_key等信息
 export const SET_WXKEYS = 'SET_WXKEYS'
+
+export const ATTR_SELCT_GLASSES = 'ATTR_SELCT_GLASSES';
+//确认订单页 选择收货地址
+export const ORDER_SELECTADDRESSID = 'ORDER_SELECTADDRESSID'
+//选择快递 
+export const ORDER_SELECTEXPRESSID = 'ORDER_SELECTEXPRESSID'

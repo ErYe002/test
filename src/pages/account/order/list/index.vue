@@ -54,10 +54,10 @@
           </p>
           <ul class="btn-list">
             <li class="b-item" v-if="item.IsCancel">
-              <button class="kd-btn btn-default btn-small">取消订单</button>
+              <button class="kd-btn btn-default btn-small" @click="cancelOrderEvent">取消订单</button>
             </li>
             <li class="b-item" v-if="item.ShopId != 2 && item.IsAfterSale">
-              <button class="kd-btn btn-default btn-small">退换货</button>
+              <button class="kd-btn btn-default btn-small" @click="toAppTips('可得小程序暂时不支持退换货功能哦，请下载可得眼镜APP使用此功能')">退换货</button>
             </li>
             <li class="b-item" v-if="item.IsLogistics">
               <button class="kd-btn btn-default btn-small">查看物流</button>
@@ -66,7 +66,7 @@
               <button class="kd-btn btn-default btn-small">评价</button>
             </li>
             <li class="b-item" v-if="item.IsContactAirlines">
-              <button class="kd-btn btn-default btn-small">联系客服</button>
+              <button class="kd-btn btn-default btn-small" open-type="contact">联系客服</button>
             </li>
             <li class="b-item" v-if="item.IsPayment">
               <button class="kd-btn btn-small">付款</button>
@@ -140,6 +140,29 @@ export default {
       this.listQuery.page = 1
       this.isNoData = false
       this._getListEvent();
+    },
+    toAppTips(content) {
+      wx.showModal({
+        title: "提示",
+        content,
+        confirmColor: "#cab894"
+      });
+    },
+    //取消订单
+    cancelOrderEvent(orderId){
+      const _this = this
+      wx.showModal({
+        title: "提示",
+        content: '您确定要取消订单吗？',
+        confirmColor: "#cab894",
+        success (res) {
+          if (res.confirm) {
+            api.cancelOrder(orderId).then(() => {
+              _this.searchEvent()
+            })
+          } 
+        }
+      });
     },
     _getListEvent() {
       this._reuqest().then(({ Data, TotalPage }) => {

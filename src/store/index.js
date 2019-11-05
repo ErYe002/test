@@ -5,28 +5,38 @@ import user from './modules/user'
 import search from './modules/search'
 import filterRules from './modules/filterRules'
 import wxinfo from './modules/wxinfo'
+import attGlassList from './modules/attrGlassList'
+import order from './modules/order'
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 const store = new Vuex.Store({
-    modules:{
-        user:{
-            namespaced: true,
-            ...user
-        },
-        search:{
-            namespaced: true,
-            ...search
-        },
-        filterRules: {
-            namespaced: true,
-            ...filterRules
-        },
-        wxinfo: {
-            namespaced: true,
-            ...wxinfo
-        }
+  modules: {
+    user: {
+      namespaced: true,
+      ...user
+    },
+    search: {
+      namespaced: true,
+      ...search
+    },
+    filterRules: {
+      namespaced: true,
+      ...filterRules
+    },
+    wxinfo: {
+      namespaced: true,
+      ...wxinfo
+    }, 
+    groupGlassList: {
+      namespaced: true,
+      ...attGlassList
+    },
+    order: {
+      namespaced: true,
+      ...order
     }
-})
+  }
+});
 
 export default store

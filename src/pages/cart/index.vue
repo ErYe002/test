@@ -202,16 +202,20 @@
                           v-for="spItem in gItem.SpecificationItems"
                           :key="spItem.RealGoodsId"
                         >
-                          <span :class="{attr: true, line: gItem.BuyType == 3}">
+                          <span :class="{attr: true, line: gItem.BuyType == 3}" v-if="gItem.BuyType != 3" @click="editCartItemEvent(gItem.UniqueId, '', spItem.RealGoodsId, spItem.Quantity)">
                             <em
                               class="text"
                             >{{spItem.Specification}} {{spItem.AnotherName == null ? '' : spItem.AnotherName}}</em>
                             <img
                               class="icon"
-                              v-if="gItem.BuyType != 3"
                               src="/static/images/icon_attr_down.png"
                             />
-                            <em v-else>×{{spItem.Quantity}}</em>
+                          </span>
+                          <span v-else :class="{attr: true, line: gItem.BuyType == 3}" >
+                            <em
+                              class="text"
+                            >{{spItem.Specification}} {{spItem.AnotherName == null ? '' : spItem.AnotherName}}</em>
+                            <em>×{{spItem.Quantity}}</em>
                           </span>
                           <span
                             class="modify"

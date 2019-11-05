@@ -62,6 +62,10 @@ const api = {
   getWalletOfPersonnel() {
     return http.post('Account/GetWalletOfPersonnel');
   },
+  //获取我的收藏列表
+  getFavoriteList(pageIndex, pageSize) {
+    return http.post(`Account/GetFavoriteList?pageSize=${pageSize}&pageIndex=${pageIndex}&shopId=0`);
+  },
   //获取用户的基本信息
   getPersonnelProfile(){
     return http.post("Account/GetPersonnelProfile");
@@ -85,7 +89,6 @@ const api = {
   //设置生日
   setBirthday(birthday){
     return http.post("Account/SetBirthday?birthday=" + birthday);
-  }
-};
+  }};
 
 export default api;
