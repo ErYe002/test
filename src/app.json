@@ -43,7 +43,8 @@
       "root": "pages/order",
       "pages": [
         "index/main",
-        "logistics/main"
+        "logistics/main",
+        "chooseAddress/main"
       ]
     }
   ],

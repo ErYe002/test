@@ -6,6 +6,7 @@ import search from './modules/search'
 import filterRules from './modules/filterRules'
 import wxinfo from './modules/wxinfo'
 import attGlassList from './modules/attrGlassList'
+import order from './modules/order'
 
 Vue.use(Vuex);
 
@@ -26,9 +27,14 @@ const store = new Vuex.Store({
     wxinfo: {
       namespaced: true,
       ...wxinfo
-    }, groupGlassList: {
+    }, 
+    groupGlassList: {
       namespaced: true,
       ...attGlassList
+    },
+    order: {
+      namespaced: true,
+      ...order
     }
   }
 });
