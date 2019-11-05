@@ -300,6 +300,12 @@ export default {
       immediate: true
     }
   },
+  //下拉刷新
+  onPullDownRefresh() {
+    if(this.token){
+      this._getPageData();
+    }
+  },
   methods: {
     getUserInfo(e) {
       const link = e.mp.currentTarget.dataset.link || "";
