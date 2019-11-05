@@ -30,8 +30,6 @@
       transform: translate(-50%, 0);
       z-index: 5;
       ._a {
-        background: url(https://pic.keede.com/app/images/tag-Icon.png) no-repeat;
-        background-size: 100%;
         display: inline-block;
         font-size: 10px;
         height: 15px;
@@ -39,15 +37,10 @@
         margin-right: 5px;
         text-align: center;
         width: 21px;
-      }
-      .picBtn {
-        background-position: 0 -29px;
-      }
-      .picBtn.selected {
-        background-position: 0 -43px;
-      }
-      .videoBtn.selected {
-        background-position: 0 -15px;
+        ._img{
+          width: 21px;
+          height: 15px;
+        }
       }
     }
   }
@@ -58,42 +51,67 @@
     height: 57px;
     padding: 10px;
     width: 100%;
+    display: flex;
+    justify-content: space-between;
     .closeproType {
-      background: url(https://pic.keede.com/app/images/productInfo/productinfo.png)
-        no-repeat;
-      background-position: 0 -234px;
-      background-size: 100%;
       display: inline-block;
-      float: right;
       height: 35px;
       width: 35px;
-    }
-    .closeproType.selected {
-      background-position: 0 -169px;
+      ._img{
+        height: 35px;
+        width: 35px;
+      }
     }
     .typeCon {
       width: 80%;
       overflow: hidden;
-      ._ul ._li ._img {
+      .scroll-wrapper{
+        height: 37px;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        background: #FFF;
+        box-sizing: border-box;
+        width: 100%;
+        transition: all 1s;
+        &.close{
+          width: 0%;
+        }
+      }
+      .series{
+        width: 35px;
+        height: 35px;
+        display: inline-block;
+        margin-right:5px ;
+      }
+      .series ._a {
+        position: relative;
+      }
+      .series ._img {
         display: block;
         height: 35px;
         width: 35px;
       }
-      ._ul ._li ._span {
+      .series ._span {
         display: none;
       }
-      ._ul ._li.selected .span {
+      .series.selected ._span {
         background: rgba(0, 0, 0, 0.5);
         color: #fff;
-        display: block;
         font-size: 11px;
         height: 35px;
         left: 0;
         position: absolute;
-        text-align: center;
         top: 0;
         width: 35px;
         word-wrap: break-word;
+        word-break: break-all;
+        padding: 2px;
+        box-sizing: border-box;
+        display: -webkit-box;
+        text-align: center;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
       }
     }
   }
@@ -112,7 +130,7 @@
         align-items: center;
         .truePrice {
           color: #e31436;
-          font-size: 25px;
+          font-size: 20px;
           display: flex;
         }
         .priceMsg {
@@ -138,7 +156,6 @@
             padding: 0 2px;
             overflow: hidden;
             .tagImg{
-              background: url(https://pic.keede.com/app/images/productinfo/member-lev.png) no-repeat;
               background-size: 100%;
               display: inline-block;
               float: left;
@@ -209,16 +226,26 @@
               width: 100%;
             }
           }
+          .selfShop{
+            background: #7B7B7B;
+            color: #fff;
+            display: flex;
+            font-size: 15px;
+            height: 20px;
+            justify-content: center;
+            line-height: 20px;
+            margin-right: 6px;
+            min-width: 34px;}
         }
         .proNameBox{
           display: flex;
           flex-direction: column;
           margin-left: 6px;
-          .proNameBox{
-            color: #000;
-            font-size: 15px;
-            font-weight: bold;
-            width: 100%;
+            .proName{
+              color: #000;
+              font-size: 14px;
+              font-weight: bold;
+              width: 100%;
           }
           .proAdd{
             color: #969595;
@@ -242,6 +269,11 @@
     height: 28px;
     line-height: 28px;
     text-align: center;
+    width: 100%;
+  }
+  .line{
+    background: #F0F0F0;
+    height: 6px;
     width: 100%;
   }
   .actCon{
@@ -322,6 +354,7 @@
         float: right;
         line-height: 20px;
         .icon{
+          display: inline-block;
           transform: scale(0.8,1.5) translateY(-1px);
         }
       }
@@ -422,7 +455,6 @@
     padding: 10px 15px;
     display: flex;
     .xuanGou-name{
-        border-right: 1px solid #ccc;
         color: #040000;
         display: inline-block;
         font-size: 13px;
@@ -431,6 +463,210 @@
         line-height: 20px;
         padding: 0 5px;
         padding-right: 10px;
+        transform: translate(0, 100%);
     }
+    .eyeBox{
+      background: #F7F7F7;
+      border: 1px solid #E1E1E1;
+      border-radius: 6px;
+      box-sizing: border-box;
+      height: 60px;
+      margin-right: 10px;
+      width: 110px;
+      color: #313131;
+      display: flex;
+      font-weight: 900;
+      justify-content: space-between;
+      padding: 10px;
+      .eyeMsg{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 70%;
+        .eyeNote{
+          color: #888;
+          font-size: 12px;
+          font-weight: normal;
+          width: 100%;
+        }
+      }
+      .eyeImg{
+        display: flex;
+        flex-direction: column-reverse;
+        ._img{
+          width: 23px;height:15px;
+        }
+      }
+      
+    }
+    .dshsBox{
+      display: flex;
+      flex-direction: column;
+      padding: 5px 10px;
+      box-sizing: border-box;
+      color: #313131;
+      background: #F7F7F7;
+      border: 1px solid #E1E1E1;
+      border-radius: 6px;
+      box-sizing: border-box;
+      height: 60px;
+      width: 55px;
+      margin-left: 10px;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+      ._img{
+        width: 23px;height:15px;
+        margin-bottom: 3px;
+      }
+    }
+  }
+  .remarkBox{
+    .actLine::after{
+      height: 0;
+    }
+    &.actCon .actLine .act-name{
+      font-size: 11px;
+      border-right: none;
+    }
+  }
+  .remarkTag{
+    padding: 0 15px;
+    max-height: 52px;
+    overflow: hidden;
+    ._li{
+      background: #F4F2E6;
+      color: #313131;
+      float: left;
+      font-size: 12px;
+      margin-bottom: 8px;
+      margin-right: 8px;
+      padding: 2px 6px;
+    }
+  }
+  .remarkCon{
+    .comment-header{
+      display: flex;
+      margin: 10rpx 20rpx 0;
+      justify-content: space-between;
+      }
+    .header-icon{
+      width: 80rpx;
+      height: 80rpx;
+      margin-right: 10rpx;
+      border-radius: 100%;
+      background-image: url(https://pic.keede.com//app/images/sinaimg.gif);
+      background-size: 100%;
+      border: 1rpx solid #f0f0f0;
+      }
+      .comment-header-right {
+        display: flex;
+        flex-direction: column;
+      }
+      .comment-star{
+        display: inline-block;
+        height: 24rpx;
+        margin-right: 10rpx;
+        width: 24rpx;
+      }
+      .comment-text {
+        font-size: 12px;
+        color: #010101;
+        word-wrap: break-word;
+        margin: 10rpx 20rpx 20rpx;
+        }
+        .comment-text-style {
+          font-size: 24rpx;
+          color: #888;
+          margin-top: 10rpx;
+          word-wrap: break-word;
+          margin: 5rpx 20rpx;
+        }
+            
+  }
+  .guessLike{
+    .goodsTypeTag{
+      align-items: center;
+      display: flex;
+      height: 55px;
+      justify-content: center;
+      ._div{
+        color: #000;
+        margin-right: 20px;
+      }
+      .selected {
+        color: #CAB894;
+        position: relative;
+        &::after {
+          background: #CAB894;
+          bottom: -10px;
+          content: "";
+          height: 1px;
+          left: 0;
+          position: absolute;
+          width: 100%;
+      }
+      }
+    }
+    .goodsTypeBox{
+      ._swiper{
+        height: 200px;
+      }
+      padding: 5px 10px;
+      box-sizing: border-box;
+      width: 100%;
+      ._a{
+        height: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        ._img{
+          width: 100%;
+        }
+        .goodsName{
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          box-sizing: border-box;
+          color: #000;
+          display: -webkit-box;
+          overflow: hidden;
+          padding: 5px 10px;
+          text-overflow: ellipsis;
+          width: 100%;
+          padding-bottom: 0;
+
+        }
+        .goodsPrice{
+          margin-top: 5px;
+          color: #E31436;
+        }
+      }
+    }
+  }
+  .detailNote{
+    background: #F4F4F4;
+    color: #9F9F9F;
+    font-size: 12px;
+    height: 42px;
+    line-height: 42px;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    ._img{
+      width: 13px;
+      height: 11px;
+    }
+  }
+  .overline{
+    color: #9F9F9F;
+    font-size: 12px;
+    height: 40px;
+    line-height: 50px;
+    padding-bottom: 45px;
+    text-align: center;
+    width: 100%;
   }
 }
