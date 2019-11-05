@@ -109,42 +109,68 @@
 </template>
 
 <script>
+import api from "@/api/user"
+
 export default {
   data(){
     return{
       userInfoModel:{
-        GradeName: "普通会员",
-        HeadUrl: "https://pic.keede.com//app/images/login_img.png",
-        Nick: "凯凯",
-        LevelNum: 6,
-        EmpiricalValueMemo:"3500，您已是最高级会员！"
+        GradeName: "",
+        HeadUrl: "",
+        Nick: "",
+        LevelNum: 0,
+        EmpiricalValueMemo:""
       },
       roleList: [
-        {
-          AttainScore:100,
-          DiscountRate: 1
-        },
-        {
-          AttainScore:101,
-          DiscountRate: 1
-        },
-        {
-          AttainScore:300,
-          DiscountRate: 0.98
-        },
-        {
-          AttainScore:1500,
-          DiscountRate: 0.97
-        },
-        {
-          AttainScore:2500,
-          DiscountRate: 0.96
-        },
-        {
-          AttainScore:3500,
-          DiscountRate: 0.95
-        }
+        // {
+        //   AttainScore:100,
+        //   DiscountRate: 1
+        // },
+        // {
+        //   AttainScore:101,
+        //   DiscountRate: 1
+        // },
+        // {
+        //   AttainScore:300,
+        //   DiscountRate: 0.98
+        // },
+        // {
+        //   AttainScore:1500,
+        //   DiscountRate: 0.97
+        // },
+        // {
+        //   AttainScore:2500,
+        //   DiscountRate: 0.96
+        // },
+        // {
+        //   AttainScore:3500,
+        //   DiscountRate: 0.95
+        // }
       ]
+    }
+  },
+  onLoad(){
+    this._getRoleOfPersonnel();
+  },
+  methods:{
+    _getRoleOfPersonnel: function(){
+      api.getRoleOfPersonnel().then(({Data}) => {
+        console.log(JSON.stringify(Data));
+        this.userInfoModel = {
+          GradeName: Data.CurrentUserRoleName,
+          HeadUrl: Data.HeadUrl,
+          Nick: Data.Nick,
+          LevelNum: Data.RoleId,
+          EmpiricalValueMemo: Data.EmpiricalValueMemo
+        };
+        this.roleList = Data.RoleList.map((item) => {
+          return {
+            AttainScore: item.AttainScore, 
+            DiscountRate: item.DiscountRate
+          };
+        });
+        console.log(JSON.stringify(this.roleList));
+      });
     }
   }
 }

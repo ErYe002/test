@@ -15,7 +15,7 @@
       </a>
     </div>
     <div class="line">
-      <a href="/pages/account/setting/modifyUserName/main">
+      <a :href="'/pages/account/setting/modifyUserName/main?userName=' + userInfoModel.UserName">
         <label class="l-lab">用户名</label>
         <label class="r-lab">{{userInfoModel.UserName}}</label>
         <img
@@ -25,7 +25,7 @@
       </a>
     </div>
     <div class="line">
-      <a href="/pages/account/setting/modifyUserNick/main">
+      <a :href="'/pages/account/setting/modifyUserNick/main?nick=' + userInfoModel.Nick">
         <label class="l-lab">昵称</label>
         <label class="r-lab">{{userInfoModel.Nick}}</label>
         <img
@@ -35,9 +35,9 @@
       </a>  
     </div>
     <div class="line">
-      <a href="/pages/account/role/main">
+      <a href="/pages/account/setting/role/main">
         <label class="l-lab">我的等级</label>
-        <label class="r-lab">{{userInfoModel.GradeName}}</label>
+        <label class="r-lab">V{{userInfoModel.LevelNum}}会员</label>
         <img
           class="go-right-icon"
           src="/static/images/icon_jt_rt.png"
@@ -73,16 +73,18 @@
 </template>
 
 <script>
+import api from '@/api/user'
+
 export default {
   data(){
     return{
       userInfoModel: {
-        HeadUrl: "https://pic.keede.com//app/images/login_img.png",
-        UserName: "kaikai666",
-        Nick: "凯凯",
-        GradeName: "V6会员",
-        Sex: "男",
-        Birthday: "2018-11-29"
+        HeadUrl: "",
+        UserName: "",
+        Nick: "",
+        GradeName: "",
+        Sex: "",
+        Birthday: ""
       },
       startDate:"",
       endDate: ""
@@ -91,18 +93,44 @@ export default {
   onLoad(){
     this._initDate();
   },
+  watch: {
+    token:{
+      handler: function(val){
+        if(val != ""){
+          this._getPersonnelProfile();
+        }
+      },
+      immediate: true
+    }
+  },
   methods:{
     _initDate(){
       const date = new Date();
       let year = date.getFullYear();
       this.startDate = (year-90)+"-01-01";
       this.endDate = year + "-" + date.getMonth() + "-" + date.getDate();
-      console.log(this.startDate, this.endDate);
+      // console.log(this.startDate, this.endDate);
     },
     _dateChange(e){
       let value = e.mp.detail.value;
-      console.log("picker 发生变化：", e.mp.detail.value);
       this.userInfoModel.Birthday = value;
+
+      api.setBirthday(value).then(({State})=>{
+        console.log("生日修改成功。");
+      })
+    },
+    _getPersonnelProfile(){
+      api.getPersonnelProfile().then(({Data})=>{
+        this.userInfoModel = {
+          HeadUrl: Data.HeadUrl,
+          UserName: Data.UserName,
+          Nick: Data.Nick,
+          LevelNum: Data.RoleId,
+          GradeName: Data.GradeName,
+          Sex: Data.Sex,
+          Birthday: Data.Birthday.match(/(\S*)T/)[1]
+        };
+      });
     }
   }
 }

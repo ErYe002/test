@@ -117,9 +117,9 @@ const api = {
   getPaymentAndDelivery(consigneeId, shopId){
     return http.post(`/Cart/GetPaymentAndDelivery?shopId=${shopId}&consigneeId=${consigneeId}`)
   },
-  //获取支付配送页面的数据
-  editPaymentAndDelivery(payMode, expressId, price){
-    return http.post(`/Cart/EditPaymentAndDelivery?payMode=${payMode}&expressId=${expressId}&price=${price}`)
+  //修改支付配送页面的数据（修改快递）
+  editPaymentAndDelivery(expressId, price){
+    return http.post(`/Cart/EditPaymentAndDelivery?payMode=1&expressId=${expressId}&price=${price}`)
   },
   //修改发票信息
   editInvoiceInfo({invoiceTypeId, invoiceTitle, invoiceMode, axpayerIdentityNumber} = {}){

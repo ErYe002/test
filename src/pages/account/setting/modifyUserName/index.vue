@@ -1,5 +1,6 @@
 <template>
-  <section>
+  <article>
+   <section>
     <div class="modify-box">
       <label>用户名</label>
       <input class="txt" v-model="message" placeholder="最多10个汉字" />
@@ -16,18 +17,39 @@
         *用户名仅允许修改1次（您的用户名仅自己可见）
     </div>
   </section>
+    <section class="btn-box">
+      <div class="btn-submit" @click="_changeUserName">保存</div>
+    </section>
+  </article>
 </template>
 
 <script>
+import api from "@/api/user"
+
 export default {
   data(){
     return{
       message:""
     }
   },
+  onLoad(options){
+    if(options != null && options.userName != null){
+      this.message = options.userName;
+    }
+  },
   methods: {
     _clearMsg: function(){
         this.message = ""
+    },
+    _changeUserName: function(){
+      if(this.message == null || this.message == ""){
+        console.log("用户名不能为空。")
+        return;
+      }
+      api.changeUserName(this.message).then(({State, Msg}) => {
+        console.log("修改用户名成功！");
+        mpvue.navigateBack({url: "/pages/account/setting/userInfo/main"});
+      });
     }
   }
 }
@@ -69,5 +91,19 @@ export default {
   color: #888;
   font-size: 12px;
   padding-left: 10px;
+}
+.btn-box{
+  position: fixed;
+  // height: 55px;
+  width: 100%;
+  bottom: 0px;
+  .btn-submit{
+    height: 55px;
+    line-height: 50px;
+    background-color: #cab894;
+    border: 1px solid #cab894;
+    color: #fff;
+    text-align: center;
+  }
 }
 </style>
