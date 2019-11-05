@@ -20,7 +20,9 @@
         "setting/userInfo/main",
         "setting/modifyUserName/main",
         "setting/modifyUserNick/main",
-        "favorites/main"
+        "favorites/main",
+        "balance/main",
+        "cash/main"
       ]},
     {
       "root": "pages/search",
@@ -99,5 +101,6 @@
       }
     ],
     "position": "bottom"
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }
