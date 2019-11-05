@@ -54,10 +54,11 @@ export default {
       api.getAddressList().then(({ Data }) => {
         //重新整理数据
         this.addressList = [...Data];
+        if (!this.addressList.length) {
+          this.isNoData = true;
+        }
       });
-      if (this.addressList.leng) {
-        this.isNoData = true;
-      }
+      
     },
     doSetDefaultAddress(consigneeId){
       console.log(consigneeId)
@@ -181,6 +182,12 @@ page {
 .imgIcon {
   width: 20rpx;
   height: 20rpx;
+}
+.no-data-box {
+  color: #666;
+  font-size: 12px;
+  text-align: center;
+  margin: 20px 0;
 }
 
 /*新建收货地址按钮*/

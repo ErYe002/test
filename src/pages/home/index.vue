@@ -206,13 +206,13 @@
             open-type="getUserInfo"
             @getuserinfo="getUserInfo"
             v-if="!token"
-            data-link="/pages/account/setting/role/main"
+            data-link="/pages/account/setting/home/main"
             class="link"
           >
             <img src="/static/images/home_set.png" class="icon" />
             <p class="text">设置</p>
           </button>
-          <a v-else href="/pages/account/setting/role/main" class="link">
+          <a v-else href="/pages/account/setting/home/main" class="link">
             <img src="/static/images/home_set.png" class="icon" />
             <p class="text">设置</p>
           </a>

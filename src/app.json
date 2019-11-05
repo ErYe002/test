@@ -16,10 +16,13 @@
         "address/editAddress/main",
         "setting/home/main",
         "setting/role/main",
+        "setting/userInfo/main",
+        "setting/modifyUserName/main",
+        "setting/modifyUserNick/main",
+        "favorites/main",
         "balance/main",
         "cash/main"
-      ]
-    },
+      ]},
     {
       "root": "pages/search",
       "pages": [
@@ -34,14 +37,16 @@
       "root": "pages/product",
       "pages": [
         "index/main",
-        "frameAttr/main"
+        "frameAttr/main",
+        "glassSelect/main"
       ]
     },
     {
       "root": "pages/order",
       "pages": [
         "index/main",
-        "logistics/main"
+        "logistics/main",
+        "chooseAddress/main"
       ]
     }
   ],
