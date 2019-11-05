@@ -78,7 +78,7 @@
         Step3 请选择镜片
       </div>
       <div class="view_chose_glass_layout">
-        <a class="btn_chose_glass disable" href="../glassSelect/main">
+        <a class="btn_chose_glass disable" @click="startGlassAct">
           选择镜片
         </a>
       </div>
@@ -138,7 +138,8 @@
         postInfoBean: {sphR: '', sphL: '', cylR: '', cylL: '', axisR: '', axisL: '', pd: '62'},
         gdStartSide: '',
         openGdPopState: 1,
-        onlyBuyFrameNum: 1
+        onlyBuyFrameNum: 1,
+        mainData:{}
       };
     },
 
@@ -199,7 +200,7 @@
       _getFrameData() {
         api.getFrameJoinCart('53c107dd-f456-4383-8aa9-a5efb8ac83c7', false).then(({Data}) => {
           console.log("主数据", Data);
-          this.setAttrGlassList(Data.GlassGroup);
+          this.mainData = Data;
         });
       },
       _getOptometryBillBaiscDataLibrary() {
@@ -235,6 +236,14 @@
       },
       onlyBuyFrameChangeNumEvent(addOrSub) {
         this.onlyBuyFrameNum += addOrSub;
+      },
+      startGlassAct() {
+        // this.setEyeInfoFrame(this.postInfoBean);
+        this.setAttrGlassList({GlassGroup: this.mainData.GlassGroup, frameEyeInfo: this.postInfoBean});
+
+        wx.navigateTo({
+          url: '/pages/product/glassSelect/main',
+        });
       },
       selectGlassEvent() {
 

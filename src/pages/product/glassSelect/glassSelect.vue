@@ -28,7 +28,7 @@
     </section>
 
     <div class="glass-list-layout">
-      <div :class="index===glassSelectPosiition?'glass-item select':'glass-item'"
+      <div :class="(index===glassSelectPosiition && item.canEnable)?'glass-item select':'glass-item'"
            v-for="(item,index) in atttGlassListData[groupSelectPosition].EyeGlassList"
            :key="item.Seocode" @click="chooseGlassEvent(index)">
         <img :src="item.ImageUrl" class="image-goods"/>
@@ -37,27 +37,34 @@
         <div class="price-layout">
           <div class="goods-price">{{item.SellPrice}}</div>
 
-          <a class="ck-detail">查看详情</a>
+          <a class="ck-detail" v-if="item.canEnable">查看详情</a>
+          <a class="ck-detail disable" v-else>查看详情</a>
         </div>
-        <!--<img src="/static/images/eyeglass_slect.png" class="select-item-image"/>-->
+        <img src="/static/images/eye-select-sj.png" class="select-item-image"
+             v-if="(index===glassSelectPosiition && item.canEnable)"/>
       </div>
     </div>
-    <div class="btn-confirm-btm">确定</div>
+    <div class="btn-confirm-btm" @click="backToFinish">确定</div>
   </div>
 </template>
 
 <script>
   import api from "@/api/attr";
-  import {mapState, mapGetters} from "vuex";
+  import {mapState, mapGetters,mapActions} from "vuex";
 
   export default {
     name: "glass-select",
 
+    onLoad(options) {
+      if (options) {
+
+      }
+    },
     data() {
       return {
         menuOpened: false,
         groupSelectPosition: 0,
-        glassSelectPosiition: 0
+        glassSelectPosiition: 0,
       };
     },
     computed: {
@@ -67,6 +74,8 @@
 
     watch: {},
     methods: {
+      ...mapActions('groupGlassList', ['setGroupSelectPosition']),
+
       radioChange: function (e) {
         this.groupSelectPosition = Number(e.mp.detail.value);
       },
@@ -74,10 +83,19 @@
         this.menuOpened = !this.menuOpened;
       },
       chooseGlassEvent(index) {
-        this.glassSelectPosiition = index;
+        if (this.atttGlassListData[this.groupSelectPosition].EyeGlassList[index].canEnable) {
+          this.glassSelectPosiition = index;
+        }
+      },
+      backToFinish() {
+        this.setGroupSelectPosition({groupPosition: this.groupSelectPosition, glassosition: this.glassSelectPosiition});
+        wx.navigateBack({
+          delta: 1
+        });
       }
+
     }
-  };
+  }
 </script>
 
 <style lang="less">
@@ -171,15 +189,19 @@
       width: calc(50% - 20px);
       margin: 10px 10px 0 10px;
       box-sizing: border-box;
-      border: #d9d9d9 solid 1px;
+      border: #d9d9d9 solid 2px;
+      position: relative;
       &.select {
-        border: #cab894 solid 1px;
+        border: #d8c29b solid 2px;
       }
     }
 
     .select-item-image {
-      width: calc(50% - 20px);;
-      height: 158px;
+      width: 34px;
+      height: 34px;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
 
     .image-goods {
@@ -191,7 +213,13 @@
       font-size: 12px;
       color: #333333;
       margin: 5px 10px;
-      max-lines: 2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+      -webkit-box-orient: vertical;
+      height: 48px;
     }
 
     .price-layout {
@@ -212,6 +240,9 @@
         height: 25px;
         background: #cab894;
         font-size: 12px;
+        &.disable {
+          background-color: #cccccc;
+        }
       }
     }
   }
