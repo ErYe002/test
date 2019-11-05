@@ -54,8 +54,7 @@
       </view>
       <view class='order-box'>
         <!-- 海外购添加haitao样式 -->
-        <!-- <view class='{{orderInfo.ShopId == 2 ? "haitao":""}}'> -->
-        <view class=''>
+        <view :class='orderInfo.ShopId == 2 ? "haitao":""'>
           <view class='shop-name'>
             <view class="text">
               <img v-if="orderInfo.ShopId == 2" src="" class='icon' />
@@ -105,7 +104,7 @@
           <text class='icon'></text>
         </view>
       </view>
-      <view class='flex-line' bindtap='showInvoice'>
+      <view class='flex-line'>
         <view class='label'>发票信息</view>
         <view class='text'>
           <block v-if='orderInfo.ShopId == 2'>海外商品暂不支持开发票</block>
@@ -116,18 +115,65 @@
         </view>
       </view>
     </view>
+    <div class="sectionLine"></div>
+    <view class='amount-box'>
+      <view class='flex-line'>
+        <view class='couponTitle'>优惠券</view>
+          <navigator url='/pages/order/useCoupon/main'>
+            <view class='couponSubtitle'>{{orderInfo.CouponContent + ' >'}}</view>
+          </navigator>
+      </view>
+    </view>
+    <!-- <view class='useCouponScore' v-if="orderInfo.IsCanUseScore"> -->
+    <view class='useCouponScore'>
+      <view class='counponContent'>
+        <view class='couponTitle'>积分</view>
+        <view class='couponSubtitle'>{{orderInfo.TotalScoreContent+ '，' + orderInfo.UseScoreContent}}</view>
+      </view>
+      <switch class="swiper" checked="" @change="changeUseScore" />
+    </view>
+    <!-- <view class='useCouponScore' v-if="orderInfo.IsCanUseScore"> -->
+    <view class='useCouponScore'>
+      <view class='counponContent'>
+        <view class='couponTitle'>余额</view>
+        <view class='couponSubtitle'>可用￥{{orderInfo.AllBalance}}，使用￥{{orderInfo.NewAvailableBalance}}</view>
+      </view>
+      <switch class="swiper" checked="" @change="changeUseBalance" />
+    </view>
+    
+    <div class="sectionLine"></div>
+    <view class='amount-box'>
+      <view class='flex-line'>
+        <view class='label'>商品总金额</view>
+        <view class='text'>¥{{orderInfo.TotalGoodsSalePrice}}</view>
+      </view>
+    </view>
+    <view class='amount-box' v-if="orderInfo.MeetPriceDownPrice > 0">
+      <view class='flex-line' >
+        <view class='label'>积分抵扣</view>
+        <view class='text'>-¥{{orderInfo.MeetPriceDownPrice}}</view>
+      </view>
+    </view>
+    <view class='amount-box' v-if="orderInfo.MeetPriceDownPrice > 0">
+      <view class='flex-line' >
+        <view class='label'>满减</view>
+        <view class='text'>-¥{{orderInfo.MeetPriceDownPrice}}</view>
+      </view>
+    </view>
     <view class='amount-box'>
       <view class='flex-line'>
         <view class='label'>运费</view>
         <view class='text'>¥{{orderInfo.Carriage}}</view>
       </view>
     </view>
-    <view class='amount-box'>
-      <view class='flex-line'>
-        <view class='label'>总金额</view>
-        <view class='text'>¥{{orderInfo.RealTotalPrice}}</view>
+    <view class='amount-box' v-if="orderInfo.MeetPriceDownPrice > 0">
+      <view class='flex-line' >
+        <view class='label'>使用可得账户余额</view>
+        <view class='text'>-¥{{orderInfo.MeetPriceDownPrice}}</view>
       </view>
     </view>
+    <div class="sectionLine"></div>
+    
     <!-- 用户协议 -->
     <view class="pay-protocol-box">
       <view class="pay-box">
@@ -304,13 +350,20 @@ export default {
     //     })
     //   }
     // },
+    changeUseBalance() {
+      this.formModel.isUseBalance = !this.isUseBalance
+      
+    },
+    changeUseScore() {
+      this.formModel.isUseScore = !this.formModel.isUseScore
+      
+    },
+
+
     //实现跳转的A页面
     jumpToLogistics: function () {
-      
       console.log("-----"+this.formModel.selectedConsigneeId)
-
       if (this.formModel.selectedConsigneeId.length > 0 && this.formModel.selectedConsigneeId != "00000000-0000-0000-0000-000000000000") {
-         
       }else{
         wx.showToast({
             title: "请选择收货地址",
@@ -484,15 +537,15 @@ page {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 25rpx;
+  padding: 20rpx;
   box-sizing: border-box;
   border-bottom: 1rpx solid #dcdcdc;
-  font-size: 30rpx;
+  font-size: 28rpx;
   /*海淘*/
 }
 .flex-line .text {
   font-size: 24rpx;
-  color: #999;
+  color: #333333;
 }
 .flex-line .text .icon {
   background-image: url(https://pic.keede.com/app/images/icon_jt_rt.png);
@@ -528,11 +581,46 @@ page {
 .flex-line.haitao-flex-line .text {
   color: #000;
 }
+
+
+.sectionLine {
+  background: #F0F0F0;
+  height: 12rpx;
+  width: 100%;
+}
+
+.useCouponScore {
+  display: flex;
+  align-items: center;
+  border-bottom: solid 2rpx #F0F0F0;
+  padding-left: 20rpx;
+  padding-top: 10rpx;
+  padding-bottom: 10rpx;
+}
+.counponContent {
+  font-size: 28rpx;
+  width: 100%;
+}
+.couponTitle {
+  color: #333333;
+}
+.couponSubtitle {
+  color: #999
+  ;
+  font-size: 20rpx;
+}
+.swiper {
+  margin-left: 20rpx;
+  margin-right: 10rpx;
+}
+
+
+//金额区域
 .balance-box {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 30rpx;
+  padding: 20rpx;
   font-size: 28rpx;
   border-bottom: solid 12rpx #F0F0F0;
 }
@@ -546,9 +634,9 @@ page {
 }
 .amount-box {
   font-size: 28rpx;
-  padding: 30rpx;
+  padding: 20rpx;
   box-sizing: border-box;
-  border-bottom: solid 12rpx #F0F0F0;
+  border-bottom: solid 2rpx #F0F0F0;
 }
 .amount-box .flex-line {
   border-bottom: none;
@@ -556,11 +644,11 @@ page {
   margin-bottom: 30rpx;
 }
 .amount-box .flex-line .label {
-  color: #999;
+  color: #333333;
 }
 .amount-box .flex-line .text {
-  font-size: 30rpx;
-  color: #000;
+  font-size: 28rpx;
+  color: #999;
 }
 .amount-box .flex-line:last-child {
   margin-bottom: 0;
