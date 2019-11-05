@@ -43,14 +43,13 @@ export default {
   onLoad(options) {
     if (options && options.SelectedConsigneeId){
       this.SelectedConsigneeId = options.SelectedConsigneeId
-      console.log(options)
     }
   },
   onShow(){
     this.getListData();
   },
   methods: {
-    ...mapActions("order",["setSelectAddressId"]),
+    ...mapActions("order",["setSelectAddressId","setSelectedExpressId"]),
     getListData() {
       api.getAddressList().then(({ Data }) => {
         //重新整理数据
@@ -64,7 +63,7 @@ export default {
     saveConsigneeId(e) {
       if (e.currentTarget.dataset.valid) {
         this.setSelectAddressId(e.currentTarget.dataset.id)
-
+        this.setSelectedExpressId('')
         wx.navigateBack({
             delta: 1
           })

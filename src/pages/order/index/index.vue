@@ -193,7 +193,7 @@ export default {
         isUseBalance : true,
         selectShopId : 1,
         selectedConsigneeId : "", 
-        selectedPayMode: "",
+        selectedPayMode: "1",
         selectedExpressId : "", 
         invoiceType : "", 
         invoiceTitle : "", 
@@ -221,23 +221,20 @@ export default {
   watch: {
     SelectedConsigneeId:{
       handler: function(val,oldVal){
-        console.log(val)
         this.formModel.selectedConsigneeId = val;
         this.getConfirmOrderDetail();
-      }
+      },immediate: true
     },
     SelectedExpressId:{
       handler: function(val,oldVal){
         this.formModel.selectedExpressId = val;
-        console.log(val)
         this.getConfirmOrderDetail();
-      }
+      },immediate: true
     }
   },
   methods: {
     getConfirmOrderDetail(){
       console.log('-----------')
-      console.log(this.formModel.selectedConsigneeId)
       api.getConfirmOrderDetail({...this.formModel}).then(({ Data, State, Msg }) => {
         this.orderInfo = Object.assign({}, Data);
         this.formModel.selectedConsigneeId = this.orderInfo.SelectedConsigneeId;
