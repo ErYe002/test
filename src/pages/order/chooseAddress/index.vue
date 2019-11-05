@@ -1,31 +1,8 @@
 <template>
   <div>
-    <!-- <li class="list" v-for="item in addressList" :key="item.ID">
-      <div class="div">
-        <div class="userInfo">
-          <p>{{item.ConsigneeName}}</p>
-          <p class="phone">{{item.ContactMobile}}</p>
-          <p class="default" v-if="item.IsDefault">默认</p>
-        </div>
-        <div class="address">{{item.Address}}</div>
-        <div class="editBtns">
-          <div @click="doSetDefaultAddress(item.ID)">
-            <radio class="radio" :disabled="true" color="#cab894" :checked="item.IsDefault" />设置默认
-          </div>
-          <div class="right">
-            <a
-              class="editItem"
-              :href="'/pages/account/address/editAddress/main?isEdit=true&consigneeId=' + item.ID"
-            >
-              <Img class="imgIcon" src="https://pic.keede.com/app/images/icon_cart.png"></Img>编辑
-            </a>
-          </div>
-        </div>
-      </div>
-    </li> -->
     <view class='list'>
     <view class='item' v-for="item in addressList" :key="item.ID">
-      <view :class="item.ID == SelectConsigneeId? 'choose-btn.active':'choose-btn'" :data-id='item.ID' :data-valid='item.IsValid' @click='saveConsigneeId'></view>
+      <view :class="item.ID == SelectedConsigneeId ? 'choose-btn.active':'choose-btn'" :data-id='item.ID' :data-valid='item.IsValid' @click='saveConsigneeId'></view>
         <view class='info-box' :data-id='item.ID' :data-valid='item.IsValid' @click='saveConsigneeId'>
           <view class='contact-user'>
             <text>{{item.ConsigneeName}}</text>
@@ -59,23 +36,24 @@ export default {
   data() {
     return {
       addressList: [],
-      SelectConsigneeId: '',
+      SelectedConsigneeId: '',
       isNoData: false,
     };
   },
   onLoad(options) {
-    // this.getListData();
+    if (options && options.SelectedConsigneeId){
+      this.SelectedConsigneeId = options.SelectedConsigneeId
+    }
   },
   onShow(){
     this.getListData();
   },
   methods: {
-    ...mapActions("order",["setSelectAddressId"]),
+    ...mapActions("order",["setSelectAddressId","setSelectedExpressId"]),
     getListData() {
       api.getAddressList().then(({ Data }) => {
         //重新整理数据
         this.addressList = [...Data];
-        console.log(this.addressList.length)
         if (!this.addressList.length) {
           this.isNoData = true;
         }
@@ -83,10 +61,9 @@ export default {
     },
     
     saveConsigneeId(e) {
-            console.log(e)
       if (e.currentTarget.dataset.valid) {
         this.setSelectAddressId(e.currentTarget.dataset.id)
-
+        this.setSelectedExpressId('')
         wx.navigateBack({
             delta: 1
           })
