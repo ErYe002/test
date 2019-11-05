@@ -25,7 +25,7 @@
           </view>
         </view>
         <!-- 添加过收货地址且已设置默认地址 -->
-        <navigator v-else url='/pages/order/chooseAddress/main' class='info-box'>
+        <navigator v-else :url="'/pages/order/chooseAddress/main?SelectedConsigneeId='+formModel.selectedConsigneeId" class='info-box'>
           <view class='info'>
             <view class='contact-name'>
               {{orderInfo.Consignee}}
@@ -191,10 +191,10 @@ export default {
       formModel: {
         isUseScore : true, 
         isUseBalance : true,
-        SelectShopId : 1,
-        SelectedConsigneeId : "", 
-        selectPayMode: "",
-        SelectedExpressId : "", 
+        selectShopId : 1,
+        selectedConsigneeId : "", 
+        selectedPayMode: "",
+        selectedExpressId : "", 
         invoiceType : "", 
         invoiceTitle : "", 
         invoiceItemId : "", 
@@ -222,23 +222,28 @@ export default {
     SelectedConsigneeId:{
       handler: function(val,oldVal){
         console.log(val)
+        this.formModel.selectedConsigneeId = val;
+        this.getConfirmOrderDetail();
       }
     },
     SelectedExpressId:{
       handler: function(val,oldVal){
+        this.formModel.selectedExpressId = val;
         console.log(val)
+        this.getConfirmOrderDetail();
       }
     }
   },
   methods: {
     getConfirmOrderDetail(){
+      console.log('-----------')
+      console.log(this.formModel.selectedConsigneeId)
       api.getConfirmOrderDetail({...this.formModel}).then(({ Data, State, Msg }) => {
-        console.log(Data); 
         this.orderInfo = Object.assign({}, Data);
-        this.formModel.SelectedConsigneeId = this.orderInfo.SelectedConsigneeId;
-        this.formModel.SelectedExpressId = this.orderInfo.SelectedExpressId
+        this.formModel.selectedConsigneeId = this.orderInfo.SelectedConsigneeId;
+        this.formModel.selectedExpressId = this.orderInfo.SelectedExpressId
         this.formModel.shopId = this.orderInfo.ShopId;
-        console.log(this.orderInfo.Goods)
+        console.log(Data)
       });
     },
     getadd(){
@@ -305,9 +310,9 @@ export default {
     //实现跳转的A页面
     jumpToLogistics: function () {
       
-      console.log("-----"+this.formModel.SelectedConsigneeId)
+      console.log("-----"+this.formModel.selectedConsigneeId)
 
-      if (this.formModel.SelectedConsigneeId.length > 0 && this.formModel.SelectedConsigneeId != "00000000-0000-0000-0000-000000000000") {
+      if (this.formModel.selectedConsigneeId.length > 0 && this.formModel.selectedConsigneeId != "00000000-0000-0000-0000-000000000000") {
          
       }else{
         wx.showToast({
@@ -317,7 +322,7 @@ export default {
         return;
       }
       wx.navigateTo({
-          url: '/pages/order/logistics/main?ShopId='+this.formModel.SelectShopId+'&SelectedConsigneeId='+this.formModel.SelectedConsigneeId+'&SelectedExpressId='+this.formModel.SelectedExpressId,
+          url: '/pages/order/logistics/main?ShopId='+this.formModel.selectShopId+'&SelectedConsigneeId='+this.formModel.selectedConsigneeId+'&SelectedExpressId='+this.formModel.selectedExpressId,
       })
     }
   }

@@ -110,8 +110,8 @@ const api = {
     return http.post(`/Cart/GetCanUseCoupons?shopId=${shopId}&isEffective=true`)
   },
   //在订单确认页面的任何一项数据发生变化时调用
-  getConfirmOrderDetail({isUseScore, selectConsigneeId, selectPayMode, selectExpressId, isUseBalance, invoiceType, invoiceTitle, invoiceItemId, selectInvoiceMode, axpayerIdentityNumber, bankName, bankAccount, companyAddress, mobileNo, IDCard, selectShopId} = {}){
-    return http.post(`/Cart/GetConfirmOrderDetail?IsUseScore=${isUseScore}&SelectConsigneeId=${selectConsigneeId}&SelectPayMode=${selectPayMode}&SelectExpressId=${selectExpressId}&IsUseBalance=${isUseBalance}&InvoiceType=${invoiceType}&InvoiceTitle=${invoiceTitle}&InvoiceItemId=${invoiceItemId}&InvoiceMode=${selectInvoiceMode}&identityNumber=${axpayerIdentityNumber}&bankName=${bankName}&bankAccount=${bankAccount}&companyAddress=${companyAddress}&mobileNo=${mobileNo}&IDCard=${IDCard}&selectShopId=${selectShopId}`)
+  getConfirmOrderDetail({isUseScore, selectedConsigneeId, selectedPayMode, selectedExpressId, isUseBalance, invoiceType, invoiceTitle, invoiceItemId, selectInvoiceMode, axpayerIdentityNumber, bankName, bankAccount, companyAddress, mobileNo, IDCard, selectShopId} = {}){
+    return http.post(`/Cart/GetConfirmOrderDetail?IsUseScore=${isUseScore}&SelectConsigneeId=${selectedConsigneeId}&SelectPayMode=${selectedPayMode}&SelectExpressId=${selectedExpressId}&IsUseBalance=${isUseBalance}&InvoiceType=${invoiceType}&InvoiceTitle=${invoiceTitle}&InvoiceItemId=${invoiceItemId}&InvoiceMode=${selectInvoiceMode}&identityNumber=${axpayerIdentityNumber}&bankName=${bankName}&bankAccount=${bankAccount}&companyAddress=${companyAddress}&mobileNo=${mobileNo}&IDCard=${IDCard}&selectShopId=${selectShopId}`)
   },
   //获取支付配送页面的数据
   getPaymentAndDelivery(consigneeId, shopId){
