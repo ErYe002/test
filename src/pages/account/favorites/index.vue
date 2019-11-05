@@ -3,14 +3,10 @@
     <ul class="list" v-if="list.length > 0">
       <li
         class="item"
-        v-for="(item, idx) in list"
+        v-for="item in list"
         :key="item.GoodsId"
-        @touchstart="touchS"
-        @touchmove="touchM"
-        @touchend="touchE"
-        :data-idx="idx"
       >
-        <div class="info-box" :style="item.txtStyle">
+        <div class="info-box">
           <img class="g-img" :src="item.ImageUrl" />
           <div class="info">
             <div class="g-name">{{item.GoodsName}}</div>
@@ -48,9 +44,7 @@ export default {
     return {
       list: [],
       page: 1,
-      size: 10,
-      startX: 0,
-      delBtnWidth: 90
+      size: 10
     };
   },
   onLoad() {
@@ -62,62 +56,7 @@ export default {
         this.list = Data;
       });
     },
-    touchS(e) {
-      console.log("touchS", e);
-      if (e.mp.touches.length == 1) {
-        this.startX = e.mp.touches[0].clientX;
-      }
-    },
-    touchM(e) {
-      // console.log("touchM", e);
-      if (e.mp.touches.length == 1) {
-        //手指移动时水平方向位置
-        let moveX = e.mp.touches[0].clientX;
-        //手指起始点位置与移动期间的差值
-        let disX = this.startX - moveX;
-        let txtStyle = "";
-        console.log('disX', disX)
-        if (disX == 0 || disX < 0) {
-          //如果移动距离小于等于0，说明向右滑动，文本层位置不变
-          txtStyle = "left: 0px";
-        } else if (disX > 0) {
-          //移动距离大于0，文本层left值等于手指移动距离
-          txtStyle = "left:-" + disX + "px";
-          if (disX >= this.delBtnWidth) {
-            //控制手指移动距离最大值为删除按钮的宽度
-            txtStyle = "left:-" + this.delBtnWidth + "px";
-          }
-        }
-        //获取手指触摸的是哪一项
-        var index = e.currentTarget.dataset.idx;
-        let list = this.list
-        //更新列表的状态
-        list[index].txtStyle = txtStyle;
-        this.list = list
-
-      }
-    },
-    // touchE(e) {
-    //   console.log("touchE", e);
-    //   if (e.mp.changedTouches.length == 1) {
-    //     //手指移动结束后水平位置
-    //     var endX = e.mp.changedTouches[0].clientX;
-    //     //触摸开始与结束，手指移动的距离
-    //     var disX = this.startX - endX;
-    //     //如果距离小于删除按钮的1/2，不显示删除按钮
-    //     var txtStyle =
-    //       disX > this.delBtnWidth / 2
-    //         ? "left:-" + this.delBtnWidth + "px"
-    //         : "left:0px;";
-    //     //获取手指触摸的是哪一项
-    //     var index = e.currentTarget.dataset.idx;
-    //     //更新列表的状态
-    //     let list = this.list
-    //     //更新列表的状态
-    //     list[index].txtStyle = txtStyle;
-    //     this.list = list
-    //   }
-    // }
+    
   }
 };
 </script>
