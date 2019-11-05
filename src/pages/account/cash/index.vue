@@ -33,12 +33,12 @@
       </div>
       <div>
         <div class="inline_flex border_topbottom">
-          <input id="input_code" v-model="PhoneCode" type="text" placeholder="请输入手机号获取的验证码"/>
-          <div id="getCode" @click="get_PhoneCode" >{{getCodeInfo}}</div>
+          <input class="input_code" v-model="PhoneCode" type="text" placeholder="请输入手机号获取的验证码"/>
+          <div class="getCode" @click="get_PhoneCode" >{{getCodeInfo}}</div>
         </div>
       </div>
-      <div id="input_info_div" class="bottom_gray">
-        <input id="input_info" type="text" v-model="inputInfo" disabled="disabled" />
+      <div class="input_info_div bottom_gray">
+        <input class="input_info" type="text" v-model="inputInfo" disabled="disabled" />
       </div>
       <div class="bottom_gray padding_set">
         <p class="note">温馨提示：为了将余额更快捷的提现到您的银行账号,我们
@@ -47,7 +47,7 @@
           本站进行违规套现行为，信用卡用户只能申请提现原支付账号。</p>
       </div>
       <div class="padding_set">
-        <button id="commit" @click="buttonCommit">提交</button>
+        <button class="kd-btn" @click="buttonCommit">提交</button>
       </div>
     </div>
 </template>
@@ -160,15 +160,13 @@ export default {
 </script>
 
 <style scoped lang="less">
-.container{
-  color:gray;
-}
+
 .account_detail{
   color:#f6a2b1;
 }
 
 .account_P{
-  font-size:12px;
+  font-size:14px;
   margin-bottom:9px;
 }
 
@@ -181,7 +179,7 @@ export default {
 
 .note{
   color:gray;
-  font-size:10px;
+  font-size:12px;
 }
 
 .inline_flex{
@@ -202,7 +200,7 @@ export default {
 
 .padding_set{
   padding:10px;
-  font-size:10px;
+  font-size:12px;
 }
 
 .border_set{
@@ -227,42 +225,41 @@ export default {
   padding-bottom:5px;
   padding-left:10px;
   padding-right:10px;
-  font-size:10px;
+  font-size:12px;
 }
 
-#commit{
-  background-color:#cbb897;
-  color:white;
-}
-
-#getCode{
-  background-color:#fca402;
+.getCode{
+  background-color:#ff7900;
   color:yellow; 
   height:30px;
   line-height:30px;
   padding-right:10px;
   padding-left:10px;
+  border-radius:4px;
 }
 
 .flex_grow{
   width:48%;
 }
 
-#input_code{
+.input_code{
   width:40%;
 }
 
-#input_info{
+.input_info{
   color:#f6a2b1;
-  font-size:9px;
+  font-size:10px;
   width:100%;
 }
 
-#input_info_div{
+.input_info_div{
   padding-left:10px;
   padding-right:10px;
   padding-top:5px;
   padding-bottom:5px;
+}
+.picker{
+  color:gray;
 }
 
 </style>

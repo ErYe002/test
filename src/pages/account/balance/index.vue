@@ -2,9 +2,9 @@
     <div class="container">
       <div class="info">
         <div class="account padding_set">
-          <p class="account_P">当前余额：<span class="account_detail">¥{{TotalBalance}}</span></p>
-          <p class="account_P">冻结金额：<span class="account_detail">¥{{FreezingBalance}}</span></p>
-          <p class="account_P">可用金额：<span class="account_detail">¥{{AvailableBalance}}</span></p>
+          <p class="account_P">当前余额：<span class="account_detail">¥ {{TotalBalance}}</span></p>
+          <p class="account_P">冻结金额：<span class="account_detail">¥ {{FreezingBalance}}</span></p>
+          <p class="account_P">可用金额：<span class="account_detail">¥ {{AvailableBalance}}</span></p>
         </div>
         <div class="operation">
           <button @click="gotoCash">余额提现</button>
@@ -61,10 +61,8 @@
             </div>
           </ul>
         </div>
-        <div class="footer" v-if="!NotClear">
-            <span class="line"></span>
-            <span class="text">暂时没有记录</span>
-            <span class="line"></span>
+        <div class="record_clear" v-if="!NotClear">
+            <p>暂时没有记录!</p>
         </div>
       </div>
     </div>
@@ -197,11 +195,12 @@ export default {
 <style scoped lang="less">
 .account_detail{
   color:#f6a2b1;
-  font-size:12px;
+  font-size:14px;
 }
 
 .account_P{
   margin-bottom:9px;
+  font-size:14px;
 }
 
 .info{
@@ -218,15 +217,16 @@ export default {
 }
 
 .operation button{
-  border:solid 1px #d7d59e;
-  color:#d7d59e;
-  font-size:12px;
-  border-radius:0;
+  border:solid 1px #cab894;
+  color:#cab894;
+  font-size:14px;
+  border-radius:4px;
+  
 }
 
 .note{
   color:gray;
-  font-size:10px;
+  font-size:12px;
 }
 
 #record_button{
@@ -271,7 +271,7 @@ ul{
   width:50%;
   height:100%;
   text-align:center;
-  font-size:10px;
+  font-size:14px;
   padding-bottom:15px;
   border-bottom:1px solid #eeeeee;
 }
@@ -326,8 +326,8 @@ ul{
 }
 
 .buttonChecked{
-  border-bottom:3px solid #c6ba94;
-  color:#c6ba94;
+  border-bottom:3px solid #cab894;
+  color:#cab894;
 }
 
 .footer
@@ -345,6 +345,14 @@ ul{
     width:100px;
     border-top:1px solid #cccccc;
     vertical-align:5px;  
+}
+
+.record_clear{
+  width:100%;
+  text-align:center;
+  margin-top:150px;
+  color:gray;
+  font-size:14px;
 }
 
 </style>
