@@ -12,6 +12,7 @@
       "root": "pages/account",
       "pages": [
         "order/list/main",
+        "order/detail/main",
         "address/addressList/main",
         "address/editAddress/main",
         "setting/home/main",
