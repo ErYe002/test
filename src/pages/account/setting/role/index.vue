@@ -1,7 +1,7 @@
 <template>
     <article>
         <section class="user-box">
-          <img class="bg" src="https://pic.keede.com//app/images/level_bg.png" model="aspectFit" />
+          <img class="bg" src="/static/images/level_bg.png" model="aspectFit" />
           <div class="user-top-box">
             <img
               class="head"
@@ -12,7 +12,7 @@
               <p class="level">
                 <img
                     class="icon"
-                    :src="'/static/images/level_0'+userInfoModel.LevelNum+'.jpg'"
+                    :src="'/static/images/level_0' + userInfoModel.LevelNum + '.jpg'"
                 />
                 <span class="text">会员</span>
               </p>
@@ -118,7 +118,7 @@ export default {
         GradeName: "",
         HeadUrl: "",
         Nick: "",
-        LevelNum: 0,
+        LevelNum: 1,
         EmpiricalValueMemo:""
       },
       roleList: [
@@ -169,7 +169,6 @@ export default {
             DiscountRate: item.DiscountRate
           };
         });
-        console.log(JSON.stringify(this.roleList));
       });
     }
   }
