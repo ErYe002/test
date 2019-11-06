@@ -240,7 +240,7 @@
             <p class="text">我要告状</p>
           </a>
         </li>-->
-        <li class="item">
+        <!-- <li class="item">
           <button
             open-type="getUserInfo"
             @getuserinfo="getUserInfo"
@@ -255,7 +255,7 @@
             <img src="/static/images/home_security.png" class="icon" />
             <p class="text">账户安全</p>
           </a>
-        </li>
+        </li> -->
       </ul>
     </section>
   </article>
