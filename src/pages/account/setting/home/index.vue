@@ -26,7 +26,7 @@
     </section>
     <section class="setting">
         <p class="line">
-            <a>
+            <a href="/pages/account/address/addressList/main">
                 地址管理
                 <img
                     class="go-right-icon"

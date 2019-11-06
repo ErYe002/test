@@ -66,6 +66,10 @@ const api = {
   getFavoriteList(pageIndex, pageSize) {
     return http.post(`Account/GetFavoriteList?pageSize=${pageSize}&pageIndex=${pageIndex}&shopId=0`);
   },
+  //根据商品Id取消收藏商品
+  cancelFavoriteByGoodsId(goodsId){
+    return http.post(`Account/CancelFavoriteByGoodsId?goodsId=${goodsId}`)
+  },
   //获取用户的基本信息
   getPersonnelProfile(){
     return http.post("Account/GetPersonnelProfile");
@@ -89,6 +93,6 @@ const api = {
   //设置生日
   setBirthday(birthday){
     return http.post("Account/SetBirthday?birthday=" + birthday);
-  }};
+  }
 
 export default api;
