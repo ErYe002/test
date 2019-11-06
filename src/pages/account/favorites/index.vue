@@ -14,7 +14,7 @@
           </div>
         </div>
         <div class="op-box">
-          <span>删除</span>
+          <img @click="del_img_click(item.GoodsId)" src="/static/images/account_favorite_delete.png" />
         </div>
       </li>
       <!-- <li class="item">
@@ -33,6 +33,10 @@
         </div>
       </li>-->
     </ul>
+    <div class="favo_Clear" :if="list.length <= 0">
+      <p>您还没有收藏任何商品!</p>
+      <button href="">去查看商品</button>
+    </div>
   </article>
 </template>
 
@@ -56,7 +60,19 @@ export default {
         this.list = Data;
       });
     },
-    
+    del_img_click(key){
+      var current=this;
+      wx.showModal({
+        title: '提示',
+        content: '确定要删除该收藏吗？',
+        success (res) {
+          if (res.confirm) {
+            current.list.splice(key, 1);
+            api.cancelFavoriteByGoodsId(key);
+          } 
+        }
+      });
+    }
   }
 };
 </script>
@@ -66,10 +82,11 @@ export default {
   .item {
     border-bottom: 0.5px solid #e5e5e5;
     position: relative;
+    display:flex;
+    flex-direction:row;
     .info-box {
       display: flex;
       position: relative;
-      z-index: 2;
       padding: 10px;
       background: #fff;
       .g-img {
@@ -105,20 +122,43 @@ export default {
     .op-box {
       position: absolute;
       right: 0;
-      top: 0;
-      z-index: 1;
-      background: #f00;
-      color: #fff;
+      bottom:0;
       font-size: 14px;
-      height: 100%;
+      height: 70px;
       width: 70px;
       display: flex;
-      align-items: center;
       justify-content: center;
       &:active {
         background: lighten(#f00, 10%);
       }
+      img{
+        position:absolute;
+        right:10px;
+        bottom:10px;
+        width:25px;
+        height:25px;
+      }
     }
+  }
+  
+}
+.favo_Clear{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  color:gray;
+  margin:auto auto;
+  margin-top:150px;
+  button{
+    width:130px;
+    height:30px;
+    line-height:30px;
+    margin-top:15px;
+    color:#cab894;
+    border:1px solid #cab894;
+    border-radius:20px;    
+    background:none;
   }
 }
 </style>

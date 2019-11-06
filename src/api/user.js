@@ -66,6 +66,10 @@ const api = {
   getFavoriteList(pageIndex, pageSize) {
     return http.post(`Account/GetFavoriteList?pageSize=${pageSize}&pageIndex=${pageIndex}&shopId=0`);
   },
+  //根据商品Id取消收藏商品
+  cancelFavoriteByGoodsId(goodsId){
+    return http.post(`Account/CancelFavoriteByGoodsId?goodsId=${goodsId}`)
+  }
 };
 
 export default api;
