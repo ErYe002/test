@@ -63,15 +63,17 @@
             <view v-if='orderInfo.ShopId != 2' class="sub-text">全国送 预计2-5工作日送达</view>
           </view>
           <view class='goods-info'>
-            <scroll-view class="scroll-view_H" scroll-x="true" @scroll="scroll">
-              <div class="scroll-item" v-for="(item, idx) in orderInfo.Goods" :key="idx">
-                <div class="goods-item">
-                  <img class="goodsImg" mode="aspectFit" :src="item.ImageUrl">
-                  <div class="count"> x {{item.Quantity}}</div>
+            <div class="scrollSuper">
+              <scroll-view class="scroll-view_H" scroll-x="true" @scroll="scroll">
+                <div class="scroll-item" v-for="(item, idx) in orderInfo.Goods" :key="idx">
+                  <div class="goods-item">
+                    <img class="goodsImg" mode="aspectFit" :src="item.ImageUrl">
+                    <div class="count"> x {{item.Quantity}}</div>
+                  </div>
                 </div>
-              </div>
-            </scroll-view>
-            <div class="goodsCount">共xxx件。。。</div>
+              </scroll-view>
+            </div>
+            <div class="goodsCount">共xxx件...</div>
           </view>
         </view>
         <block v-if='orderInfo.ShopId == 2'>
@@ -203,8 +205,8 @@
           购买进口海淘商品需同意 text class='protocol-desc'>《用户购买需知》</text>
         </view>
       </view>
-      <view class='bottom-btn-box'>
-        <view class=''>送到：{{orderInfo.Address}}</view>
+      <view class='bottom-btn-box'> 
+        <view :class="isCoverAddress ? 'tips-address.show':'tips-address'">送到：{{orderInfo.Address}}</view>
         <view class='btn-box'>
           <view class='btn'>
             <text>实付款：</text>
@@ -235,6 +237,7 @@ export default {
     return {
       orderInfo: {},  //API返回的页面渲染信息
       isCheckProtocol:true,
+      isCoverAddress:true,
       formModel: {
         isUseScore : true, 
         isUseBalance : true,
@@ -484,7 +487,7 @@ page {
 .order-box .shop-name {
   color: #171717;
   font-size: 28rpx;
-  padding: 30rpx;
+  padding: 25rpx;
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
@@ -504,10 +507,19 @@ page {
   align-items: center;
   padding: 0 30rpx;
   border-bottom: 1rpx solid #dcdcdc;
-  height: 200rpx;
+  height: 160rpx;
+}
+.scrollSuper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  background: #ff0000;
 }
 .scroll-view_H {
   white-space: nowrap;
+  background: #808080;
+  // width: 70%;
 }
 .scroll-item {
   display: inline-block;
@@ -529,7 +541,10 @@ page {
   font-size: 20rpx;
 }
 .goodsCount {
-  width: 100rpx;
+  width: 120rpx;
+  font-size: 20rpx;
+  text-align: center;
+  background: #808080;
 }
 .order-box .haitao {
   border-bottom: solid 12rpx #F0F0F0;
