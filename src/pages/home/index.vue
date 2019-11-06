@@ -23,14 +23,14 @@
           <button
             open-type="getUserInfo"
             @getuserinfo="getUserInfo"
-            data-link="/pages/index/main"
+            data-link="/pages/account/balance/main"
             v-if="!token"
             class="link"
           >
             <p class="number">0.00</p>
             <p class="text">余额</p>
           </button>
-          <a v-else href="/pages/index/main" class="link">
+          <a v-else href="/pages/account/balance/main" class="link">
             <p class="number">{{walletModel.Balance || 0.00}}</p>
             <p class="text">余额</p>
           </a>
@@ -298,6 +298,12 @@ export default {
         }
       },
       immediate: true
+    }
+  },
+  //下拉刷新
+  onPullDownRefresh() {
+    if(this.token){
+      this._getPageData();
     }
   },
   methods: {

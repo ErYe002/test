@@ -213,7 +213,14 @@ export default {
       } else {
         quantity = this.newQuantity;
       }
-      console.log(selectedProperty);
+      if(quantity <= 0){
+        wx.showToast({
+          title: '商品数量不能为0',
+          icon: 'none',
+          duration: 2000
+        })
+        return
+      }
       this._saveChangeRequest(selectedProperty, quantity);
     },
     _saveChangeRequest(selectedProperty, quantity, isConfirmedBuy = false) {

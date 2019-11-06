@@ -290,7 +290,7 @@
                     <span class="tag">买送</span>
                     <template v-if="gItem.FreeGifts.length > 1">
                       <span class="title">该品买就送{{fItem.GoodsName}}等{{gItem.FreeGifts.length}}种商品</span>
-                      <a class="link">去看看></a>
+                      <a class="link" @click="editCartItemEvent(fItem.UniqueId, '', '', 0)">去看看></a>
                     </template>
                     <template v-else-if="fItem.IsSpecificationGoods">
                       <span class="title">该品买就送{{fItem.GoodsName}}</span>
@@ -305,7 +305,7 @@
                     <template v-else>
                       <span class="title">该品买就送{{fItem.GoodsName}}</span>
                       <span class="num">×{{fItem.TotalQuantity}}</span>
-                      <a class="link">去看看></a>
+                      <a class="link" @click="editCartItemEvent(fItem.UniqueId, '', '', 0)">去看看></a>
                     </template>
                   </p>
                 </template>
@@ -489,7 +489,7 @@
                     <span class="tag">买送</span>
                     <template v-if="nItem.FreeGifts.length > 1">
                       <span class="title">该品买就送{{fItem.GoodsName}}等{{nItem.FreeGifts.length}}种商品</span>
-                      <a class="link">去看看></a>
+                      <a class="link" @click="editCartItemEvent(fItem.UniqueId, '', '', 0)">去看看></a>
                     </template>
                     <template v-else-if="fItem.IsSpecificationGoods">
                       <span class="title">该品买就送{{fItem.GoodsName}}</span>
@@ -504,7 +504,7 @@
                     <template v-else>
                       <span class="title">该品买就送{{fItem.GoodsName}}</span>
                       <span class="num">×{{fItem.TotalQuantity}}</span>
-                      <a class="link">去看看></a>
+                      <a class="link" @click="editCartItemEvent(fItem.UniqueId, '', '', 0)">去看看></a>
                     </template>
                   </p>
                 </template>
