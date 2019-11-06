@@ -63,15 +63,15 @@
             <view v-if='orderInfo.ShopId != 2' class="sub-text">全国送 预计2-5工作日送达</view>
           </view>
           <view class='goods-info'>
-            <scroll-view class="scroll-view_H" scroll-x="true" enable-flex="true">
-                <div class="scroll-item" v-for="(item, idx) in orderInfo.Goods" :key="idx">
-                  <div class="goods-item">
-                    <img class="goodsImg" mode="aspectFit" :src="item.ImageUrl">
-                    <div class="count"> x {{item.Quantity}}</div>
-                  </div>
+            <scroll-view class="scroll-view_H" scroll-x="true"  enable-flex="true">
+              <div class="scroll-item" v-for="(item, idx) in orderInfo.Goods" :key="idx">
+                <div class="goods-item">
+                  <img class="goodsImg" mode="aspectFit" :src="item.ImageUrl">
+                  <div class="count"> x {{item.Quantity}}</div>
                 </div>
-              </scroll-view>
-            <div class="goodsCount">共xxx件...</div>
+              </div>
+            </scroll-view>
+            <div class="goodsCount">共{{orderInfo.GoodsQuantity}}件...</div>
           </view>
         </view>
         <block v-if='orderInfo.ShopId == 2'>
@@ -150,14 +150,20 @@
     </view>
     <view class='amount-box' v-if="orderInfo.MeetPriceDownPrice > 0">
       <view class='flex-line' >
-        <view class='label'>积分抵扣</view>
+        <view class='label'>满减</view>
         <view class='text'>-¥{{orderInfo.MeetPriceDownPrice}}</view>
       </view>
     </view>
     <view class='amount-box' v-if="orderInfo.MeetPriceDownPrice > 0">
       <view class='flex-line' >
-        <view class='label'>满减</view>
-        <view class='text'>-¥{{orderInfo.MeetPriceDownPrice}}</view>
+        <view class='label'>优惠券抵扣</view>
+        <view class='text'>-¥{{orderInfo.CouponPrice}}</view>
+      </view>
+    </view>
+    <view class='amount-box' v-if="orderInfo.MeetPriceDownPrice > 0">
+      <view class='flex-line' >
+        <view class='label'>积分抵扣</view>
+        <view class='text'>-¥{{orderInfo.ScorePrice}}</view>
       </view>
     </view>
     <view class='amount-box'>
@@ -169,7 +175,7 @@
     <view class='amount-box' v-if="orderInfo.MeetPriceDownPrice > 0">
       <view class='flex-line' >
         <view class='label'>使用可得账户余额</view>
-        <view class='text'>-¥{{orderInfo.MeetPriceDownPrice}}</view>
+        <view class='text'>-¥{{orderInfo.PaymentByBalance}}</view>
       </view>
     </view>
     <div class="sectionLine"></div>
