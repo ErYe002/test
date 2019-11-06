@@ -63,8 +63,7 @@
             <view v-if='orderInfo.ShopId != 2' class="sub-text">全国送 预计2-5工作日送达</view>
           </view>
           <view class='goods-info'>
-            <div class="scrollSuper">
-              <scroll-view class="scroll-view_H" scroll-x="true" @scroll="scroll">
+            <scroll-view class="scroll-view_H" scroll-x="true" enable-flex="true">
                 <div class="scroll-item" v-for="(item, idx) in orderInfo.Goods" :key="idx">
                   <div class="goods-item">
                     <img class="goodsImg" mode="aspectFit" :src="item.ImageUrl">
@@ -72,7 +71,6 @@
                   </div>
                 </div>
               </scroll-view>
-            </div>
             <div class="goodsCount">共xxx件...</div>
           </view>
         </view>
@@ -202,7 +200,7 @@
       <view class='haitao-protocol-box' v-if='orderInfo.ShopId == 2' bindtap='checkProtocol'>
         <view class=''></view>
         <view class='text'>
-          购买进口海淘商品需同意 text class='protocol-desc'>《用户购买需知》</text>
+          购买进口海淘商品需同意 <text class='protocol-desc'>《用户购买需知》</text>
         </view>
       </view>
       <view class='bottom-btn-box'> 
@@ -509,20 +507,15 @@ page {
   border-bottom: 1rpx solid #dcdcdc;
   height: 160rpx;
 }
-.scrollSuper {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  background: #ff0000;
-}
 .scroll-view_H {
-  white-space: nowrap;
-  background: #808080;
-  // width: 70%;
+  // white-space: nowrap;
+  // background: #808080;
+  width: calc(100% - 120rpx);
+  display: flex;
+  height: 160rpx;
+  box-sizing: border-box;
 }
 .scroll-item {
-  display: inline-block;
   height: 140rpx;
   width: 200rpx;
 }
@@ -543,8 +536,8 @@ page {
 .goodsCount {
   width: 120rpx;
   font-size: 20rpx;
-  text-align: center;
-  background: #808080;
+  text-align: right;
+  // background: #808080;
 }
 .order-box .haitao {
   border-bottom: solid 12rpx #F0F0F0;
