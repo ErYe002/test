@@ -77,7 +77,13 @@ export default {
       "setIsNeedFilter"
     ]),
     selectBrandEvent(bid) {
-      this.setFilterRules({ ...this.selectedFilterRules, brandId: bid });
+      if(this.selectedFilterRules.brandId == bid){
+        console.log('取消品牌选中')
+        this.setFilterRules({ ...this.selectedFilterRules, brandId: '' });
+      } else {
+        console.log('设置品牌选中')
+        this.setFilterRules({ ...this.selectedFilterRules, brandId: bid });
+      }
     },
     setLPrice(e) {
       this.setFilterRules({

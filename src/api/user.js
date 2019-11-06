@@ -69,7 +69,30 @@ const api = {
   //根据商品Id取消收藏商品
   cancelFavoriteByGoodsId(goodsId){
     return http.post(`Account/CancelFavoriteByGoodsId?goodsId=${goodsId}`)
+  },
+  //获取用户的基本信息
+  getPersonnelProfile(){
+    return http.post("Account/GetPersonnelProfile");
+  },
+  //获取会员等级数据
+  getRoleOfPersonnel(){
+    return http.post("Account/GetRoleOfPersonnel");
+  },
+  //修改用户名
+  changeUserName(userName){
+    return http.post("Account/ChangeUserName?newLoginName=" + userName);
+  },
+  //设置用户昵称
+  setUserNick(nick){
+    return http.post("Account/SetNick?nick=" + nick);
+  },
+  //设置用户性别
+  setUserSex(sex){
+    return http.post("Account/SetSex?sex=" + sex);
+  },
+  //设置生日
+  setBirthday(birthday){
+    return http.post("Account/SetBirthday?birthday=" + birthday);
   }
-};
 
 export default api;

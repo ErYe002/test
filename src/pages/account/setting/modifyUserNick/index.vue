@@ -1,4 +1,5 @@
 <template>
+  <article>
   <section>
     <div class="modify-box">
       <label>昵称</label>
@@ -21,20 +22,50 @@
       4-20个字符，可由中英文、数字、“_”、“-”组成
     </div>
   </section>
+    <section class="btn-box">
+      <div class="btn-submit" @click="_setUserNick">保存</div>
+    </section>
+  </article>
 </template>
 
 <script>
+import api from "@/api/user"
+
 export default {
-    data(){
-        return{
-            message: ""
-        }
-    },
-    methods:{
-        _clearMsg: function(){
-            this.message = "";
-        }
+  data(){
+    return{
+      message: ""
     }
+  },
+  onLoad(options){
+    if(options != null && options.nick != null){
+      this.message = options.nick;
+    }
+  },
+  methods:{
+    _clearMsg: function(){
+      this.message = "";
+    },
+    _setUserNick: function(){
+      if(this.message == null || this.message == ""){
+        wx.showToast({
+          title: "昵称不能为空。",
+          mask: true
+        });
+        return;
+      }
+      api.setUserNick(this.message).then(({State, Msg}) => {
+        wx.showToast({
+          title: "修改用户昵称成功！",
+          mask: true,
+          duration: 2000,
+          complete: function(){
+            mpvue.navigateBack({url: "/pages/account/setting/userInfo/main"});
+          }
+        });
+      });
+    }
+  }
 }
 </script>
 
@@ -73,5 +104,19 @@ export default {
     padding-left: 10px;
     font-size: 12px;
     color: #888;
+}
+.btn-box{
+  position: fixed;
+  // height: 55px;
+  width: 100%;
+  bottom: 0px;
+  .btn-submit{
+    height: 55px;
+    line-height: 50px;
+    background-color: #cab894;
+    border: 1px solid #cab894;
+    color: #fff;
+    text-align: center;
+  }
 }
 </style>

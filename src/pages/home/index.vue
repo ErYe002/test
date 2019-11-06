@@ -23,14 +23,14 @@
           <button
             open-type="getUserInfo"
             @getuserinfo="getUserInfo"
-            data-link="/pages/index/main"
+            data-link="/pages/account/balance/main"
             v-if="!token"
             class="link"
           >
             <p class="number">0.00</p>
             <p class="text">余额</p>
           </button>
-          <a v-else href="/pages/index/main" class="link">
+          <a v-else href="/pages/account/balance/main" class="link">
             <p class="number">{{walletModel.Balance || 0.00}}</p>
             <p class="text">余额</p>
           </a>
@@ -266,23 +266,31 @@ import api from "@/api/user";
 import authorization from "@/utils/authorization";
 import { mapState } from "vuex";
 
+const userInfoModelTemp = {
+  GradeName: "普通会员",
+  HeadUrl: "https://pic.keede.com/app/images/login_img.png",
+  Nick: "可得会员",
+  OrderCountOfCustomerService: 0,
+  OrderCountOfWaitDeliver: 0,
+  OrderCountOfWaitEvaluate: 0,
+  OrderCountOfWaitPay: 0
+};
+
+const walletModelTemp = {
+  Balance: 0.0,
+  CountOfCoupon: 0,
+  Score: 0
+};
+
 export default {
   data() {
     return {
       //填充userInfoModel和walletModel的默认字段，以免控制台报错
       userInfoModel: {
-        GradeName: "普通会员",
-        HeadUrl: "https://pic.keede.com/app/images/login_img.png",
-        Nick: "可得会员",
-        OrderCountOfCustomerService: 0,
-        OrderCountOfWaitDeliver: 0,
-        OrderCountOfWaitEvaluate: 0,
-        OrderCountOfWaitPay: 0
+        ...userInfoModelTemp
       },
       walletModel: {
-        Balance: 0.0,
-        CountOfCoupon: 0,
-        Score: 0
+        ...walletModelTemp
       }
     };
   },
@@ -291,13 +299,24 @@ export default {
   },
   watch: {
     token: {
-      handler: function(val) {
+      handler: function(val, oldVal) {
         console.log("token==", val);
-        if (val != "") {
+        if (oldVal == "" && val != "") {
+          //登录成功
           this._getPageData();
+        } else if (oldVal != '' && val == ''){
+          //退出登录
+          this.userInfoModel = Object.assign({}, userInfoModelTemp)
+          this.walletModel = Object.assign({}, walletModelTemp)
         }
       },
       immediate: true
+    }
+  },
+  //下拉刷新
+  onPullDownRefresh() {
+    if (this.token) {
+      this._getPageData();
     }
   },
   methods: {
@@ -305,7 +324,11 @@ export default {
       const link = e.mp.currentTarget.dataset.link || "";
       authorization.doLogin(e.mp.detail.encryptedData, e.mp.detail.iv, () => {
         if (link) {
-          if(link.indexOf('/pages/index/main') != -1 || link.indexOf('/pages/classmenu/main') != -1 || link.indexOf('/pages/cart/main') != -1){
+          if (
+            link.indexOf("/pages/index/main") != -1 ||
+            link.indexOf("/pages/classmenu/main") != -1 ||
+            link.indexOf("/pages/cart/main") != -1
+          ) {
             wx.switchTab({
               url: link
             });

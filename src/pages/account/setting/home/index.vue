@@ -8,10 +8,10 @@
       />
       <div class="info-box">
         <p class="nick">
-            {{userInfoModel.Nick}}
+            <label>{{userInfoModel.Nick}}</label>
             <img
               class="sex" 
-              :src="userInfoModel.sex=='男'?'/static/images/man-icon.png':'/static/images/woman-icon.png'"
+              :src="userInfoModel.Sex=='男'?'/static/images/man-icon.png':'/static/images/woman-icon.png'"
             />
         </p>
         <p class="name">
@@ -26,7 +26,7 @@
     </section>
     <section class="setting">
         <p class="line">
-            <a>
+            <a href="/pages/account/address/addressList/main">
                 地址管理
                 <img
                     class="go-right-icon"
@@ -49,8 +49,7 @@
     </section>
     <section class="logout">
         <a
-          href="/pages/index/main"
-          open-type="switchTab"
+        @click="logoutEvent"
         >
           退出登录
         </a>
@@ -59,17 +58,45 @@
 </template>
 
 <script>
+import api from "@/api/user";
+import { mapActions } from 'vuex'
+
 export default {
-    data(){
-        return {
-            userInfoModel:{
-                UserName:"kaikai666",
-                Nick: "凯凯",
-                levelNum: 6,
-                sex: "男"
-            }
-        }
+  data(){
+    return {
+      userInfoModel:{
+        UserName:"",
+        Nick: "",
+        LevelNum: 0,
+        sex: "",
+        HeadUrl:""
+      }
     }
+  },
+  onLoad(){
+    this._getPersonnelProfile()
+  },
+  methods:{
+    ...mapActions('user', ['removeToken']),
+    logoutEvent(){
+      this.removeToken()
+      wx.switchTab({
+        url: '/pages/index/main'
+      })
+    },
+    _getPersonnelProfile(){
+      api.getPersonnelProfile().then(({Data}) => {
+        this.userInfoModel = {
+          UserName: Data.UserName,
+          Nick: Data.Nick,
+          LevelNum: Data.RoleId,
+          Sex: Data.Sex,
+          HeadUrl: Data.HeadUrl
+        };
+        // console.log(JSON.stringify(Data));
+      })
+    }
+  }
 }
 </script>
 
@@ -77,6 +104,7 @@ export default {
 .user-box {
   font-size: 12px;
   border-bottom: 15rpx solid #e5e5e5!important;
+  padding: 10px;
   a{
     display: flex;
     align-items: center;
@@ -88,15 +116,19 @@ export default {
     display: block;
     width: 64px;
     height: 64px;
-    margin-left: 30px;
+    // margin-left: 30px;
     border-radius: 50%;
   }
   .info-box {
     margin-left: 10px;
+    .nick{
+      display: flex;
+    }
     .sex {
       display: inline-block;
       width: 14px;
       height: 14px;
+      margin-left: 5px;
     }
     .name {
       height: 14.5px;

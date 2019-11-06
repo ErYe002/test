@@ -47,7 +47,8 @@
       "pages": [
         "index/main",
         "logistics/main",
-        "chooseAddress/main"
+        "chooseAddress/main",
+        "useCoupon/main"
       ]
     }
   ],
