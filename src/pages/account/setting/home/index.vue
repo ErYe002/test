@@ -49,8 +49,7 @@
     </section>
     <section class="logout">
         <a
-          href="/pages/index/main"
-          open-type="switchTab"
+        @click="logoutEvent"
         >
           退出登录
         </a>
@@ -60,6 +59,7 @@
 
 <script>
 import api from "@/api/user";
+import { mapActions } from 'vuex'
 
 export default {
   data(){
@@ -73,18 +73,17 @@ export default {
       }
     }
   },
-  watch:{
-    token: {
-      handler: function(val){
-        // console.log("token==" + val);
-        if(val != ""){
-          this._getPersonnelProfile();
-        }
-      },
-      immediate: true
-    }
+  onLoad(){
+    this._getPersonnelProfile()
   },
   methods:{
+    ...mapActions('user', ['removeToken']),
+    logoutEvent(){
+      this.removeToken()
+      wx.switchTab({
+        url: '/pages/index/main'
+      })
+    },
     _getPersonnelProfile(){
       api.getPersonnelProfile().then(({Data}) => {
         this.userInfoModel = {
@@ -105,6 +104,7 @@ export default {
 .user-box {
   font-size: 12px;
   border-bottom: 15rpx solid #e5e5e5!important;
+  padding: 10px;
   a{
     display: flex;
     align-items: center;
@@ -116,7 +116,7 @@ export default {
     display: block;
     width: 64px;
     height: 64px;
-    margin-left: 30px;
+    // margin-left: 30px;
     border-radius: 50%;
   }
   .info-box {
