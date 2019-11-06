@@ -100,19 +100,10 @@ export default {
   },
   onLoad(){
     this._initDate();
+    this._getPersonnelProfile();
   },
   components: {
     bottomFlip
-  },
-  watch: {
-    token:{
-      handler: function(val){
-        if(val != ""){
-          this._getPersonnelProfile();
-        }
-      },
-      immediate: true
-    }
   },
   methods:{
     _initDate(){
