@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import api from "@/api/user"
+
 export default {
   data(){
     return{
@@ -46,12 +48,21 @@ export default {
     },
     _setUserNick: function(){
       if(this.message == null || this.message == ""){
-        console.log("昵称不能为空。")
+        wx.showToast({
+          title: "昵称不能为空。",
+          mask: true
+        });
         return;
       }
       api.setUserNick(this.message).then(({State, Msg}) => {
-        console.log("修改用户昵称成功！");
-        mpvue.navigateBack({url: "/pages/account/setting/userInfo/main"});
+        wx.showToast({
+          title: "修改用户昵称成功！",
+          mask: true,
+          duration: 2000,
+          complete: function(){
+            mpvue.navigateBack({url: "/pages/account/setting/userInfo/main"});
+          }
+        });
       });
     }
   }

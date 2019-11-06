@@ -43,11 +43,17 @@ export default {
     },
     _changeUserName: function(){
       if(this.message == null || this.message == ""){
-        console.log("用户名不能为空。")
+        wx.showToast({
+          title: "用户名不能为空。",
+          mask: true
+        });
         return;
       }
       api.changeUserName(this.message).then(({State, Msg}) => {
-        console.log("修改用户名成功！");
+        wx.showToast({
+          title: "修改用户名成功！",
+          mask: true
+        });
         mpvue.navigateBack({url: "/pages/account/setting/userInfo/main"});
       });
     }
