@@ -94,5 +94,5 @@ const api = {
   setBirthday(birthday){
     return http.post("Account/SetBirthday?birthday=" + birthday);
   }
-
+}
 export default api;
