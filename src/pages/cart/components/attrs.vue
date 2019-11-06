@@ -120,7 +120,7 @@ export default {
         //父与子组件同步isShow值
         this.$emit("update:isShow", val);
         if (val == true) {
-          this.info = null
+          this.info = null;
           this._getData();
         }
       },
@@ -181,7 +181,8 @@ export default {
     //修改数量  type：0减数量  1加数量
     modifyQuantityEvent(type) {
       if (type == 0) {
-        if (this.newQuantity == 1) {
+        if (this.newQuantity <= 0) {
+          this.newQuantity = 0
           return;
         }
         this.newQuantity--;
@@ -213,13 +214,31 @@ export default {
       } else {
         quantity = this.newQuantity;
       }
-      if(quantity <= 0){
+
+      //验证
+      let vldQuantity = this.info.HasProperty ? 0 : quantity;
+      if (this.info.HasProperty) {
+        selectedProperty.forEach(ele => {
+          vldQuantity += ele.Quantity;
+        });
+      }
+      if (vldQuantity <= 0) {
         wx.showToast({
-          title: '商品数量不能为0',
-          icon: 'none',
+          title: "商品数量不能为0",
+          icon: "none",
           duration: 2000
-        })
-        return
+        });
+        return;
+      }
+      if(this.info.MaxQuantity > 0){
+        if(vldQuantity > this.info.MaxQuantity){
+          wx.showToast({
+            title: "最多只能加购"+this.info.MaxQuantity+"件哦",
+            icon: "none",
+            duration: 2000
+          });
+          return;
+        }
       }
       this._saveChangeRequest(selectedProperty, quantity);
     },
