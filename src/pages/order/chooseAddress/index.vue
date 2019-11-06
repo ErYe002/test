@@ -67,7 +67,7 @@ export default {
         wx.navigateBack({
             delta: 1
           })
-        }
+      }
     },
     toEdit(e) {
       const id = e.currentTarget.dataset.id

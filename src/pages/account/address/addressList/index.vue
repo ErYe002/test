@@ -63,12 +63,11 @@ export default {
     doSetDefaultAddress(consigneeId){
       console.log(consigneeId)
       api.doSetDefaultAddress(consigneeId).then(({ Data, State, Msg }) => {
-        let tempMsg = "";
         if (State){
           this.getListData();
         }else{
           wx.showToast({
-            title: tempMsg,
+            title: Msg,
             icon: 'none',
           }); 
         }
@@ -83,12 +82,11 @@ export default {
           if (res.confirm) {
             console.log('用户点击确定')
             api.doDeleteAddress(consigneeId).then(({ Data, State, Msg }) => {
-              let tempMsg = "";
               if (State){
                 _this.getListData();
               }else{
                 wx.showToast({
-                title: tempMsg,
+                title: Msg,
                 icon: 'none',
                 }); 
               }

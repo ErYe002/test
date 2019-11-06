@@ -119,7 +119,7 @@
     <view class='amount-box'>
       <view class='flex-line'>
         <view class='couponTitle'>优惠券</view>
-          <navigator url='/pages/order/useCoupon/main'>
+          <navigator :url="'/pages/order/useCoupon/main?shopId='+formModel.selectShopId+'&couponNo='+formModel.CouponNo">
             <view class='couponSubtitle'>{{orderInfo.CouponContent + ' >'}}</view>
           </navigator>
       </view>
@@ -186,14 +186,14 @@
         </view>
       </view>
       <view class="protocol-box">
-        <view class="checked-box" bindtap="checkProtocol">
+        <view class="checked-box" @click="checkProtocol">
           <img v-if="isCheckProtocol" src="" />
           <view v-else class="no-checked"></view>
         </view>
         <view class="text">
           提交订单购买则代表您同意
-          <text bindtap='showUserAgreement'>《可得用户注册购买协议》</text> 和
-          <text bindtap='showUserysxy'>《可得用户隐私协议》</text>
+          <text @click='showUserAgreement'>《可得用户注册购买协议》</text> 和
+          <text @click='showUserysxy'>《可得用户隐私协议》</text>
         </view>
       </view>
       <!-- 海淘协议 -->
@@ -234,6 +234,7 @@ export default {
   data(){
     return {
       orderInfo: {},  //API返回的页面渲染信息
+      isCheckProtocol:true,
       formModel: {
         isUseScore : true, 
         isUseBalance : true,
@@ -285,7 +286,6 @@ export default {
         this.orderInfo = Object.assign({}, Data);
         this.formModel.selectedConsigneeId = this.orderInfo.SelectedConsigneeId;
         this.formModel.selectedExpressId = this.orderInfo.SelectedExpressId
-        this.formModel.shopId = this.orderInfo.ShopId;
         console.log(Data)
       });
     },
@@ -358,7 +358,12 @@ export default {
       this.formModel.isUseScore = !this.formModel.isUseScore
       
     },
-
+    /**
+     * 同意/不同意用户购买需知
+     */
+    checkProtocol() {
+        isCheckProtocol: !this.isCheckProtocol
+    },
 
     //实现跳转的A页面
     jumpToLogistics: function () {
