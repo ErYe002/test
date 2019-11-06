@@ -57,8 +57,8 @@
         <view :class='orderInfo.ShopId == 2 ? "haitao":""'>
           <view class='shop-name'>
             <view class="text">
-              <img v-if="orderInfo.ShopId == 2" src="" class='icon' />
-              <img v-else src="" class='icon' /> {{orderInfo.ShopId == 2 ? "品质进口海淘":"可得境内自营"}}
+              <img v-if="orderInfo.ShopId == 2" src="/static/images/icon_earth.png" class='icon' />
+              <img v-else src="/static/images/icon_shop.png" class='icon' /> {{orderInfo.ShopId == 2 ? "品质进口海淘":"可得境内自营"}}
             </view>
             <view v-if='orderInfo.ShopId != 2' class="sub-text">全国送 预计2-5工作日送达</view>
           </view>
@@ -203,10 +203,13 @@
         </view>
       </view>
       <!-- 海淘协议 -->
-      <view class='haitao-protocol-box' v-if='orderInfo.ShopId == 2' bindtap='checkProtocol'>
-        <view class=''></view>
-        <view class='text'>
-          购买进口海淘商品需同意 <text class='protocol-desc'>《用户购买需知》</text>
+      <view class='haitao-protocol-box' v-if='orderInfo.ShopId == 2' >
+        <view class="checked-box" @click="checkHaitaoProtocol">
+          <img v-if="isHaitaoProttocol" src="/static/images/icon_checked.png" />
+          <view v-else class="no-checked"></view>
+        </view>
+        <view class='haitao-protocol-text'>
+          购买进口海淘商品需同意 <text class='protocol-desc'>《用户购买须知》</text>
         </view>
       </view>
       <view class='bottom-btn-box'> 
@@ -216,7 +219,7 @@
             <text>实付款：</text>
             <text class='total-price'>¥{{orderInfo.RealTotalPrice}}</text>
           </view>
-          <view v-if="orderInfo.IsValidConsignee && orderInfo.Address && isCheckProtocol" bindtap='submitOrder' class="btn">
+          <view v-if="orderInfo.IsValidConsignee && orderInfo.Address && isCheckProtocol" @click='submitOrder' class="btn">
             去支付
             <img class="icon-right" src="" />
           </view>
@@ -241,6 +244,7 @@ export default {
     return {
       orderInfo: {},  //API返回的页面渲染信息
       isCheckProtocol:true,
+      isHaitaoProttocol:true,
       isCoverAddress:true,
       formModel: {
         isUseScore : true, 
@@ -249,10 +253,11 @@ export default {
         selectedConsigneeId : "", 
         selectedPayMode: "1",
         selectedExpressId : "", 
-        invoiceType : "", 
+        warehouseId: "",
+        invoiceType : "-1", //3个人，1公司
         invoiceTitle : "", 
         invoiceItemId : "", 
-        selectInvoiceMode : "", 
+        selectInvoiceMode : "-1", //-1暂不开具，1电子发票
         axpayerIdentityNumber : "", 
         bankName : "", 
         bankAccount : "", 
@@ -263,7 +268,7 @@ export default {
     }
 
   },
-  computed :{...mapState("order",["SelectedExpressId","SelectedConsigneeId"])},
+  computed :{...mapState("order",["SelectedExpressId","SelectedConsigneeId","IsChangeCoupon"])},
 
   onLoad(options) {
     if(options){
@@ -283,14 +288,29 @@ export default {
   watch: {
     SelectedConsigneeId:{
       handler: function(val,oldVal){
-        this.formModel.selectedConsigneeId = val;
-        this.getConfirmOrderDetail();
+        if (val.length && oldVal.length && val != oldVal) {
+          console.log('刷新')
+          this.formModel.selectedConsigneeId = val;
+          this.getConfirmOrderDetail();
+        }
+       
       },immediate: true
     },
     SelectedExpressId:{
       handler: function(val,oldVal){
-        this.formModel.selectedExpressId = val;
-        this.getConfirmOrderDetail();
+        if (val.length && oldVal.length && val != oldVal) {
+          this.formModel.selectedExpressId = val;
+          this.getConfirmOrderDetail();
+        }
+      },immediate: true
+    },
+    IsChangeCoupon:{
+      handler: function(val,oldVal){
+        console.log("==========" + val)
+        if (val) {
+          this.formModel.selectedExpressId = val;
+          this.getConfirmOrderDetail();
+        }
       },immediate: true
     }
   },
@@ -301,6 +321,7 @@ export default {
         this.orderInfo = Object.assign({}, Data);
         this.formModel.selectedConsigneeId = this.orderInfo.SelectedConsigneeId;
         this.formModel.selectedExpressId = this.orderInfo.SelectedExpressId
+        this.formModel.warehouseId = this.orderInfo.WarehouseId
         console.log(Data)
       });
     },
@@ -354,17 +375,20 @@ export default {
     },
     changeUseBalance() {
       this.formModel.isUseBalance = !this.isUseBalance
-      
+      this.getConfirmOrderDetail();
     },
     changeUseScore() {
       this.formModel.isUseScore = !this.formModel.isUseScore
-      
+      this.getConfirmOrderDetail();
     },
     /**
      * 同意/不同意用户购买需知
      */
     checkProtocol() {
-        this.isCheckProtocol = !this.isCheckProtocol
+      this.isCheckProtocol = !this.isCheckProtocol
+    },
+    checkHaitaoProtocol() {
+      this.isHaitaoProttocol = !this.isHaitaoProttocol
     },
 
     //实现跳转的A页面
@@ -381,7 +405,78 @@ export default {
       wx.navigateTo({
           url: '/pages/order/logistics/main?ShopId='+this.formModel.selectShopId+'&SelectedConsigneeId='+this.formModel.selectedConsigneeId+'&SelectedExpressId='+this.formModel.selectedExpressId,
       })
+    },
+    /**
+     * 跳转到用户协议页面
+     */
+    showUserAgreement() {
+      // wx.navigateTo({
+      //   url: '/pages/webViewPage/webViewPage?url=' + encodeURIComponent('/TemplateForNewApp/userAgreement')
+      // })
+    },
+    showUserysxy() {
+      // wx.navigateTo({
+      //   url: '/pages/webViewPage/webViewPage?url=' + encodeURIComponent('/TemplateForNewApp/ysxy')
+      // })
+    },
+    _showErrorToast(errMsg) {
+      wx.showToast({
+        title: errMsg,
+        icon: 'none',
+        duration: 3000
+      })
+    },
+    /**
+     * formModel: {
+        isUseScore : true, 
+        isUseBalance : true,
+        selectShopId : 1,
+        selectedConsigneeId : "", 
+        selectedPayMode: "1",
+        selectedExpressId : "", 
+        invoiceType : "", 
+        invoiceTitle : "", 
+        invoiceItemId : "", 
+        selectInvoiceMode : "", 
+        axpayerIdentityNumber : "", 
+        bankName : "", 
+        bankAccount : "", 
+        companyAddress : "", 
+        mobileNo : "", 
+        IDCard : "", 
+      },
+     */
+    //提交订单 去支付
+    submitOrder() {
+      console.log(this.formModel)
+      if(this.formModel.selectedConsigneeId.length == 0 || this.formModel.selectedConsigneeId.length == '00000000-0000-0000-0000-000000000000'){
+        this._showErrorToast('请先设置收货地址')
+        return false
+      }
+      if (this.formModel.selectShopId == 2) {
+        if (!/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(info.IDCard)) {
+          this._showErrorToast('身份证号不正确，请重新输入')
+          return false
+        }
+        if (!this.isHaitaoProttocol) {
+          this._showErrorToast('请先勾选购买进口商品用户购买须知')
+          return false
+        }
+
+      } else {
+        if(this.formModel.selectedExpressId.length ==0 || this.formModel.selectedExpressId.length == '00000000-0000-0000-0000-000000000000'){
+          this._showErrorToast('请先选择快递方式')
+            return false
+        }
+      }
+      if (!this.isCheckProtocol) {
+        this._showErrorToast('请先勾选同意购买需知')
+        return false
+      }
+
+
     }
+    
   }
 }
 </script>
@@ -787,6 +882,7 @@ page {
 .pay-protocol-box {
   padding: 30rpx;
   box-sizing: border-box;
+  border-bottom: 12rpx solid #F0F0F0;
 }
 .pay-protocol-box .checked-box image,
 .pay-protocol-box .checked-box .no-checked {
@@ -831,10 +927,11 @@ page {
   color: #333;
 }
 .haitao-protocol-box {
-  border-bottom: 12rpx solid #F0F0F0;
+  // border-bottom: 12rpx solid #F0F0F0;
   font-size: 28rpx;
   color: #999;
-  padding: 30rpx;
+  padding-top: 30rpx;
+  padding-bottom: 30rpx;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -854,6 +951,10 @@ page {
 }
 .haitao-protocol-box .protocol-desc {
   color: #E31436;
+}
+.haitao-protocol-text {
+  margin-left: 15rpx;
+  font-size: 24rpx;
 }
 
 </style>

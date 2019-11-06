@@ -26,6 +26,7 @@
 
 <script>
 import api from "@/api/cart";
+import {mapActions} from "vuex"
 
 export default {
   data(){
@@ -49,6 +50,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions("order",["setIsChangeCoupon"]),
   // getCanUseCouponsInOrder    
     //选择优惠券
     selectCoupon(e){
@@ -73,8 +75,10 @@ export default {
     useCoupon(couponNo){
       console.log('==========')
       console.log(couponNo)
+      this.setIsChangeCoupon(true)
       api.useCoupon(couponNo).then(({State, Data,Msg}) => {
         if (State){
+          this.setIsChangeCoupon(true)
           wx.navigateBack({
             delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
           });
@@ -86,8 +90,6 @@ export default {
         }
       })
     },
-
-
   }
 
 };
