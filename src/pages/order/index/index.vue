@@ -179,7 +179,7 @@
       <view class="pay-box">
         <view class="text-box">
           <view class="text">微信支付</view>
-          <img src="" />
+          <img src="/static/images/icon_wechat.png" />
         </view>
         <view class="checked-box">
           <!-- <img src="" /> -->
@@ -187,7 +187,7 @@
       </view>
       <view class="protocol-box">
         <view class="checked-box" @click="checkProtocol">
-          <img v-if="isCheckProtocol" src="" />
+          <img v-if="isCheckProtocol" src="/static/images/icon_checked.png" />
           <view v-else class="no-checked"></view>
         </view>
         <view class="text">
@@ -265,6 +265,14 @@ export default {
     }
     this.getConfirmOrderDetail();
   },
+  onPageScroll({ scrollTop }) {
+    //控制是否展示底部收货地址tip
+    if (scrollTop > 90) {
+      this.isCoverAddress = true;
+    } else {
+      this.isCoverAddress = false;
+    }
+  },
   //监测地址，快递变化
   watch: {
     SelectedConsigneeId:{
@@ -338,19 +346,6 @@ export default {
         })
       })
     },
-    // onPageScroll({ scrollTop }) {
-    //   //控制是否展示底部收货地址tip
-    //         console.log("[[[[[[[[[[[[")
-    //   if (scrollTop > 90) {
-    //     this.setData({
-    //       isCoverAddress: true
-    //     })
-    //   } else {
-    //     this.setData({
-    //       isCoverAddress: false
-    //     })
-    //   }
-    // },
     changeUseBalance() {
       this.formModel.isUseBalance = !this.isUseBalance
       
@@ -363,7 +358,7 @@ export default {
      * 同意/不同意用户购买需知
      */
     checkProtocol() {
-        isCheckProtocol: !this.isCheckProtocol
+        this.isCheckProtocol = !this.isCheckProtocol
     },
 
     //实现跳转的A页面
@@ -660,7 +655,7 @@ page {
   color: #333333;
 }
 .amount-box .flex-line .text {
-  font-size: 28rpx;
+  font-size: 24rpx;
   color: #999;
 }
 .amount-box .flex-line:last-child {
