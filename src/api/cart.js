@@ -135,7 +135,7 @@ const api = {
   },
   //获取猜你喜欢商品
   getGoodsLike(shopid){
-    return http.post(`/Goods/GoodsLike?shopId=${shopid}`)
+    return http.postByNoLoading(`/Goods/GoodsLike?shopId=${shopid}`)
   },
   //提交订单
   submitOrder({isUseScore, selectConsigneeId, selectPayMode, selectExpressId, isUseBalance, invoiceType, invoiceTitle, invoiceItemId, selectInvoiceMode, axpayerIdentityNumber, bankName, bankAccount, companyAddress, mobileNo, IDCard, warehouseId, selectShopId} = {}){
