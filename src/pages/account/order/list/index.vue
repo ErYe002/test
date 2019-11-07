@@ -91,7 +91,6 @@ import api from "@/api/order";
 export default {
   data() {
     return {
-      fixedTopHeight: 83,
       orderList: [],
       isLoading: false,
       totalPage: 0,

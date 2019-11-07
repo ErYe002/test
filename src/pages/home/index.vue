@@ -174,13 +174,13 @@
             open-type="getUserInfo"
             @getuserinfo="getUserInfo"
             v-if="!token"
-            data-link="/pages/index/main"
+            data-link="/pages/account/favorites/main"
             class="link"
           >
             <img src="/static/images/home_collection.png" class="icon" />
             <p class="text">我的收藏</p>
           </button>
-          <a v-else href="/pages/index/main" class="link">
+          <a v-else href="/pages/account/favorites/main" class="link">
             <img src="/static/images/home_collection.png" class="icon" />
             <p class="text">我的收藏</p>
           </a>

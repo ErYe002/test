@@ -1,11 +1,7 @@
 <template>
   <article class="wrap">
     <ul class="list" v-if="list.length > 0">
-      <li
-        class="item"
-        v-for="item in list"
-        :key="item.GoodsId"
-      >
+      <li class="item" v-for="item in list" :key="item.GoodsId">
         <div class="info-box">
           <img class="g-img" :src="item.ImageUrl" />
           <div class="info">
@@ -14,29 +10,19 @@
           </div>
         </div>
         <div class="op-box">
-          <img @click="del_img_click(item.GoodsId)" src="/static/images/account_favorite_delete.png" />
+          <img
+            @click="del_img_click(item.GoodsId)"
+            src="/static/images/account_favorite_delete.png"
+          />
         </div>
       </li>
-      <!-- <li class="item">
-        <div class="info-box">
-          <img
-            class="g-img"
-            src="https://pic.keede.com//Main/5ec960c0-047a-423d-8847-52f0abbc2fd8-350-350.jpg"
-          />
-          <div class="info">
-            <div class="g-name">[安室奈美惠御用]ReVIA蕾美彩色日抛10片装ReVIA蕾美彩色日抛10片装</div>
-            <div class="g-price">¥1000</div>
-          </div>
-        </div>
-        <div class="op-box">
-          <span>删除</span>
-        </div>
-      </li>-->
     </ul>
-    <div class="favo_Clear" :if="list.length <= 0">
+    <img class="loading" v-if="page == 1 && isLoading" src="/static/images/mu_loading.gif" />
+    <div class="favo_Clear" v-else-if="isNoData">
       <p>您还没有收藏任何商品!</p>
-      <button href="">去查看商品</button>
+      <a href="/pages/index/main" open-type="switchTab">去查看商品</a>
     </div>
+    <p class="no-more-tips" v-if="page == totalPage">没有更多了</p>
   </article>
 </template>
 
@@ -48,28 +34,54 @@ export default {
     return {
       list: [],
       page: 1,
+      totalPage: 0,
+      isLoading: false,
+      isNoData: false,
       size: 10
     };
   },
   onLoad() {
     this._getPageData();
   },
+  /**
+   * 上拉加载
+   */
+  onReachBottom() {
+    if (this.page < this.totalPage) {
+      this.page++;
+      this._getPageData();
+    }
+  },
   methods: {
     _getPageData() {
-      api.getFavoriteList(this.page, this.size).then(({ Data }) => {
-        this.list = Data;
-      });
+      if (!this.isLoading) {
+        this.isLoading = true;
+        api
+          .getFavoriteList(this.page, this.size)
+          .then(({ Data, TotalPage }) => {
+            this.list = this.page > 1 ? this.list.concat(Data) : Data;
+            this.totalPage = TotalPage;
+            //没有搜索到任何数据
+            if (!Data || Data.length <= 0) {
+              this.isNoData = true;
+            }
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
+      }
     },
-    del_img_click(key){
-      var current=this;
+    del_img_click(key) {
+      var current = this;
       wx.showModal({
-        title: '提示',
-        content: '确定要删除该收藏吗？',
-        success (res) {
+        title: "提示",
+        content: "确定要删除该收藏吗？",
+        confirmColor: "#cab894",
+        success(res) {
           if (res.confirm) {
             current.list.splice(key, 1);
             api.cancelFavoriteByGoodsId(key);
-          } 
+          }
         }
       });
     }
@@ -82,13 +94,9 @@ export default {
   .item {
     border-bottom: 0.5px solid #e5e5e5;
     position: relative;
-    display:flex;
-    flex-direction:row;
+    padding: 10px;
     .info-box {
       display: flex;
-      position: relative;
-      padding: 10px;
-      background: #fff;
       .g-img {
         display: block;
         width: 70px;
@@ -114,51 +122,56 @@ export default {
           color: #e31436;
         }
       }
-
-      &.show-del {
-        transform: translateX(-90px);
-      }
     }
     .op-box {
       position: absolute;
-      right: 0;
-      bottom:0;
-      font-size: 14px;
-      height: 70px;
-      width: 70px;
+      right: 10px;
+      bottom: 10px;
+      height: 30px;
+      width: 30px;
       display: flex;
       justify-content: center;
-      &:active {
-        background: lighten(#f00, 10%);
-      }
-      img{
-        position:absolute;
-        right:10px;
-        bottom:10px;
-        width:25px;
-        height:25px;
+      align-items: center;
+      img {
+        display: block;
+        width: 20px;
+        height: 20px;
       }
     }
   }
-  
 }
-.favo_Clear{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  color:gray;
-  margin:auto auto;
-  margin-top:150px;
-  button{
-    width:130px;
-    height:30px;
-    line-height:30px;
-    margin-top:15px;
-    color:#cab894;
-    border:1px solid #cab894;
-    border-radius:20px;    
-    background:none;
+.favo_Clear {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: gray;
+  margin: auto auto;
+  margin-top: 150px;
+  font-size: 14px;
+  button {
+    width: 130px;
+    height: 30px;
+    line-height: 30px;
+    margin-top: 15px;
+    color: #cab894;
+    border: 1px solid #cab894;
+    border-radius: 20px;
+    background: none;
+    font-size: 15px;
   }
+}
+
+.no-more-tips {
+  color: #666;
+  font-size: 12px;
+  text-align: center;
+  margin: 20px 0;
+}
+.loading {
+  margin: 20px auto;
+  display: block;
+  width: 20px;
+  height: 20px;
 }
 </style>
