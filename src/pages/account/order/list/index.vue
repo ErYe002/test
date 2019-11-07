@@ -4,7 +4,7 @@
       <section class="search-box">
         <img class="icon" src="/static/images/icon_search.png" />
         <input class="input" v-model="listQuery.queryString" placeholder="商品名称/订单号" @confirm="searchEvent" confirm-type="搜索"/>
-        <img v-if="listQuery.queryString != ''" @click="clearInputEvent" class="icon-clear" src="/static/images/icon_clear.png" />
+        <img v-if="listQuery.queryString != ''" @click="clearInputEvent" class="icon-clear" src="/static/images/clear-icon.png" />
       </section>
       <section class="type-box" v-if="listQuery.queryString == ''">
         <ul class="type-list">

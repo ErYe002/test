@@ -10,7 +10,7 @@
         />
         <img
           class="go-right-icon"
-          src="/static/images/icon_jt_rt.png"
+          src="/static/images/icon_right_grey.png"
         />
       </a>
     </div>
@@ -20,7 +20,7 @@
         <label class="r-lab">{{userInfoModel.UserName}}</label>
         <img
           class="go-right-icon"
-          src="/static/images/icon_jt_rt.png"
+          src="/static/images/icon_right_grey.png"
         />
       </a>
     </div>
@@ -30,7 +30,7 @@
         <label class="r-lab">{{userInfoModel.Nick}}</label>
         <img
           class="go-right-icon"
-          src="/static/images/icon_jt_rt.png"
+          src="/static/images/icon_right_grey.png"
         />
       </a>  
     </div>
@@ -40,7 +40,7 @@
         <label class="r-lab">V{{userInfoModel.LevelNum}}会员</label>
         <img
           class="go-right-icon"
-          src="/static/images/icon_jt_rt.png"
+          src="/static/images/icon_right_grey.png"
         />
       </a>
     </div>
@@ -50,7 +50,7 @@
         <label class="r-lab">{{userInfoModel.Sex}}</label>
         <img 
           class="go-right-icon"
-          src="/static/images/icon_jt_rt.png"
+          src="/static/images/icon_right_grey.png"
         />
       </a>
     </div>
@@ -64,7 +64,7 @@
         </div>
         <img 
           class="go-right-icon"
-          src="/static/images/icon_jt_rt.png"
+          src="/static/images/icon_right_grey.png"
         />
       </a>
     </div>

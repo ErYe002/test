@@ -20,7 +20,7 @@
       </div>
       <img
         class="go-right-icon"
-        src="/static/images/icon_jt_rt.png"
+        src="/static/images/icon_right_grey.png"
       />
       </a>
     </section>
@@ -30,7 +30,7 @@
                 地址管理
                 <img
                     class="go-right-icon"
-                    src="/static/images/icon_jt_rt.png"
+                    src="/static/images/icon_right_grey.png"
                 />
             </a>
         </p>
@@ -42,7 +42,7 @@
               <span class="tips">多重福利优惠</span>
               <img
                 class="go-right-icon"
-                src="/static/images/icon_jt_rt.png"
+                src="/static/images/icon_right_grey.png"
               />
             </a>
         </p>

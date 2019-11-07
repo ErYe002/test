@@ -16,7 +16,7 @@
           v-if="keywords != ''"
           @click="clearInputEvent"
           class="icon-clear"
-          src="/static/images/icon_clear.png"
+          src="/static/images/clear-icon.png"
         />
       </div>
       <span class="cancel-btn" @click="cancelEvent">取消</span>
