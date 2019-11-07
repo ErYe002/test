@@ -15,14 +15,9 @@
             <!-- 没有设置过默认收货地址 -->
           <navigator url='/pages/order/chooseAddress/main'>
             <view>
-              <img src="" />请选择收货地址</view>
+              <img src="/static/images/add.png" />请选择收货地址</view>
             <text class="icon"></text>
           </navigator>
-          <view class="getadd" @click="getadd">
-            <view>
-              <img src="" />一键获取微信收货地址</view>
-            <text class="icon"></text>
-          </view>
         </view>
         <!-- 添加过收货地址且已设置默认地址 -->
         <navigator v-else :url="'/pages/order/chooseAddress/main?SelectedConsigneeId='+formModel.selectedConsigneeId" class='info-box'>
@@ -62,7 +57,7 @@
             </view>
             <view v-if='orderInfo.ShopId != 2' class="sub-text">全国送 预计2-5工作日送达</view>
           </view>
-          <view class='goods-info'>
+          <view class='goods-info' @click="showGoodsListEvent">
             <scroll-view class="scroll-view_H" scroll-x="true"  enable-flex="true">
               <div class="scroll-item" v-for="(item, idx) in orderInfo.Goods" :key="idx">
                 <div class="goods-item">
@@ -75,9 +70,9 @@
           </view>
         </view>
         <block v-if='orderInfo.ShopId == 2'>
-          <view class='flex-line haitao-flex-line' bindtap='showServiceDesc'>
+          <view class='flex-line haitao-flex-line' @click='showServiceDesc'>
             <view class='label'>
-              <img src="" class='icon-tip' />
+              <img src="/static/images/icon_tip.png" class='icon-tip' />
               <text>海外商品不支持7天退换货</text>
             </view>
             <view class='text'>
@@ -85,9 +80,9 @@
               <text class='icon'></text>
             </view>
           </view>
-          <view class='flex-line haitao-flex-line' bindtap='showServiceDesc'>
+          <view class='flex-line haitao-flex-line' >
             <view class='label'>
-              <img src="" class='icon-clock' />
+              <img src="/static/images/icon_clock.png" class='icon-clock' />
               <text>预计3-10个工作日发货，节假日配送时间可能会延迟</text>
             </view>
           </view>
@@ -208,7 +203,7 @@
           <img v-if="isHaitaoProttocol" src="/static/images/icon_checked.png" />
           <view v-else class="no-checked"></view>
         </view>
-        <view class='haitao-protocol-text'>
+        <view class='haitao-protocol-text' @click="showHaitaoUsergmxz">
           购买进口海淘商品需同意 <text class='protocol-desc'>《用户购买须知》</text>
         </view>
       </view>
@@ -231,6 +226,7 @@
       </view>
     </view>
     <!-- 用户协议 -->
+    <goodsList :is-show.sync="isShowGoodsList" :shop-id="shopId" />
   </article>
 </template>
 
@@ -238,6 +234,7 @@
 
 import api from "@/api/cart";
 import {mapState} from "vuex"
+import goodsList from "@/pages/order/components/goodsList";
 
 export default {
   data(){
@@ -246,6 +243,7 @@ export default {
       isCheckProtocol:true,
       isHaitaoProttocol:true,
       isCoverAddress:true,
+      isShowGoodsList:false,
       formModel: {
         isUseScore : true, 
         isUseBalance : true,
@@ -266,10 +264,11 @@ export default {
         IDCard : "", 
       },
     }
-
   },
   computed :{...mapState("order",["SelectedExpressId","SelectedConsigneeId","IsChangeCoupon"])},
-
+  components: {
+    goodsList,
+  },
   onLoad(options) {
     if(options){
       this.formModel.selectShopId = options.shopId;
@@ -325,53 +324,11 @@ export default {
         console.log(Data)
       });
     },
-    getadd(){
-      var that=this;
-      wx.getSetting({
-        success(res) {
-          if (res.authSetting['scope.address']) {
-           wx.chooseAddress({
-              success(res) {
-                var data={};
-                data.ConsigneeName=res.userName;
-                data.ProvinceName = res.provinceName;
-                data.CityName = res.cityName;
-                data.DistrictName = res.countyName;
-                data.Address = res.detailInfo;
-                data.PostalCode = res.nationalCode;
-                data.ContactMobile = res.telNumber;
-                that.getaddid(data);
-              }
-            })
-            // 用户已经同意小程序使用录音功能，后续调用 wx.startRecord 接口不会弹窗询问
-          } else {
-            if (res.authSetting['scope.address'] == false) {
-              wx.openSetting({
-                success(res) {
-                }
-              })
-            } else {
-              console.log("eee")
-              wx.chooseAddress({
-                success(res) {
-                }
-              })
-            }
-          }
-        }
-      })
-    },
-    getaddid(data){
-      var that=this;
-      api.addWechat(data).then(({ Data }) => {
-        that.setData({
-          addid: Data
-        });
-        that._getOrderInfoData();
-        wx.setStorageSync('GroupCartInfo', {
-          SelectConsigneeId: Data,
-        })
-      })
+    
+  
+    //商品清单
+    showGoodsListEvent() {
+      this.isShowGoodsList = true;
     },
     changeUseBalance() {
       this.formModel.isUseBalance = !this.isUseBalance
@@ -410,14 +367,24 @@ export default {
      * 跳转到用户协议页面
      */
     showUserAgreement() {
-      // wx.navigateTo({
-      //   url: '/pages/webViewPage/webViewPage?url=' + encodeURIComponent('/TemplateForNewApp/userAgreement')
-      // })
+      wx.navigateTo({
+        url: '/pages/htmlPreview/main?url=' + encodeURIComponent('/TemplateForNewApp/userAgreement')
+      })
     },
     showUserysxy() {
-      // wx.navigateTo({
-      //   url: '/pages/webViewPage/webViewPage?url=' + encodeURIComponent('/TemplateForNewApp/ysxy')
-      // })
+      wx.navigateTo({
+        url: '/pages/htmlPreview/main?url=' + encodeURIComponent('/TemplateForNewApp/ysxy')
+      })
+    },
+    showHaitaoUsergmxz(){
+      wx.navigateTo({
+        url: '/pages/htmlPreview/main?url=' + encodeURIComponent('/Templateforapp/hwg0862017')
+      })
+    },
+    showServiceDesc(){
+      wx.navigateTo({
+        url: '/pages/htmlPreview/main?url=' + encodeURIComponent('/Templateforapp/hwg0852017')
+      })
     },
     _showErrorToast(errMsg) {
       wx.showToast({
@@ -426,26 +393,7 @@ export default {
         duration: 3000
       })
     },
-    /**
-     * formModel: {
-        isUseScore : true, 
-        isUseBalance : true,
-        selectShopId : 1,
-        selectedConsigneeId : "", 
-        selectedPayMode: "1",
-        selectedExpressId : "", 
-        invoiceType : "", 
-        invoiceTitle : "", 
-        invoiceItemId : "", 
-        selectInvoiceMode : "", 
-        axpayerIdentityNumber : "", 
-        bankName : "", 
-        bankAccount : "", 
-        companyAddress : "", 
-        mobileNo : "", 
-        IDCard : "", 
-      },
-     */
+   
     //提交订单 去支付
     submitOrder() {
       console.log(this.formModel)
