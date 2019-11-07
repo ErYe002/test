@@ -18,7 +18,7 @@
     </div>
   </section>
     <section class="btn-box">
-      <div class="btn-submit" @click="_changeUserName">保存</div>
+      <div class="kd-btn btn-lg" @click="_changeUserName">保存</div>
     </section>
   </article>
 </template>

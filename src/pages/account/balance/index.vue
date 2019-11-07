@@ -221,7 +221,7 @@ export default {
   color:#cab894;
   font-size:14px;
   border-radius:4px;
-  
+  background: transparent;
 }
 
 .note{

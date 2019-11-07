@@ -208,7 +208,7 @@ export default {
         margin-top: 10px;
       }
       .level{
-        margin-top: 5px;
+        margin-top: 8px;
       }
     }
   }
@@ -236,6 +236,8 @@ export default {
         background-color: #E2CB77;
         height: 4px;
         margin-top: -8px;
+        width: 321px;
+        margin-left: 31px;
       }
       .bg-circle{
         display: flex;
