@@ -1,9 +1,9 @@
-import { ORDER_SELECTADDRESSID, ORDER_SELECTEXPRESSID } from '@/store/mutations-type'
+import { ORDER_SELECTADDRESSID, ORDER_SELECTEXPRESSID, ORDER_ISCHANGECOUPON} from '@/store/mutations-type'
 
 const state = {
     SelectedExpressId: '',
-    SelectedConsigneeId: ''
-
+    SelectedConsigneeId: '',
+    IsChangeCoupon : false,
 }
 
 const mutations = {
@@ -12,6 +12,9 @@ const mutations = {
     },
     [ORDER_SELECTEXPRESSID](state, info){
         state.SelectedExpressId = info
+    },
+    [ORDER_ISCHANGECOUPON](state, info){
+        state.IsChangeCoupon = info
     }
 }
 
@@ -21,9 +24,12 @@ const actions = {
     },
     setSelectedExpressId({commit},obj) {
         commit(ORDER_SELECTEXPRESSID,obj)
+    },
+    setIsChangeCoupon({commit},obj) {
+        commit(ORDER_ISCHANGECOUPON,obj)
     }
+    
 }
-
 export default {
     state,
     mutations,

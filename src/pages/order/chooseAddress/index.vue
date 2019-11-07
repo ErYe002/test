@@ -17,7 +17,7 @@
           <view class='contact-address'>{{item.Address}}</view>
         </view>
         <view class='edit-btn' @click='toEdit' :data-id='item.ID'>
-          <image src="https://pic.keede.com/app/images/icon_cart.png" class="icon" />
+          <image src="/static/images/icon_edit.png" class="icon" />
         </view>
       </view>
     </view>
@@ -67,7 +67,7 @@ export default {
         wx.navigateBack({
             delta: 1
           })
-        }
+      }
     },
     toEdit(e) {
       const id = e.currentTarget.dataset.id
@@ -100,7 +100,7 @@ page {
 }
 
 .item .choose-btn.active {
-  background: #cab894 url(https://pic.keede.com/app/images/icon_radioched.png);
+  background: #cab894 url('https://pic.keede.com/app/images/icon_radioched.png');
   background-position: 0;
   background-size: 30rpx auto;
 }
@@ -112,8 +112,8 @@ page {
 }
 
 .item .edit-btn {
-  width: 50rpx;
-  height: 50rpx;
+  width: 60rpx;
+  height: 60rpx;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -121,8 +121,8 @@ page {
 
 .item .edit-btn .icon{
   display: block;
-  width: 24rpx;
-  height: 26rpx;
+  width: 30rpx;
+  height: 33rpx;
 }
 
 .info-box .contact-address {

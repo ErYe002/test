@@ -125,7 +125,7 @@
         加入购物车
       </a>
 
-      <a class="btn-50-percent gold">
+      <a class="btn-50-percent gold" @click="buyGoods">
         立即购买
       </a>
     </section>
@@ -163,8 +163,18 @@
         glassBean: {},
         frameSalePrice: 0,
         glassSalePrice: 0,
-        glassBtnCanClick: false
-
+        glassBtnCanClick: false,
+        postIdBean: {
+          sphRId: '',
+          sphLId: '',
+          cylRId: '',
+          cylLId: '',
+          axisRId: '',
+          axisLId: '',
+          pdId: '62',
+          groupPId: '',
+          glassPId: ''
+        }
       };
     },
 
@@ -196,15 +206,20 @@
               this.glassBean = glassList[val.glassosition];
               this.glassSelected = true;
               this.glassSalePrice = glassList[val.glassosition].SellPrice;
+              this.postIdBean.groupPId = this.groupGlassData[val.groupPosition].GlassGroupId;
+              this.postIdBean.glassPId = glassList[val.glassosition].GlassGoodsId;
+              console.log('姜片集合', this.groupGlassData[val.groupPosition].GlassGroupId, glassList[val.glassosition].GlassGoodsId);
             }
           }
         },
       },
       postInfoBean: {
         handler: function (val, oldVal) {
-          console.log('光度',val);
+          console.log('光度', val);
           this.glassBtnCanClick = (val.cylL !== '' && val.cylR !== '');
         },
+        deep: true,
+        immediate: true
       }
     },
 
@@ -263,6 +278,8 @@
         });
       },
       gdBackInfo(data) {
+        console.log('返回', data);
+
         if (this.gdStartSide === 'L') {
           this.postInfoBean.sphL = data.selectSPH;
           this.postInfoBean.cylL = data.selectCYL;
@@ -294,12 +311,104 @@
           wx.navigateTo({
             url: '/pages/product/glassSelect/main',
           });
+        } else {
+          wx.showToast({title: '请选择双眼光度', icon: 'none'});
         }
 
       },
       selectGlassEvent() {
 
-      }
+      },
+      buyGoods() {
+
+        let pushData = new Map();
+
+        pushData.set('goodsId', this.mainData.GoodsId);
+        pushData.set('IsConfirmedBuy', 'false');
+        pushData.set('ShopId', this.mainData.MainGoods.ShopId);
+        if (this.buyType === 2) {
+          pushData.set('Quantity', this.onlyBuyFrameNum);
+          pushData.set('GDPropertyGifts', '');
+          pushData.set('SelectedSpecifications', '');
+          pushData.set('NoPropertyGifts', '');
+
+          //只购买框架增加的额外参数
+          pushData.set("MaxSellNumber", '0');
+          pushData.set("GoodsName", 'HAN COLLECTION光学眼镜架HD3101 F01哑黑');
+          pushData.set("SeriesId", '70b84d88-0689-48c9-89fb-738f51094395');
+          pushData.set("MarketPrice", '69.0');
+          pushData.set("SalePrice", '69.0');
+          pushData.set("SaleScore", '69.0');
+          pushData.set("IsScarcity", 'false');
+          pushData.set("IsSpecialOffer", 'false');
+          pushData.set("SaleStockType", '0');
+          pushData.set("MaxDeduction", '0');
+          pushData.set("IsFreeCarriage", 'false');
+          api.buyNoPropertyFrame(pushData).then(({Data}) => {
+            console.log("提交订单", Data);
+          });
+        } else {
+          ///选择ID
+
+          if (!this.glassSelected) {
+            wx.showToast({title: '请选择镜片', icon: 'none'});
+            return;
+          }
+
+          for (let sph of this.mainData.Sph) {
+            if (sph.FieldValue === this.postInfoBean.sphL) {
+              this.postIdBean.sphLId = sph.FieldId;
+            }
+
+            if (sph.FieldValue === this.postInfoBean.sphR) {
+              this.postIdBean.sphRId = sph.FieldId;
+            }
+          }
+
+          for (let cyl of this.mainData.CYL) {
+            if (cyl.FieldValue === this.postInfoBean.cylL) {
+              this.postIdBean.cylLId = cyl.FieldId;
+            }
+
+            if (cyl.FieldValue === this.postInfoBean.cylR) {
+              this.postIdBean.cylRId = cyl.FieldId;
+            }
+          }
+
+          for (let axis of this.mainData.Axis) {
+            if (axis.FieldValue === this.postInfoBean.axisL) {
+              this.postIdBean.axisLId = axis.FieldId;
+            }
+
+            if (axis.FieldValue === this.postInfoBean.axisR) {
+              this.postIdBean.axisRId = axis.FieldId;
+            }
+          }
+
+          for (let pd of this.mainData.PD) {
+            if (pd.FieldValue === this.postInfoBean.pd) {
+              this.postIdBean.pdId = pd.FieldId;
+            }
+          }
+          pushData.set("IsBuyByScore", '');
+          pushData.set("LeftQuantity", '0');
+          pushData.set("RightQuantity", '0');
+          pushData.set("GlassGroupId", this.postIdBean.groupPId);
+          pushData.set("GlassGoodsId", this.postIdBean.glassPId);
+          pushData.set("LeftGD", this.postIdBean.sphLId);
+          pushData.set("RightGD", this.postIdBean.sphRId);
+          pushData.set("LeftSG", this.postIdBean.cylLId);
+          pushData.set("RightSG", this.postIdBean.cylRId);
+          pushData.set("LeftZW", this.postIdBean.axisLId);
+          pushData.set("RightZW", this.postIdBean.axisRId);
+          pushData.set("TongJu", this.postIdBean.pdId);
+
+          api.buyFrameAndGlass(pushData).then(({Data}) => {
+            console.log("提交订单", Data);
+          });
+        }
+
+      },
 
     }
   };

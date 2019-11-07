@@ -11,7 +11,7 @@
           @click="changeShopEvent(2)"
         >海淘({{overseasShop}})</li>
       </ul>
-      <span class="edit-btn" @click="editCartEvent">{{isEdit ? '完成':'编辑'}}</span>
+      <span v-if="isHasCartData" class="edit-btn" @click="editCartEvent">{{isEdit ? '完成':'编辑'}}</span>
     </article>
     <!-- 购物车为空 -->
     <article v-if="!isHasCartData" class="no-data-box">
@@ -26,7 +26,7 @@
         </div>
       </section>
       <a href="/pages/classmenu/main" open-type="switchTab" class="kd-btn btn-default">去逛逛吧></a>
-      <section class="may-like-box">
+      <section class="may-like-box" v-if="likeGoodsList.length > 0">
         <p class="title">猜你喜欢</p>
         <scroll-view class="may-like-list" scroll-x="true" enable-flex="true" @scroll="scroll">
           <view class="ml-item" v-for="item in likeGoodsList" :key="item.GoodsId">

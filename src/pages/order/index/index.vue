@@ -15,14 +15,9 @@
             <!-- 没有设置过默认收货地址 -->
           <navigator url='/pages/order/chooseAddress/main'>
             <view>
-              <img src="" />请选择收货地址</view>
+              <img src="/static/images/add.png" />请选择收货地址</view>
             <text class="icon"></text>
           </navigator>
-          <view class="getadd" @click="getadd">
-            <view>
-              <img src="" />一键获取微信收货地址</view>
-            <text class="icon"></text>
-          </view>
         </view>
         <!-- 添加过收货地址且已设置默认地址 -->
         <navigator v-else :url="'/pages/order/chooseAddress/main?SelectedConsigneeId='+formModel.selectedConsigneeId" class='info-box'>
@@ -57,13 +52,13 @@
         <view :class='orderInfo.ShopId == 2 ? "haitao":""'>
           <view class='shop-name'>
             <view class="text">
-              <img v-if="orderInfo.ShopId == 2" src="" class='icon' />
-              <img v-else src="" class='icon' /> {{orderInfo.ShopId == 2 ? "品质进口海淘":"可得境内自营"}}
+              <img v-if="orderInfo.ShopId == 2" src="/static/images/icon_earth.png" class='icon' />
+              <img v-else src="/static/images/icon_shop.png" class='icon' /> {{orderInfo.ShopId == 2 ? "品质进口海淘":"可得境内自营"}}
             </view>
             <view v-if='orderInfo.ShopId != 2' class="sub-text">全国送 预计2-5工作日送达</view>
           </view>
-          <view class='goods-info'>
-            <scroll-view class="scroll-view_H" scroll-x="true" @scroll="scroll">
+          <view class='goods-info' @click="showGoodsListEvent">
+            <scroll-view class="scroll-view_H" scroll-x="true"  enable-flex="true">
               <div class="scroll-item" v-for="(item, idx) in orderInfo.Goods" :key="idx">
                 <div class="goods-item">
                   <img class="goodsImg" mode="aspectFit" :src="item.ImageUrl">
@@ -71,13 +66,13 @@
                 </div>
               </div>
             </scroll-view>
-            <div class="goodsCount">共xxx件。。。</div>
+            <div class="goodsCount">共{{orderInfo.GoodsQuantity}}件...</div>
           </view>
         </view>
         <block v-if='orderInfo.ShopId == 2'>
-          <view class='flex-line haitao-flex-line' bindtap='showServiceDesc'>
+          <view class='flex-line haitao-flex-line' @click='showServiceDesc'>
             <view class='label'>
-              <img src="" class='icon-tip' />
+              <img src="/static/images/icon_tip.png" class='icon-tip' />
               <text>海外商品不支持7天退换货</text>
             </view>
             <view class='text'>
@@ -85,9 +80,9 @@
               <text class='icon'></text>
             </view>
           </view>
-          <view class='flex-line haitao-flex-line' bindtap='showServiceDesc'>
+          <view class='flex-line haitao-flex-line' >
             <view class='label'>
-              <img src="" class='icon-clock' />
+              <img src="/static/images/icon_clock.png" class='icon-clock' />
               <text>预计3-10个工作日发货，节假日配送时间可能会延迟</text>
             </view>
           </view>
@@ -119,7 +114,7 @@
     <view class='amount-box'>
       <view class='flex-line'>
         <view class='couponTitle'>优惠券</view>
-          <navigator url='/pages/order/useCoupon/main'>
+          <navigator :url="'/pages/order/useCoupon/main?shopId='+formModel.selectShopId+'&couponNo='+formModel.CouponNo">
             <view class='couponSubtitle'>{{orderInfo.CouponContent + ' >'}}</view>
           </navigator>
       </view>
@@ -150,14 +145,20 @@
     </view>
     <view class='amount-box' v-if="orderInfo.MeetPriceDownPrice > 0">
       <view class='flex-line' >
-        <view class='label'>积分抵扣</view>
+        <view class='label'>满减</view>
         <view class='text'>-¥{{orderInfo.MeetPriceDownPrice}}</view>
       </view>
     </view>
     <view class='amount-box' v-if="orderInfo.MeetPriceDownPrice > 0">
       <view class='flex-line' >
-        <view class='label'>满减</view>
-        <view class='text'>-¥{{orderInfo.MeetPriceDownPrice}}</view>
+        <view class='label'>优惠券抵扣</view>
+        <view class='text'>-¥{{orderInfo.CouponPrice}}</view>
+      </view>
+    </view>
+    <view class='amount-box' v-if="orderInfo.MeetPriceDownPrice > 0">
+      <view class='flex-line' >
+        <view class='label'>积分抵扣</view>
+        <view class='text'>-¥{{orderInfo.ScorePrice}}</view>
       </view>
     </view>
     <view class='amount-box'>
@@ -169,7 +170,7 @@
     <view class='amount-box' v-if="orderInfo.MeetPriceDownPrice > 0">
       <view class='flex-line' >
         <view class='label'>使用可得账户余额</view>
-        <view class='text'>-¥{{orderInfo.MeetPriceDownPrice}}</view>
+        <view class='text'>-¥{{orderInfo.PaymentByBalance}}</view>
       </view>
     </view>
     <div class="sectionLine"></div>
@@ -179,38 +180,41 @@
       <view class="pay-box">
         <view class="text-box">
           <view class="text">微信支付</view>
-          <img src="" />
+          <img src="/static/images/icon_wechat.png" />
         </view>
         <view class="checked-box">
           <!-- <img src="" /> -->
         </view>
       </view>
       <view class="protocol-box">
-        <view class="checked-box" bindtap="checkProtocol">
-          <img v-if="isCheckProtocol" src="" />
+        <view class="checked-box" @click="checkProtocol">
+          <img v-if="isCheckProtocol" src="/static/images/icon_checked.png" />
           <view v-else class="no-checked"></view>
         </view>
         <view class="text">
           提交订单购买则代表您同意
-          <text bindtap='showUserAgreement'>《可得用户注册购买协议》</text> 和
-          <text bindtap='showUserysxy'>《可得用户隐私协议》</text>
+          <text @click='showUserAgreement'>《可得用户注册购买协议》</text> 和
+          <text @click='showUserysxy'>《可得用户隐私协议》</text>
         </view>
       </view>
       <!-- 海淘协议 -->
-      <view class='haitao-protocol-box' v-if='orderInfo.ShopId == 2' bindtap='checkProtocol'>
-        <view class=''></view>
-        <view class='text'>
-          购买进口海淘商品需同意 text class='protocol-desc'>《用户购买需知》</text>
+      <view class='haitao-protocol-box' v-if='orderInfo.ShopId == 2' >
+        <view class="checked-box" @click="checkHaitaoProtocol">
+          <img v-if="isHaitaoProttocol" src="/static/images/icon_checked.png" />
+          <view v-else class="no-checked"></view>
+        </view>
+        <view class='haitao-protocol-text' @click="showHaitaoUsergmxz">
+          购买进口海淘商品需同意 <text class='protocol-desc'>《用户购买须知》</text>
         </view>
       </view>
-      <view class='bottom-btn-box'>
-        <view class=''>送到：{{orderInfo.Address}}</view>
+      <view class='bottom-btn-box'> 
+        <view :class="isCoverAddress ? 'tips-address.show':'tips-address'">送到：{{orderInfo.Address}}</view>
         <view class='btn-box'>
           <view class='btn'>
             <text>实付款：</text>
             <text class='total-price'>¥{{orderInfo.RealTotalPrice}}</text>
           </view>
-          <view v-if="orderInfo.IsValidConsignee && orderInfo.Address && isCheckProtocol" bindtap='submitOrder' class="btn">
+          <view v-if="orderInfo.IsValidConsignee && orderInfo.Address && isCheckProtocol" @click='submitOrder' class="btn">
             去支付
             <img class="icon-right" src="" />
           </view>
@@ -222,6 +226,7 @@
       </view>
     </view>
     <!-- 用户协议 -->
+    <goodsList :is-show.sync="isShowGoodsList" :shop-id="shopId" />
   </article>
 </template>
 
@@ -229,11 +234,16 @@
 
 import api from "@/api/cart";
 import {mapState} from "vuex"
+import goodsList from "@/pages/order/components/goodsList";
 
 export default {
   data(){
     return {
       orderInfo: {},  //API返回的页面渲染信息
+      isCheckProtocol:true,
+      isHaitaoProttocol:true,
+      isCoverAddress:true,
+      isShowGoodsList:false,
       formModel: {
         isUseScore : true, 
         isUseBalance : true,
@@ -241,10 +251,11 @@ export default {
         selectedConsigneeId : "", 
         selectedPayMode: "1",
         selectedExpressId : "", 
-        invoiceType : "", 
+        warehouseId: "",
+        invoiceType : "-1", //3个人，1公司
         invoiceTitle : "", 
         invoiceItemId : "", 
-        selectInvoiceMode : "", 
+        selectInvoiceMode : "-1", //-1暂不开具，1电子发票
         axpayerIdentityNumber : "", 
         bankName : "", 
         bankAccount : "", 
@@ -253,28 +264,52 @@ export default {
         IDCard : "", 
       },
     }
-
   },
-  computed :{...mapState("order",["SelectedExpressId","SelectedConsigneeId"])},
-
+  computed :{...mapState("order",["SelectedExpressId","SelectedConsigneeId","IsChangeCoupon"])},
+  components: {
+    goodsList,
+  },
   onLoad(options) {
     if(options){
       this.formModel.selectShopId = options.shopId;
     }
     this.getConfirmOrderDetail();
   },
+  onPageScroll({ scrollTop }) {
+    //控制是否展示底部收货地址tip
+    if (scrollTop > 90) {
+      this.isCoverAddress = true;
+    } else {
+      this.isCoverAddress = false;
+    }
+  },
   //监测地址，快递变化
   watch: {
     SelectedConsigneeId:{
       handler: function(val,oldVal){
-        this.formModel.selectedConsigneeId = val;
-        this.getConfirmOrderDetail();
+        if (val.length && oldVal.length && val != oldVal) {
+          console.log('刷新')
+          this.formModel.selectedConsigneeId = val;
+          this.getConfirmOrderDetail();
+        }
+       
       },immediate: true
     },
     SelectedExpressId:{
       handler: function(val,oldVal){
-        this.formModel.selectedExpressId = val;
-        this.getConfirmOrderDetail();
+        if (val.length && oldVal.length && val != oldVal) {
+          this.formModel.selectedExpressId = val;
+          this.getConfirmOrderDetail();
+        }
+      },immediate: true
+    },
+    IsChangeCoupon:{
+      handler: function(val,oldVal){
+        console.log("==========" + val)
+        if (val) {
+          this.formModel.selectedExpressId = val;
+          this.getConfirmOrderDetail();
+        }
       },immediate: true
     }
   },
@@ -285,80 +320,33 @@ export default {
         this.orderInfo = Object.assign({}, Data);
         this.formModel.selectedConsigneeId = this.orderInfo.SelectedConsigneeId;
         this.formModel.selectedExpressId = this.orderInfo.SelectedExpressId
-        this.formModel.shopId = this.orderInfo.ShopId;
+        this.formModel.warehouseId = this.orderInfo.WarehouseId
         console.log(Data)
       });
     },
-    getadd(){
-      var that=this;
-      wx.getSetting({
-        success(res) {
-          if (res.authSetting['scope.address']) {
-           wx.chooseAddress({
-              success(res) {
-                var data={};
-                data.ConsigneeName=res.userName;
-                data.ProvinceName = res.provinceName;
-                data.CityName = res.cityName;
-                data.DistrictName = res.countyName;
-                data.Address = res.detailInfo;
-                data.PostalCode = res.nationalCode;
-                data.ContactMobile = res.telNumber;
-                that.getaddid(data);
-              }
-            })
-            // 用户已经同意小程序使用录音功能，后续调用 wx.startRecord 接口不会弹窗询问
-          } else {
-            if (res.authSetting['scope.address'] == false) {
-              wx.openSetting({
-                success(res) {
-                }
-              })
-            } else {
-              console.log("eee")
-              wx.chooseAddress({
-                success(res) {
-                }
-              })
-            }
-          }
-        }
-      })
+    
+  
+    //商品清单
+    showGoodsListEvent() {
+      this.isShowGoodsList = true;
     },
-    getaddid(data){
-      var that=this;
-      api.addWechat(data).then(({ Data }) => {
-        that.setData({
-          addid: Data
-        });
-        that._getOrderInfoData();
-        wx.setStorageSync('GroupCartInfo', {
-          SelectConsigneeId: Data,
-        })
-      })
-    },
-    // onPageScroll({ scrollTop }) {
-    //   //控制是否展示底部收货地址tip
-    //         console.log("[[[[[[[[[[[[")
-    //   if (scrollTop > 90) {
-    //     this.setData({
-    //       isCoverAddress: true
-    //     })
-    //   } else {
-    //     this.setData({
-    //       isCoverAddress: false
-    //     })
-    //   }
-    // },
     changeUseBalance() {
       this.formModel.isUseBalance = !this.isUseBalance
-      
+      this.getConfirmOrderDetail();
     },
     changeUseScore() {
       this.formModel.isUseScore = !this.formModel.isUseScore
-      
+      this.getConfirmOrderDetail();
     },
-
+    /**
+     * 同意/不同意用户购买需知
+     */
+    checkProtocol() {
+      this.isCheckProtocol = !this.isCheckProtocol
+    },
+    checkHaitaoProtocol() {
+      this.isHaitaoProttocol = !this.isHaitaoProttocol
+    },
 
     //实现跳转的A页面
     jumpToLogistics: function () {
@@ -374,7 +362,69 @@ export default {
       wx.navigateTo({
           url: '/pages/order/logistics/main?ShopId='+this.formModel.selectShopId+'&SelectedConsigneeId='+this.formModel.selectedConsigneeId+'&SelectedExpressId='+this.formModel.selectedExpressId,
       })
+    },
+    /**
+     * 跳转到用户协议页面
+     */
+    showUserAgreement() {
+      wx.navigateTo({
+        url: '/pages/htmlPreview/main?url=' + encodeURIComponent('/TemplateForNewApp/userAgreement')
+      })
+    },
+    showUserysxy() {
+      wx.navigateTo({
+        url: '/pages/htmlPreview/main?url=' + encodeURIComponent('/TemplateForNewApp/ysxy')
+      })
+    },
+    showHaitaoUsergmxz(){
+      wx.navigateTo({
+        url: '/pages/htmlPreview/main?url=' + encodeURIComponent('/Templateforapp/hwg0862017')
+      })
+    },
+    showServiceDesc(){
+      wx.navigateTo({
+        url: '/pages/htmlPreview/main?url=' + encodeURIComponent('/Templateforapp/hwg0852017')
+      })
+    },
+    _showErrorToast(errMsg) {
+      wx.showToast({
+        title: errMsg,
+        icon: 'none',
+        duration: 3000
+      })
+    },
+   
+    //提交订单 去支付
+    submitOrder() {
+      console.log(this.formModel)
+      if(this.formModel.selectedConsigneeId.length == 0 || this.formModel.selectedConsigneeId.length == '00000000-0000-0000-0000-000000000000'){
+        this._showErrorToast('请先设置收货地址')
+        return false
+      }
+      if (this.formModel.selectShopId == 2) {
+        if (!/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(info.IDCard)) {
+          this._showErrorToast('身份证号不正确，请重新输入')
+          return false
+        }
+        if (!this.isHaitaoProttocol) {
+          this._showErrorToast('请先勾选购买进口商品用户购买须知')
+          return false
+        }
+
+      } else {
+        if(this.formModel.selectedExpressId.length ==0 || this.formModel.selectedExpressId.length == '00000000-0000-0000-0000-000000000000'){
+          this._showErrorToast('请先选择快递方式')
+            return false
+        }
+      }
+      if (!this.isCheckProtocol) {
+        this._showErrorToast('请先勾选同意购买需知')
+        return false
+      }
+
+
     }
+    
   }
 }
 </script>
@@ -479,7 +529,7 @@ page {
 .order-box .shop-name {
   color: #171717;
   font-size: 28rpx;
-  padding: 30rpx;
+  padding: 25rpx;
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
@@ -499,13 +549,17 @@ page {
   align-items: center;
   padding: 0 30rpx;
   border-bottom: 1rpx solid #dcdcdc;
-  height: 200rpx;
+  height: 160rpx;
 }
 .scroll-view_H {
-  white-space: nowrap;
+  // white-space: nowrap;
+  // background: #808080;
+  width: calc(100% - 120rpx);
+  display: flex;
+  height: 160rpx;
+  box-sizing: border-box;
 }
 .scroll-item {
-  display: inline-block;
   height: 140rpx;
   width: 200rpx;
 }
@@ -524,7 +578,10 @@ page {
   font-size: 20rpx;
 }
 .goodsCount {
-  width: 100rpx;
+  width: 120rpx;
+  font-size: 20rpx;
+  text-align: right;
+  // background: #808080;
 }
 .order-box .haitao {
   border-bottom: solid 12rpx #F0F0F0;
@@ -647,7 +704,7 @@ page {
   color: #333333;
 }
 .amount-box .flex-line .text {
-  font-size: 28rpx;
+  font-size: 24rpx;
   color: #999;
 }
 .amount-box .flex-line:last-child {
@@ -773,6 +830,7 @@ page {
 .pay-protocol-box {
   padding: 30rpx;
   box-sizing: border-box;
+  border-bottom: 12rpx solid #F0F0F0;
 }
 .pay-protocol-box .checked-box image,
 .pay-protocol-box .checked-box .no-checked {
@@ -817,10 +875,11 @@ page {
   color: #333;
 }
 .haitao-protocol-box {
-  border-bottom: 12rpx solid #F0F0F0;
+  // border-bottom: 12rpx solid #F0F0F0;
   font-size: 28rpx;
   color: #999;
-  padding: 30rpx;
+  padding-top: 30rpx;
+  padding-bottom: 30rpx;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -840,6 +899,10 @@ page {
 }
 .haitao-protocol-box .protocol-desc {
   color: #E31436;
+}
+.haitao-protocol-text {
+  margin-left: 15rpx;
+  font-size: 24rpx;
 }
 
 </style>

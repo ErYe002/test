@@ -10,18 +10,20 @@
         </div>
         <div class="address">{{item.Address}}</div>
         <div class="editBtns">
-          <div @click="doSetDefaultAddress(item.ID)">
-            <radio class="radio" :disabled="true" color="#cab894" :checked="item.IsDefault" />设置默认
+          <div class="defaultBtn" @click="doSetDefaultAddress(item.ID)">
+            <Img class="imgIcon" v-if="item.IsDefault" src="/static/images/icon_checked.png"></Img>
+            <Img class="imgIcon" v-else src="/static/images/icon_no_checked.png"></Img>
+             设置默认
           </div>
           <div class="right">
             <a
               class="editItem"
               :href="'/pages/account/address/editAddress/main?isEdit=true&consigneeId=' + item.ID"
             >
-              <Img class="imgIcon" src="https://pic.keede.com/app/images/icon_cart.png"></Img>编辑
+              <Img class="imgIcon" src="/static/images/icon_edit.png"></Img> 编辑
             </a>
             <div class="editItem" @click="doDeleteAddress(item.ID)">
-              <Img class="imgIcon" src="https://pic.keede.com/app/images/icon_cart.png"></Img>删除
+              <Img class="imgIcon" src=/static/images/account_favorite_delete.png></Img> 删除
             </div>
           </div>
         </div>
@@ -63,12 +65,11 @@ export default {
     doSetDefaultAddress(consigneeId){
       console.log(consigneeId)
       api.doSetDefaultAddress(consigneeId).then(({ Data, State, Msg }) => {
-        let tempMsg = "";
         if (State){
           this.getListData();
         }else{
           wx.showToast({
-            title: tempMsg,
+            title: Msg,
             icon: 'none',
           }); 
         }
@@ -83,12 +84,11 @@ export default {
           if (res.confirm) {
             console.log('用户点击确定')
             api.doDeleteAddress(consigneeId).then(({ Data, State, Msg }) => {
-              let tempMsg = "";
               if (State){
                 _this.getListData();
               }else{
                 wx.showToast({
-                title: tempMsg,
+                title: Msg,
                 icon: 'none',
                 }); 
               }
@@ -157,6 +157,11 @@ page {
   border-bottom: 1rpx solid #dcdcdc;
   width: 100%;
 }
+.defaultBtn {
+  display: flex;
+  align-items: center;
+}
+
 .editBtns {
   height: 60rpx;
   width: 100%;
@@ -172,16 +177,16 @@ page {
     justify-content: space-between;
     .editItem {
       width: 120rpx;
+      display: flex;
+      align-items: center;
     }
   }
 }
-.radio {
-  transform: scale(0.7);
-  color: #cab894;
-}
+
 .imgIcon {
-  width: 20rpx;
-  height: 20rpx;
+  margin-right: 10rpx;
+  width: 30rpx;
+  height: 33rpx;
 }
 .no-data-box {
   color: #666;
