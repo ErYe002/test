@@ -103,13 +103,5 @@ export default {
   // height: 55px;
   width: 100%;
   bottom: 0px;
-  .btn-submit{
-    height: 55px;
-    line-height: 50px;
-    background-color: #cab894;
-    border: 1px solid #cab894;
-    color: #fff;
-    text-align: center;
-  }
 }
 </style>

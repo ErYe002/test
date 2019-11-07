@@ -59,7 +59,7 @@
           <em>{{shopId == 1 ? '可得境内自营':'品质进口海淘'}}</em>
         </span>
         <span class="rules">
-          <img src="/static/images/icon_question.png" class="icon-question" />
+          <img src="/static/images/icon_question.png" class="icon-question" @click="showTariffEvent"/>
           <em>{{shopId == 1 ? '满80包邮':'已包税'}}</em>
           <em class="space">|</em>
           <em class="coupon-btn" @click="showCouponListEvent">优惠券</em>
@@ -695,6 +695,7 @@
       @done="changeAttrDone"
       :quantity="editCartItemInfo.quantity"
     />
+    <tariff :is-show.sync="isShowTariff"/>
   </article>
 </template>
 
@@ -703,6 +704,7 @@ import api from "@/api/cart";
 import { mapState } from "vuex";
 import coupon from "./components/coupon";
 import attrs from "./components/attrs";
+import tariff from "./components/tariff";
 
 export default {
   data() {
@@ -718,6 +720,7 @@ export default {
       selectedCartItem: [],
       // selectedItemCount: 0,
       isShowAttr: false, //是否显示选择属性弹窗
+      isShowTariff: false,
       isEdit: false,  //是否正在编辑购物车
       editCartItemInfo: {
         uniqueId: "",
@@ -732,7 +735,8 @@ export default {
   },
   components: {
     coupon,
-    attrs
+    attrs,
+    tariff
   },
   onShow() {
     //如果已经登录，则获取购物车信息
@@ -755,6 +759,9 @@ export default {
     },
     showCouponListEvent() {
       this.isShowCouponList = true;
+    },
+    showTariffEvent(){
+      this.isShowTariff = true
     },
     //获取猜你喜欢的商品
     _getLikeGoods() {
