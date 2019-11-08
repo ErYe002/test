@@ -399,31 +399,103 @@ export default {
       console.log(this.formModel)
       if(this.formModel.selectedConsigneeId.length == 0 || this.formModel.selectedConsigneeId.length == '00000000-0000-0000-0000-000000000000'){
         this._showErrorToast('请先设置收货地址')
-        return false
+        return 
       }
       if (this.formModel.selectShopId == 2) {
         if (!/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(info.IDCard)) {
           this._showErrorToast('身份证号不正确，请重新输入')
-          return false
+          return 
         }
         if (!this.isHaitaoProttocol) {
           this._showErrorToast('请先勾选购买进口商品用户购买须知')
-          return false
+          return 
         }
 
       } else {
         if(this.formModel.selectedExpressId.length ==0 || this.formModel.selectedExpressId.length == '00000000-0000-0000-0000-000000000000'){
           this._showErrorToast('请先选择快递方式')
-            return false
+            return 
         }
       }
       if (!this.isCheckProtocol) {
         this._showErrorToast('请先勾选同意购买需知')
-        return false
+        return 
       }
 
-
-    }
+      api.submitOrder({...formModel}).then(({Data,Msg,State}) => {
+        if (State){
+          //订单创建成功，唤起微信支付
+          this._wechatPay(Data.OrderId, () => {
+            // 关闭所有页面，打开到应用内的某个页面 去订单列表页
+            wx.reLaunch({
+              // url: '/home/groupDetail/groupDetail?grouponRecordId=' + Data.GrouponRecordId + '&orderId=' + Data.OrderId
+            })
+          })
+        }else{
+          let tempMsg = "";
+          if (Msg) {
+            tempMsg = Msg;
+          }else{
+            tempMsg = "提交订单异常请稍后再试";
+          }
+          wx.showToast({
+            title: tempMsg,
+            icon: 'none',
+          });
+        } 
+      })
+    },
+    // 微信支付
+    _wechatPay(orderId, cn) {
+    api.payOrder(orderId, app.globalData.openId).then((result) => {
+      const { nonceStr, paySign, signType, timeStamp } = result.Data
+      const package1 = result.Data.package  //package是小程序关键字
+      api.logging(app.globalData.token + '，订单号：' + orderId + '-唤起微信支付参数', {
+        timeStamp,
+        nonceStr,
+        package: package1,
+        signType,
+        paySign
+      });
+      wx.showLoading();
+      wx.requestPayment(
+        {
+          'timeStamp': timeStamp,
+          'nonceStr': nonceStr,
+          'package': package1,
+          'signType': signType,
+          'paySign': paySign,
+          'success': function (res) {
+            wx.removeStorageSync('GroupCartInfo')
+            api.paySuccess(orderId).then(() => {
+              cn()  
+            }).catch(() => {
+              cn()
+            })
+          },
+          'fail': function (e) {
+            wx.reportMonitor('3', 1)
+            wx.showModal({
+              title: '提示',
+              content: '支付失败，即将为您跳转到购物车页，您可以稍后再进行支付',
+              showCancel: false,
+              confirmColor: '#cab894',
+              success() {
+                wx.removeStorageSync('GroupCartInfo')
+                wx.reLaunch({
+                  url: '/pages/cart/main'
+                })
+              }
+            })
+          },
+          'complete': function () {
+            wx.hideLoading();
+          }
+        })
+    }).catch(() => {
+      // wx.reportMonitor('3', 1)
+    })
+  },
     
   }
 }
