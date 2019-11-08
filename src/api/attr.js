@@ -49,7 +49,77 @@ goodsId=${mapParms.get('goodsId')}
 &LeftZW=${mapParms.get('LeftZW')}
 &RightZW=${mapParms.get('RightZW')}
 &TongJu=${mapParms.get('TongJu')}`);
-  }
+  },
+  //加入购物车(非框架购买属性选择)
+  postGoodsJoinCartNormal(GId, isAllSaleScore, GrouponActivityId, isPresale, IsAllStock) {
+    return http.post(`/Goods/JoinCart?GId=${GId}&isAllSaleScore=${isAllSaleScore}&GrouponActivityId=${GrouponActivityId}&isPresale=${isPresale}&IsAllStock=${IsAllStock}`);
+  },
+  //无属性的商品
+  buyNoProperty(mapPrams) {
+    let selfUrl = `&Quantity=${mapPrams.get('Quantity')}&GDPropertyGifts=&SelectedSpecifications=&RealGoodsId=${mapPrams.get('RealGoodsId')}&NoPropertyGifts=`;
+    this.getMapParams('/cart/BuyNoProperty', mapPrams, selfUrl);
+  },
+  //购买双属性商品
+  buyDoubleProperty(mapParms) {
+    let selfUrl = '';
+    if (mapParms.get('LeftQuantity') > 0) {
+      selfUrl += `&LeftGD=${mapParms.get('LeftGD')}&LeftQuantity=${mapParms.get('LeftQuantity')}&LEFTGDNAME=${mapParms.get('LEFTGDNAME')}&LeftRealGoodsId=${mapParms.get('LeftRealGoodsId')}`;
+    } else {
+      selfUrl += `&LeftQuantity=0`;
+    }
+
+    if (mapParms.get('RightQuantity') > 0) {
+      selfUrl += `&RightGD=${mapParms.get('RightGD')}&RightQuantity=${mapParms.get('RightQuantity')}&RIGHTGDNAME=${mapParms.get('RIGHTGDNAME')}&RightRealGoodsId=${mapParms.get('RightRealGoodsId')}`;
+    } else {
+      selfUrl += `&RightQuantity=0`;
+    }
+
+
+    this.getMapParams('/cart/BuyDoubleProperty', mapParms, selfUrl);
+  },
+  //购买散光定制的双属性商品
+  buyDoubleCustomizedProperty(mapParms) {
+    let selfUrl = '';
+    if (mapParms.get('LeftQuantity') > 0) {
+      selfUrl += `&LeftGD=${mapParms.get('LeftGD')}&LeftSG=${mapParms.get('LeftSG')}&LeftZW=${mapParms.get('LeftZW')}&LeftRealGoodsId=${mapParms.get('LeftRealGoodsId')}`;
+    } else {
+      selfUrl += `&LeftQuantity=0`;
+    }
+
+    if (mapParms.get('RightQuantity') > 0) {
+      selfUrl += `&RightGD=${mapParms.get('RightGD')}&RightSG=${mapParms.get('RightSG')}&RightZW=${mapParms.get('RightZW')}&RightRealGoodsId=${mapParms.get('RightRealGoodsId')}`;
+    } else {
+      selfUrl += `&RightQuantity=0`;
+    }
+    this.getMapParams('/cart/BuyDoubleCustomizedProperty', mapParms, selfUrl);
+  },
+  //购买单属性商品
+  buySingleProperty(mapParms) {
+    let selfUrl = `&GD=${mapParms.get('GD')}&Quantity=${mapParms.get('Quantity')}&GDPropertyGifts=&SelectedSpecifications=&NoPropertyGifts=&RealGoodsId=${mapParms.get('RealGoodsId')}`;
+    this.getMapParams('/cart/BuySingleProperty', mapParms);
+  },
+  getMapParams(url, mapPrams, otherUrl) {
+    return http.post(url + `?
+    goodsId=${mapPrams.get('goodsId')}
+&IsConfirmedBuy=${mapPrams.get('IsConfirmedBuy')}
+&ShopId=${mapPrams.get('ShopId')}
+&MaxSellNumber=${mapPrams.get('MaxSellNumber')}
+&GoodsName=${mapPrams.get('GoodsName')}
+&SeriesId=${mapPrams.get('SeriesId')}
+&MarketPrice=${mapPrams.get('MarketPrice')}
+&SalePrice=${mapPrams.get('SalePrice')}
+&SaleScore=${mapPrams.get('SaleScore')}
+&IsScarcity=${mapPrams.get('IsScarcity')}
+&IsSpecialOffer=${mapPrams.get('IsSpecialOffer')}
+&SaleStockType=${mapPrams.get('SaleStockType')}
+&MaxDeduction=${mapPrams.get('MaxDeduction')}
+&IsFreeCarriage=${mapPrams.get('IsFreeCarriage')}
+&LeftRealGoodsId=${mapPrams.get('LeftRealGoodsId')}
+&RightRealGoodsId=${mapPrams.get('RightRealGoodsId')}
+&RealGoodsId=${mapPrams.get('RealGoodsId')}
+    ` + otherUrl);
+  },
+
 };
 
 export default api;
