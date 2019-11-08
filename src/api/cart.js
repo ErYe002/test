@@ -138,8 +138,8 @@ const api = {
     return http.postByNoLoading(`/Goods/GoodsLike?shopId=${shopid}`)
   },
   //提交订单
-  submitOrder({isUseScore, selectConsigneeId, selectPayMode, selectExpressId, isUseBalance, invoiceType, invoiceTitle, invoiceItemId, selectInvoiceMode, axpayerIdentityNumber, bankName, bankAccount, companyAddress, mobileNo, IDCard, warehouseId, selectShopId} = {}){
-    return http.post(`/Cart/SubmitOrder?IsUseScore=${isUseScore}&SelectConsigneeId=${selectConsigneeId}&SelectPayMode=${selectPayMode}&SelectExpressId=${selectExpressId}&IsUseBalance=${isUseBalance}&SelectInvoiceType=${invoiceType}&InvoiceTitle=${invoiceTitle}&InvoiceItemId=${invoiceItemId}&SelectInvoiceMode=${selectInvoiceMode}&identityNumber=${axpayerIdentityNumber}&bankName=${bankName}&bankAccount=${bankAccount}&companyAddress=${companyAddress}&mobileNo=${mobileNo}&IDCard=${IDCard}&WarehouseId=${warehouseId}&SelectShopId=${selectShopId}`)
+  submitOrder({isUseScore, selectedConsigneeId, selectedPayMode, selectedExpressId, isUseBalance, invoiceType, invoiceTitle, invoiceItemId, selectInvoiceMode, axpayerIdentityNumber, bankName, bankAccount, companyAddress, mobileNo, IDCard, warehouseId, selectShopId} = {}){
+    return http.post(`/Cart/SubmitOrder?IsUseScore=${isUseScore}&SelectConsigneeId=${selectedConsigneeId}&SelectPayMode=${selectedPayMode}&SelectExpressId=${selectedExpressId}&IsUseBalance=${isUseBalance}&SelectInvoiceType=${invoiceType}&InvoiceTitle=${invoiceTitle}&InvoiceItemId=${invoiceItemId}&SelectInvoiceMode=${selectInvoiceMode}&identityNumber=${axpayerIdentityNumber}&bankName=${bankName}&bankAccount=${bankAccount}&companyAddress=${companyAddress}&mobileNo=${mobileNo}&IDCard=${IDCard}&WarehouseId=${warehouseId}&SelectShopId=${selectShopId}`)
   }
 };
 

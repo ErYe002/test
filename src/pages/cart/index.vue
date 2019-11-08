@@ -858,7 +858,7 @@ export default {
         });
       } else {
         wx.navigateTo({
-          url: "/pages/order/index/main?shopId=" + this.shopId
+          url: "/pages/order/index/main?shopId=" + this.shopId + "&RoleId=" + this.model.RoleId
         });
       }
     },
