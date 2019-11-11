@@ -24,7 +24,8 @@
         "favorites/main",
         "balance/main",
         "cash/main"
-      ]},
+      ]
+    },
     {
       "root": "pages/search",
       "pages": [
@@ -40,7 +41,8 @@
       "pages": [
         "index/main",
         "frameAttr/main",
-        "glassSelect/main"
+        "glassSelect/main",
+        "normalAttr/main"
       ]
     },
     {
@@ -103,6 +105,5 @@
       }
     ],
     "position": "bottom"
-  },
-  "sitemapLocation": "sitemap.json"
+  }
 }

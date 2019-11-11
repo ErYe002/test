@@ -2,19 +2,55 @@
   <bottom-flip :is-show.sync="isShow">
     <div class="topTitles">
         <div>商品清单</div>
-        <div>共计xxx件(包括配件)</div>
-        <img src="/static/images/icon_cart_tips_close.png" alt="">
+        <div>共计{{GoodsCount}}件(包括配件)</div>
+        <!-- <img class="deletImg" src="/static/images/icon_cart_tips_close.png" alt=""> -->
     </div>
-    <!-- 套餐商品 -->
-    <div v-for="item in PackageGoods" :key="item.PromotionID"> 
-
-    </div>    
-    
-    <!-- 普通商品 -->
-    <div v-for="item in NormalGoods" :key="item.PromotionID">
-
-    </div>
-
+    <scroll-view scroll-y="true" class="goods-list">
+      <!-- 套餐商品 -->
+      <div  v-for="(packageItem, idx) in PackageGoods" :key="idx"> 
+        <div class="packageTitleWiew">
+          <div>套餐:{{idx+1}} x{{packageItem.Quantity}}</div>
+          <div class="packePriceView">￥{{packageItem.Price}}</div>
+        </div>
+        <div class="goodsView"  v-for="item in packageItem.PackageGoodsItems" :key="item.GoodsId"> 
+          <img class="goodsImg" :src="item.ImageUrl" alt="">
+          <div class="goodsInfo">
+            <p class="g-name"><span class="oversea-tag" v-if="item.ShopId == 2">海淘</span> {{item.GoodsName}}</p>
+            <div class="g-attr" v-for="(attrItem, indx) in item.SpecificationItems" :key="indx">
+              <div class="attr-text" > <span v-if="attrItem.Specification"></span>{{attrItem.Specification}}<span v-if="attrItem.AnotherName">{{attrItem.AnotherName}}</span></div>
+              <div class="attr-text">x {{attrItem.Quantity}}</div>
+            </div>
+          </div>
+        </div>
+      </div>    
+      <!-- 普通商品 -->
+      <div class="goodsView" v-for="(item, idx) in NormalGoods" :key="idx">
+        <img class="goodsImg" :src="item.ImageUrl" alt="">
+        <div class="goodsInfo">
+            <p class="g-name"><span class="oversea-tag" v-if="item.ShopId == 2">海淘</span>{{item.GoodsName}}</p>
+            <div class="g-attr" v-for=" attrItem in item.SpecificationItems" :key="attrItem">
+              <div class="attr-text" > <span v-if="attrItem.Specification"></span>{{attrItem.Specification}}<span v-if="attrItem.AnotherName">{{attrItem.AnotherName}}</span></div>
+              <div class="attr-text">x {{attrItem.Quantity}}</div>
+            </div>
+            <div class="g-price" v-if="item.IsScore">{{item.BuyScore}}积分</div>
+            <div class="g-price" v-else>
+              <em class="unit">¥</em>
+              <b>{{item.Price}}</b>
+              <div :class="{tag: true, vip: item.PriceLable != '促销价'}">
+                <img
+                  v-if="item.PriceLable != '促销价'"
+                  :src="'/static/images/level_0'+ roleId + '.jpg'"
+                />
+                <span>{{item.PriceLable != '促销价' ? '会员价' : '促销价'}}</span>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="footerView">
+        <img class="iconimg" mode="aspectFit" src="/static/images/confirm7day.png" alt="">
+        <img class="iconimg" mode="aspectFit" src="/static/images/confirmCustom.png" alt="">
+      </div>
+    </scroll-view>
   </bottom-flip>
 </template>
 
@@ -40,6 +76,10 @@ export default {
     shopId: {
       type: Number,
       default: 1
+    },
+    roleId: {
+      type: String,
+      default: ""
     }
   },
   watch:{
@@ -63,17 +103,15 @@ export default {
     },
     //获取商品清单
     _getGoodsList(){
-        cartApi.getPendingBuyGoods(this.shopId).then(({Data}) => {
-            console.log("--- 获取商品清单 ----")
-            console.log(Data)
-            this.PackageGoods = Data.PackageGoods
-            this.NormalGoods = Data.NormalGoods
-
-        // this.couponList = Data.map(ele => {
-        //   ele.UseStartTime = tool.formatDate('yyyy/MM/dd hh:mm', new Date(ele.UseStartTime))
-        //   ele.UseEndTime = tool.formatDate('yyyy/MM/dd hh:mm', new Date(ele.UseEndTime))
-        //   return ele
-        // })
+      console.log("shopId = "+this.shopId);
+      console.log("roleId = "+this.roleId);
+      cartApi.getPendingBuyGoods(this.shopId).then(({Data}) => {
+        console.log("--- 获取商品清单 ----")
+        this.PackageGoods = Data.PackageGoods
+        this.NormalGoods = Data.NormalGoods
+        this.GoodsCount = Data.GoodsCount
+        console.log(this.PackageGoods)
+        console.log(this.NormalGoods)
       })
     }
   }
@@ -85,18 +123,135 @@ export default {
 
 .topTitles {
   height: 60rpx;
-  width: 100%;
   display: flex;
   align-items: center;
   flex-direction: row;
   font-size: 24rpx;
+  margin-left: 20rpx;
+  margin-right: 20rpx;
   justify-content: space-between;
-  .right {
-    display: flex;
-    align-items: center;
-    flex-direction: row;    
+  // .right {
+  //   display: flex;
+  //   align-items: center;
+  //   flex-direction: row;    
+  // }
+  // .deletImg {
+  //   width: 30rpx;
+  //   height: 30rpx;
+  // }
+}
+.goods-list {
+  display: flex;
+  max-height: 480px;
+}
+.packageTitleWiew {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 24rpx;
+  margin: 20rpx;
+  .packePriceView {
+    font-size: 28rpx;
+    color: #ff0000;
   }
 }
 
+
+
+.goodsView {
+  flex: 1;
+  display: flex;
+  margin: 20rpx;
+  border-bottom: 1px solid #dcdcdc;
+}
+.goodsInfo {
+  flex: 1;
+  .g-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    font-size: 24rpx;
+    margin-bottom: 6px;
+    word-break: break-all;
+    color: #333333;
+  }
+  .g-attr {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    margin-bottom: 5px;
+    .attr-text {
+      color: #6b6b6b;
+    }
+  }
+  .g-price {
+    margin-bottom: 20rpx;
+    color: #e31436;
+    font-size: 28rpx;
+    display: flex;
+    align-items: center;
+    float:left;
+    bottom: 20rpx;
+    .unit {
+      font-size: 10px;
+    }
+    b {
+      // margin: -1.5px 2px -1.5px;
+      margin: 0 2px 0 0;
+    }
+    .tag {
+      font-size: 9px;
+      background: #000;
+      color: #fff;
+      padding: 1px 2px;
+      &.vip {
+        display: flex;
+        align-items: center;
+        padding: 0 2px 0 0;
+        img {
+          display: block;
+          width: 14px;
+          height: 14px;
+        }
+      }
+    }
+  }
+}
+
+.goodsImg {
+  margin-bottom: 20rpx;
+  margin-right: 10rpx;
+  width: 120rpx;
+  height: 120rpx;
+  border: 1px solid #dcdcdc;
+}
+
+.oversea-tag {
+  display: inline-block;
+  font-size: 10px;
+  color: #fff;
+  background: #000;
+  padding: 1px 1px;
+  margin-right: 3px;
+  font-weight: 300;
+}
+
+
+.footerView {
+  height: 100rpx;
+  padding-top: 30rpx;
+  padding-bottom: 30rpx;
+  margin-bottom: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .iconimg{
+    height: 50rpx;
+  }
+}
 
 </style>

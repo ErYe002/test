@@ -6,7 +6,7 @@
     </div>
     <div class="item">
       <p class="left">手机号码；</p>
-      <input class="input" :value="isEdit ? addressInfo.ContactMobile : ''" v-model="addressInfo.ContactMobile" placeholder="请填写收货人手机号" type="number" confirm-type="done"/>
+      <input class="input" :value="isEdit ? addressInfo.ContactMobile : ''" v-model="addressInfo.ContactMobile" placeholder="请填写收货人手机号" maxlength="11" type="number" confirm-type="done"/>
     </div>
     <div class="item">
       <p class="left">所在区域：</p>

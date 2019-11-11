@@ -226,7 +226,7 @@
       </view>
     </view>
     <!-- 用户协议 -->
-    <goodsList :is-show.sync="isShowGoodsList" :shop-id="shopId" />
+    <goodsList :is-show.sync="isShowGoodsList" :shop-id="formModel.selectShopId" :roleId="RoleId" />
   </article>
 </template>
 
@@ -244,6 +244,7 @@ export default {
       isHaitaoProttocol:true,
       isCoverAddress:true,
       isShowGoodsList:false,
+      RoleId:"",
       formModel: {
         isUseScore : true, 
         isUseBalance : true,
@@ -272,6 +273,8 @@ export default {
   onLoad(options) {
     if(options){
       this.formModel.selectShopId = options.shopId;
+      this.RoleId = options.RoleId
+      console.log(options)
     }
     this.getConfirmOrderDetail();
   },
@@ -421,9 +424,11 @@ export default {
         this._showErrorToast('请先勾选同意购买需知')
         return 
       }
-
-      api.submitOrder({...formModel}).then(({Data,Msg,State}) => {
+      
+      api.submitOrder({...this.formModel}).then(({Data,Msg,State}) => {
+        console.log('收货地址 '+ Msg)
         if (State){
+          console.log(Data.OrderId + '订单号')
           //订单创建成功，唤起微信支付
           this._wechatPay(Data.OrderId, () => {
             // 关闭所有页面，打开到应用内的某个页面 去订单列表页
@@ -642,8 +647,9 @@ page {
   width: 200rpx;
 }
 .goods-item .goodsImg {
-  width: 140rpx;
-  height: 140rpx;
+  width: 135rpx;
+  height: 135rpx;
+  border: 1px solid #dcdcdc;
 }
 .goods-item .count {
   margin-left: 10rpx;
