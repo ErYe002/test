@@ -29,6 +29,13 @@ const api = {
   logisticsQuery(orderId){
     return http.post(`/order/OrderQuery?orderId=${orderId}`)
   }
-};
+  //获取待评价商品列表
+  pendingComments(page,pageSize = 10){
+    return http.post(`/comment/PendingComments?pageIndex=${page}&pageSize=${pageSize}`)
+  },
+  //添加商品评论
+  addGoodsComment(OrderId,GoodsId,GoodsScore,Remark){
+    return http.post(`/comment/AddGoodsComment?OrderId=${OrderId}&GoodsId=${GoodsId}&GoodsScore=${GoodsScore}&Remark=${Remark}`);
+  },};
 
 export default api;

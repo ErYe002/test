@@ -4,7 +4,7 @@
       <section class="search-box">
         <img class="icon" src="/static/images/icon_search.png" />
         <input class="input" v-model="listQuery.queryString" placeholder="商品名称/订单号" @confirm="searchEvent" confirm-type="搜索"/>
-        <img v-if="listQuery.queryString != ''" @click="clearInputEvent" class="icon-clear" src="/static/images/clear-icon.png" />
+        <img v-if="listQuery.queryString != ''" @click="clearInputEvent" class="icon-clear" src="/static/images/icon_clear.png" />
       </section>
       <section class="type-box" v-if="listQuery.queryString == ''">
         <ul class="type-list">
@@ -29,49 +29,61 @@
     </article>
     <section class="order-box">
       <ul class="order-list">
-        <li class="o-item" v-for="(item, idx) in orderList" :key="idx">
-          <a :href="'/pages/account/order/detail/main?orderId=' + item.OrderId" class="link">
-            <div class="title">
-              <span class="order-no">订单编号：{{item.OrderNo}}</span>
-              <span class="ops">
-                <span class="status">{{item.OrderState}}</span>
-                <img class="icon" src="/static/images/icon_right_grey.png" />
-              </span>
-            </div>
-            <div class="goods-list">
-              <img
-                class="g-img"
-                :src="imgItem.Img"
-                mode="aspectFill"
-                v-for="imgItem in item.Details"
-                :key="imgItem.GoodsId"
-              />
-            </div>
-          </a>
-          <p class="amount-box">
-            共{{item.Quantity}}件，实付款：
-            <span class="amount">¥{{item.OrderPayment}}</span>
-          </p>
-          <ul class="btn-list">
-            <li class="b-item" v-if="item.IsCancel">
-              <button class="kd-btn btn-default btn-small" @click="cancelOrderEvent">取消订单</button>
-            </li>
-            <li class="b-item" v-if="item.ShopId != 2 && item.IsAfterSale">
-              <button class="kd-btn btn-default btn-small" @click="toAppTips('可得小程序暂时不支持退换货功能哦，请下载可得眼镜APP使用此功能')">退换货</button>
-            </li>
-            <li class="b-item" v-if="item.IsLogistics">
-              <button class="kd-btn btn-default btn-small">查看物流</button>
-            </li>
-            <li class="b-item" v-if="item.IsAppraise">
-              <button class="kd-btn btn-default btn-small">评价</button>
-            </li>
-            <li class="b-item" v-if="item.IsContactAirlines">
-              <button class="kd-btn btn-default btn-small" open-type="contact">联系客服</button>
-            </li>
-            <li class="b-item" v-if="item.IsPayment">
-              <button class="kd-btn btn-small">付款</button>
-            </li>
-          </ul>
+        <template v-if="listQuery.queryState != 6">
+          <li class="o-item" v-for="(item, idx) in orderList" :key="idx">
+            <a :href="'/pages/account/order/detail/main?orderId=' + item.OrderId" class="link">
+              <div class="title">
+                <span class="order-no">订单编号：{{item.OrderNo}}</span>
+                <span class="ops">
+                  <span class="status">{{item.OrderState}}</span>
+                  <img class="icon" src="/static/images/icon_right_grey.png" />
+                </span>
+              </div>
+              <div class="goods-list">
+                <img
+                  class="g-img"
+                  :src="imgItem.Img"
+                  mode="aspectFill"
+                  v-for="imgItem in item.Details"
+                  :key="imgItem.GoodsId"
+                />
+              </div>
+            </a>
+            <p class="amount-box">
+              共{{item.Quantity}}件，实付款：
+              <span class="amount">¥{{item.OrderPayment}}</span>
+            </p>
+            <ul class="btn-list">
+              <li class="b-item" v-if="item.IsCancel">
+                <button class="kd-btn btn-default btn-small" @click="cancelOrderEvent">取消订单</button>
+              </li>
+              <li class="b-item" v-if="item.ShopId != 2 && item.IsAfterSale">
+                <button class="kd-btn btn-default btn-small" @click="toAppTips('可得小程序暂时不支持退换货功能哦，请下载可得眼镜APP使用此功能')">退换货</button>
+              </li>
+              <li class="b-item" v-if="item.IsLogistics">
+                <button class="kd-btn btn-default btn-small">查看物流</button>
+              </li>
+              <li class="b-item" v-if="item.IsAppraise">
+                <button class="kd-btn btn-default btn-small">评价</button>
+              </li>
+              <li class="b-item" v-if="item.IsContactAirlines">
+                <button class="kd-btn btn-default btn-small" open-type="contact">联系客服</button>
+              </li>
+              <li class="b-item" v-if="item.IsPayment">
+                <button class="kd-btn btn-small">付款</button>
+              </li>
+            </ul>
+          </li>
+        </template>
+        
+        <li class="wait_evaluate" v-for="item in orderList" :key="item.GoodsId">
+          <div class="waitDivFirst">
+            <img class="waitCommentGoodsImg" :src="item.GoodsImageUrl" mode="aspectFill" />
+          </div>
+          <div class="waitDivSecond">
+            <p class="waitCommentGoodsName">{{item.GoodsName}}</p>
+            <a class="gotoComment" :href="'/pages/account/order/comment/main?orderId=' + item.OrderId +'&goodsId=' + item.GoodsId + '&goodsImageUrl=' + item.GoodsImageUrl">去评价</a>
+          </div>
         </li>
       </ul>
       <img
@@ -91,6 +103,7 @@ import api from "@/api/order";
 export default {
   data() {
     return {
+      fixedTopHeight: 83,
       orderList: [],
       isLoading: false,
       totalPage: 0,
@@ -188,7 +201,18 @@ export default {
               .finally(() => {
                 this.isLoading = false;
               });
-          } else {
+          }
+          else if(this.listQuery.queryState == 6){
+            api
+              .pendingComments(this.listQuery.page)
+              .then(res=>{
+                resolve(res);
+              })
+              .finally(()=>{
+                this.isLoading = false;
+              });
+          }
+           else {
             //按订单状态查询订单
             api
               .getOrderList({ ...this.listQuery })
@@ -350,6 +374,43 @@ page {
         }
       }
     }
+
+    .wait_evaluate{
+      display:flex;
+      flex-direction:row;
+      padding-bottom: 10px;
+      border-bottom: 1px solid gainsboro; 
+      margin-bottom: 10px;
+      .waitDivFirst{
+        margin-right:10px;
+        .waitCommentGoodsImg{
+          height:50px;
+          width:50px;
+        }
+      } 
+      .waitDivSecond {
+        position: relative;
+        .waitCommentGoodsName{
+          font-size: 12px;
+        }
+        .gotoComment{
+          border:1px solid #cab894;
+          border-radius: 5px;
+          color:#cab894;
+          position: absolute;
+          right: 10px;
+          bottom: 0px;
+          font-size: 12px;
+          text-align: center;
+          height: 25px;
+          width: 55px;
+          display: flex;
+          justify-content: center;
+          align-items:center;
+        }
+      }
+    }
+
   }
   .no-more-tips,
   .no-data-box {
