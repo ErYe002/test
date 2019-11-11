@@ -4,7 +4,8 @@ module.exports = {
     // salePlatformId: '5758035A-B02A-46F2-A9BB-B1D318DABBF9'
   
     // apiurl: 'http://114.80.166.24:18050',
-    apiurl: 'https://kdapi.keede.com',
+    // apiurl: 'https://kdapi.keede.com',
+    apiurl: 'http://192.168.117.58:8060',
     salePlatformId: '63710AD6-A235-458F-BFCF-1BFEE63CAB35'
   
     // apiurl: 'https://mpapi.kede.com/',
