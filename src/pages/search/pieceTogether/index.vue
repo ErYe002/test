@@ -21,7 +21,7 @@
           以下商品<em>满减</em>可凑单
         </p>
         <div class="g-list">
-          <a class="g-item" v-for="item in dataList" :key="item.GoodsId">
+          <a :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'" class="g-item" v-for="item in dataList" :key="item.GoodsId">
             <img class="g-img" :src="item.GoodsImg" />
             <p class="g-name">
               <span class="oversea-tag" v-if="listQuery.shopId == 2">海淘</span>

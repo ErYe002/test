@@ -25,6 +25,10 @@ const api = {
   cancelOrder(orderId){
     return http.post(`/order/CancelOrder?orderId=${orderId}`)
   },
+  //自营物流信息
+  logisticsQuery(orderId){
+    return http.post(`/order/OrderQuery?orderId=${orderId}`)
+  }
 };
 
 export default api;

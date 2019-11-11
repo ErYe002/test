@@ -23,7 +23,8 @@
         "setting/modifyUserNick/main",
         "favorites/main",
         "balance/main",
-        "cash/main"
+        "cash/main",
+        "logistics/main"
       ]
     },
     {

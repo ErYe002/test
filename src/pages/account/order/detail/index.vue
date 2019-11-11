@@ -19,10 +19,10 @@
             <a class="link">
               <img class="g-img" :src="item.Img" />
               <div class="g-info">
-                <p class="g-name">
+                <a :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'" class="g-name">
                   <text class="ht-tag" v-if="item.ShopId == 2">海淘</text>
                   {{item.GoodsName}}
-                </p>
+                </a>
                 <p class="g-attr">{{item.Specification}}</p>
               </div>
               <div class="price-info">
@@ -91,12 +91,6 @@
             <button class="kd-btn btn-default btn-small" open-type="contact">联系客服</button>
           </li>
           <li class="b-item" v-if="orderInfo.IsLogistics">
-            <button class="kd-btn btn-default btn-small">查看物流</button>
-          </li>
-          <li
-            class="b-item"
-            v-if="orderInfo.ShopId != 2 && (orderInfo.IsInvoiced || orderInfo.IsCanInvoice)"
-          >
             <button class="kd-btn btn-default btn-small">查看物流</button>
           </li>
           <li class="b-item" v-if="orderInfo.IsPayment">

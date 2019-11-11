@@ -30,7 +30,7 @@
         <p class="title">猜你喜欢</p>
         <scroll-view class="may-like-list" scroll-x="true" enable-flex="true" @scroll="scroll">
           <view class="ml-item" v-for="item in likeGoodsList" :key="item.GoodsId">
-            <a href>
+            <a :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'">
               <img :src="item.Img" class="p-img" />
               <p class="p-name">{{item.GoodsName}}</p>
               <b class="price">¥{{item.Price}}</b>
@@ -126,7 +126,7 @@
                   <div class="g-info">
                     <img class="g-img" :src="goodItem.ImageUrl" />
                     <div class="info">
-                      <p class="g-name"><span class="oversea-tag" v-if="shopId == 2">海淘</span>{{goodItem.GoodsName}}</p>
+                      <a :href="'/pages/product/index/main?seocode='+goodItem.SeoCode+'&isComp=true'" class="g-name"><span class="oversea-tag" v-if="shopId == 2">海淘</span>{{goodItem.GoodsName}}</a>
                       <template v-if="goodItem.Specifications">
                         <p class="g-attr" v-for="spItem in goodItem.Specifications" :key="spItem">
                           <span class="attr-text">{{spItem}}</span>
@@ -176,7 +176,7 @@
                   <div class="g-info">
                     <img class="g-img" :src="gItem.ImageUrl" />
                     <div class="info">
-                      <p class="g-name"><span class="oversea-tag" v-if="shopId == 2">海淘</span>{{gItem.GoodsName}}</p>
+                      <a :href="'/pages/product/index/main?seocode='+gItem.SeoCode+'&isComp=false'" class="g-name"><span class="oversea-tag" v-if="shopId == 2">海淘</span>{{gItem.GoodsName}}</a>
                       <!-- 有属性商品光度和数量 -->
                       <template
                         v-if="gItem.SpecificationItems != null && gItem.SpecificationItems.length > 0"
@@ -371,7 +371,7 @@
                   <div class="g-info">
                     <img class="g-img" :src="nItem.ImageUrl" />
                     <div class="info">
-                      <p class="g-name"><span class="oversea-tag" v-if="shopId == 2">海淘</span>{{nItem.GoodsName}}</p>
+                      <a :href="'/pages/product/index/main?seocode='+nItem.SeoCode+'&isComp=false'" class="g-name"><span class="oversea-tag" v-if="shopId == 2">海淘</span>{{nItem.GoodsName}}</a>
                       <!-- 有属性商品光度和数量 -->
                       <template
                         v-if="nItem.SpecificationItems != null && nItem.SpecificationItems.length > 0"
@@ -585,7 +585,7 @@
                     />
                   </span>
                   <div class="g-info">
-                    <p class="g-name">{{eItem.PromotionTheme}}</p>
+                    <a :href="'/pages/product/index/main?seocode='+eItem.SeoCode+'&isComp=false'" class="g-name">{{eItem.PromotionTheme}}</a>
                     <div class="info-box">
                       <img :src="eItem.ImageUrl" class="g-img" />
                       <div class="info">
