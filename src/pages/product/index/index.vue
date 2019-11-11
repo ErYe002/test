@@ -85,7 +85,7 @@
                 >￥{{Data.GoodsBase.MarketPrice}}</em>
                 <span v-if="Data.GoodsBase.ReducePrice>0">↓￥{{Data.GoodsBase.ReducePrice}}</span>
               </i>
-              <span class="priceTag" v-if="Data.isComp">套餐价</span>
+              <span class="priceTag" v-if="isComp">套餐价</span>
               <span
                 class="priceTag"
                 v-else-if="Data.GoodsBase.PriceLable=='降价'"
@@ -320,7 +320,9 @@
         </div>
       </block>
       <!-- 功能参数 -->
-      <block v-if="Data.isComp&&Data.Items!=null&&Data.Items[0]!=null&&Data.Items[0].IsSpecificationGoods">
+      <block
+        v-if="Data.isComp&&Data.Items!=null&&Data.Items[0]!=null&&Data.Items[0].IsSpecificationGoods"
+      >
         <div class="actCon">
           <div class="act-canshu actLine" @click="_showCanShu()">
             <span class="act-name">参数</span>
@@ -491,18 +493,27 @@
       <block v-if="Data.GoodsBase.ShopId==2">
         <div class="guessLike">
           <div class="goodsTypeTag">
-            <div class="tjw selected" data-target="tjw" data-type="117.00">同价位</div>
-            <div class="tlb" data-target="tlb" data-type="2">同类别</div>
-            <div class="tzq" data-target="tzq" data-type="日抛 ">同周期</div>
+            <div
+              :class="'tjw '+(QueryGoodsType=='price'?'selected':'')"
+              @click="_getSameTypeData('price')"
+            >同价位</div>
+            <div
+              :class="'tlb '+(QueryGoodsType=='goodsType'?'selected':'')"
+              @click="_getSameTypeData('goodsType')"
+            >同类别</div>
+            <div
+              :class="'tzq '+(QueryGoodsType=='period'?'selected':'')"
+              @click="_getSameTypeData('period')"
+            >同周期</div>
           </div>
-          <div class="goodsTypeBox">
+          <div class="goodsTypeBox" v-if="QueryGoodsData!=null">
             <swiper display-multiple-items="3.2">
-              <block v-for="item in background" :key="item.index">
+              <block v-for="item in QueryGoodsData" :key="item.index">
                 <swiper-item>
                   <a href>
-                    <img src="https://pic.keede.com//app/images/goods_errimg.png" mode="widthFix" />
-                    <div class="goodsName">SHANGPREE/香蒲丽 螺旋藻水光面膜 5片/盒 海淘专享</div>
-                    <div class="goodsPrice">￥180.00</div>
+                    <img :src="item.Img" mode="widthFix" />
+                    <div class="goodsName">{{item.GoodsName}}</div>
+                    <div class="goodsPrice">￥{{item.Price}}</div>
                   </a>
                 </swiper-item>
               </block>
@@ -514,18 +525,27 @@
       <block v-else>
         <div class="guessLike">
           <div class="goodsTypeTag">
-            <div class="tjw selected" data-target="tjw" data-type="117.00">品牌推荐</div>
-            <div class="tlb" data-target="tlb" data-type="2">猜你喜欢</div>
-            <div class="tzq" data-target="tzq" data-type="日抛 ">热销排行</div>
+            <div
+              :class="'tjw '+(QueryGoodsType2=='PPTJ'?'selected':'')"
+              @click="_getSameTypeData2('PPTJ')"
+            >品牌推荐</div>
+            <div
+              :class="'tlb '+(QueryGoodsType2=='CNXH'?'selected':'')"
+              @click="_getSameTypeData2('CNXH')"
+            >猜你喜欢</div>
+            <div
+              :class="'tzq '+(QueryGoodsType2=='RXPH'?'selected':'')"
+              @click="_getSameTypeData2('RXPH')"
+            >热销排行</div>
           </div>
           <div class="goodsTypeBox">
             <swiper display-multiple-items="3.2">
-              <block v-for="item in background" :key="item.index">
+              <block v-for="item in QueryGoodsData2" :key="item.index">
                 <swiper-item>
                   <a href>
-                    <img src="https://pic.keede.com//app/images/goods_errimg.png" mode="widthFix" />
-                    <div class="goodsName">SHANGPREE/香蒲丽 螺旋藻水光面膜 5片/盒 海淘专享</div>
-                    <div class="goodsPrice">￥180.00</div>
+                    <img :src="item.GoodsImg" mode="widthFix" />
+                    <div class="goodsName">{{item.GoodsName}}</div>
+                    <div class="goodsPrice">￥{{item.Price}}</div>
                   </a>
                 </swiper-item>
               </block>
@@ -562,8 +582,14 @@
           </a>
         </div>
         <div class="proBtn">
-          <a class="addCart" href>加入购物车</a>
-          <a class="buyNow" href>立即购买</a>
+          <a
+            class="addCart"
+            :href="Data.GoodsBase.GoodsType==4?frameAttrHref+'&IsBuyNow=false':normalAttrHref+'&IsBuyNow=false'"
+          >加入购物车</a>
+          <a
+            class="buyNow"
+            :href="Data.GoodsBase.GoodsType==4?frameAttrHref+'&IsBuyNow=true':normalAttrHref+'&IsBuyNow=true'"
+          >立即购买</a>
         </div>
       </div>
     </template>
@@ -946,13 +972,19 @@ export default {
       isShowZP: false,
       isShowPJ: false,
       isShowHG: false,
-      isShowMH: false
+      isShowMH: false,
+      frameAttrHref: "",
+      normalAttrHref: "",
+      QueryGoodsData: "",
+      QueryGoodsType: "price",
+      QueryGoodsType2: "PPTJ",
+      QueryGoodsData2:""
     };
   },
   computed: {},
   onLoad(options) {
     console.log(options);
-    this._getPageData(options.seocode,options.isComp);
+    this._getPageData(options.seocode, options.isComp);
   },
   filters: {
     toFixed: function(num) {
@@ -966,7 +998,7 @@ export default {
     wxParse
   },
   methods: {
-    _getPageData(seocode,isComp) {
+    _getPageData(seocode, isComp) {
       //var seocode="revia6";//自营
       //var seocode = "htyx6"; //海淘
       //var seocode = "hankj744"; //有配件
@@ -1005,10 +1037,16 @@ export default {
           }
         );
 
-        Data.isComp = isComp;
+        this.isComp = isComp == "false" ? false : true;
         this.Data = Data;
         this._getGoodsAbout();
-        this._getSameTypeData();
+        if(this.Data.GoodsBase.ShopId==2){
+          this._getSameTypeData("price");
+        }else{
+          console.log(2);
+          this._getSameTypeData2("PPTJ");
+        }
+        this._AttrHref();
       });
     },
     _getGoodsAbout() {
@@ -1019,54 +1057,125 @@ export default {
       });
     },
     //获取同类别同周期等数据
-    _getSameTypeData(){
-      var goodsType=this.data.GoodsBase.GoodsType;
-      var price=this.data.GoodsBase.PlatformPrice;
-      var period=this.data.Attributes.filter(function(item){return item.Name == "周期";})[0].value;
-      console.log(goodsType,price,period);
-      api.getQueryGoods(GoodsId).then(({ Data }) => {
-        this.GoodsAbout = Data;
+    _getSameTypeData(type) {
+      this.QueryGoodsType = type;
+      var goodsType = "",
+        price = 0,
+        period = "";
+      switch (type) {
+        case "goodsType":
+          goodsType = this.Data.GoodsBase.GoodsType;
+          break;
+        case "price":
+          price = this.Data.GoodsBase.PlatformPrice;
+          break;
+        case "period":
+          period = this.Data.Attributes.find(item => item.Name === "周期")
+            .Value;
+          break;
+        default:
+          goodsType = this.Data.GoodsBase.GoodsType;
+          break;
+      }
+      api.getQueryGoods(goodsType, price, period).then(({ Data }) => {
+        this.QueryGoodsData = Data.map(function(value, index) {
+          value.Price = value.Price.toFixed(2);
+          return value;
+        });
       });
     },
     //获取猜你喜欢等数据
-    _getGuessLikeData(){
-
+    _getSameTypeData2(type) {
+      this.QueryGoodsType2 = type;
+      var brandIds = "",
+        KeyWord = "",
+        Sort = 0;
+      switch (type) {
+        case "PPTJ":
+          brandIds = this.Data.GoodsBase.BrandId;
+          break;
+        case "CNXH":
+          break;
+        case "RXPH":
+          brandIds = this.Data.GoodsBase.BrandId;
+          Sort = "7";
+          break;
+        default:
+          goodsType = this.Data.GoodsBase.GoodsType;
+          break;
+      }
+      if (type == "CNXH") {
+        api.getLikeGoods2(this.Data.GoodsBase.ShopId).then(({ Data }) => {
+          console.log(Data, "cnxh商品数据");
+          this.QueryGoodsData2 = Data.map(function(value, index) {
+            value.Price = value.Price.toFixed(2);
+            return value;
+          });
+        });
+      } else {
+        api.getLikeGoods1(brandIds, KeyWord, Sort).then(({ Data }) => {
+          console.log(Data, "pptj..的商品数据");
+          this.QueryGoodsData2 = Data.map(function(value, index) {
+            value.Price = value.Price.toFixed(2);
+            return value;
+          });
+        });
+      }
+      console.log(this.QueryGoodsData2,"数据")
+    },
+    //
+    _AttrHref() {
+      var normalAttrHref =
+        "../normalAttr/main?MaxSellNumber=" +
+        this.Data.GoodsBase.MaxSellNumber +
+        "&GoodsName=" +
+        this.Data.GoodsBase.GoodsName +
+        "&SeriesId=" +
+        this.Data.GoodsBase.SeriesId +
+        "&MarketPrice=" +
+        this.Data.GoodsBase.MarketPrice +
+        "&SalePrice=" +
+        this.Data.GoodsBase.SalePrice +
+        "&SaleScore=" +
+        this.Data.GoodsBase.SaleScore +
+        "&IsScarcity=" +
+        this.Data.GoodsBase.IsScarcity +
+        "&IsSpecialOffer=" +
+        this.Data.GoodsBase.IsSpecialOffer +
+        "&SaleStockType=" +
+        this.Data.GoodsBase.SaleStockType +
+        "&MaxDeduction=" +
+        this.Data.GoodsBase.ScoreDeductionPrice +
+        "&IsFreeCarriage=" +
+        this.Data.GoodsBase.IsFreeCarriage;
+      var frameAttrHref =
+        "../frameAttr/main?MaxSellNumber=" +
+        this.Data.GoodsBase.MaxSellNumber +
+        "&GoodsName=" +
+        this.Data.GoodsBase.GoodsName +
+        "&SeriesId=" +
+        this.Data.GoodsBase.SeriesId +
+        "&MarketPrice=" +
+        this.Data.GoodsBase.MarketPrice +
+        "&SalePrice=" +
+        this.Data.GoodsBase.SalePrice +
+        "&SaleScore=" +
+        this.Data.GoodsBase.SaleScore +
+        "&IsScarcity=" +
+        this.Data.GoodsBase.IsScarcity +
+        "&IsSpecialOffer=" +
+        this.Data.GoodsBase.IsSpecialOffer +
+        "&SaleStockType=" +
+        this.Data.GoodsBase.SaleStockType +
+        "&MaxDeduction=" +
+        this.Data.GoodsBase.ScoreDeductionPrice +
+        "&IsFreeCarriage=" +
+        this.Data.GoodsBase.IsFreeCarriage;
+      this.normalAttrHref = normalAttrHref;
+      this.frameAttrHref = frameAttrHref;
     },
     bannerChange: function(e) {
       this.bannerIndicator = e.target.current + 1;
-    },
-    _getLevelNum(gradeName) {
-      let num;
-      switch (gradeName) {
-        case "普通会员":
-        case "普通会员价":
-          num = 1;
-          break;
-        case "水晶会员":
-        case "水晶会员价":
-          num = 2;
-          break;
-        case "白银会员":
-        case "白银会员价":
-          num = 3;
-          break;
-        case "黄金会员":
-        case "黄金会员价":
-          num = 4;
-          break;
-        case "铂金会员":
-        case "铂金会员价":
-          num = 5;
-          break;
-        case "钻石会员":
-        case "钻石会员价":
-          num = 6;
-          break;
-        default:
-          num = 0;
-          break;
-      }
-      return num;
     },
     _changeOverflowNum(num) {
       return num > 99 ? "99+" : num;
