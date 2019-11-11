@@ -13,6 +13,10 @@ const api = {
   getGoodsAbout(goodsId) {
     return http.post(`/Goods/GoodsDiscription?goodsId=${goodsId}`);
   },
+  //海外商品获取同类别同周期等数据
+  getQueryGoods(goodsType,price,period) {
+    return http.post(`/api/Goods/QueryGoods?goodsType=${goodsType}&price=${price}&period=${period}&shopId=2`);
+  },
 };
 
 export default api;

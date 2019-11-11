@@ -93,7 +93,7 @@
               <span class="priceTag" v-else>
                 <img
                   class="tagImg"
-                  :src="'/static/images/level_'+Data.UserInfo.RoleId?Data.UserInfo.RoleId:'0'+'.jpg'"
+                  :src="'/static/images/level_0'+(Data.UserInfo.RoleId?Data.UserInfo.RoleId:'0')+'.jpg'"
                 />会员价
               </span>
             </div>
@@ -159,7 +159,7 @@
           <span class="act-name">积分</span>
           <span class="act-con">购买送{{Data.GoodsBase.GiftScore}}积分</span>
           <span class="act-info">
-            <span class="icon">></span>
+            <span class="icon"></span>
           </span>
         </div>
         <div class="act-dikou actLine" v-if="Data.GoodsBase.ScoreDeductionPrice > 0">
@@ -169,6 +169,7 @@
         <div
           class="act-zengpin actLine"
           v-if="Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.Gift != null && Data.GoodsPagePromotion.Gift.length>0"
+          @click=" _showActive('ZP')"
         >
           <span class="act-name">赠品</span>
           <span
@@ -185,6 +186,7 @@
             class="act-manzeng actLine"
             v-for="item in Data.GoodsPagePromotion.FullGift"
             :key="item.index"
+            @click=" _showActive('MZ')"
           >
             <span class="act-name">满赠</span>
             <span class="act-con">{{item.PromotionTheme}}</span>
@@ -196,6 +198,7 @@
         <div
           class="act-huangou actLine"
           v-if="Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FreeCollocation != null && Data.GoodsPagePromotion.FreeCollocation.length>0"
+          @click=" _showActive2('HG')"
         >
           <span class="act-name">换购</span>
           <span class="act-con">{{Data.GoodsPagePromotion.FreeCollocation[0].PromotionTheme}}</span>
@@ -206,6 +209,7 @@
         <div
           class="act-manjian actLine"
           v-if="Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.FullReducePromotion != null"
+          @click=" _showActive('MJ')"
         >
           <span class="act-name">满减</span>
           <span class="act-con">{{Data.GoodsPagePromotion.FullReducePromotion.PromotionTheme}}</span>
@@ -220,6 +224,7 @@
             class="act-manhuan actLine"
             v-for="item in Data.GoodsPagePromotion.ChangeBuy"
             :key="item.index"
+            @click=" _showActive2('MH')"
           >
             <span class="act-name">满换</span>
             <span class="act-con">{{item.PromotionTheme}}</span>
@@ -228,7 +233,11 @@
             </span>
           </div>
         </block>
-        <div class="act-peijian actLine" v-if="Data.ErpGifts != null && Data.ErpGifts.length>0">
+        <div
+          class="act-peijian actLine"
+          v-if="Data.ErpGifts != null && Data.ErpGifts.length>0"
+          @click=" _showActive('PJ')"
+        >
           <span class="act-name">配件</span>
           <span class="act-con">{{Data.ErpGifts[0].GoodsName}}</span>
           <span class="act-info">
@@ -249,7 +258,7 @@
               />
             </span>
           </div>
-          <div class="act-shuifei actLine">
+          <div class="act-shuifei actLine" @click="_showShuiFei()">
             <span class="act-name">税费</span>
             <span class="act-con">进口税 商家承担</span>
             <span class="act-info">
@@ -311,9 +320,9 @@
         </div>
       </block>
       <!-- 功能参数 -->
-      <block v-if="Data.isComp&& Data.Items[0].IsSpecificationGoods">
+      <block v-if="Data.isComp&&Data.Items!=null&&Data.Items[0]!=null&&Data.Items[0].IsSpecificationGoods">
         <div class="actCon">
-          <div class="act-canshu actLine">
+          <div class="act-canshu actLine" @click="_showCanShu()">
             <span class="act-name">参数</span>
             <span class="act-con">含水量 直径 基弧...</span>
             <span class="act-info">
@@ -325,7 +334,7 @@
       <block v-if="Data.Attributes!=null && Data.Attributes.length> 0">
         <div class="blackLine">FUNCTION PARAMETER | 功能参数</div>
         <div class="actCon">
-          <div class="act-canshu actLine">
+          <div class="act-canshu actLine" @click="_showCanShu2()">
             <span class="act-name">参数</span>
             <span class="act-con">
               <block v-for="(item,index) in Data.Attributes" :key="item.index">
@@ -534,7 +543,7 @@
           <text class="b">注意事项：</text>隐形眼镜属于第三类医疗器材，购买前建议您先去正规的眼镜销售实体店或医院眼科机构进行专业的验配检查，确保您的使用安全和效果。请仔细选择适合您的光度，仔细阅读产品说明书或在医务人员的指导下购买和使用，禁忌内容或者注意事项详见说明书或
           <text class="link" bindtap="showUserAgreement">《可得用户注册协议》</text>
         </div>
-        <div class="detailCon" v-if="GoodsAbout" >
+        <div class="detailCon" v-if="GoodsAbout">
           <wxParse :content="GoodsAbout.Discription" />
         </div>
       </div>
@@ -558,9 +567,356 @@
         </div>
       </div>
     </template>
-    <bottomFlip :isShow.sync="isShow">
-      asd
-      <div class="sex-line c-888" @click="_close()">知道了</div>
+    <!-- 打包参数弹出框 -->
+    <bottomFlip :isShow.sync="isShowCanShu">
+      <div class="bf-con bf-canshu" v-if="Data.Items != null && Data.Items.length>0">
+        <div class="compMsg" v-for="(item,index_) in Data.Items" :key="index_">
+          <div class="pack-content">
+            <div class="pack-name">
+              <img :src="item.Img" :alt="item.GoodsName" />
+              <div>
+                <h3>商品参数</h3>
+                <span>{{item.GoodsName}}</span>
+              </div>
+            </div>
+            <div class="pack-attributes">
+              <span v-for="itemAttr in item.Attributes" :key="itemAttr.index">
+                <em>{{itemAttr.Key}}</em>
+                {{itemAttr.Value}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="KnowBtn" @click="_close()">知道了</div>
+    </bottomFlip>
+    <!-- 税费说明 -->
+    <bottomFlip :isShow.sync="isShowShuiFei">
+      <div class="bf-con bf-shuifei">
+        <h2>税费说明</h2>
+        <div class="hwBuy-content">
+          <p>1、该商品税费由可得承担。</p>
+          <br />
+          <p>
+            2、进口税计算：进口税=商品完税价格（包括运费）*税率
+            （完税价格由海关最终认定）。
+          </p>
+          <br />
+          <p>
+            3、单笔交易总金额超过2000元，个人年度交易总金额超过
+            20000元，将按一般贸易方式全额征税。
+          </p>
+          <br />
+        </div>
+      </div>
+      <div class="KnowBtn" @click="_close()">知道了</div>
+    </bottomFlip>
+    <!-- 普通商品参数属性 -->
+    <bottomFlip :isShow.sync="isShowCanShu2">
+      <div
+        class="bf-con bf-canshu2"
+        v-if="Data.Attributes != null||(Data.GoodsBase!=null&&Data.GoodsBase.ApproveDocumentNumber!=null)||(Data.GoodsBase!=null&&Data.GoodsBase.BrandName!=null) "
+      >
+        <h2>产品参数</h2>
+        <div class="canShu-content">
+          <ul>
+            <block v-for="item in Data.Attributes" :key="item.index">
+              <li v-if="item.Name!='品牌'">
+                <em>{{item.Name}}</em>
+                <span>{{item.Value}}</span>
+              </li>
+            </block>
+            <li v-if="Data.Series!=null && Data.Series.length > 0">
+              <em>颜色分类</em>
+              <span class="CanShuSeries">
+                <scroll-view
+                  class="scroll-wrapper colorSeries"
+                  scroll-x
+                  scroll-with-animation="true"
+                  enable-flex="true"
+                >
+                  <div
+                    :data-bigimg="color.GoodsMainImageUrl"
+                    v-for="color in Data.Series"
+                    :key="color.index"
+                  >
+                    <em>{{color.AnotherName}}</em>
+                    <img :src="color.SeriesImg" />
+                  </div>
+                </scroll-view>
+              </span>
+            </li>
+            <li v-if="Data.GoodsBase.ApproveDocumentNumber!=null">
+              <em>批准文号</em>
+              <span>{{Data.GoodsBase.ApproveDocumentNumber}}</span>
+            </li>
+            <li v-if="Data.GoodsBase!=null&&Data.GoodsBase.BrandName!=null">
+              <em>品牌</em>
+              <span>{{Data.GoodsBase.BrandName}}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="KnowBtn" @click="_close()">知道了</div>
+    </bottomFlip>
+    <!-- 领券弹框 -->
+    <bottomFlip :isShow.sync="isShowCoupon">
+      <div class="bf-con bf-coupon">
+        <div class="lingQuan-title">
+          适用优惠券
+          <em>已有积分：{{Data.UserInfo != null ? Data.UserInfo.Score : 0}}</em>
+        </div>
+        <div class="lingQuan-content">
+          <div class="yhqList">
+            <ul
+              v-if="Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.Coupons != null && Data.GoodsPagePromotion.Coupons.length>0"
+            >
+              <li
+                :class="(item.LimitationType == 1? 'newman' : '')"
+                v-for="item in Data.GoodsPagePromotion.Coupons"
+                :key="item.index"
+              >
+                <div>
+                  <span>
+                    <span class="yhqmz">
+                      <em>
+                        ￥
+                        <i>{{item.DeductionAmount}}</i>
+                      </em>
+                      满{{item.MeetAmount}}元可用
+                    </span>
+                    <span class="yhqmsg">
+                      <span>{{item.PromotionTheme}}</span>
+                      <em
+                        class="c_start"
+                      >开始时间:{{(item.UseStartTime==null? "点击领券后获得时间" : item.UseStartTime)}}</em>
+                      <em
+                        class="c_end"
+                      >截止时间:{{(item.UseEndTime==null? "点击领券后获得时间" : item.UseEndTime)}}</em>
+                    </span>
+                    <span
+                      :class="'yhqbtn'+(item.HasPicked ? 'disabled' : '')"
+                      :data-cid="item.PromotionID"
+                      @click="_getCoupon(item.PromotionID)"
+                    >{{(item.HasPicked ? "已领取" : "领券")}}</span>
+                  </span>
+                </div>
+                <div class="yhqmsg-slide">
+                  <p @click="_showYHQmsg()">
+                    <span>{{item.UseDescription}}</span>
+                    <em :class="(isshowyhqmsg?'change':'')">∨</em>
+                  </p>
+                  <div
+                    class="msg-slidebox"
+                    v-html="item.OrderDescription"
+                    v-if="isshowyhqmsg"
+                  >{{item.OrderDescription}}</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <span class="pricenote">以上价格仅为初步预估，不代表最终购买价格</span>
+      </div>
+      <div class="KnowBtn" @click="_close()">知道了</div>
+    </bottomFlip>
+    <!-- 满减、满赠、赠品、配件弹出框 -->
+    <bottomFlip :isShow.sync="isShowActive">
+      <div class="bf-con bf-active">
+        <h2>促销活动</h2>
+        <div class="zengpin-content">
+          <div
+            class="manJian-type"
+            v-if="Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.FullReducePromotion != null&&isShowMJ"
+          >
+            <div>
+              <em>满额减</em>
+              <span
+                v-if="Data.GoodsPagePromotion.LadderPrice == null || !Data.GoodsPagePromotion.LadderPrice.length>0"
+              >该品售价￥{{Data.GoodsBase.SalePrice}}</span>
+            </div>
+            <div
+              v-if="Data.GoodsPagePromotion.FullReducePromotion.DeductionSettings != null && Data.GoodsPagePromotion.FullReducePromotion.DeductionSettings.length>0"
+            >
+              <span
+                v-for="item in Data.GoodsPagePromotion.FullReducePromotion.DeductionSettings"
+                :key="item.index"
+              >满{{item.StartMeetAmount}}-{{item.ReduceAmount}}元</span>
+            </div>
+            <div>
+              <em
+                v-for="item in Data.GoodsPagePromotion.FullReducePromotion.DeductionSettings"
+                :key="item.index"
+              >{{item.Content==null ? "" : "(" + item.Content + ")"}}</em>
+            </div>
+            <div class>
+              <a
+                :href="'Piecetogether?promotionID='+Data.GoodsPagePromotion.FullReducePromotion.PromotionID+'&couponTitle='+Data.GoodsPagePromotion.FullReducePromotion.PromotionTheme+'&shopid='+Data.GoodsBase.ShopId"
+              >
+                点击凑单
+                <em>&gt;</em>
+              </a>
+            </div>
+          </div>
+          <div
+            class="mfzp-type"
+            v-if="Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.Gift != null && Data.GoodsPagePromotion.Gift.length>0&&isShowZP"
+          >
+            <div>
+              <em>免费赠品</em>
+            </div>
+            <div class="mfzp-list">
+              <scroll-view class="swiper-wrapper" scroll-x scroll-with-animation="true">
+                <li
+                  class="swiper-slide"
+                  v-for="erpItem in Data.GoodsPagePromotion.Gift"
+                  :key="erpItem.index"
+                >
+                  <a :href="'/'+erpItem.SeoCode">
+                    <div class="imgbox">
+                      <img :src="erpItem.Img" />
+                    </div>
+                    <span>{{erpItem.GoodsName}}{{(erpItem.MaxTimes > 0 ? "（限赠" + erpItem.MaxTimes + "）" : "")}}</span>
+                  </a>
+                </li>
+              </scroll-view>
+            </div>
+          </div>
+          <div class="erpzp-type" v-if="Data.ErpGifts != null && Data.ErpGifts.length>0&&isShowPJ">
+            <div>
+              <em>配件</em>
+            </div>
+            <div class="pj-list">
+              <scroll-view scroll-x scroll-with-animation="true">
+                <li class="swiper-slide" v-for="erpItem in Data.ErpGifts" :key="erpItem.index">
+                  <a :href="'/'+erpItem.SeoCode">
+                    <div class="imgbox">
+                      <img :src="erpItem.ImageUrl" />
+                    </div>
+                    <span>{{erpItem.GoodsName}}{{(erpItem.MaxTimes > 0 ? "（限赠" + erpItem.MaxTimes + "）" : "")}}</span>
+                  </a>
+                </li>
+              </scroll-view>
+            </div>
+          </div>
+          <div
+            class="mezp-type"
+            v-if="Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.FullGift != null && Data.GoodsPagePromotion.FullGift.length>0&&isShowMZ"
+          >
+            <div>
+              <em>满额赠品</em>
+              <span
+                v-if="Data.GoodsPagePromotion.LadderPrice == null || !Data.GoodsPagePromotion.LadderPrice.length>0"
+              >该品售价￥{{Data.GoodsBase.SalePrice}}</span>
+            </div>
+            <div class="mezp-list">
+              <ul>
+                <li v-for="item in Data.GoodsPagePromotion.FullGift" :key="item.index">
+                  <div class="mezp-pro">
+                    <div class="imgbox">
+                      <img :src="item.Img" />
+                      <a
+                        :href="'Piecetogether?promotionID='+item.PromotionID+'&couponTitle='+item.PromotionTheme+'&shopid'+Data.GoodsBase.ShopId"
+                      >
+                        点击凑单
+                        <em>&gt;</em>
+                      </a>
+                    </div>
+                    <span>{{item.GoodsName}}{{(item.ExchangeQuantity > 0 ? "(限赠" + item.ExchangeQuantity + ")" : "")}}</span>
+                    <em v-if="item.Content!=null">· {{item.Content}}</em>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="KnowBtn" @click="_close()">知道了</div>
+    </bottomFlip>
+    <!-- 换购、满换 弹出框-->
+    <bottomFlip :isShow.sync="isShowActive2">
+      <div class="bf-con bf-active2">
+        <h2>促销活动</h2>
+        <h5>换购商品不参与满赠和满减</h5>
+        <div class="active-content">
+          <div
+            class="jqhg-type"
+            v-if="Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.FreeCollocation != null && Data.GoodsPagePromotion.FreeCollocation.length>0&&isShowHG"
+          >
+            <div>
+              <em>加钱换购</em>
+              <span
+                v-if="Data.GoodsPagePromotion.LadderPrice == null || !Data.GoodsPagePromotion.LadderPrice.length"
+              >该品售价￥{{Data.GoodsBase.SalePrice}}</span>
+            </div>
+            <div class="jqhg-list">
+              <ul>
+                <li
+                  class="afterline"
+                  v-for="item in Data.GoodsPagePromotion.FreeCollocation"
+                  :key="item.index"
+                >
+                  <div class="jqhg-pro">
+                    <em>+￥{{item.Price}}换购</em>
+                    <div class="imgbox">
+                      <img :src="item.Img" />
+                      <div class="jqhg-btn">
+                        <span>{{item.GoodsName}}</span>
+                        <a :href="'/'+item.Seocode">
+                          商品详情
+                          <em>&gt;</em>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="mehg-type"
+            v-if="Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.ChangeBuy != null && Data.GoodsPagePromotion.ChangeBuy.length>0&&isShowMH"
+          >
+            <div>
+              <em>满额换购</em>
+              <span
+                v-if="Data.GoodsPagePromotion.LadderPrice == null || !Data.GoodsPagePromotion.LadderPrice.length>0"
+              >该品售价￥{{Data.GoodsBase.SalePrice}}</span>
+            </div>
+            <div class="mehg-list">
+              <ul>
+                <li
+                  class="afterline"
+                  v-for="item in Data.GoodsPagePromotion.ChangeBuy"
+                  :key="item.index"
+                >
+                  <div class="mehg-pro">
+                    <em>订单{{item.Content}}</em>
+                    <div class="imgbox">
+                      <img :src="item.Img" />
+                    </div>
+                  </div>
+                  <div class="mehg-btn">
+                    <span>换购 {{item.GoodsName}}</span>
+                    <a
+                      :href="'Piecetogether?promotionID='+item.PromotionID+'&couponTitle='+item.PromotionTheme+'&shopid='+Data.GoodsBase.ShopId"
+                    >
+                      点击凑单
+                      <em>&gt;</em>
+                    </a>
+                    <a :href="'/'+item.SeoCode">
+                      商品详情
+                      <em>&gt;</em>
+                    </a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="huanGouNote">以上价格计算仅为初步预估，不代表最终购买价格,换购默认1件</div>
+      </div>
+      <div class="KnowBtn" @click="_close()">知道了</div>
     </bottomFlip>
   </div>
 </template>
@@ -569,24 +925,34 @@
 import api from "@/api/goods";
 import { mapState } from "vuex";
 import bottomFlip from "@/components/bottomFlip";
-import wxParse from 'mpvue-wxparse'
+import wxParse from "mpvue-wxparse";
 
 export default {
   data() {
     return {
+      GoodsAbout: "",
       Data: "",
       bannerIndicator: 1,
       isComp: false,
       bannerType: "Img",
       SeriesShowType: "More",
-      isShow: false,
-      GoodsAbout:""
+      isShowCanShu: false,
+      isShowCanShu2: false,
+      isShowCoupon: false,
+      isshowyhqmsg: false,
+      isShowActive: false,
+      isShowMJ: false,
+      isShowMZ: false,
+      isShowZP: false,
+      isShowPJ: false,
+      isShowHG: false,
+      isShowMH: false
     };
   },
   computed: {},
-  onLoad() {
-    this._getPageData();
-    
+  onLoad(options) {
+    console.log(options);
+    this._getPageData(options.seocode,options.isComp);
   },
   filters: {
     toFixed: function(num) {
@@ -600,12 +966,14 @@ export default {
     wxParse
   },
   methods: {
-    _getPageData() {
+    _getPageData(seocode,isComp) {
       //var seocode="revia6";//自营
       //var seocode = "htyx6"; //海淘
-      var seocode = "revia180"; //打包
+      //var seocode = "hankj744"; //有配件
+      //var seocode = "revia180"; //打包
+      //var seocode = "ns33"; //多个活动
       //var isComp = false;
-      var isComp = true;
+      //var isComp = true;
       api.getGoodsDetail(seocode, isComp).then(({ Data }) => {
         console.log(Data);
         Data.GoodsBase.SalePrice = Data.GoodsBase.SalePrice.toFixed(2);
@@ -613,6 +981,12 @@ export default {
         Data.GoodsBase.ReducePrice = Data.GoodsBase.ReducePrice.toFixed(2);
         Data.GoodsBase.ScoreDeductionPrice = Data.GoodsBase.ScoreDeductionPrice.toFixed(
           2
+        );
+        Data.GoodsPagePromotion.FreeCollocation = Data.GoodsPagePromotion.FreeCollocation.map(
+          function(value, index) {
+            value.Price = value.Price.toFixed(2);
+            return value;
+          }
         );
         Data.Items = Data.Items.map(function(value, index) {
           value.Price = value.Price.toFixed(2);
@@ -623,17 +997,40 @@ export default {
           value.PubTime = value.PubTime.replace("T", " ");
           return value;
         });
+        Data.GoodsPagePromotion.Coupons = Data.GoodsPagePromotion.Coupons.map(
+          function(value, index) {
+            value.UseStartTime = value.UseStartTime.replace("T", " ");
+            value.UseEndTime = value.UseEndTime.replace("T", " ");
+            return value;
+          }
+        );
+
         Data.isComp = isComp;
         this.Data = Data;
         this._getGoodsAbout();
+        this._getSameTypeData();
       });
     },
-    _getGoodsAbout(){
-      console.log(this.Data.GoodsBase.GoodsId,123);
-      var GoodsId=this.Data.GoodsBase.GoodsId;
+    _getGoodsAbout() {
+      console.log(this.Data.GoodsBase.GoodsId, 123);
+      var GoodsId = this.Data.GoodsBase.GoodsId;
       api.getGoodsAbout(GoodsId).then(({ Data }) => {
-        this.GoodsAbout=Data;
-      })
+        this.GoodsAbout = Data;
+      });
+    },
+    //获取同类别同周期等数据
+    _getSameTypeData(){
+      var goodsType=this.data.GoodsBase.GoodsType;
+      var price=this.data.GoodsBase.PlatformPrice;
+      var period=this.data.Attributes.filter(function(item){return item.Name == "周期";})[0].value;
+      console.log(goodsType,price,period);
+      api.getQueryGoods(GoodsId).then(({ Data }) => {
+        this.GoodsAbout = Data;
+      });
+    },
+    //获取猜你喜欢等数据
+    _getGuessLikeData(){
+
     },
     bannerChange: function(e) {
       this.bannerIndicator = e.target.current + 1;
@@ -685,17 +1082,81 @@ export default {
         ? (this.SeriesShowType = "Less")
         : (this.SeriesShowType = "More");
     },
+    //优惠券弹框
     _showCoupon() {
-      console.log(1, 2);
+      this.isShowCoupon = true;
     },
-    //弹框
-    _showJifen() {
-      console.log(2);
-      this.isShow = true;
+    //打包参数弹框
+    _showCanShu() {
+      this.isShowCanShu = true;
     },
+    //税费弹框
+    _showShuiFei() {
+      this.isShowShuiFei = true;
+    },
+    //普通属性参数弹框
+    _showCanShu2() {
+      this.isShowCanShu2 = true;
+    },
+    //满减满赠赠品配件弹出框
+    _showActive(type) {
+      this.isShowActive = true;
+      switch (type) {
+        case "MJ":
+          this.isShowMJ = true;
+          break;
+        case "MZ":
+          this.isShowMZ = true;
+          break;
+        case "PJ":
+          this.isShowPJ = true;
+          break;
+        case "ZP":
+          this.isShowZP = true;
+          break;
+
+        default:
+          break;
+      }
+    },
+    //满换、换购弹出框
+    _showActive2(type) {
+      this.isShowActive2 = true;
+      switch (type) {
+        case "MH":
+          this.isShowMH = true;
+          break;
+        case "HG":
+          this.isShowHG = true;
+          break;
+        default:
+          break;
+      }
+    },
+    //关闭弹框
     _close() {
-      console.log(3);
-      this.isShow = false;
+      this.isShowCanShu2 = false;
+      this.isShowShuiFei = false;
+      this.isShowCanShu = false;
+      this.isShowActive = false;
+      this.isShowActive2 = false;
+      this.isShowCoupon = false;
+      this.isShowZP = false;
+      this.isShowMJ = false;
+      this.isShowMH = false;
+      this.isShowPJ = false;
+      this.isShowMZ = false;
+      this.isShowHG = false;
+    },
+    //优惠券信息显示
+    _showYHQmsg() {
+      this.isshowyhqmsg == true
+        ? (this.isshowyhqmsg = false)
+        : (this.isshowyhqmsg = true);
+    },
+    //领券
+    _getCoupon(id) {
+      console.log(id);
     }
   }
 };
