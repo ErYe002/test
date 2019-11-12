@@ -88,10 +88,10 @@
           </view>
         </block>
       </view>
-      <!-- <view class='flex-line'>
-          <view class='label'>支付方式</view>
-          <view class='text'>{{orderInfo.Payment}}</view>
-        </view> -->
+      <view class='flex-line'>
+        <view class='label'>支付方式</view>
+        <view class='text'>{{orderInfo.Payment}}</view>
+      </view>
       <view class='flex-line' @click="jumpToLogistics">
         <view class='label'>物流配送</view>
         <view class='text'>
@@ -250,7 +250,7 @@ export default {
         isUseBalance : true,
         selectShopId : 1,
         selectedConsigneeId : "", 
-        selectedPayMode: "1",
+        selectedPayMode: "",
         selectedExpressId : "", 
         warehouseId: "",
         invoiceType : "-1", //3个人，1公司
@@ -276,6 +276,7 @@ export default {
       this.RoleId = options.RoleId
       console.log(options)
     }
+    this.formModel.selectedPayMode = '' 
     this.getConfirmOrderDetail();
   },
   onPageScroll({ scrollTop }) {
@@ -290,7 +291,7 @@ export default {
   watch: {
     SelectedConsigneeId:{
       handler: function(val,oldVal){
-        if (val.length && oldVal.length && val != oldVal) {
+        if (val.length && val != oldVal) {
           console.log('刷新')
           this.formModel.selectedConsigneeId = val;
           this.getConfirmOrderDetail();
@@ -300,7 +301,8 @@ export default {
     },
     SelectedExpressId:{
       handler: function(val,oldVal){
-        if (val.length && oldVal.length && val != oldVal) {
+        console.log("=====修改快递方式=== "+ val + " old =="  + oldVal)
+        if (val.length && val != oldVal) {
           this.formModel.selectedExpressId = val;
           this.getConfirmOrderDetail();
         }
@@ -308,9 +310,8 @@ export default {
     },
     IsChangeCoupon:{
       handler: function(val,oldVal){
-        console.log("==========" + val)
+        console.log("=====使用优惠券=====" + val)
         if (val) {
-          this.formModel.selectedExpressId = val;
           this.getConfirmOrderDetail();
         }
       },immediate: true
@@ -319,10 +320,12 @@ export default {
   methods: {
     getConfirmOrderDetail(){
       console.log('-----------')
+      console.log(this.formModel)
       api.getConfirmOrderDetail({...this.formModel}).then(({ Data, State, Msg }) => {
         this.orderInfo = Object.assign({}, Data);
         this.formModel.selectedConsigneeId = this.orderInfo.SelectedConsigneeId;
         this.formModel.selectedExpressId = this.orderInfo.SelectedExpressId
+        this.formModel.selectedPayMode = this.orderInfo.SelectedPayMode;
         this.formModel.warehouseId = this.orderInfo.WarehouseId
         console.log(Data)
       });
