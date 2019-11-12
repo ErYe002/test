@@ -119,16 +119,16 @@
           </navigator>
       </view>
     </view>
-    <!-- <view class='useCouponScore' v-if="orderInfo.IsCanUseScore"> -->
-    <view class='useCouponScore'>
+    <view class='useCouponScore' v-if="orderInfo.IsCanUseScore">
+    <!-- <view class='useCouponScore'> -->
       <view class='counponContent'>
         <view class='couponTitle'>积分</view>
         <view class='couponSubtitle'>{{orderInfo.TotalScoreContent+ '，' + orderInfo.UseScoreContent}}</view>
       </view>
       <switch class="swiper" checked="" @change="changeUseScore" />
     </view>
-    <!-- <view class='useCouponScore' v-if="orderInfo.IsCanUseScore"> -->
-    <view class='useCouponScore'>
+    <view class='useCouponScore' v-if="orderInfo.ShopId == 1 && orderInfo.NewAvailableBalance > 0">
+    <!-- <view class='useCouponScore'> -->
       <view class='counponContent'>
         <view class='couponTitle'>余额</view>
         <view class='couponSubtitle'>可用￥{{orderInfo.AllBalance}}，使用￥{{orderInfo.NewAvailableBalance}}</view>
@@ -273,6 +273,13 @@ export default {
   onLoad(options) {
     if(options){
       this.formModel.selectShopId = options.shopId;
+      if (this.formModel.selectShopId == 2) {
+        this.formModel.isUseBalance = false;
+        this.formModel.isUseScore = false;
+      }else {
+        this.formModel.isUseBalance = true;
+        this.formModel.isUseScore = true;
+      }
       this.RoleId = options.RoleId
       console.log(options)
     }
@@ -337,7 +344,7 @@ export default {
       this.isShowGoodsList = true;
     },
     changeUseBalance() {
-      this.formModel.isUseBalance = !this.isUseBalance
+      this.formModel.isUseBalance = !this.formModel.isUseBalance
       this.getConfirmOrderDetail();
     },
     changeUseScore() {
