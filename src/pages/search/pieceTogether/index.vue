@@ -18,7 +18,8 @@
     <section class="goods-box">
       <template v-if="dataList.length > 0">
         <p class="tips">
-          以下商品<em>满减</em>可凑单
+          <template v-if="isMJ">以下商品<em>{{title}}</em>可凑单</template>
+          <template v-else>以下商品适用于<em>{{title}}</em>优惠券</template>
         </p>
         <div class="g-list">
           <a :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'" class="g-item" v-for="item in dataList" :key="item.GoodsId">
@@ -65,13 +66,18 @@ export default {
       }
     };
   },
-  components: {},
+  computed:{
+    isMJ(){
+      return this.title.indexOf('满减') != -1
+    }
+  },
   onLoad(options) {
     if (options) {
       this.listQuery = Object.assign({}, this.listQuery, { ...options });
       wx.setNavigationBarTitle({
         title: options.title
       });
+      this.title = options.title
       this._getPageData();
     }
   },
