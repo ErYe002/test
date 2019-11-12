@@ -1043,7 +1043,7 @@ export default {
             return value;
           }
         );
-        this.setData(Data.Remark.LableTags);
+        this.setData(Data.Remark);
         this.isComp = isComp == "false" ? false : true;
         this.Data = Data;
         this._getGoodsAbout();

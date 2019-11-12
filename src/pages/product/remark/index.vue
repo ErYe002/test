@@ -3,37 +3,37 @@
   <div>
     <div class="actCon remarkBox">
       <div class="act-remark actLine">
-        <img src="static/images/smile.jpg" alt />
-        <span>99%</span>好评
-        {{ $store.state.ramarkData}}
+        <img src="static/images/smile.jpg" class="smile" alt />
+        <span>{{ramarkData.PraiseRatio}}%</span>
+        好评
       </div>
     </div>
-    <div class="remarkTag" v-if="Data != null && Data.TotalCount > 0">
+    <div
+      :class="'remarkTag '+(isShowMoreTag?'showMore':'')"
+      v-if="ramarkData != null && ramarkData.TotalCount > 0"
+    >
       <ul>
         <li class="tag">
-          <a :href="'/AllComment?goodsid='+Data.GoodsBase.GoodsId+'&&label=1'">全部</a>
+          <a @click="_selectLabel(-1)">全部</a>
         </li>
         <li class="tag">
-          <a
-            :href="'/AllComment?goodsid='+Data.GoodsBase.GoodsId+'&&label=2'"
-          >有图（{{Data.ImageCount}}）</a>
+          <a @click="_selectLabel(4)">有图（{{ramarkData.ImageCount}}）</a>
         </li>
-        <block v-if="Data.LableTags != null && Data.LableTags.length>0">
+        <block v-if="ramarkData.LableTags != null && ramarkData.LableTags.length>0">
           <li
-            :class="'tag '+(Data.Sentiment==0?'badlabel':'')"
-            v-for="item in  Data.LableTags"
-            :key="item.index"
+            :class="'tag '+(item.Sentiment==0?'badlabel':'')"
+            v-for="(item, index) in  ramarkData.LableTags"
+            :key="index"
           >
-            <a
-              :href="'/AllComment?goodsid='+Data.GoodsBase.GoodsId+'&&label='+(item.index+3)"
-            >{{item.CommentLabel}}（{{item.Count}}）</a>
+            <a @click="_selectLabel(index+3)">{{item.CommentLabel}}（{{item.Count}}）</a>
           </li>
         </block>
       </ul>
     </div>
+    <div :class="'showTagBtn '+(isShowMoreTag?'showMoreIcon':'')" @click="_showMoreTag()">∨</div>
     <block>
-      <div class="remarkCon" v-if="Data != null && Data.Remarks != null && Data.Remarks.length>0">
-        <div class="remarkBox" v-for="item in Data.Remarks" :key="item.index">
+      <div class="remarkCon" v-if="Data != null ">
+        <div class="remarkBox" v-for="item in Data" :key="item.index">
           <div class="comment-header">
             <div class="userInfo">
               <img
@@ -79,7 +79,7 @@
 
 <script>
 import api from "@/api/goods";
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState } from "vuex";
 import bottomFlip from "@/components/bottomFlip";
 
 export default {
@@ -87,22 +87,43 @@ export default {
     return {
       GoodsAbout: "",
       Data: "",
-      label: ""
+      label: "",
+      selectLabelIndex: "1",
+      isShowMoreTag: false
     };
   },
   onLoad(options) {
     this.label = options.label;
-    this.goodsId = options.goodsId;
-    this._getData(options.goodsId);
+    this.goodsId = options.goodsid;
+    console.log(this.label, this.goodsId);
+    this._getData(options.goodsid, options.label);
   },
   computed: {
     ...mapState("remark", ["ramarkData"])
   },
   methods: {
-    _getData(goodsId) {
-      api.getRemarkData(goodsId).then(({ Data }) => {
-        this.Data = Data.remark;
-      });
+    _getData(goodsId, label) {
+      label ? (label = label) : (label = 1);
+      var Page = 1;
+      var RemarkType = 4;
+      var LableName = "";
+      var Page = 1;
+      api
+        .getRemarkData(goodsId, RemarkType, LableName, Page)
+        .then(({ Data }) => {
+          this.Data = Data;
+          Data = Data.map(function(value, index) {
+            value.PubTime = value.PubTime.replace("T", " ");
+            return value;
+          });
+          this.Data = Data;
+        });
+    },
+    _selectLabel(label) {
+      console.log(label);
+    },
+    _showMoreTag() {
+      this.isShowMoreTag = !this.isShowMoreTag;
     }
   }
 };
@@ -110,8 +131,23 @@ export default {
 
 <style lang="less" scoped>
 .remarkBox {
+  .act-remark {
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    color: #313131;
+    font-size: 11px;
+    ._span {
+      color: #e31436;
+      margin: 0 3px;
+    }
+  }
   .actLine::after {
     height: 0;
+  }
+  .smile {
+    width: 19px;
+    height: 19px;
   }
   &.actCon .actLine .act-name {
     font-size: 11px;
@@ -122,6 +158,10 @@ export default {
   padding: 0 15px;
   max-height: 52px;
   overflow: hidden;
+  &.showMore {
+    max-height: inherit;
+    height: auto;
+  }
   ._li {
     background: #f4f2e6;
     color: #313131;
@@ -135,7 +175,29 @@ export default {
     }
   }
 }
+.showTagBtn {
+  width: 120%;
+  border-bottom: 1px solid #ececec;
+  margin: 0 auto;
+  margin-left: -10%;
+  text-align: center;
+  line-height: 30px;
+  transform: scale(2, 1);
+  color: #ccc;
+  &.showMoreIcon {
+    transform: scale(2, 1) rotate(180deg);
+    border-top: 1px solid #ececec;
+    border-bottom: 0;
+  }
+}
 .remarkCon {
+  .remarkBox {
+    padding: 10px 15px;
+    position: relative;
+    padding-bottom: 20px;
+    font-size: 12px;
+    border-bottom: 5px solid #f5f5f5;
+  }
   .comment-header {
     display: flex;
     margin: 10rpx 20rpx 0;

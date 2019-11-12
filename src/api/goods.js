@@ -26,8 +26,8 @@ const api = {
     return http.post(`/Goods/GoodsLike?shopId=${shopId}`);
   },
   //全部评论获取数据
-  getRemarkData(shopId) {
-    return http.post(`/Goods/GoodsLike?shopId=${shopId}`);
+  getRemarkData(GoodsId,RemarkType,LableName,Page) {
+    return http.post(`/Goods/GoodsRemark?GoodsId=${GoodsId}&RemarkType=${RemarkType}&LableName=${LableName}&Size=10&Page=${Page}`);
   },
 };
 
