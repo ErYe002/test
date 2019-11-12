@@ -73,7 +73,7 @@ export default {
             this.src3='/static/images/starBlank.png';
             this.src4='/static/images/starBlank.png';
             this.src5='/static/images/starBlank.png';
-            this.grade=1;
+            this.goodsgrade=1;
             break;
         case 2:
             this.src1='/static/images/starRed.png';
@@ -81,7 +81,7 @@ export default {
             this.src3='/static/images/starBlank.png';
             this.src4='/static/images/starBlank.png';
             this.src5='/static/images/starBlank.png';
-            this.grade=2;
+            this.goodsgrade=2;
             break;
         case 3:
             this.src1='/static/images/starRed.png';
@@ -89,7 +89,7 @@ export default {
             this.src3='/static/images/starRed.png';
             this.src4='/static/images/starBlank.png';
             this.src5='/static/images/starBlank.png';
-            this.grade=3;
+            this.goodsgrade=3;
             break;
         case 4:
             this.src1='/static/images/starRed.png';
@@ -97,7 +97,7 @@ export default {
             this.src3='/static/images/starRed.png';
             this.src4='/static/images/starRed.png';
             this.src5='/static/images/starBlank.png';
-            this.grade=4;
+            this.goodsgrade=4;
             break;
         case 5:
             this.src1='/static/images/starRed.png';
@@ -105,7 +105,7 @@ export default {
             this.src3='/static/images/starRed.png';
             this.src4='/static/images/starRed.png';
             this.src5='/static/images/starRed.png';
-            this.grade=5;
+            this.goodsgrade=5;
             break;
       }
     },
@@ -160,7 +160,7 @@ export default {
     },
     submit(){
         if(this.images.length == 0){
-            api.addGoodsComment(current.orderId,current.goodsId,current.goodsgrade,current.commentContent).then(({Data}) => {
+            api.addGoodsComment(this.orderId,this.goodsId,this.goodsgrade,this.commentContent).then(({Data}) => {
                 wx.showToast({
                         title:"评价成功!",
                         icon:"none"
