@@ -3,8 +3,9 @@
   <div>
     <div class="actCon remarkBox">
       <div class="act-remark actLine">
-        <img src="static/images/smile.jpg" alt="">
+        <img src="static/images/smile.jpg" alt />
         <span>99%</span>好评
+        {{ $store.state.ramarkData}}
       </div>
     </div>
     <div class="remarkTag" v-if="Data != null && Data.TotalCount > 0">
@@ -31,10 +32,7 @@
       </ul>
     </div>
     <block>
-      <div
-        class="remarkCon"
-        v-if="Data != null && Data.Remarks != null && Data.Remarks.length>0"
-      >
+      <div class="remarkCon" v-if="Data != null && Data.Remarks != null && Data.Remarks.length>0">
         <div class="remarkBox" v-for="item in Data.Remarks" :key="item.index">
           <div class="comment-header">
             <div class="userInfo">
@@ -81,7 +79,7 @@
 
 <script>
 import api from "@/api/goods";
-import { mapState } from "vuex";
+import { mapActions, mapState } from 'vuex'
 import bottomFlip from "@/components/bottomFlip";
 
 export default {
@@ -89,18 +87,22 @@ export default {
     return {
       GoodsAbout: "",
       Data: "",
-      label:""
+      label: ""
     };
   },
   onLoad(options) {
-    this.label=options.label;
-    this._getData();
+    this.label = options.label;
+    this.goodsId = options.goodsId;
+    this._getData(options.goodsId);
+  },
+  computed: {
+    ...mapState("remark", ["ramarkData"])
   },
   methods: {
     _getData(goodsId) {
-      api.getGoodsDetail(seocode, isComp).then(({ Data }) => {
-        this.Data=Data.remark
-      })
+      api.getRemarkData(goodsId).then(({ Data }) => {
+        this.Data = Data.remark;
+      });
     }
   }
 };

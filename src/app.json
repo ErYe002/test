@@ -44,7 +44,8 @@
         "index/main",
         "frameAttr/main",
         "glassSelect/main",
-        "normalAttr/main"
+        "normalAttr/main",
+        "remark/main"
       ]
     },
     {

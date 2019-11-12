@@ -422,16 +422,16 @@
       <div class="actCon remarkBox">
         <div class="act-remark actLine">
           <span class="act-name">瞳学评论({{Data.Remark==null?"0":Data.Remark.TotalCount}})</span>
-          <span class="act-info" v-if="Data.Remark != null">
+          <a class="act-info" v-if="Data.Remark != null" :href="'../remark/main?goodsid='+Data.GoodsBase.GoodsId+'&&label=1'" >
             {{Data.Remark.PraiseRatio}}%好评 &nbsp;全部
             <span class="icon">></span>
-          </span>
+          </a>
         </div>
       </div>
       <div class="remarkTag" v-if="Data.Remark != null && Data.Remark.TotalCount > 0">
         <ul>
           <li class="tag">
-            <a :href="'/AllComment?goodsid='+Data.GoodsBase.GoodsId+'&&label=1'">全部</a>
+            <a :href="'../remark/main?goodsid='+Data.GoodsBase.GoodsId+'&&label=1'">全部</a>
           </li>
           <li class="tag">
             <a
@@ -445,7 +445,7 @@
               :key="item.index"
             >
               <a
-                :href="'/AllComment?goodsid='+Data.GoodsBase.GoodsId+'&&label='+(item.index+3)"
+                :href="'../remark/main?goodsid='+Data.GoodsBase.GoodsId+'&&label='+(item.index+3)"
               >{{item.CommentLabel}}（{{item.Count}}）</a>
             </li>
           </block>
@@ -957,7 +957,7 @@
 
 <script>
 import api from "@/api/goods";
-import { mapState } from "vuex";
+import { mapActions, mapState } from 'vuex'
 import bottomFlip from "@/components/bottomFlip";
 import wxParse from "mpvue-wxparse";
 
@@ -1004,6 +1004,7 @@ export default {
     wxParse
   },
   methods: {
+    ...mapActions('remark', ['setData']),
     _getPageData(seocode, isComp) {
       //var seocode="revia6";//自营
       //var seocode = "htyx6"; //海淘
@@ -1042,7 +1043,7 @@ export default {
             return value;
           }
         );
-        // Data.Remark.LableTags=Data.Remark.LableTags.slice(0,6);
+        this.setData(Data.Remark.LableTags);
         this.isComp = isComp == "false" ? false : true;
         this.Data = Data;
         this._getGoodsAbout();
