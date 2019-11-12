@@ -96,7 +96,7 @@
         <view class='label'>物流配送</view>
         <view class='text'>
           {{orderInfo.Delivery}}
-          <text class='icon'></text>
+          <text v-if='orderInfo.ShopId == 1' class='icon'></text>
         </view>
       </view>
       <view class='flex-line'>
@@ -353,6 +353,9 @@ export default {
 
     //实现跳转的A页面
     jumpToLogistics: function () {
+      if (this.orderInfo.ShopId == 2) {
+        return;
+      }
       console.log("-----"+this.formModel.selectedConsigneeId)
       if (this.formModel.selectedConsigneeId.length > 0 && this.formModel.selectedConsigneeId != "00000000-0000-0000-0000-000000000000") {
       }else{
