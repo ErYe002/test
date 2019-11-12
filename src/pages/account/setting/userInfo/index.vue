@@ -2,7 +2,7 @@
   <article>
       <section class="user-box">
     <div class="line">
-      <a class=" h-90">
+      <a class=" h-90" @click="_setHeadPortrait">
         <label class="l-lab">头像</label>
         <img
           class="head" 
@@ -115,61 +115,10 @@ export default {
       // console.log(this.startDate, this.endDate);
     },
     _setHeadPortrait(){
-      let $this = this;
-      wx.chooseImage({
-        count: 1,                   //默认9张图
-        sizeType: ["compressed"],   //可以指定原图还是压缩图，默认二者都有
-        sourceType: ["album", "camera"],      //可以指定来源是相册还是相机，默认二者都有
-        success: function(result){
-          //返回选定照片的本地文件路径列表，tempFilePaths可以作为img标签的src属性显示图片
-          let filePaths = result.tempFilePaths;
-          _uploadFileToServer($this, filePaths);
-        }
+      api.setHeadPortrait().then(({Data}) => {
+        this.userInfoModel.HeadUrl = Data;
       })
     },
-    _uploadFileToServer($this, filePaths){
-      wx.showToast({
-        icon: "loading",
-        title: "正在上传中......"
-      });
-      wx.uploadFile({
-        url: config.apiurl + "/api/Account/SetHeadPortrait",
-        filePath: filePaths[0],
-        name: "file",
-        header: {"Content-Type": "multipart/form-data"},
-        formData: {
-          //和服务器约定的token，也可以放到header中。
-        },
-        success: function(result){
-          console.log(result);
-          if(result.statusCode != 200){
-            wx.showModal({
-              title: "提示",
-              content: "上传失败！",
-              showCancel: false
-            });
-            return;
-          }
-
-          // wx.showToast({
-          //   title: "上传成功！"
-          // });
-          $this.userInfoModel.HeadUrl = filePaths[0];
-        },
-        fail: function(result){
-          console.log(e);
-          wx.showModal({
-            title: "提示",
-            content: "上传失败！",
-            showCancel: false
-          });
-        },
-        complete: function(){
-          wx.hideToast();
-        }
-      })
-    },
-
     _dateChange(e){
       let value = e.mp.detail.value;
       this.userInfoModel.Birthday = value;
