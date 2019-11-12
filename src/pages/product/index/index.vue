@@ -350,25 +350,33 @@
         </div>
         <div class="xuanGou">
           <span class="xuanGou-name">选购</span>
-          <div class="eyeBox">
-            <div class="eyeMsg">
-              <div class="eyeType">右眼R</div>
-              <div class="eyeNote">点击选择参数</div>
+          <a
+            :href="Data.GoodsBase.GoodsType==4?frameAttrHref+'&IsBuyNow=false':normalAttrHref+'&IsBuyNow=false'"
+          >
+            <div class="eyeBox">
+              <div class="eyeMsg">
+                <div class="eyeType">右眼R</div>
+                <div class="eyeNote">点击选择参数</div>
+              </div>
+              <div class="eyeImg">
+                <img src="/static/images/icon-pro-eye.png" />
+              </div>
             </div>
-            <div class="eyeImg">
-              <img src="/static/images/icon-pro-eye.png" />
+          </a>
+          <a
+            :href="Data.GoodsBase.GoodsType==4?frameAttrHref+'&IsBuyNow=false':normalAttrHref+'&IsBuyNow=false'"
+          >
+            <div class="eyeBox">
+              <div class="eyeMsg">
+                <div class="eyeType">左眼L</div>
+                <div class="eyeNote">点击选择参数</div>
+              </div>
+              <div class="eyeImg">
+                <img src="/static/images/icon-pro-eye.png" />
+              </div>
             </div>
-          </div>
-          <div class="eyeBox">
-            <div class="eyeMsg">
-              <div class="eyeType">左眼L</div>
-              <div class="eyeNote">点击选择参数</div>
-            </div>
-            <div class="eyeImg">
-              <img src="/static/images/icon-pro-eye.png" />
-            </div>
-          </div>
-          <div class="dshsBox">
+          </a>
+          <div class="dshsBox" @click="_showDSHS()">
             <img src="/static/images/icon-pro-eye.png" />
             <div>度数换算</div>
           </div>
@@ -561,7 +569,7 @@
       <div class="detailBox">
         <div class="attention">
           <text class="b">注意事项：</text>隐形眼镜属于第三类医疗器材，购买前建议您先去正规的眼镜销售实体店或医院眼科机构进行专业的验配检查，确保您的使用安全和效果。请仔细选择适合您的光度，仔细阅读产品说明书或在医务人员的指导下购买和使用，禁忌内容或者注意事项详见说明书或
-          <text class="link" bindtap="showUserAgreement">《可得用户注册协议》</text>
+          <text class="link" @click="_userAgreement">《可得用户注册协议》</text>
         </div>
         <div class="detailCon" v-if="GoodsAbout">
           <wxParse :content="GoodsAbout.Discription" />
@@ -978,18 +986,16 @@ export default {
       QueryGoodsData: "",
       QueryGoodsType: "price",
       QueryGoodsType2: "PPTJ",
-      QueryGoodsData2:""
+      QueryGoodsData2: "",
     };
   },
   computed: {},
   onLoad(options) {
-    console.log(options);
     this._getPageData(options.seocode, options.isComp);
   },
   filters: {
     toFixed: function(num) {
       num = Number(num);
-      console.log(num.toFixed(2));
       return num.toFixed(2);
     }
   },
@@ -1036,21 +1042,19 @@ export default {
             return value;
           }
         );
-
+        // Data.Remark.LableTags=Data.Remark.LableTags.slice(0,6);
         this.isComp = isComp == "false" ? false : true;
         this.Data = Data;
         this._getGoodsAbout();
-        if(this.Data.GoodsBase.ShopId==2){
+        if (this.Data.GoodsBase.ShopId == 2) {
           this._getSameTypeData("price");
-        }else{
-          console.log(2);
+        } else {
           this._getSameTypeData2("PPTJ");
         }
         this._AttrHref();
       });
     },
     _getGoodsAbout() {
-      console.log(this.Data.GoodsBase.GoodsId, 123);
       var GoodsId = this.Data.GoodsBase.GoodsId;
       api.getGoodsAbout(GoodsId).then(({ Data }) => {
         this.GoodsAbout = Data;
@@ -1106,22 +1110,20 @@ export default {
       }
       if (type == "CNXH") {
         api.getLikeGoods2(this.Data.GoodsBase.ShopId).then(({ Data }) => {
-          console.log(Data, "cnxh商品数据");
           this.QueryGoodsData2 = Data.map(function(value, index) {
             value.Price = value.Price.toFixed(2);
+            value.GoodsImg = value.Img;
             return value;
           });
         });
       } else {
         api.getLikeGoods1(brandIds, KeyWord, Sort).then(({ Data }) => {
-          console.log(Data, "pptj..的商品数据");
           this.QueryGoodsData2 = Data.map(function(value, index) {
             value.Price = value.Price.toFixed(2);
             return value;
           });
         });
       }
-      console.log(this.QueryGoodsData2,"数据")
     },
     //
     _AttrHref() {
@@ -1256,6 +1258,7 @@ export default {
       this.isShowPJ = false;
       this.isShowMZ = false;
       this.isShowHG = false;
+      this.isShowDSHS = false;
     },
     //优惠券信息显示
     _showYHQmsg() {
@@ -1266,6 +1269,18 @@ export default {
     //领券
     _getCoupon(id) {
       console.log(id);
+    },
+    //度数换算跳转
+    _showDSHS() {
+      wx.navigateTo({
+        url: '/pages/htmlPreview/main?url=' + encodeURIComponent('/TemplateForNewApp/degreeConversion')
+      })
+    },
+    //用户协议跳转
+    _userAgreement() {
+      wx.navigateTo({
+        url: '/pages/htmlPreview/main?url=' + encodeURIComponent('/TemplateForNewApp/userAgreement')
+      })
     }
   }
 };
