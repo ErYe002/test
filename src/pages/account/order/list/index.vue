@@ -75,16 +75,17 @@
             </ul>
           </li>
         </template>
-        
-        <li class="wait_evaluate" v-for="item in orderList" :key="item.GoodsId">
-          <div class="waitDivFirst">
-            <img class="waitCommentGoodsImg" :src="item.GoodsImageUrl" mode="aspectFill" />
-          </div>
-          <div class="waitDivSecond">
-            <p class="waitCommentGoodsName">{{item.GoodsName}}</p>
-            <a class="gotoComment" :href="'/pages/account/order/comment/main?orderId=' + item.OrderId +'&goodsId=' + item.GoodsId + '&goodsImageUrl=' + item.GoodsImageUrl">去评价</a>
-          </div>
-        </li>
+        <template v-if="listQuery.queryState == 6">
+          <li class="wait_evaluate" v-for="item in orderList" :key="item.GoodsId">
+            <div class="waitDivFirst">
+              <img class="waitCommentGoodsImg" :src="item.GoodsImageUrl" mode="aspectFill" />
+            </div>
+            <div class="waitDivSecond">
+              <p class="waitCommentGoodsName">{{item.GoodsName}}</p>
+              <a class="gotoComment" :href="'/pages/account/order/comment/main?orderId=' + item.OrderId +'&goodsId=' + item.GoodsId + '&goodsImageUrl=' + item.GoodsImageUrl">去评价</a>
+            </div>
+          </li>
+        </template>
       </ul>
       <img
         class="loading"

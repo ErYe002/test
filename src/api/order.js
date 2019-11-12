@@ -42,7 +42,16 @@ const api = {
   //添加商品评论
   addGoodsComment(OrderId, GoodsId, GoodsScore, Remark) {
     return http.post(
-      `/comment/AddGoodsComment?OrderId=${OrderId}&GoodsId=${GoodsId}&GoodsScore=${GoodsScore}&Remark=${Remark}`
+      `/comment/AddGoodsComment`,
+      {
+        OrderId:OrderId,
+        GoodsId:GoodsId,
+        GoodsScore:GoodsScore,
+        Remark:Remark
+      },
+      {
+        'content-type':'application/x-www-form-urlencoded'
+      }
     );
   }
 };
