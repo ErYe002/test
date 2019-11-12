@@ -25,6 +25,10 @@ const api = {
   getLikeGoods2(shopId) {
     return http.post(`/Goods/GoodsLike?shopId=${shopId}`);
   },
+  //全部评论获取数据
+  getRemarkData(shopId) {
+    return http.post(`/Goods/GoodsLike?shopId=${shopId}`);
+  },
 };
 
 export default api;

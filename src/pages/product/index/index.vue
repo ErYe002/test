@@ -1042,7 +1042,7 @@ export default {
             return value;
           }
         );
-        Data.Remark.LableTags=Data.Remark.LableTags.slice(0,6);
+        // Data.Remark.LableTags=Data.Remark.LableTags.slice(0,6);
         this.isComp = isComp == "false" ? false : true;
         this.Data = Data;
         this._getGoodsAbout();
