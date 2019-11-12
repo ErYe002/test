@@ -695,7 +695,7 @@
       @done="changeAttrDone"
       :quantity="editCartItemInfo.quantity"
     />
-    <tariff :is-show.sync="isShowTariff"/>
+    <tariff :is-show.sync="isShowTariff" :shop-id="shopId"/>
   </article>
 </template>
 
