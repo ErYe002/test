@@ -61,7 +61,7 @@
                 <button class="kd-btn btn-default btn-small" @click="toAppTips('可得小程序暂时不支持退换货功能哦，请下载可得眼镜APP使用此功能')">退换货</button>
               </li>
               <li class="b-item" v-if="item.IsLogistics">
-                <button class="kd-btn btn-default btn-small" :href="'/pages/account/logistics/main?shopId='+item.ShopId+'&orderId='+item.OrderId">查看物流</button>
+                <a class="kd-btn btn-default btn-small" :href="'/pages/account/logistics/main?shopId='+item.ShopId+'&orderId='+item.OrderId">查看物流</a>
               </li>
               <!-- <li class="b-item" v-if="item.IsAppraise">
                 <button class="kd-btn btn-default btn-small">评价</button>

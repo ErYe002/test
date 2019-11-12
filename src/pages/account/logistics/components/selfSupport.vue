@@ -1,23 +1,25 @@
 <template>
   <article>
-    <section class="info-box">
-      <p class="title">快递单号：{{model.ExpressNo}}</p>
-      <p class="company">配送公司：{{model.ExpressName}}</p>
-    </section>
-    <section class="timeline-box">
-      <time-line :list="model.Routes"/>
-  </section>
+    <template v-if="model">
+      <section class="info-box">
+        <p class="title">快递单号：{{model.ExpressNo}}</p>
+        <p class="company">配送公司：{{model.ExpressName}}</p>
+      </section>
+      <section class="timeline-box">
+        <time-line :list="model.Routes" />
+      </section>
+    </template>
   </article>
 </template>
 
 <script>
-import timeLine from './timeLine'
+import timeLine from "./timeLine";
 export default {
-  components:{
+  components: {
     timeLine
   },
-  props:{
-    model:{
+  props: {
+    model: {
       type: Object,
       default: null
     }
@@ -37,7 +39,7 @@ export default {
   }
 }
 
-.timeline-box{
+.timeline-box {
   padding: 20px 28px 28px;
 }
 </style>

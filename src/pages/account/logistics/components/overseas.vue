@@ -1,45 +1,58 @@
 <template>
   <article>
-    <section class="info-box">
-      <p class="title">
-        <img class="icon" src="/static/images/haiwaigou_tag.png" />
-        <span>订单编号：{{model.OrderNo}}</span>
-      </p>
-    </section>
-    <section class="package-box">
-      <scroll-view class="p-list" scroll-x enable-flex v-if="model.Logistics.length > 0">
-        <p :class="{item: true, active: idx == currentPack}" v-for="(item, idx) in model.Logistics" :key="item.ExpressNo" @click="changePackIndex(idx)">包裹{{idx}}</p>
-      </scroll-view>
-      <scroll-view class="g-list" scroll-x enable-flex v-if="model.Logistics.length > 0 && model.Logistics[currentPack].GoodsList.length > 0">
-        <div class="item" v-for="item in model.Logistics[currentPack].GoodsList" :key="item.GoodsImageUrl">
-          <img
-            class="img"
-            :src="item.GoodsImageUrl"
-          />
-          <span>x{{item.Quantity}}</span>
+    <template v-if="model">
+      <section class="info-box">
+        <p class="title">
+          <img class="icon" src="/static/images/haiwaigou_tag.png" />
+          <span>订单编号：{{model.OrderNo}}</span>
+        </p>
+      </section>
+      <section class="package-box">
+        <scroll-view class="p-list" scroll-x enable-flex v-if="model.Logistics.length > 0">
+          <p
+            :class="{item: true, active: idx == currentPack}"
+            v-for="(item, idx) in model.Logistics"
+            :key="item.ExpressNo"
+            @click="changePackIndex(idx)"
+          >包裹{{idx}}</p>
+        </scroll-view>
+        <scroll-view
+          class="g-list"
+          scroll-x
+          enable-flex
+          v-if="model.Logistics.length > 0 && model.Logistics[currentPack].GoodsList.length > 0"
+        >
+          <div
+            class="item"
+            v-for="item in model.Logistics[currentPack].GoodsList"
+            :key="item.GoodsImageUrl"
+          >
+            <img class="img" :src="item.GoodsImageUrl" />
+            <span>x{{item.Quantity}}</span>
+          </div>
+        </scroll-view>
+      </section>
+      <section class="logistics-info-box">
+        <p class="title">
+          <span>
+            物流公司：
+            <em>{{model.Logistics[currentPack].ExpressName}}</em>
+          </span>
+          <span>
+            运单号：
+            <em>{{model.Logistics[currentPack].ExpressNo}}</em>
+          </span>
+        </p>
+        <div class="timeline-box">
+          <time-line :list="model.Logistics[currentPack].Routes" />
         </div>
-      </scroll-view>
-    </section>
-    <section class="logistics-info-box">
-      <p class="title">
-        <span>
-          物流公司：
-          <em>{{model.Logistics[currentPack].ExpressName}}</em>
-        </span>
-        <span>
-          运单号：
-          <em>{{model.Logistics[currentPack].ExpressNo}}</em>
-        </span>
-      </p>
-      <div class="timeline-box">
-        <time-line :list="model.Logistics[currentPack].Routes"/>
-      </div>
-    </section>
+      </section>
+    </template>
   </article>
 </template>
 
 <script>
-import timeLine from './timeLine'
+import timeLine from "./timeLine";
 export default {
   props: {
     model: {
@@ -47,17 +60,17 @@ export default {
       default: null
     }
   },
-  data(){
+  data() {
     return {
       currentPack: 0
-    }
+    };
   },
-  components:{
+  components: {
     timeLine
   },
-  methods:{
-    changePackIndex(idx){
-      this.currentPack = idx
+  methods: {
+    changePackIndex(idx) {
+      this.currentPack = idx;
     }
   }
 };
@@ -129,23 +142,23 @@ export default {
 }
 
 .logistics-info-box {
-  .title{
+  .title {
     display: flex;
     align-items: center;
     padding: 15px 10px;
     color: #666666;
     font-size: 13px;
-    border-bottom: .5px solid #e5e5e5;
-    span{
+    border-bottom: 0.5px solid #e5e5e5;
+    span {
       display: flex;
-      &:first-child{
+      &:first-child {
         margin-right: 10px;
       }
     }
   }
 }
 
-.timeline-box{
+.timeline-box {
   padding: 10px 18px 18px;
 }
 </style>

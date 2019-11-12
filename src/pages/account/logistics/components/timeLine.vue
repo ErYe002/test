@@ -1,12 +1,14 @@
 <template>
   <ul class="list">
-    <li :class="{item: true, 'current': idx == 0}" v-for="(item, idx) in list" :key="item.Time">
-      <i class="dot"></i>
-      <div class="text">
-        <p>{{item.Description}}</p>
-        <em>{{item.Time}}</em>
-      </div>
-    </li>
+    <template v-if="list.length > 0">
+      <li :class="{item: true, 'current': idx == 0}" v-for="(item, idx) in list" :key="item.Time">
+        <i class="dot"></i>
+        <div class="text">
+          <p>{{item.Description}}</p>
+          <em>{{item.Time}}</em>
+        </div>
+      </li>
+    </template>
   </ul>
 </template>
 
