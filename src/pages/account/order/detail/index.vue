@@ -104,6 +104,7 @@
 
 <script>
 import api from "@/api/order";
+import tools from '@/utils'
 
 export default {
   data() {
@@ -121,6 +122,7 @@ export default {
   methods: {
     _getPageData() {
       api.getOrderDetail(this.orderId).then(({ Data }) => {
+        Data.OrderTime = tools.formatDate('yyyy/MM/dd hh:mm', new Date(Data.OrderTime))
         this.orderInfo = Object.assign({}, Data);
       });
     },

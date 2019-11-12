@@ -39,14 +39,14 @@
           <button
             open-type="getUserInfo"
             @getuserinfo="getUserInfo"
-            data-link="/pages/index/main"
+            data-link="/pages/account/coupon/main"
             v-if="!token"
             class="link"
           >
             <p class="number">0</p>
             <p class="text">优惠券</p>
           </button>
-          <a v-else href="/pages/index/main" class="link">
+          <a v-else href="/pages/account/coupon/main" class="link">
             <p class="number">{{walletModel.CountOfCoupon || 0}}</p>
             <p class="text">优惠券</p>
           </a>
