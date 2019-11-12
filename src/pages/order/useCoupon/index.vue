@@ -7,7 +7,7 @@
     <div class="item" v-for="(item, idx) in coupons" :key="idx">
       <div class="couponbg" :data-id='item.CouponNo' :data-valid='item.IsEffective' @click="selectCoupon">
         <view class="checked-box" >
-          <img v-if="couponNo == item.CouponNo" src="" />
+          <img v-if="couponNo == item.CouponNo" src="/static/images/icon_checked.png" />
           <view v-else class="no-checked"></view>
         </view>
         <div class="couponLeft">
@@ -54,8 +54,8 @@ export default {
   // getCanUseCouponsInOrder    
     //选择优惠券
     selectCoupon(e){
-      console.log(e)
       if (e.currentTarget.dataset.valid) {
+        console.log(e)
         this.useCoupon(e.currentTarget.dataset.id);
       }
     },
@@ -73,9 +73,7 @@ export default {
     },
     //使用优惠券
     useCoupon(couponNo){
-      console.log('==========')
-      console.log(couponNo)
-      this.setIsChangeCoupon(true)
+      console.log('====couponNo ======'+"couponNo")
       api.useCoupon(couponNo).then(({State, Data,Msg}) => {
         if (State){
           this.setIsChangeCoupon(true)
@@ -177,7 +175,6 @@ page {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #ffaaa0;
 }
 .no-checked {
   display: block;
