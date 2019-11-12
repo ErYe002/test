@@ -24,7 +24,7 @@
           <view class='info'>
             <view class='contact-name'>
               {{orderInfo.Consignee}}
-              <text v-if='orderInfo.IsDefaultConsignee' class='default'>默认</text>
+              <text v-if='orderInfo.IsDefaultConsignee' class='default'> 默认</text>
             </view>
             <view class='contact-address'>{{orderInfo.Address}}</view>
             <view class='contact-phone'>{{orderInfo.ContactPhone}}</view>
@@ -604,6 +604,14 @@ page {
   background-repeat: no-repeat;
   background-size: 14rpx auto;
   background-position: 0 0;
+}
+.default {
+  border: 1rpx solid #ff0000;
+  margin-right: 10rpx;
+  color: #ff0000;
+  font-size: 20rpx;
+  padding-left: 2rpx;
+  padding-right: 2rpx;
 }
 .order-box {
   font-size: 26rpx;

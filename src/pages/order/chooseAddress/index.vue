@@ -90,6 +90,14 @@ page {
   display: flex;
   align-items: center;
 }
+.default {
+  border: 1rpx solid #ff0000;
+  margin-right: 10rpx;
+  color: #ff0000;
+  font-size: 20rpx;
+  padding-left: 2rpx;
+  padding-right: 2rpx;
+}
 
 .item .choose-btn {
   background: none repeat scroll 0 0 #fff;

@@ -76,7 +76,6 @@ export default {
 
     api.getAddressListLib().then(({ Data }) => {
       //原省市区数据
-      console.log(Data);
       this.cities = Data.Cities;
       this.districts = Data.Districts;
       this.provinces = Data.Provinces;
@@ -92,15 +91,10 @@ export default {
           id: val.ProvinceId
         })
       });
-      console.log('provinceNameList',provinceNameList[0])
       //同步市
       let cityNameList = this._getCityNameListByProvince(provinceNameList[0])
-
-      console.log('cityNameList',cityNameList[0])
-
       //同步区
       let districtNameList = this._getDistrictNameListByCity(cityNameList[0])
-      console.log('districtNameList',districtNameList[0])
       this.regionArray = [provinceNameList, cityNameList, districtNameList],
       this.isLoadRegion = false
     })
@@ -259,48 +253,45 @@ export default {
     //编辑保存
     saveEditAddress(){      
       api.editAddresss(this.consigneeId,this.addressInfo.ConsigneeName,this.addressInfo.ContactMobile,this.addressInfo.ProvinceId,this.addressInfo.ProvinceName,this.addressInfo.CityId,this.addressInfo.CityName,this.addressInfo.DistrictId,this.addressInfo.DistrictName,this.addressInfo.Address,this.addressInfo.PostalCode,this.IsDefault).then(({ Data, State, Msg }) => {
-        let tempMsg = "";
         if (State){
-          if (Msg) {
-            tempMsg = Msg;
-          }else{
-            tempMsg = "保存成功";
-          }
+          wx.navigateBack({
+            delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+          });
         }else{
+          let tempMsg = "";
           if (Msg) {
             tempMsg = Msg;
           }else{
             tempMsg = "保存失败";
           }
+          wx.showToast({
+              title: tempMsg,
+              icon: 'none',
+          });
         }
-        wx.showToast({
-            title: tempMsg,
-            icon: 'none',
-        }); 
       });
     },
     //新增保存
     saveNewAddress(){
       api.addNewAddress(this.addressInfo.ConsigneeName,this.addressInfo.ContactMobile,this.addressInfo.ProvinceId,this.addressInfo.ProvinceName,this.addressInfo.CityId,this.addressInfo.CityName,this.addressInfo.DistrictId,this.addressInfo.DistrictName,this.addressInfo.Address,this.addressInfo.PostalCode,this.IsDefault).then(({ Data, State, Msg }) => {
         console.log(State);
-        let tempMsg = "";
         if (State){
-          if (Msg) {
-            tempMsg = Msg;
-          }else{
-            tempMsg = "保存成功";
-          }
+          wx.navigateBack({
+            delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+          });
         }else{
+          let tempMsg = "";
           if (Msg) {
             tempMsg = Msg;
           }else{
             tempMsg = "保存失败";
           }
+          wx.showToast({
+              title: tempMsg,
+              icon: 'none',
+          });
         }
-        wx.showToast({
-            title: tempMsg,
-            icon: 'none',
-        }); 
+         
       });
     }
   }
