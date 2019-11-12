@@ -119,6 +119,15 @@ export default {
      * 搜索
      */
     searchEvent() {
+      if(/^\s+$/.test(this.keywords)){
+        wx.showToast({
+          title: '请输入搜索关键字',
+          icon: 'none',
+          duration: 5000
+        });
+        this.keywords = ''
+        return
+      }
       this.setSearchHistory({
         searchContent: this.keywords,
         shopId: this.shopId

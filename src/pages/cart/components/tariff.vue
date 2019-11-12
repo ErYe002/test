@@ -1,7 +1,8 @@
 <template>
   <bottom-flip :is-show.sync="isShow">
     <p class="title">运费规则说明<img class="icon" src="/static/images/icon_cart_tips_close.png" @click="hideEvent"/></p>
-    <img class="img" src="http://192.168.117.39:2010/userdir/publicimages/%E6%BB%A180%E5%8C%85%E9%82%AE-.jpg"/>
+    <img class="img" v-if="shopId == 1" src="https://pic.keede.com/userdir/publicimages/2018shequkede/hujuan/%E6%BB%A180%E5%8C%85%E9%82%AE-.jpg"/>
+    <img class="img" v-else src="https://pic.keede.com/userdir/publicimages/2018shequkede/hujuan/%E5%B7%B2%E5%8C%85%E7%A8%8E-.jpg"/>
   </bottom-flip>
 </template>
 
@@ -13,6 +14,10 @@ export default {
     isShow: {
       type: Boolean,
       default: false
+    },
+    shopId: {
+      type: Number,
+      default: 1
     }
   },
   components:{

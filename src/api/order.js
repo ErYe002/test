@@ -29,6 +29,10 @@ const api = {
   logisticsQuery(orderId) {
     return http.post(`/order/OrderQuery?orderId=${orderId}`);
   },
+  //海外物流信息
+  logisticsOverseaQuery(orderId) {
+    return http.post(`/order/QueryOrderLogisticsForOverseas?orderId=${orderId}`);
+  },
   //获取待评价商品列表
   pendingComments(page, pageSize = 10) {
     return http.post(

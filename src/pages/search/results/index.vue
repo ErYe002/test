@@ -77,7 +77,7 @@ export default {
       title: this.keywords
     });
   },
-  onUnLoad(){
+  onUnload(){
     this.goodsList = []
   },
   /**
