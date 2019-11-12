@@ -47,8 +47,10 @@
         </div>
       </div>
       <div class="footerView">
-        <img class="iconimg" mode="aspectFit" src="/static/images/confirm7day.png" alt="">
-        <img class="iconimg" mode="aspectFit" src="/static/images/confirmCustom.png" alt="">
+        <img class="iconItem" mode="aspectFit" src="/static/images/confirm7day.png" alt="">
+        <button open-type="contact" class="iconItem">
+          <img class="iconimg" mode="aspectFit" src="/static/images/confirmCustom.png" alt="">
+        </button>
       </div>
     </scroll-view>
   </bottom-flip>
@@ -249,8 +251,28 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  .iconimg{
+  .iconItem {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-size: inherit;
+    border-radius: 0;
+    line-height: initial;
+    color: inherit;
+      &::after {
+        border: none;
+        border-radius: 0;
+        position: absolute;
+        width: 0;
+        height: 0;
+      }
     height: 50rpx;
+    width: 50%;
+  }
+  .iconimg{
+    height: 100%;
+    width: 100%;
   }
 }
 
