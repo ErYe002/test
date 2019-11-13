@@ -26,7 +26,7 @@
 
         <div class="item-layout" v-if="cylList.length>0">
           <div v-for="(item,index) in cylList" v-bind:key="index" style="padding:5px;box-sizing:border-box;width: 20%"
-               >
+          >
             <div :class="{'item-gd':true,'select':cylSelectPosition===index}" @click="selectEvent('C',index)">
               {{item.Value}}
             </div>
@@ -39,7 +39,7 @@
 
         <div class="item-layout" v-if="axisList.length>0">
           <div v-for="(item,index) in axisList" v-bind:key="index" style="padding:5px;box-sizing:border-box;width: 20%"
-               >
+          >
             <div :class="{'item-gd':true,'select':axisSelectPosition===index}" @click="selectEvent('A',index)">
               {{item.Value}}
             </div>
@@ -49,14 +49,22 @@
 
     </scroll-view>
 
-    <div class="btn-confirm" @click="disMissPoo">
+    <div class="sell-out-text">
+      {{sellOutMsg}}
+    </div>
+
+    <div class="btn-confirm" @click="disMissPoo" v-if="!sellOut">
       确定
+    </div>
+    <div class="btn-confirm-sellout" @click="showArriveMsg" v-else>
+      到货通知
     </div>
   </bottom-flip>
 </template>
 
 <script>
   import bottomFlip from "@/components/bottomFlip";
+  import api from "@/api/attr";
 
   export default {
     name: "gd-nromal-select-pop",
@@ -71,8 +79,9 @@
       return {
         sphSelectPosition: -1,
         cylSelectPosition: -1,
-        axisSelectPosition: -1
-
+        axisSelectPosition: -1,
+        sellOut: false,
+        sellOutMsg: ""
       };
     },
 
@@ -98,6 +107,10 @@
       selectEvent(side, index) {
         if (side === 'S') {
           this.sphSelectPosition = index;
+          this.sellOut = this.sphList[index].IsOutStock;
+          this.sellOutMsg = this.sphList[index].OutStockMessage;
+          // if (this.sphList[index].IsOutStock) {
+          // }
         } else if (side === 'C') {
           this.cylSelectPosition = index;
         } else if (side === 'A') {
@@ -138,6 +151,20 @@
 
         this.hideEvent();
 
+      },
+      showArriveMsg() {
+        let cutem = this.sphList[this.sphSelectPosition];
+        api.arrivalStockNotice(cutem.RealGoodsId, cutem.Id).then(({Data}) => {
+          console.log('到货通知成功');
+        });
+        wx.showModal({
+          title: '提示',
+          content: '商品到货后，小可会第一时间给您发送APP消息通知，请注意查看',
+          icon: "none",
+          confirmText:'知道了',
+          confirmColor:'#CAB894',
+          showCancel:false
+        });
       }
     }
   };
@@ -213,6 +240,24 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .btn-confirm-sellout {
+    color: white;
+    background-color: #F7B500;
+    font-size: 15px;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .sell-out-text {
+    font-size: 12px;
+    color: red;
+    margin-left: 15px;
+    height: 30px;
   }
 
 </style>

@@ -9,6 +9,10 @@ const api = {
   getOptometryBillBaiscDataLibrary() {
     return http.postByNoLoading(`/Account/GetOptometryBillBaiscDataLibrary`);
   },
+  //到货通知
+  arrivalStockNotice(realGoodId,goodsId) {
+    return http.postByNoLoading(`/Goods/ArrivalStockNotice?realGoodId=${realGoodId}&goodsId=${goodsId}`);
+  },
   //购买无属性框架商品
   buyNoPropertyFrame(mapPrams) {
     return http.post(`/cart/BuyNoPropertyFrame?
