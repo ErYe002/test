@@ -133,7 +133,6 @@ export default {
       api
         .getRemarkData(goodsId, RemarkType, LableName, Page)
         .then(({ Data }) => {
-          this.Data = Data;
           Data = Data.map(function(value, index) {
             value.PubTime = value.PubTime.replace("T", " ");
             return value;

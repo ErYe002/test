@@ -1,6 +1,61 @@
 <template>
   <div>
-
+    <div>
+      <div class="combine_content" v-if="Data != null && Data.length > 0">
+        <div class="ui_listview" v-for="item in Data" :key="item.index">
+          <div class="uil_titlecon">
+            <div class="ui_listtitle">
+              <h3 class="title">
+                套餐{{index+1}}
+                <div class="to_title">
+                  <p class="ui_text">
+                    <b>￥{{item.Price}}</b>
+                    <i>立省￥{{item.ReduceMoney}}</i>
+                  </p>
+                </div>
+              </h3>
+              <i class="icon_down" @click="showMore()">{{isshowMore?'﹀':'︿'}}</i>
+            </div>
+            <div class="ui_titlegoods" v-if="isshowMore">
+              <ul v-if="item.Items != null && item.Items.length > 0">
+                <li v-for="(goodslist,index_) in item.Items" :key="index_">
+                  <img :src="goodslist.Img" />
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="ui_content combine_goodsitem"
+            v-if="item.Items != null && item.Items.length > 0&&!isshowMore"
+          >
+            <a
+              :href="'/pages/product/index/main?seocode='+goodslist.SeoCode+'&isComp=false'"
+              class="cg_link"
+              v-for="(goodslist,index_) in item.Items"
+              :key="index_"
+            >
+              <div class="cgs_img">
+                <img :src="goodslist.Img" />
+              </div>
+              <div class="cgs_info">
+                <h3>
+                  <i v-if="item.ShopId==2" class="outsourcing_label">海淘</i>
+                  {{goodslist.GoodsName}}
+                </h3>
+                <p class="cgs_prs">￥{{goodslist.Price}}</p>
+              </div>
+              <div class="cgs_count">x {{goodslist.Quantity}}</div>
+            </a>
+            <div class="ui-btn">
+              <a
+                class="bnt_link btncard_icon"
+                :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=true'"
+              >加入购物车</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -10,221 +65,171 @@ import api from "@/api/goods";
 export default {
   data() {
     return {
-      GoodsAbout: "",
+      goodsId: "",
       Data: "",
-      selecLabel: "",
-      selectLabelIndex: "1",
-      isShowMoreTag: false,
-      RemarkType: -1,
-      LableName: "",
-      Page: 1,
-      totalPage: 3,
-      noData: false
+      isshowMore:false
     };
   },
   onLoad(options) {
-    this.selecLabel = options.label;
-    if (this.selecLabel == "有图") {
-      this.RemarkType = 4;
-    }
     this.goodsId = options.goodsid;
-    console.log(this.selecLabel, this.goodsId);
     this._getData();
-  },
-  onReachBottom() {
-    if (!this.noData) {
-      this.Page++;
-      this._getData();
-    }
-  },
-  computed: {
-    ...mapState("remark", ["ramarkData"])
   },
   methods: {
     _getData(goodsId) {
       var goodsId = this.goodsId;
-      var RemarkType = this.RemarkType;
-      var LableName = this.LableName;
-      var Page = this.Page;
-      api
-        .getRemarkData(goodsId, RemarkType, LableName, Page)
-        .then(({ Data }) => {
-          this.Data = Data;
-          Data = Data.map(function(value, index) {
-            value.PubTime = value.PubTime.replace("T", " ");
-            return value;
-          });
-          this.Data = Data;
-          if (Data.length < 10) {
-            this.noData = true;
-          }
-          console.log(Data);
-        });
-    },
-    _showMoreTag() {
-      this.isShowMoreTag = !this.isShowMoreTag;
-    },
-    _selectLabel(label) {
-      this.selecLabel = label;
-      if (label == "全部") {
-        this.LableName = "";
-        this.RemarkType = -1;
-        this.Page = 1;
-      } else if (label == "有图") {
-        this.LableName = "";
-        this.RemarkType = 4;
-        this.Page = 1;
-      } else {
-        this.LableName = label;
-        this.RemarkType = -1;
-        this.Page = 1;
-      }
-      this._getData();
-    },
-    _previewImage(url,urlArry) {
-      const cur = url;
-      const urls = urlArry;
-      wx.previewImage({
-        current: cur,
-        urls: urls
+      api.getCombineData(goodsId).then(({ Data }) => {
+        this.Data = Data;
+        console.log(Data);
       });
+    },
+    showMore(){
+      this.isshowMore = !this.isshowMore;
     }
   }
 };
 </script>
 
 <style lang="less" scoped>
-.remarkBox {
-  .act-remark {
-    padding: 10px 15px;
-    display: flex;
-    align-items: center;
-    color: #313131;
-    font-size: 11px;
-    ._span {
-      color: #e31436;
-      margin: 0 3px;
+.combine_content {
+  font-size: 12px;
+  .ui_listview {
+    border-bottom: solid 10px #eee;
+    .uil_titlecon {
+      overflow: hidden;
+      border-bottom: solid 1px #dcdcdc;
+      padding-left: 1em;
+      padding-right: 1em;
+      .ui_listtitle {
+        cursor: pointer;
+        font-size: 0;
+        line-height: 50px;
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .title {
+          color: #000;
+          display: inline-block;
+          font-size: 16px;
+          font-weight: normal;
+          display: flex;
+        }
+        .to_title {
+          padding-left: 2%;
+          display: inline-block;
+          .ui_text {
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            ._b {
+              font-size: 16px;
+              font-weight: bold;
+              color: #ff7c7c;
+              margin-left: 2%;
+            }
+            ._i {
+              border: 1px solid #000;
+              color: #000;
+              margin-left: 2%;
+              font-size: 12px;
+              white-space: nowrap;
+              height: 20px;
+              display: flex;
+              align-items: center;
+            }
+          }
+        }
+        .icon_down {
+          transform: scale(1, 1.5);
+          width:50px;
+          height: 30px;
+          font-size: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
     }
   }
-  .actLine::after {
-    height: 0;
+  .ui_content {
+    padding: 0 10px;
+    .cg_link {
+      display: block;
+      border-bottom: solid 1px #dcdcdc;
+      padding: 10px 0;
+      position: relative;
+      .cgs_img {
+        display: table-cell;
+        vertical-align: middle;
+        ._img {
+          width: 90px;
+          border: solid 1px #f1f1f1;
+          display: block;
+          height: 90px;
+        }
+      }
+      .cgs_info {
+        display: table-cell;
+        vertical-align: middle;
+        padding-left: 10px;
+        width: 2000px;
+        ._h3 {
+          width: 70%;
+          font-weight: normal;
+          font-size: 14px;
+          word-break: normal;
+          color: #888;
+          ._i {
+            display: inline-block;
+          }
+        }
+        .cgs_prs {
+          line-height: 34px;
+          font-size: 16px;
+          color: #000;
+          font-weight: 400;
+        }
+      }
+      .cgs_count {
+        position: absolute;
+        right: 1em;
+        top: 40px;
+        font-size: 16px;
+        color: #888;
+      }
+    }
   }
-  .smile {
-    width: 19px;
-    height: 19px;
+  .ui-btn {
+    background: #cab894;
+    border: solid 1px #cab894;
+    min-height: 50px;
+    margin-bottom: 1em;
+    margin-top: 1em;
+    .bnt_link {
+      background: 0;
+      border: 0;
+      color: #fff;
+      cursor: pointer;
+      display: block;
+      font-size: 16px;
+      line-height: 55px;
+      text-align: center;
+      width: 100%;
+    }
   }
-  &.actCon .actLine .act-name {
-    font-size: 11px;
-    border-right: none;
-  }
-}
-.remarkTag {
-  padding: 0 15px;
-  max-height: 52px;
-  overflow: hidden;
-  &.showMore {
-    max-height: inherit;
-    height: auto;
-  }
-  ._li {
-    background: #f4f2e6;
-    color: #313131;
+  .ui_titlegoods ._li {
+    font-size: 0;
+    margin-bottom: 10px;
     float: left;
-    font-size: 12px;
-    margin-bottom: 8px;
-    margin-right: 8px;
-    padding: 2px 6px;
-    &.badlabel {
-      background: #f3f3f3;
-    }
-    &.select {
-      background: #cab894;
-      color: #ffffff;
-    }
-  }
-}
-.showTagBtn {
-  width: 120%;
-  border-bottom: 1px solid #ececec;
-  margin: 0 auto;
-  margin-left: -10%;
-  text-align: center;
-  line-height: 30px;
-  transform: scale(2, 1);
-  color: #ccc;
-  &.showMoreIcon {
-    transform: scale(2, 1) rotate(180deg);
-    border-top: 1px solid #ececec;
-    border-bottom: 0;
-  }
-}
-.remarkCon {
-  .remarkBox {
-    padding: 10px 15px;
-    position: relative;
-    padding-bottom: 20px;
-    font-size: 12px;
-    border-bottom: 5px solid #f5f5f5;
-  }
-  .comment-header {
-    display: flex;
-    margin: 10rpx 20rpx 0;
-    justify-content: space-between;
-  }
-  .userInfo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .header-icon {
-    width: 30px;
-    height: 30px;
-    margin-right: 10rpx;
-    border-radius: 100%;
-    border: 1rpx solid #f0f0f0;
-  }
-  .comment-header-right {
-    display: flex;
-    flex-direction: column;
-    .kd-level {
-      display: flex;
-      justify-content: space-between;
-    }
-  }
-  .comment-star {
-    display: inline-block;
-    height: 24rpx;
-    margin-right: 10rpx;
-    width: 24rpx;
-  }
-  .comment-text {
-    font-size: 12px;
-    color: #010101;
-    word-wrap: break-word;
-    margin: 10rpx 20rpx 20rpx;
-  }
-  .comment-text-style {
-    font-size: 24rpx;
-    color: #888;
-    margin-top: 10rpx;
-    word-wrap: break-word;
-    margin: 5rpx 20rpx;
-  }
-  .comment-pic {
-    display: flex;
-    ._scroll-view {
-      white-space: nowrap;
-      height: 100px;
-    }
-  }
-  .comment-pic-li {
-    display: inline-block;
     margin-right: 10px;
-  }
-  .comment-pic ._img {
-    width: 100px;
-    height: 100px;
-    background: #ececec;
+    display: block;
+    ._img {
+      width: 80px;
+      height: 80px;
+      border: solid 1px #dcdcdc;
+      font-size: 0;
+    }
   }
 }
 </style>

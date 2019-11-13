@@ -369,18 +369,8 @@
       padding-top: 0;
       color: #3E3E3E;
       display: flex;
-      position: relative;
       ._em{
         color: #E31436;
-      }
-      &::after{
-        background: #EBEBEB;
-        bottom: 0;
-        content: "";
-        height: 1px;
-        left: 10px;
-        position: absolute;
-        width: 100%;
       }
     }
     .tczh-title{
@@ -388,6 +378,16 @@
       display: flex;
       justify-content: space-between;
       color: #3E3E3E;
+      position: relative;
+      &::after{
+        background: #EBEBEB;
+        top: 0;
+        content: "";
+        height: 1px;
+        left: 10px;
+        position: absolute;
+        width: 100%;
+      }
       ._em{
         color: #E31436;
       }
@@ -424,7 +424,7 @@
         &::after{
           content: "+";
           position: absolute;
-          right: -7%;
+          right: -10%;
           top: 22%;
           z-index: 2;
         }

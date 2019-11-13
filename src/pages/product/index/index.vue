@@ -1,6 +1,6 @@
 <template>
   <div class="pro">
-    <template v-if="Data.GoodsBase!=null">
+    <template v-if="Data!=null&&Data.GoodsBase!=null">
       <!-- 轮播 -->
       <div class="proImgBoxCon">
         <swiper
@@ -276,7 +276,10 @@
         <div class="actCon">
           <div class="act-taocan actLine">
             <span class="act-name">套餐组合</span>
-            <a class="act-info" :href="'/Combine?goodsid='+Data.GoodsBase.GoodsId">
+            <a
+              class="act-info"
+              :href="'/pages/product/combineList/main?goodsid='+Data.GoodsBase.GoodsId"
+            >
               更多套餐
               <span class="icon">></span>
             </a>
@@ -304,14 +307,13 @@
             <div class="tczh-proListBox">
               <scroll-view scroll-x scroll-with-animation="true">
                 <div class="combproList">
-                  <li class="tczh-item"  v-for="(combitem,combindex) in item.Items" :key="combindex">
+                  <li class="tczh-item" v-for="(combitem,combindex) in item.Items" :key="combindex">
                     <div>
                       <img :src="combitem.Img" />
                     </div>
                     <span>{{combitem.GoodsName}}</span>
                     <em>￥{{combitem.Price}}</em>
                   </li>
-                  
                 </div>
               </scroll-view>
             </div>
@@ -424,7 +426,7 @@
           <a
             class="act-info"
             v-if="Data.Remark != null"
-            :href="'../remark/main?goodsid='+Data.GoodsBase.GoodsId+'&label=全部'"
+            :href="'/pages/product/remark/main?goodsid='+Data.GoodsBase.GoodsId+'&label=全部'"
           >
             {{Data.Remark.PraiseRatio}}%好评 &nbsp;全部
             <span class="icon">></span>
@@ -582,13 +584,13 @@
       <!-- 底部通栏 -->
       <div class="bottomNav">
         <div class="navBtn">
-          <a href>
+          <a href="pages/index/main">
             <img src="/static/images/icon-pro-index.png" alt />首页
           </a>
           <a href>
             <img src="/static/images/icon-pro-sev.png" alt />客服
           </a>
-          <a href>
+          <a href="pages/cart/main">
             <img src="/static/images/icon-pro-cart.png" alt />购物车
           </a>
         </div>
@@ -1024,28 +1026,40 @@ export default {
         Data.GoodsBase.ScoreDeductionPrice = Data.GoodsBase.ScoreDeductionPrice.toFixed(
           2
         );
-        Data.GoodsPagePromotion.FreeCollocation = Data.GoodsPagePromotion.FreeCollocation.map(
-          function(value, index) {
+        if (Data.GoodsPagePromotion.FreeCollocation != null) {
+          Data.GoodsPagePromotion.FreeCollocation = Data.GoodsPagePromotion.FreeCollocation.map(
+            function(value, index) {
+              value.Price = value.Price.toFixed(2);
+              return value;
+            }
+          );
+        }
+
+        if (Data.Items != null) {
+          Data.Items = Data.Items.map(function(value, index) {
             value.Price = value.Price.toFixed(2);
+            value.MarketPrice = value.MarketPrice.toFixed(2);
             return value;
-          }
-        );
-        Data.Items = Data.Items.map(function(value, index) {
-          value.Price = value.Price.toFixed(2);
-          value.MarketPrice = value.MarketPrice.toFixed(2);
-          return value;
-        });
-        Data.Remark.Remarks = Data.Remark.Remarks.map(function(value, index) {
-          value.PubTime = value.PubTime.replace("T", " ");
-          return value;
-        });
-        Data.GoodsPagePromotion.Coupons = Data.GoodsPagePromotion.Coupons.map(
-          function(value, index) {
-            value.UseStartTime = value.UseStartTime.replace("T", " ");
-            value.UseEndTime = value.UseEndTime.replace("T", " ");
+          });
+        }
+
+        if (Data.Remark.Remarks != null) {
+          Data.Remark.Remarks = Data.Remark.Remarks.map(function(value, index) {
+            value.PubTime = value.PubTime.replace("T", " ");
             return value;
-          }
-        );
+          });
+        }
+
+        if (Data.GoodsPagePromotion.Coupons != null) {
+          Data.GoodsPagePromotion.Coupons = Data.GoodsPagePromotion.Coupons.map(
+            function(value, index) {
+              value.UseStartTime = value.UseStartTime.replace("T", " ");
+              value.UseEndTime = value.UseEndTime.replace("T", " ");
+              return value;
+            }
+          );
+        }
+
         this.setData(Data.Remark);
         this.isComp = isComp == "false" ? false : true;
         this.Data = Data;
@@ -1152,8 +1166,8 @@ export default {
         this.Data.GoodsBase.SaleStockType +
         "&MaxDeduction=" +
         this.Data.GoodsBase.ScoreDeductionPrice +
-        "&goodsId="+
-        this.Data.GoodsBase.GoodsId+
+        "&goodsId=" +
+        this.Data.GoodsBase.GoodsId +
         "&IsFreeCarriage=" +
         this.Data.GoodsBase.IsFreeCarriage;
       var frameAttrHref =
@@ -1177,8 +1191,8 @@ export default {
         this.Data.GoodsBase.SaleStockType +
         "&MaxDeduction=" +
         this.Data.GoodsBase.ScoreDeductionPrice +
-        "&goodsId="+
-        this.Data.GoodsBase.GoodsId+
+        "&goodsId=" +
+        this.Data.GoodsBase.GoodsId +
         "&IsFreeCarriage=" +
         this.Data.GoodsBase.IsFreeCarriage;
       this.normalAttrHref = normalAttrHref;
