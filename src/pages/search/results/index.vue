@@ -77,9 +77,9 @@ export default {
       title: this.keywords
     });
   },
-  onUnload(){
-    this.goodsList = []
-  },
+  // onUnload(){
+  //   this.goodsList = []
+  // },
   /**
    * 上拉加载
    */

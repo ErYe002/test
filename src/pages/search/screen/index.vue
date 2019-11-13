@@ -115,7 +115,7 @@ export default {
     }
   },
   onLoad(options) {
-    Object.assign(this, this.$options.data());
+    // Object.assign(this, this.$options.data());
     if (options && options.className) {
       this.listQuery.className = options.className;
       wx.setNavigationBarTitle({
