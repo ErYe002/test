@@ -40,14 +40,15 @@ const api = {
     );
   },
   //添加商品评论
-  addGoodsComment(OrderId, GoodsId, GoodsScore, Remark) {
+  addGoodsComment(OrderId, GoodsId, GoodsScore, Remark,ImageUrl) {
     return http.post(
       `/comment/AddGoodsComment`,
       {
         OrderId:OrderId,
         GoodsId:GoodsId,
         GoodsScore:GoodsScore,
-        Remark:Remark
+        Remark:Remark,
+        ImageUrl:ImageUrl
       },
       {
         'content-type':'application/x-www-form-urlencoded'

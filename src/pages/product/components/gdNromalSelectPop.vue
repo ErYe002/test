@@ -7,7 +7,7 @@
 
     <scroll-view scroll-y="true" class="item-list">
       <div>
-        <span class="sph select" @click="changeTypeEvent(1)">
+        <span class="sph select" @click="changeTypeEvent(1)" v-if="sphList.length>0">
         光度 SPH
         </span>
 
@@ -20,26 +20,26 @@
           </div>
         </div>
 
-        <span class="sph select" @click="changeTypeEvent(1)">
+        <span class="sph select" @click="changeTypeEvent(1)" v-if="cylList.length>0">
         散光 CYL
         </span>
 
-        <div class="item-layout">
+        <div class="item-layout" v-if="cylList.length>0">
           <div v-for="(item,index) in cylList" v-bind:key="index" style="padding:5px;box-sizing:border-box;width: 20%"
-               v-if="cylList.length>0">
+               >
             <div :class="{'item-gd':true,'select':cylSelectPosition===index}" @click="selectEvent('C',index)">
               {{item.Value}}
             </div>
           </div>
         </div>
 
-        <span class="sph select" @click="changeTypeEvent(1)">
+        <span class="sph select" @click="changeTypeEvent(1)" v-if="axisList.length>0">
         轴位 AXIS
         </span>
 
-        <div class="item-layout">
+        <div class="item-layout" v-if="axisList.length>0">
           <div v-for="(item,index) in axisList" v-bind:key="index" style="padding:5px;box-sizing:border-box;width: 20%"
-               v-if="axisList.length>0">
+               >
             <div :class="{'item-gd':true,'select':axisSelectPosition===index}" @click="selectEvent('A',index)">
               {{item.Value}}
             </div>

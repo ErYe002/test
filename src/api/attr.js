@@ -57,7 +57,7 @@ goodsId=${mapParms.get('goodsId')}
   //无属性的商品
   buyNoProperty(mapPrams) {
     let selfUrl = `&Quantity=${mapPrams.get('Quantity')}&GDPropertyGifts=&SelectedSpecifications=&RealGoodsId=${mapPrams.get('RealGoodsId')}&NoPropertyGifts=`;
-    this.getMapParams('/cart/BuyNoProperty', mapPrams, selfUrl);
+    return this.getMapParams('/cart/BuyNoProperty', mapPrams, selfUrl);
   },
   //购买双属性商品
   buyDoubleProperty(mapParms) {
@@ -73,9 +73,7 @@ goodsId=${mapParms.get('goodsId')}
     } else {
       selfUrl += `&RightQuantity=0`;
     }
-
-
-    this.getMapParams('/cart/BuyDoubleProperty', mapParms, selfUrl);
+    return this.getMapParams('/cart/BuyDoubleProperty', mapParms, selfUrl);
   },
   //购买散光定制的双属性商品
   buyDoubleCustomizedProperty(mapParms) {
@@ -91,16 +89,15 @@ goodsId=${mapParms.get('goodsId')}
     } else {
       selfUrl += `&RightQuantity=0`;
     }
-    this.getMapParams('/cart/BuyDoubleCustomizedProperty', mapParms, selfUrl);
+    return this.getMapParams('/cart/BuyDoubleCustomizedProperty', mapParms, selfUrl);
   },
   //购买单属性商品
   buySingleProperty(mapParms) {
     let selfUrl = `&GD=${mapParms.get('GD')}&Quantity=${mapParms.get('Quantity')}&GDPropertyGifts=&SelectedSpecifications=&NoPropertyGifts=&RealGoodsId=${mapParms.get('RealGoodsId')}`;
-    this.getMapParams('/cart/BuySingleProperty', mapParms);
+    return this.getMapParams('/cart/BuySingleProperty', mapParms);
   },
   getMapParams(url, mapPrams, otherUrl) {
-    return http.post(url + `?
-    goodsId=${mapPrams.get('goodsId')}
+    return http.post(url + `?goodsId=${mapPrams.get('goodsId')}
 &IsConfirmedBuy=${mapPrams.get('IsConfirmedBuy')}
 &ShopId=${mapPrams.get('ShopId')}
 &MaxSellNumber=${mapPrams.get('MaxSellNumber')}

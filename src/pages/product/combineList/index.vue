@@ -1,95 +1,11 @@
 <template>
-  <!-- 评论 -->
   <div>
-    <div class="actCon remarkBox">
-      <div class="act-remark actLine">
-        <img src="/static/images/smile.jpg" class="smile" alt />
-        <span>{{ramarkData.PraiseRatio}}%</span>
-        好评
-      </div>
-    </div>
-    <div
-      :class="'remarkTag '+(isShowMoreTag?'showMore':'')"
-      v-if="ramarkData != null && ramarkData.TotalCount > 0"
-    >
-      <ul>
-        <li :class="'tag '+(selecLabel=='全部'?'select':'')">
-          <a @click="_selectLabel('全部')">全部</a>
-        </li>
-        <li :class="'tag '+(selecLabel=='有图'?'select':'')">
-          <a @click="_selectLabel('有图')">有图（{{ramarkData.ImageCount}}）</a>
-        </li>
-        <block v-if="ramarkData.LableTags != null && ramarkData.LableTags.length>0">
-          <li
-            :class="'tag '+(item.Sentiment==0?'badlabel':'')+(item.CommentLabel==selecLabel?' select':'')"
-            v-for="(item, index) in  ramarkData.LableTags"
-            :key="index"
-          >
-            <a @click="_selectLabel(item.CommentLabel)">{{item.CommentLabel}}（{{item.Count}}）</a>
-          </li>
-        </block>
-      </ul>
-    </div>
-    <div :class="'showTagBtn '+(isShowMoreTag?'showMoreIcon':'')" @click="_showMoreTag()">∨</div>
-    <block>
-      <div class="remarkCon" v-if="Data != null ">
-        <div class="remarkBox" v-for="item in Data" :key="item.index">
-          <div class="comment-header">
-            <div class="userInfo">
-              <img
-                class="header-icon"
-                :src="item.HeadImg?item.HeadImg:'/static/images/default_img.gif'"
-              />
-              {{item.UserName}}
-            </div>
-            <div class="comment-header-right">
-              <div class="kd-level" :data-id="item.Rate">
-                <img
-                  class="comment-star"
-                  :src="item.Rate>0?'/static/images/full-start.png':'/static/images/empty-start.png'"
-                />
-                <img
-                  class="comment-star"
-                  :src="item.Rate>1?'/static/images/full-start.png':'/static/images/empty-start.png'"
-                />
-                <img
-                  class="comment-star"
-                  :src="item.Rate>2?'/static/images/full-start.png':'/static/images/empty-start.png'"
-                />
-                <img
-                  class="comment-star"
-                  :src="item.Rate>3?'/static/images/full-start.png':'/static/images/empty-start.png'"
-                />
-                <img
-                  class="comment-star"
-                  :src="item.Rate>4?'/static/images/full-start.png':'/static/images/empty-start.png'"
-                />
-              </div>
-              <text class="comment-time">{{item.PubTime}}</text>
-            </div>
-          </div>
-          <div class="comment-text-style" v-if="item.AnotherName!=null">{{item.AnotherName}}</div>
-          <div class="comment-text">{{item.Content}}</div>
-          <div class="comment-pic" v-if="item.Imgs != null && item.Imgs.length> 0">
-            <scroll-view scroll-x scroll-with-animation="true">
-              <block v-for="(imgitem,imgindex) in item.Imgs" :key="imgindex">
-                <li class="comment-pic-li">
-                  <img :src="imgitem" mode="aspectFit" @click="_previewImage(imgitem,item.Imgs)" />
-                </li>
-              </block>
-            </scroll-view>
-          </div>
-        </div>
-      </div>
-      <div class="noremark" v-else>暂无评论</div>
-    </block>
+
   </div>
 </template>
 
 <script>
 import api from "@/api/goods";
-import { mapActions, mapState } from "vuex";
-import bottomFlip from "@/components/bottomFlip";
 
 export default {
   data() {
@@ -150,7 +66,6 @@ export default {
     },
     _selectLabel(label) {
       this.selecLabel = label;
-      this.noData = false;
       if (label == "全部") {
         this.LableName = "";
         this.RemarkType = -1;
