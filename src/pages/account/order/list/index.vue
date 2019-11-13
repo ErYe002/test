@@ -33,7 +33,7 @@
           <li class="o-item" v-for="(item, idx) in orderList" :key="idx">
             <a :href="'/pages/account/order/detail/main?orderId=' + item.OrderId" class="link">
               <div class="title">
-                <span class="order-no">订单编号：{{item.OrderNo}}</span>
+                <span class="order-no" @click.stop="copyOrderNo(item.OrderNo)"><img class="icon" v-if="item.ShopId == 2" src="/static/images/haiwaigou_tag.png"/>订单编号：{{item.OrderNo}}</span>
                 <span class="ops">
                   <span class="status">{{item.OrderState}}</span>
                   <img class="icon" src="/static/images/icon_right_grey.png" />
@@ -176,6 +176,18 @@ export default {
           } 
         }
       });
+    },
+    copyOrderNo(text){
+      wx.setClipboardData({
+        data: text,
+        success(){
+          wx.showToast({
+            title: '已复制订单号',
+            icon: 'success',
+            duration: 2000
+          })
+        }
+      })
     },
     _getListEvent() {
       this._reuqest().then(({ Data, TotalPage }) => {
@@ -326,6 +338,16 @@ page {
           justify-content: space-between;
           border-bottom: 0.5px solid #e5e5e5;
           padding: 10px;
+          .order-no{
+            display: flex;
+            align-items: center;
+            .icon{
+              display: block;
+              width: 48px;
+              height: 15px;
+              margin-right: 5px;
+            }
+          }
           .ops {
             display: flex;
             align-items: center;
