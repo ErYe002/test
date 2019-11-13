@@ -283,7 +283,6 @@ export default {
       this.RoleId = options.RoleId
       console.log(options)
     }
-    this.formModel.selectedPayMode = '' 
     this.getConfirmOrderDetail();
   },
   onPageScroll({ scrollTop }) {
@@ -298,8 +297,8 @@ export default {
   watch: {
     SelectedConsigneeId:{
       handler: function(val,oldVal){
+        console.log("=====修改收货地址方式=== "+ val + " old =="  + oldVal)
         if (val.length && val != oldVal) {
-          console.log('刷新')
           this.formModel.selectedConsigneeId = val;
           this.getConfirmOrderDetail();
         }
