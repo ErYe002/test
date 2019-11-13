@@ -82,7 +82,8 @@
             </div>
             <div class="waitDivSecond">
               <p class="waitCommentGoodsName">{{item.GoodsName}}</p>
-              <a class="gotoComment" :href="'/pages/account/order/comment/main?orderId=' + item.OrderId +'&goodsId=' + item.GoodsId + '&goodsImageUrl=' + item.GoodsImageUrl">去评价</a>
+              <a class="gotoOrder" :href="'/pages/account/order/detail/main?orderId='+item.OrderId">查看订单</a>
+              <a class="gotoComment" :href="'/pages/account/order/comment/main?orderId=' + item.OrderId +'&goodsId=' + item.GoodsId + '&goodsImageUrl=' + item.GoodsImageUrl">评价晒单</a>
             </div>
           </li>
         </template>
@@ -379,7 +380,7 @@ page {
     .wait_evaluate{
       display:flex;
       flex-direction:row;
-      padding-bottom: 10px;
+      padding-bottom: 5px;
       border-bottom: 1px solid gainsboro; 
       margin-bottom: 10px;
       .waitDivFirst{
@@ -394,6 +395,21 @@ page {
         .waitCommentGoodsName{
           font-size: 12px;
         }
+        .gotoOrder{
+          border:1px solid #ccc;
+          border-radius: 5px;
+          color:#ccc;
+          position: absolute;
+          right: 80px;
+          bottom: 0px;
+          font-size: 10px;
+          text-align: center;
+          height: 20px;
+          width: 55px;
+          display: flex;
+          justify-content: center;
+          align-items:center;
+        }
         .gotoComment{
           border:1px solid #cab894;
           border-radius: 5px;
@@ -403,7 +419,7 @@ page {
           bottom: 0px;
           font-size: 12px;
           text-align: center;
-          height: 25px;
+          height: 20px;
           width: 55px;
           display: flex;
           justify-content: center;
