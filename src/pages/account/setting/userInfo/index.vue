@@ -2,7 +2,7 @@
   <article>
       <section class="user-box">
     <div class="line">
-      <a class=" h-90">
+      <a class=" h-90" @click="_setHeadPortrait">
         <label class="l-lab">头像</label>
         <img
           class="head" 
@@ -80,6 +80,7 @@
 <script>
 import api from '@/api/user'
 import bottomFlip from "@/components/bottomFlip"
+import config from "@/utils/config"
 
 export default {
   data(){
@@ -112,6 +113,11 @@ export default {
       this.startDate = (year-90)+"-01-01";
       this.endDate = year + "-" + date.getMonth() + "-" + date.getDate();
       // console.log(this.startDate, this.endDate);
+    },
+    _setHeadPortrait(){
+      api.setHeadPortrait().then(({Data}) => {
+        this.userInfoModel.HeadUrl = Data;
+      })
     },
     _dateChange(e){
       let value = e.mp.detail.value;

@@ -4,7 +4,7 @@
       <section class="search-box">
         <img class="icon" src="/static/images/icon_search.png" />
         <input class="input" v-model="listQuery.queryString" placeholder="商品名称/订单号" @confirm="searchEvent" confirm-type="搜索"/>
-        <img v-if="listQuery.queryString != ''" @click="clearInputEvent" class="icon-clear" src="/static/images/icon_clear.png" />
+        <img v-if="listQuery.queryString != ''" @click="clearInputEvent" class="icon-clear" src="/static/images/clear-icon.png" />
       </section>
       <section class="type-box" v-if="listQuery.queryString == ''">
         <ul class="type-list">
@@ -33,7 +33,7 @@
           <li class="o-item" v-for="(item, idx) in orderList" :key="idx">
             <a :href="'/pages/account/order/detail/main?orderId=' + item.OrderId" class="link">
               <div class="title">
-                <span class="order-no">订单编号：{{item.OrderNo}}</span>
+                <span class="order-no" @click.stop="copyOrderNo(item.OrderNo)"><img class="icon" v-if="item.ShopId == 2" src="/static/images/haiwaigou_tag.png"/>订单编号：{{item.OrderNo}}</span>
                 <span class="ops">
                   <span class="status">{{item.OrderState}}</span>
                   <img class="icon" src="/static/images/icon_right_grey.png" />
@@ -55,17 +55,17 @@
             </p>
             <ul class="btn-list">
               <li class="b-item" v-if="item.IsCancel">
-                <button class="kd-btn btn-default btn-small" @click="cancelOrderEvent">取消订单</button>
+                <button class="kd-btn btn-default btn-small" @click="cancelOrderEvent(item.OrderId)">取消订单</button>
               </li>
               <li class="b-item" v-if="item.ShopId != 2 && item.IsAfterSale">
                 <button class="kd-btn btn-default btn-small" @click="toAppTips('可得小程序暂时不支持退换货功能哦，请下载可得眼镜APP使用此功能')">退换货</button>
               </li>
               <li class="b-item" v-if="item.IsLogistics">
-                <button class="kd-btn btn-default btn-small">查看物流</button>
+                <a class="kd-btn btn-default btn-small" :href="'/pages/account/logistics/main?shopId='+item.ShopId+'&orderId='+item.OrderId">查看物流</a>
               </li>
-              <li class="b-item" v-if="item.IsAppraise">
+              <!-- <li class="b-item" v-if="item.IsAppraise">
                 <button class="kd-btn btn-default btn-small">评价</button>
-              </li>
+              </li> -->
               <li class="b-item" v-if="item.IsContactAirlines">
                 <button class="kd-btn btn-default btn-small" open-type="contact">联系客服</button>
               </li>
@@ -177,6 +177,18 @@ export default {
           } 
         }
       });
+    },
+    copyOrderNo(text){
+      wx.setClipboardData({
+        data: text,
+        success(){
+          wx.showToast({
+            title: '已复制订单号',
+            icon: 'success',
+            duration: 2000
+          })
+        }
+      })
     },
     _getListEvent() {
       this._reuqest().then(({ Data, TotalPage }) => {
@@ -327,6 +339,16 @@ page {
           justify-content: space-between;
           border-bottom: 0.5px solid #e5e5e5;
           padding: 10px;
+          .order-no{
+            display: flex;
+            align-items: center;
+            .icon{
+              display: block;
+              width: 48px;
+              height: 15px;
+              margin-right: 5px;
+            }
+          }
           .ops {
             display: flex;
             align-items: center;

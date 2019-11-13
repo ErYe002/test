@@ -82,6 +82,10 @@ const api = {
   getRoleOfPersonnel() {
     return http.post('Account/GetRoleOfPersonnel');
   },
+  //设置会员头像
+  setHeadPortrait(){
+    return http.upload('Account/SetHeadPortrait');
+  },
   //修改用户名
   changeUserName(userName) {
     return http.post('Account/ChangeUserName?newLoginName=' + userName);
@@ -97,6 +101,14 @@ const api = {
   //设置生日
   setBirthday(birthday) {
     return http.post('Account/SetBirthday?birthday=' + birthday);
+  },
+  //获取优惠券列表
+  getCouponsByState(conponState, pageIndex = 1, pageSize = 10){
+    let url = `Account/GetCouponsByState?conponState=${conponState}&pageIndex=${pageIndex}&pageSize=${pageSize}`
+    if (pageIndex > 1) {
+      return http.post(url);
+    }
+    return http.postByNoLoading(url);
   }
 };
 export default api;

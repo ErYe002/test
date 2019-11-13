@@ -63,7 +63,6 @@ export default {
     saveConsigneeId(e) {
       if (e.currentTarget.dataset.valid) {
         this.setSelectAddressId(e.currentTarget.dataset.id)
-        this.setSelectedExpressId('')
         wx.navigateBack({
             delta: 1
           })
@@ -89,6 +88,14 @@ page {
   font-size: 28rpx;
   display: flex;
   align-items: center;
+}
+.default {
+  border: 1rpx solid #ff0000;
+  margin-right: 10rpx;
+  color: #ff0000;
+  font-size: 20rpx;
+  padding-left: 2rpx;
+  padding-right: 2rpx;
 }
 
 .item .choose-btn {

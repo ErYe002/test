@@ -25,7 +25,8 @@
         "favorites/main",
         "balance/main",
         "cash/main",
-        "logistics/main"
+        "logistics/main",
+        "coupon/main"
       ]
     },
     {
@@ -44,7 +45,8 @@
         "index/main",
         "frameAttr/main",
         "glassSelect/main",
-        "normalAttr/main"
+        "normalAttr/main",
+        "remark/main"
       ]
     },
     {

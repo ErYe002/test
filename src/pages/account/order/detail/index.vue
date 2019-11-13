@@ -19,10 +19,10 @@
             <a class="link">
               <img class="g-img" :src="item.Img" />
               <div class="g-info">
-                <a :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'" class="g-name">
+                <p class="g-name">
                   <text class="ht-tag" v-if="item.ShopId == 2">海淘</text>
                   {{item.GoodsName}}
-                </a>
+                </p>
                 <p class="g-attr">{{item.Specification}}</p>
               </div>
               <div class="price-info">
@@ -81,17 +81,17 @@
           <li class="b-item" v-if="orderInfo.ShopId != 2 && orderInfo.IsAfterSale">
             <button class="kd-btn btn-default btn-small" @click="toAppTips('可得小程序暂时不支持退换货功能哦，请下载可得眼镜APP使用此功能')">退换货</button>
           </li>
-          <li class="b-item" v-if="orderInfo.IsAppraise">
+          <!-- <li class="b-item" v-if="orderInfo.IsAppraise">
             <button class="kd-btn btn-default btn-small">评价</button>
-          </li>
+          </li> -->
           <li class="b-item" v-if="orderInfo.IsCancel">
-            <button class="kd-btn btn-default btn-small" @click="cancelOrderEvent">取消订单</button>
+            <button class="kd-btn btn-default btn-small" @click="cancelOrderEvent(orderInfo.OrderId)">取消订单</button>
           </li>
           <li class="b-item" v-if="orderInfo.IsContactAirlines">
             <button class="kd-btn btn-default btn-small" open-type="contact">联系客服</button>
           </li>
           <li class="b-item" v-if="orderInfo.IsLogistics">
-            <button class="kd-btn btn-default btn-small">查看物流</button>
+            <a :href="'/pages/account/logistics/main?shopId='+orderInfo.ShopId+'&orderId='+orderInfo.OrderId" class="kd-btn btn-default btn-small">查看物流</a>
           </li>
           <li class="b-item" v-if="orderInfo.IsPayment">
             <button class="kd-btn btn-small">付款</button>
@@ -104,6 +104,7 @@
 
 <script>
 import api from "@/api/order";
+import tools from '@/utils'
 
 export default {
   data() {
@@ -121,6 +122,7 @@ export default {
   methods: {
     _getPageData() {
       api.getOrderDetail(this.orderId).then(({ Data }) => {
+        Data.OrderTime = tools.formatDate('yyyy/MM/dd hh:mm', new Date(Data.OrderTime))
         this.orderInfo = Object.assign({}, Data);
       });
     },

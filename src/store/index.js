@@ -7,6 +7,7 @@ import filterRules from './modules/filterRules'
 import wxinfo from './modules/wxinfo'
 import attGlassList from './modules/attrGlassList'
 import order from './modules/order'
+import remark from './modules/remark'
 
 Vue.use(Vuex);
 
@@ -35,6 +36,10 @@ const store = new Vuex.Store({
     order: {
       namespaced: true,
       ...order
+    },
+    remark: {
+      namespaced: true,
+      ...remark
     }
   }
 });

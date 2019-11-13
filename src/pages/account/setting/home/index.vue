@@ -104,10 +104,10 @@ export default {
 .user-box {
   font-size: 12px;
   border-bottom: 15rpx solid #e5e5e5!important;
-  padding: 10px;
   a{
     display: flex;
     align-items: center;
+    padding: 10px;
     .go-right-icon{
       margin-top: 0px;
     }

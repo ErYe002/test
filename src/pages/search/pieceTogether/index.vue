@@ -9,16 +9,18 @@
           <span>销量</span>
         </li>
         <li :class="{item: true, current: listQuery.sort == 4 || listQuery.sort == 3}" :data-sort="isReversePrice ? 4 : 3" data-isprice="true" @click="changeSortType">
-          <span>
-            价格<template v-if="listQuery.sort == 4">↓</template><template v-else-if="listQuery.sort == 3">↑</template><template v-else>↓</template>
-          </span>
+          <span>价格</span>
+          <img class="icon" v-if="listQuery.sort == 4" src="/static/images/icon_sort_down_active.png" />
+          <img class="icon" v-else-if="listQuery.sort == 3" src="/static/images/icon_sort_up_active.png" />
+          <img class="icon" v-else src="/static/images/icon_sort_down.png" />
         </li>
       </ul>
     </section>
     <section class="goods-box">
       <template v-if="dataList.length > 0">
         <p class="tips">
-          以下商品<em>满减</em>可凑单
+          <template v-if="isMJ">以下商品<em>{{title}}</em>可凑单</template>
+          <template v-else>以下商品适用于<em>{{title}}</em>优惠券</template>
         </p>
         <div class="g-list">
           <a :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'" class="g-item" v-for="item in dataList" :key="item.GoodsId">
@@ -65,13 +67,18 @@ export default {
       }
     };
   },
-  components: {},
+  computed:{
+    isMJ(){
+      return this.title.indexOf('满减') != -1
+    }
+  },
   onLoad(options) {
     if (options) {
       this.listQuery = Object.assign({}, this.listQuery, { ...options });
       wx.setNavigationBarTitle({
         title: options.title
       });
+      this.title = options.title
       this._getPageData();
     }
   },
@@ -90,6 +97,8 @@ export default {
       let isprice = e.currentTarget.dataset.isprice;
       if (isprice) {
         this.isReversePrice = sort == 3; //切换下一次点击时的价格排序方式
+      } else {
+        this.isReversePrice = true
       }
 
       this.listQuery.sort = sort
@@ -143,6 +152,11 @@ export default {
         height: 40px;
         line-height: 40px;
         box-sizing: border-box;
+      }
+      .icon {
+        display: block;
+        width: 25px;
+        height: 25px;
       }
       &.current {
         span {
