@@ -95,7 +95,18 @@
           <img src="/static/images/cart_add_icon.png" class="change-num-btn" @click="numchangeEvent('S',1)"/>
         </div>
       </div>
+    </div>
 
+    <div class="no-property-layout" v-if="currentGoodsType===0">
+      <div style="display: flex;flex: 1">
+
+      </div>
+      <div style="display: flex;">
+        <img src="/static/images/cart_sub_icon.png" class="change-num-btn" @click="numchangeEvent('N',-1)"/>
+        <input type="tel" :value="noPropertyQuantity" v-model="noPropertyQuantity" autocomplete="off"
+               class="input-only-buy-num"/>
+        <img src="/static/images/cart_add_icon.png" class="change-num-btn" @click="numchangeEvent('N',1)"/>
+      </div>
     </div>
 
     <div class="bottom-layou">
@@ -154,7 +165,7 @@
         rightNum: 1,
         singleNum: 1,
         noPropertyQuantity: 1,
-        currentGoodsType: 2,// 0 无属性  1 有单个属性 2有2个属性
+        currentGoodsType: 0,// 0 无属性  1 有单个属性 2有2个属性
         isShowGdSelectPop: false,
         openSide: '',
         postShowDouble: {sphL: '', sphR: '', cylL: '', cylR: '', axisL: '', axisR: ''},
@@ -226,27 +237,33 @@
 
 
           //设置当前选中的系列坐标
-          for (let i = 0; i < Data.MainGoods.SeriesItems.length; i++) {
-            let item = Data.MainGoods.SeriesItems[i];
-            if (item.GoodsId === Data.MainGoods.GoodsId) {
-              this.seriesPosition = i;
+          if (Data.MainGoods.SeriesItems !== null) {
+            for (let i = 0; i < Data.MainGoods.SeriesItems.length; i++) {
+              let item = Data.MainGoods.SeriesItems[i];
+              if (item.GoodsId === Data.MainGoods.GoodsId) {
+                this.seriesPosition = i;
+              }
             }
           }
 
+
           //区分当前商品类型
-          if (!this.Data.MainGoods.IsShowSingle) {//双
-            if (this.Data.MainGoods.GoodsFields.length === 0) {
+          if (!Data.MainGoods.IsShowSingle) {//双
+            if (Data.MainGoods.GoodsFields.length === 0) {
               this.currentGoodsType = 0;
             } else {
               this.currentGoodsType = 2;
             }
           } else {
-            if (this.Data.MainGoods.GoodsFields.length > 0) {
+            if (Data.MainGoods.GoodsFields.length > 0) {
               this.currentGoodsType = 1;
             } else {
               this.currentGoodsType = 0;
             }
           }
+
+          console.log('当前商品类型', this.currentGoodsType);
+
 
           //清除数据
           this.postShowDouble = {sphL: '', sphR: '', cylL: '', cylR: '', axisL: '', axisR: ''};
@@ -260,8 +277,10 @@
           this.rightNum += num;
         } else if (side === 'L') {//左
           this.leftNum += num;
-        } else {//单
+        } else if (side === 'S') {//单
           this.singleNum += num;
+        } else {
+          this.noPropertyQuantity += num;
         }
       },
       openGdSelectPop(side) {
@@ -281,7 +300,7 @@
             this.postShowDouble.axisR = this.axisList[Data.selectAXISPosition].Value;
             this.postIdDouble.axisRId = this.axisList[Data.selectAXISPosition].Id;
           }
-          console.log('返回', this.postShowDouble);
+          console.log('返回', this.postIdDouble);
         } else if (this.openSide === 'L') {
           this.postShowDouble.sphL = this.sphList[Data.selectSPHPosition].Value;
           this.postIdDouble.sphLId = this.sphList[Data.selectSPHPosition].Id;
@@ -293,7 +312,7 @@
             this.postShowDouble.axisL = this.axisList[Data.selectAXISPosition].Value;
             this.postIdDouble.axisLId = this.axisList[Data.selectAXISPosition].Id;
           }
-          console.log('返回', this.postShowDouble);
+          console.log('返回', this.postIdDouble);
         } else if (this.openSide === 'S') {
           this.postShowSingle.sph = this.sphList[Data.selectSPHPosition].Value;
           this.postShowIdSingle.sphId = this.sphList[Data.selectSPHPosition].Id;
@@ -305,7 +324,7 @@
             this.postShowSingle.axis = this.axisList[Data.selectAXISPosition].Value;
             this.postShowIdSingle.axisI的 = this.axisList[Data.selectAXISPosition].Id;
           }
-          console.log('返回', this.postShowDouble);
+          console.log('返回', this.postShowIdSingle);
         }
       },
       setGdInfo(gdlist) {
@@ -345,6 +364,7 @@
           this.setTogerData(postData, 0);
           api.buyNoProperty(postData).then(({Data}) => {
             console.log("无属性 返回", Data);
+            this.goToCart();
           });
         } else if (buyDoubleProperty === this.mainData.BuyUrl) {
           if (this.postIdDouble.sphLId === '' && this.postIdDouble.sphRId === '') {
@@ -373,6 +393,7 @@
           this.setTogerData(postData, 2);
           api.buyDoubleProperty(postData).then(({Data}) => {
             console.log("双属性 返回", Data);
+            this.goToCart();
           });
         } else if (buyDoubleCustomizedProperty === this.mainData.BuyUrl) {
           if (this.postIdDouble.sphLId === '' && this.postIdDouble.sphRId === '') {
@@ -382,6 +403,7 @@
             });
             return;
           }
+
           if (this.postIdDouble.sphLId !== '' && this.leftNum > 0) {
             postData.set('LeftQuantity', this.leftNum);
             postData.set('LeftGD', this.postIdDouble.sphLId);
@@ -403,14 +425,13 @@
           api.buyDoubleCustomizedProperty(postData).then(({Data}) => {
             console.log("双属性散光定制 返回", Data);
           });
-
-
         } else if (buyNoPropertyFrame === this.mainData.BuyUrl) {
           postData.set('Quantity', this.noPropertyQuantity);
           this.setTogerData(postData, 0);
 
           api.buyNoPropertyFrame(postData).then(({Data}) => {
             console.log("无属性框架 返回", Data);
+            this.goToCart();
           });
         } else if (buySinglePropertyFrame === this.mainData.BuyUrl) {
           console.log(this.buySinglePropertyFrame);
@@ -420,6 +441,7 @@
           this.setTogerData(postData, 1);
           api.buySingleProperty(postData).then(({Data}) => {
             console.log("无属性框架 返回", Data);
+            this.goToCart();
           });
         }
       },
@@ -435,28 +457,31 @@
         postData.set("SaleStockType", this.SaleStockType);
         postData.set("MaxDeduction", this.MaxDeduction);
         postData.set("IsFreeCarriage", this.IsFreeCarriage);
-        postData.set("RealGoodsId", this.mainData.GoodsId);
+        postData.set("RealGoodsId", this.mainData.MainGoods.GoodsId);
 
-        for (let item of this.GoodsFields) {
-          if (item.FieldName === '光度') {
-            for (let sphItem of item.Children) {
-              if (type === 1) {
-                if (this.postShowSingle.sph === sphItem.Value) {
-                  postData.set("RealGoodsId", this.mainData.GoodsId);
+        if (this.GoodsFields.length > 0) {
+          for (let item of this.GoodsFields) {
+            if (item.FieldName === '光度') {
+              for (let sphItem of item.Children) {
+                if (type === 1) {
+                  if (this.postShowSingle.sph === sphItem.Value) {
+                    postData.set("RealGoodsId", this.mainData.MainGoods.GoodsId);
+                  }
+                } else if (2) {
+                  if (this.postShowDouble.sphL === sphItem.Value) {
+                    postData.set("LeftRealGoodsId", sphItem.RealGoodsId);
+                  }
+                  if (this.postShowDouble.sphR === sphItem.Value) {
+                    postData.set("RightRealGoodsId", sphItem.RealGoodsId);
+                  }
+                } else {
+                  postData.set("RealGoodsId", sphItem.RealGoodsId);
                 }
-              } else if (2) {
-                if (this.postShowDouble.sphL === sphItem.Value) {
-                  postData.set("LeftRealGoodsId", sphItem.RealGoodsId);
-                }
-                if (this.postShowDouble.sphR === sphItem.Value) {
-                  postData.set("RightRealGoodsId", sphItem.RealGoodsId);
-                }
-              } else {
-                postData.set("RealGoodsId", sphItem.RealGoodsId);
               }
             }
           }
         }
+
       },
       getTotalNum() {
         switch (this.currentGoodsType) {
@@ -481,6 +506,11 @@
             return leftQuantity + rightQuantity;
         }
       }
+    },
+    goToCart(){
+      wx.switchTab({
+        url: '/pages/cart/main'
+      });
     }
   }
   ;
@@ -642,6 +672,22 @@
       align-items: center;
       flex: 1;
       font-size: 15px;
+    }
+  }
+
+  .no-property-layout {
+    display: flex;
+    box-sizing: border-box;
+    padding: 10px 15px;
+    .input-only-buy-num {
+      width: 40px;
+      height: 23px;
+      text-align: center;
+    }
+
+    .change-num-btn {
+      width: 35px;
+      height: 21px;
     }
   }
 </style>

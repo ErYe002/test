@@ -63,13 +63,13 @@ goodsId=${mapParms.get('goodsId')}
   buyDoubleProperty(mapParms) {
     let selfUrl = '';
     if (mapParms.get('LeftQuantity') > 0) {
-      selfUrl += `&LeftGD=${mapParms.get('LeftGD')}&LeftQuantity=${mapParms.get('LeftQuantity')}&LEFTGDNAME=${mapParms.get('LEFTGDNAME')}&LeftRealGoodsId=${mapParms.get('LeftRealGoodsId')}`;
+      selfUrl += `&LeftGD=${mapParms.get('LeftGD')}&LeftQuantity=${mapParms.get('LeftQuantity')}&LEFTGDNAME=${mapParms.get('LEFTGDNAME')}`;
     } else {
       selfUrl += `&LeftQuantity=0`;
     }
 
     if (mapParms.get('RightQuantity') > 0) {
-      selfUrl += `&RightGD=${mapParms.get('RightGD')}&RightQuantity=${mapParms.get('RightQuantity')}&RIGHTGDNAME=${mapParms.get('RIGHTGDNAME')}&RightRealGoodsId=${mapParms.get('RightRealGoodsId')}`;
+      selfUrl += `&RightGD=${mapParms.get('RightGD')}&RightQuantity=${mapParms.get('RightQuantity')}&RIGHTGDNAME=${mapParms.get('RIGHTGDNAME')}`;
     } else {
       selfUrl += `&RightQuantity=0`;
     }
@@ -79,13 +79,13 @@ goodsId=${mapParms.get('goodsId')}
   buyDoubleCustomizedProperty(mapParms) {
     let selfUrl = '';
     if (mapParms.get('LeftQuantity') > 0) {
-      selfUrl += `&LeftGD=${mapParms.get('LeftGD')}&LeftSG=${mapParms.get('LeftSG')}&LeftZW=${mapParms.get('LeftZW')}&LeftRealGoodsId=${mapParms.get('LeftRealGoodsId')}`;
+      selfUrl += `&LeftGD=${mapParms.get('LeftGD')}&LeftSG=${mapParms.get('LeftSG')}&LeftZW=${mapParms.get('LeftZW')}&LeftQuantity=${mapParms.get('LeftQuantity')}`;
     } else {
       selfUrl += `&LeftQuantity=0`;
     }
 
     if (mapParms.get('RightQuantity') > 0) {
-      selfUrl += `&RightGD=${mapParms.get('RightGD')}&RightSG=${mapParms.get('RightSG')}&RightZW=${mapParms.get('RightZW')}&RightRealGoodsId=${mapParms.get('RightRealGoodsId')}`;
+      selfUrl += `&RightGD=${mapParms.get('RightGD')}&RightSG=${mapParms.get('RightSG')}&RightZW=${mapParms.get('RightZW')}&RightQuantity=${mapParms.get('RightQuantity')}`;
     } else {
       selfUrl += `&RightQuantity=0`;
     }
