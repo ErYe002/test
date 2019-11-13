@@ -57,50 +57,47 @@ goodsId=${mapParms.get('goodsId')}
   //无属性的商品
   buyNoProperty(mapPrams) {
     let selfUrl = `&Quantity=${mapPrams.get('Quantity')}&GDPropertyGifts=&SelectedSpecifications=&RealGoodsId=${mapPrams.get('RealGoodsId')}&NoPropertyGifts=`;
-    this.getMapParams('/cart/BuyNoProperty', mapPrams, selfUrl);
+    return this.getMapParams('/cart/BuyNoProperty', mapPrams, selfUrl);
   },
   //购买双属性商品
   buyDoubleProperty(mapParms) {
     let selfUrl = '';
     if (mapParms.get('LeftQuantity') > 0) {
-      selfUrl += `&LeftGD=${mapParms.get('LeftGD')}&LeftQuantity=${mapParms.get('LeftQuantity')}&LEFTGDNAME=${mapParms.get('LEFTGDNAME')}&LeftRealGoodsId=${mapParms.get('LeftRealGoodsId')}`;
+      selfUrl += `&LeftGD=${mapParms.get('LeftGD')}&LeftQuantity=${mapParms.get('LeftQuantity')}&LEFTGDNAME=${mapParms.get('LEFTGDNAME')}`;
     } else {
       selfUrl += `&LeftQuantity=0`;
     }
 
     if (mapParms.get('RightQuantity') > 0) {
-      selfUrl += `&RightGD=${mapParms.get('RightGD')}&RightQuantity=${mapParms.get('RightQuantity')}&RIGHTGDNAME=${mapParms.get('RIGHTGDNAME')}&RightRealGoodsId=${mapParms.get('RightRealGoodsId')}`;
+      selfUrl += `&RightGD=${mapParms.get('RightGD')}&RightQuantity=${mapParms.get('RightQuantity')}&RIGHTGDNAME=${mapParms.get('RIGHTGDNAME')}`;
     } else {
       selfUrl += `&RightQuantity=0`;
     }
-
-
-    this.getMapParams('/cart/BuyDoubleProperty', mapParms, selfUrl);
+    return this.getMapParams('/cart/BuyDoubleProperty', mapParms, selfUrl);
   },
   //购买散光定制的双属性商品
   buyDoubleCustomizedProperty(mapParms) {
     let selfUrl = '';
     if (mapParms.get('LeftQuantity') > 0) {
-      selfUrl += `&LeftGD=${mapParms.get('LeftGD')}&LeftSG=${mapParms.get('LeftSG')}&LeftZW=${mapParms.get('LeftZW')}&LeftRealGoodsId=${mapParms.get('LeftRealGoodsId')}`;
+      selfUrl += `&LeftGD=${mapParms.get('LeftGD')}&LeftSG=${mapParms.get('LeftSG')}&LeftZW=${mapParms.get('LeftZW')}&LeftQuantity=${mapParms.get('LeftQuantity')}`;
     } else {
       selfUrl += `&LeftQuantity=0`;
     }
 
     if (mapParms.get('RightQuantity') > 0) {
-      selfUrl += `&RightGD=${mapParms.get('RightGD')}&RightSG=${mapParms.get('RightSG')}&RightZW=${mapParms.get('RightZW')}&RightRealGoodsId=${mapParms.get('RightRealGoodsId')}`;
+      selfUrl += `&RightGD=${mapParms.get('RightGD')}&RightSG=${mapParms.get('RightSG')}&RightZW=${mapParms.get('RightZW')}&RightQuantity=${mapParms.get('RightQuantity')}`;
     } else {
       selfUrl += `&RightQuantity=0`;
     }
-    this.getMapParams('/cart/BuyDoubleCustomizedProperty', mapParms, selfUrl);
+    return this.getMapParams('/cart/BuyDoubleCustomizedProperty', mapParms, selfUrl);
   },
   //购买单属性商品
   buySingleProperty(mapParms) {
     let selfUrl = `&GD=${mapParms.get('GD')}&Quantity=${mapParms.get('Quantity')}&GDPropertyGifts=&SelectedSpecifications=&NoPropertyGifts=&RealGoodsId=${mapParms.get('RealGoodsId')}`;
-    this.getMapParams('/cart/BuySingleProperty', mapParms);
+    return this.getMapParams('/cart/BuySingleProperty', mapParms);
   },
   getMapParams(url, mapPrams, otherUrl) {
-    return http.post(url + `?
-    goodsId=${mapPrams.get('goodsId')}
+    return http.post(url + `?goodsId=${mapPrams.get('goodsId')}
 &IsConfirmedBuy=${mapPrams.get('IsConfirmedBuy')}
 &ShopId=${mapPrams.get('ShopId')}
 &MaxSellNumber=${mapPrams.get('MaxSellNumber')}

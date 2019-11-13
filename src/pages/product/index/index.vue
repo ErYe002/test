@@ -1138,7 +1138,7 @@ export default {
         "&SeriesId=" +
         this.Data.GoodsBase.SeriesId +
         "&MarketPrice=" +
-        this.Data.GoodsBase.MarketPrice +
+        this.Data.GoodsBase.SalePrice +
         "&SalePrice=" +
         this.Data.GoodsBase.SalePrice +
         "&SaleScore=" +
@@ -1151,6 +1151,8 @@ export default {
         this.Data.GoodsBase.SaleStockType +
         "&MaxDeduction=" +
         this.Data.GoodsBase.ScoreDeductionPrice +
+        "&goodsId="+
+        this.Data.GoodsBase.GoodsId+
         "&IsFreeCarriage=" +
         this.Data.GoodsBase.IsFreeCarriage;
       var frameAttrHref =
@@ -1161,7 +1163,7 @@ export default {
         "&SeriesId=" +
         this.Data.GoodsBase.SeriesId +
         "&MarketPrice=" +
-        this.Data.GoodsBase.MarketPrice +
+        this.Data.GoodsBase.SalePrice +
         "&SalePrice=" +
         this.Data.GoodsBase.SalePrice +
         "&SaleScore=" +
@@ -1174,6 +1176,8 @@ export default {
         this.Data.GoodsBase.SaleStockType +
         "&MaxDeduction=" +
         this.Data.GoodsBase.ScoreDeductionPrice +
+        "&goodsId="+
+        this.Data.GoodsBase.GoodsId+
         "&IsFreeCarriage=" +
         this.Data.GoodsBase.IsFreeCarriage;
       this.normalAttrHref = normalAttrHref;
