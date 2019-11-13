@@ -215,7 +215,7 @@
       this.IsFreeCarriage = options.IsFreeCarriage;
       this.RealGoodsId = options.RealGoodsId;
       this.goodsId = options.goodsId;
-      this._getFrameData();
+      this._getFrameData(options.goodsId);
       this._getOptometryBillBaiscDataLibrary();
     },
 
@@ -287,8 +287,8 @@
 
         this.isShowGdSelectPop = true;
       },
-      _getFrameData() {
-        api.getFrameJoinCart('53c107dd-f456-4383-8aa9-a5efb8ac83c7', false).then(({Data}) => {
+      _getFrameData(goodsId) {
+        api.getFrameJoinCart(goodsId, false).then(({Data}) => {
           console.log("主数据", Data);
           this.mainData = Data;
           this.groupGlassData = Data.GlassGroup;
@@ -431,7 +431,9 @@
           pushData.set("TongJu", this.postIdBean.pdId);
 
           api.buyFrameAndGlass(pushData).then(({Data}) => {
-            console.log("提交订单", Data);
+            wx.switchTab({
+              url: '/pages/cart/main'
+            });
           });
         }
 
