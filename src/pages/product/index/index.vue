@@ -422,7 +422,7 @@
       <div class="actCon remarkBox">
         <div class="act-remark actLine">
           <span class="act-name">瞳学评论({{Data.Remark==null?"0":Data.Remark.TotalCount}})</span>
-          <a class="act-info" v-if="Data.Remark != null" :href="'../remark/main?goodsid='+Data.GoodsBase.GoodsId+'&&label=1'" >
+          <a class="act-info" v-if="Data.Remark != null" :href="'../remark/main?goodsid='+Data.GoodsBase.GoodsId+'&label=全部'" >
             {{Data.Remark.PraiseRatio}}%好评 &nbsp;全部
             <span class="icon">></span>
           </a>
@@ -431,11 +431,11 @@
       <div class="remarkTag" v-if="Data.Remark != null && Data.Remark.TotalCount > 0">
         <ul>
           <li class="tag">
-            <a :href="'../remark/main?goodsid='+Data.GoodsBase.GoodsId+'&&label=1'">全部</a>
+            <a :href="'../remark/main?goodsid='+Data.GoodsBase.GoodsId+'&label=全部'">全部</a>
           </li>
           <li class="tag">
             <a
-              :href="'/AllComment?goodsid='+Data.GoodsBase.GoodsId+'&&label=2'"
+              :href="'../remark/main?goodsid='+Data.GoodsBase.GoodsId+'&label=有图'"
             >有图（{{Data.Remark.ImageCount}}）</a>
           </li>
           <block v-if="Data.Remark.LableTags != null && Data.Remark.LableTags.length>0">
@@ -445,7 +445,7 @@
               :key="item.index"
             >
               <a
-                :href="'../remark/main?goodsid='+Data.GoodsBase.GoodsId+'&&label='+(item.index+3)"
+                :href="'../remark/main?goodsid='+Data.GoodsBase.GoodsId+'&label='+(item.CommentLabel)"
               >{{item.CommentLabel}}（{{item.Count}}）</a>
             </li>
           </block>
