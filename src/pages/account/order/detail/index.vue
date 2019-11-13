@@ -85,7 +85,7 @@
             <button class="kd-btn btn-default btn-small">评价</button>
           </li> -->
           <li class="b-item" v-if="orderInfo.IsCancel">
-            <button class="kd-btn btn-default btn-small" @click="cancelOrderEvent">取消订单</button>
+            <button class="kd-btn btn-default btn-small" @click="cancelOrderEvent(orderInfo.OrderId)">取消订单</button>
           </li>
           <li class="b-item" v-if="orderInfo.IsContactAirlines">
             <button class="kd-btn btn-default btn-small" open-type="contact">联系客服</button>

@@ -55,7 +55,7 @@
             </p>
             <ul class="btn-list">
               <li class="b-item" v-if="item.IsCancel">
-                <button class="kd-btn btn-default btn-small" @click="cancelOrderEvent">取消订单</button>
+                <button class="kd-btn btn-default btn-small" @click="cancelOrderEvent(item.OrderId)">取消订单</button>
               </li>
               <li class="b-item" v-if="item.ShopId != 2 && item.IsAfterSale">
                 <button class="kd-btn btn-default btn-small" @click="toAppTips('可得小程序暂时不支持退换货功能哦，请下载可得眼镜APP使用此功能')">退换货</button>
