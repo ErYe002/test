@@ -1,5 +1,4 @@
 <template>
-  <!-- 评论 -->
   <div>
 
   </div>

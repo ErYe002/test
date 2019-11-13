@@ -403,29 +403,28 @@
     }
     .tczh-proListBox{
       margin: 0 15px;
-      ._swiper{
-        height: 140px;
+      .combproList{
+        display: flex;
       }
-      ._swiper-item{
-        overflow: initial;
-        padding: 0 5px;
-        box-sizing: border-box;
-        &:last-child .tczh-item::after{
+      .tczh-item:last-child::after{
           content: '';
           width: 0;
           height: 0;
-        }
       }
       .tczh-item{
+        width: 30%;
+        height: 140px;
         display: flex;
         flex-direction: column;
         align-items: center;
         font-size: 12px;
         box-sizing: border-box;
+        margin-right: 3%;
+        position: relative;
         &::after{
           content: "+";
           position: absolute;
-          right: -3px;
+          right: -7%;
           top: 22%;
           z-index: 2;
         }

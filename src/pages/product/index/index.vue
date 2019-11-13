@@ -270,7 +270,7 @@
       </block>
       <!-- 套餐组合 -->
       <block
-        v-if="Data.isComp&&Data.CompGoods!=null&&Data.CompGoods.CompCount!=null&&Data.CompGoods.CompCount>0"
+        v-if="!Data.isComp&&Data.CompGoods!=null&&Data.CompGoods.CompCount!=null&&Data.CompGoods.CompCount>0"
       >
         <div class="line"></div>
         <div class="actCon">
@@ -288,8 +288,8 @@
             <em>{{Data.CompGoods.MaxReduceMoney}}</em>
             &nbsp;共{{Data.CompGoods.CompCount}}款
           </div>
-          <div class="tczh-title">
-            <block v-for="item in Data.CompGoods.CompGoods" :key="item.index">
+          <block v-for="item in Data.CompGoods.CompGoods" :key="item.index">
+            <div class="tczh-title">
               <div class="tczh-notelist">
                 <div class="tczh-note-1">
                   套餐{{item.index}}
@@ -298,25 +298,24 @@
                 </div>
               </div>
               <div class="tczh-namelist">
-                <div class="select">套餐{{item.index}}</div>
+                <div class="select">套餐{{index+1}}</div>
               </div>
-            </block>
-          </div>
-          <div class="tczh-proListBox">
-            <swiper display-multiple-items="3.5">
-              <block v-for="item in Data.CompGoods.CompGoods" :key="item.index">
-                <swiper-item>
-                  <view class="tczh-item">
+            </div>
+            <div class="tczh-proListBox">
+              <scroll-view scroll-x scroll-with-animation="true">
+                <div class="combproList">
+                  <li class="tczh-item"  v-for="(combitem,combindex) in item.Items" :key="combindex">
                     <div>
-                      <img :src="item.Img" />
+                      <img :src="combitem.Img" />
                     </div>
-                    <span>{{item.GoodsName}}</span>
-                    <em>￥{{item.Price}}</em>
-                  </view>
-                </swiper-item>
-              </block>
-            </swiper>
-          </div>
+                    <span>{{combitem.GoodsName}}</span>
+                    <em>￥{{combitem.Price}}</em>
+                  </li>
+                  
+                </div>
+              </scroll-view>
+            </div>
+          </block>
         </div>
       </block>
       <!-- 功能参数 -->
@@ -422,7 +421,11 @@
       <div class="actCon remarkBox">
         <div class="act-remark actLine">
           <span class="act-name">瞳学评论({{Data.Remark==null?"0":Data.Remark.TotalCount}})</span>
-          <a class="act-info" v-if="Data.Remark != null" :href="'../remark/main?goodsid='+Data.GoodsBase.GoodsId+'&label=全部'" >
+          <a
+            class="act-info"
+            v-if="Data.Remark != null"
+            :href="'../remark/main?goodsid='+Data.GoodsBase.GoodsId+'&label=全部'"
+          >
             {{Data.Remark.PraiseRatio}}%好评 &nbsp;全部
             <span class="icon">></span>
           </a>
@@ -957,7 +960,7 @@
 
 <script>
 import api from "@/api/goods";
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState } from "vuex";
 import bottomFlip from "@/components/bottomFlip";
 import wxParse from "mpvue-wxparse";
 
@@ -986,7 +989,7 @@ export default {
       QueryGoodsData: "",
       QueryGoodsType: "price",
       QueryGoodsType2: "PPTJ",
-      QueryGoodsData2: "",
+      QueryGoodsData2: ""
     };
   },
   computed: {},
@@ -1004,7 +1007,7 @@ export default {
     wxParse
   },
   methods: {
-    ...mapActions('remark', ['setData']),
+    ...mapActions("remark", ["setData"]),
     _getPageData(seocode, isComp) {
       //var seocode="revia6";//自营
       //var seocode = "htyx6"; //海淘
@@ -1274,14 +1277,18 @@ export default {
     //度数换算跳转
     _showDSHS() {
       wx.navigateTo({
-        url: '/pages/htmlPreview/main?url=' + encodeURIComponent('/TemplateForNewApp/degreeConversion')
-      })
+        url:
+          "/pages/htmlPreview/main?url=" +
+          encodeURIComponent("/TemplateForNewApp/degreeConversion")
+      });
     },
     //用户协议跳转
     _userAgreement() {
       wx.navigateTo({
-        url: '/pages/htmlPreview/main?url=' + encodeURIComponent('/TemplateForNewApp/userAgreement')
-      })
+        url:
+          "/pages/htmlPreview/main?url=" +
+          encodeURIComponent("/TemplateForNewApp/userAgreement")
+      });
     }
   }
 };

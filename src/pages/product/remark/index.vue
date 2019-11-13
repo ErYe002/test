@@ -150,6 +150,7 @@ export default {
     },
     _selectLabel(label) {
       this.selecLabel = label;
+      this.noData = false;
       if (label == "全部") {
         this.LableName = "";
         this.RemarkType = -1;
