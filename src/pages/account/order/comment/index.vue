@@ -54,6 +54,7 @@ export default {
       goodsImageUrl:'',
       commentContent:'',
       images:[],
+      uploadedImgPath:[]
     };
   },
   computed: {
@@ -140,8 +141,8 @@ export default {
     uploadFile(index,total){
         var currentTemp = this;
         wx.uploadFile({
-            url:config.apiurl + '/api/comment/addgoodscomment',
-            filePath:images[index],
+            url:config.apiurl + '/api/comment/AddGoodsCommentPicture',
+            filePath:currentTemp.images[index],
             name:'file',
             header:{
                 SalePlatformId:config.salePlatformId,
@@ -149,11 +150,21 @@ export default {
             },
             success(res){
                 index++;
-                if(index < images.length){
+                currentTemp.uploadedImgPath = currentTemp.uploadedImgPath.concat(JSON.parse(res.data).Data);
+                if(index < currentTemp.images.length){
                     currentTemp.uploadFile(index,total);
                 }
                 else{
-                    currentTemp.api.addGoodsComment(current.orderId,current.goodsId,current.goodsgrade,current.commentContent)
+                    api.addGoodsComment(currentTemp.orderId,currentTemp.goodsId,currentTemp.goodsgrade,currentTemp.commentContent,currentTemp.uploadedImgPath)
+                    .then(({Data})=>{
+                        wx.showToast({
+                            title:"评价成功!",
+                            icon:"none"
+                        });
+                        wx.navigateBack({
+                            delta:1
+                        })
+                    })
                 }
             }
         })
