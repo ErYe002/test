@@ -119,16 +119,16 @@
           </navigator>
       </view>
     </view>
-    <!-- <view class='useCouponScore' v-if="orderInfo.IsCanUseScore"> -->
-    <view class='useCouponScore'>
+    <view class='useCouponScore' v-if="orderInfo.IsCanUseScore">
+    <!-- <view class='useCouponScore'> -->
       <view class='counponContent'>
         <view class='couponTitle'>积分</view>
         <view class='couponSubtitle'>{{orderInfo.TotalScoreContent+ '，' + orderInfo.UseScoreContent}}</view>
       </view>
       <switch class="swiper" checked="" @change="changeUseScore" />
     </view>
-    <!-- <view class='useCouponScore' v-if="orderInfo.IsCanUseScore"> -->
-    <view class='useCouponScore'>
+    <view class='useCouponScore' v-if="orderInfo.ShopId == 1 && orderInfo.NewAvailableBalance > 0">
+    <!-- <view class='useCouponScore'> -->
       <view class='counponContent'>
         <view class='couponTitle'>余额</view>
         <view class='couponSubtitle'>可用￥{{orderInfo.AllBalance}}，使用￥{{orderInfo.NewAvailableBalance}}</view>
@@ -149,13 +149,13 @@
         <view class='text'>-¥{{orderInfo.MeetPriceDownPrice}}</view>
       </view>
     </view>
-    <view class='amount-box' v-if="orderInfo.MeetPriceDownPrice > 0">
+    <view class='amount-box' v-if="orderInfo.CouponPrice > 0">
       <view class='flex-line' >
         <view class='label'>优惠券抵扣</view>
         <view class='text'>-¥{{orderInfo.CouponPrice}}</view>
       </view>
     </view>
-    <view class='amount-box' v-if="orderInfo.MeetPriceDownPrice > 0">
+    <view class='amount-box' v-if="orderInfo.ScorePrice > 0">
       <view class='flex-line' >
         <view class='label'>积分抵扣</view>
         <view class='text'>-¥{{orderInfo.ScorePrice}}</view>
@@ -167,7 +167,7 @@
         <view class='text'>¥{{orderInfo.Carriage}}</view>
       </view>
     </view>
-    <view class='amount-box' v-if="orderInfo.MeetPriceDownPrice > 0">
+    <view class='amount-box' v-if="orderInfo.ShopId == 1 && orderInfo.PaymentByBalance > 0">
       <view class='flex-line' >
         <view class='label'>使用可得账户余额</view>
         <view class='text'>-¥{{orderInfo.PaymentByBalance}}</view>
@@ -273,10 +273,16 @@ export default {
   onLoad(options) {
     if(options){
       this.formModel.selectShopId = options.shopId;
+      if (this.formModel.selectShopId == 2) {
+        this.formModel.isUseBalance = false;
+        this.formModel.isUseScore = false;
+      }else {
+        this.formModel.isUseBalance = true;
+        this.formModel.isUseScore = true;
+      }
       this.RoleId = options.RoleId
       console.log(options)
     }
-    this.formModel.selectedPayMode = '' 
     this.getConfirmOrderDetail();
   },
   onPageScroll({ scrollTop }) {
@@ -291,8 +297,8 @@ export default {
   watch: {
     SelectedConsigneeId:{
       handler: function(val,oldVal){
+        console.log("=====修改收货地址方式=== "+ val + " old =="  + oldVal)
         if (val.length && val != oldVal) {
-          console.log('刷新')
           this.formModel.selectedConsigneeId = val;
           this.getConfirmOrderDetail();
         }
@@ -337,7 +343,7 @@ export default {
       this.isShowGoodsList = true;
     },
     changeUseBalance() {
-      this.formModel.isUseBalance = !this.isUseBalance
+      this.formModel.isUseBalance = !this.formModel.isUseBalance
       this.getConfirmOrderDetail();
     },
     changeUseScore() {
@@ -377,22 +383,22 @@ export default {
      */
     showUserAgreement() {
       wx.navigateTo({
-        url: '/pages/htmlPreview/main?url=' + encodeURIComponent('/TemplateForNewApp/userAgreement')
+        url: '/pages/htmlPreview/main?path=' + encodeURIComponent('/TemplateForNewApp/userAgreement')
       })
     },
     showUserysxy() {
       wx.navigateTo({
-        url: '/pages/htmlPreview/main?url=' + encodeURIComponent('/TemplateForNewApp/ysxy')
+        url: '/pages/htmlPreview/main?path=' + encodeURIComponent('/TemplateForNewApp/ysxy')
       })
     },
     showHaitaoUsergmxz(){
       wx.navigateTo({
-        url: '/pages/htmlPreview/main?url=' + encodeURIComponent('/Templateforapp/hwg0862017')
+        url: '/pages/htmlPreview/main?path=' + encodeURIComponent('/Templateforapp/hwg0862017')
       })
     },
     showServiceDesc(){
       wx.navigateTo({
-        url: '/pages/htmlPreview/main?url=' + encodeURIComponent('/Templateforapp/hwg0852017')
+        url: '/pages/htmlPreview/main?path=' + encodeURIComponent('/Templateforapp/hwg0852017')
       })
     },
     _showErrorToast(errMsg) {

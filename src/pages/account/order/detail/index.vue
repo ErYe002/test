@@ -19,10 +19,10 @@
             <a class="link">
               <img class="g-img" :src="item.Img" />
               <div class="g-info">
-                <a :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'" class="g-name">
+                <p class="g-name">
                   <text class="ht-tag" v-if="item.ShopId == 2">海淘</text>
                   {{item.GoodsName}}
-                </a>
+                </p>
                 <p class="g-attr">{{item.Specification}}</p>
               </div>
               <div class="price-info">
@@ -85,7 +85,7 @@
             <button class="kd-btn btn-default btn-small">评价</button>
           </li> -->
           <li class="b-item" v-if="orderInfo.IsCancel">
-            <button class="kd-btn btn-default btn-small" @click="cancelOrderEvent">取消订单</button>
+            <button class="kd-btn btn-default btn-small" @click="cancelOrderEvent(orderInfo.OrderId)">取消订单</button>
           </li>
           <li class="b-item" v-if="orderInfo.IsContactAirlines">
             <button class="kd-btn btn-default btn-small" open-type="contact">联系客服</button>

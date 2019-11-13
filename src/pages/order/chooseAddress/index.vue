@@ -63,7 +63,6 @@ export default {
     saveConsigneeId(e) {
       if (e.currentTarget.dataset.valid) {
         this.setSelectAddressId(e.currentTarget.dataset.id)
-        this.setSelectedExpressId('')
         wx.navigateBack({
             delta: 1
           })

@@ -9,9 +9,10 @@
           <span>销量</span>
         </li>
         <li :class="{item: true, current: listQuery.sort == 4 || listQuery.sort == 3}" :data-sort="isReversePrice ? 4 : 3" data-isprice="true" @click="changeSortType">
-          <span>
-            价格<template v-if="listQuery.sort == 4">↓</template><template v-else-if="listQuery.sort == 3">↑</template><template v-else>↓</template>
-          </span>
+          <span>价格</span>
+          <img class="icon" v-if="listQuery.sort == 4" src="/static/images/icon_sort_down_active.png" />
+          <img class="icon" v-else-if="listQuery.sort == 3" src="/static/images/icon_sort_up_active.png" />
+          <img class="icon" v-else src="/static/images/icon_sort_down.png" />
         </li>
       </ul>
     </section>
@@ -96,6 +97,8 @@ export default {
       let isprice = e.currentTarget.dataset.isprice;
       if (isprice) {
         this.isReversePrice = sort == 3; //切换下一次点击时的价格排序方式
+      } else {
+        this.isReversePrice = true
       }
 
       this.listQuery.sort = sort
@@ -149,6 +152,11 @@ export default {
         height: 40px;
         line-height: 40px;
         box-sizing: border-box;
+      }
+      .icon {
+        display: block;
+        width: 25px;
+        height: 25px;
       }
       &.current {
         span {
