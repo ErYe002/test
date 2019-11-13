@@ -29,6 +29,10 @@ const api = {
   getRemarkData(GoodsId,RemarkType,LableName,Page) {
     return http.post(`/Goods/GoodsRemark?GoodsId=${GoodsId}&RemarkType=${RemarkType}&LableName=${LableName}&Size=10&Page=${Page}`);
   },
+  //套餐组合列表数据
+  getCombineData(goodsId) {
+    return http.post(`/Goods/CompGoods?GoodsId=${goodsId}`);
+  },
 };
 
 export default api;
