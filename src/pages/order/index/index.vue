@@ -384,22 +384,22 @@ export default {
      */
     showUserAgreement() {
       wx.navigateTo({
-        url: '/pages/htmlPreview/main?url=' + encodeURIComponent('/TemplateForNewApp/userAgreement')
+        url: '/pages/htmlPreview/main?path=' + encodeURIComponent('/TemplateForNewApp/userAgreement')
       })
     },
     showUserysxy() {
       wx.navigateTo({
-        url: '/pages/htmlPreview/main?url=' + encodeURIComponent('/TemplateForNewApp/ysxy')
+        url: '/pages/htmlPreview/main?path=' + encodeURIComponent('/TemplateForNewApp/ysxy')
       })
     },
     showHaitaoUsergmxz(){
       wx.navigateTo({
-        url: '/pages/htmlPreview/main?url=' + encodeURIComponent('/Templateforapp/hwg0862017')
+        url: '/pages/htmlPreview/main?path=' + encodeURIComponent('/Templateforapp/hwg0862017')
       })
     },
     showServiceDesc(){
       wx.navigateTo({
-        url: '/pages/htmlPreview/main?url=' + encodeURIComponent('/Templateforapp/hwg0852017')
+        url: '/pages/htmlPreview/main?path=' + encodeURIComponent('/Templateforapp/hwg0852017')
       })
     },
     _showErrorToast(errMsg) {
