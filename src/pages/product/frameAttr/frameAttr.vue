@@ -174,7 +174,20 @@
           pdId: '62',
           groupPId: '',
           glassPId: ''
-        }
+        },
+        MaxSellNumber: '',
+        GoodsName: '',
+        SeriesId: '',
+        MarketPrice: '',
+        SalePrice: '',
+        SaleScore: '',
+        IsScarcity: '',
+        IsSpecialOffer: '',
+        SaleStockType: '',
+        MaxDeduction: '',
+        IsFreeCarriage: '',
+        RealGoodsId: '',
+        goodsId:''
       };
     },
 
@@ -187,7 +200,21 @@
       gdSelectPop
     },
 
-    onLoad() {
+    onLoad(options) {
+      console.log("传递过来的参数", options);
+      this.MaxSellNumber = options.MaxSellNumber;
+      this.GoodsName = options.GoodsName;
+      this.SeriesId = options.SeriesId;
+      this.MarketPrice = options.MarketPrice;
+      this.SalePrice = options.SalePrice;
+      this.SaleScore = options.SaleScore;
+      this.IsScarcity = options.IsScarcity;
+      this.IsSpecialOffer = options.IsSpecialOffer;
+      this.SaleStockType = options.SaleStockType;
+      this.MaxDeduction = options.MaxDeduction;
+      this.IsFreeCarriage = options.IsFreeCarriage;
+      this.RealGoodsId = options.RealGoodsId;
+      this.goodsId = options.goodsId;
       this._getFrameData();
       this._getOptometryBillBaiscDataLibrary();
     },
