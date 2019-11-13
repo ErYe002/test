@@ -149,13 +149,13 @@
         <view class='text'>-¥{{orderInfo.MeetPriceDownPrice}}</view>
       </view>
     </view>
-    <view class='amount-box' v-if="orderInfo.MeetPriceDownPrice > 0">
+    <view class='amount-box' v-if="orderInfo.CouponPrice > 0">
       <view class='flex-line' >
         <view class='label'>优惠券抵扣</view>
         <view class='text'>-¥{{orderInfo.CouponPrice}}</view>
       </view>
     </view>
-    <view class='amount-box' v-if="orderInfo.MeetPriceDownPrice > 0">
+    <view class='amount-box' v-if="orderInfo.ScorePrice > 0">
       <view class='flex-line' >
         <view class='label'>积分抵扣</view>
         <view class='text'>-¥{{orderInfo.ScorePrice}}</view>
@@ -167,7 +167,7 @@
         <view class='text'>¥{{orderInfo.Carriage}}</view>
       </view>
     </view>
-    <view class='amount-box' v-if="orderInfo.MeetPriceDownPrice > 0">
+    <view class='amount-box' v-if="orderInfo.ShopId == 1 && orderInfo.PaymentByBalance > 0">
       <view class='flex-line' >
         <view class='label'>使用可得账户余额</view>
         <view class='text'>-¥{{orderInfo.PaymentByBalance}}</view>
