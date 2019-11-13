@@ -397,7 +397,10 @@
         <div class="compGoods">
           <block v-for="item in Data.Items" :key="item.index">
             <div class="compGoodBox">
-              <a class="compGoodImg" :href="'/main?seocode='+item.SeoCode+'&isComp=false'">
+              <a
+                class="compGoodImg"
+                :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'"
+              >
                 <img :src="item.Img" alt />
               </a>
               <div class="compGoodCon">
@@ -408,7 +411,11 @@
                     <div class="markPrice">￥{{item.MarketPrice}}</div>
                   </div>
                 </div>
-                <div class="compSelectBox" v-if="item.IsSpecificationGoods">
+                <div
+                  class="compSelectBox"
+                  v-if="item.IsSpecificationGoods"
+                  @click="_selectCombineAttr(item.GoodsId)"
+                >
                   <div>{{item.IsSeries?"请选择花色/度数":"请选择度数规格等参数"}}</div>
                   <div class="icon-bottom">﹀</div>
                 </div>
@@ -523,7 +530,7 @@
             <swiper display-multiple-items="3.2">
               <block v-for="item in QueryGoodsData" :key="item.index">
                 <swiper-item>
-                  <a href>
+                  <a :href="'/pages/product/index/main?seocode='+item.SeoCode">
                     <img :src="item.Img" mode="widthFix" />
                     <div class="goodsName">{{item.GoodsName}}</div>
                     <div class="goodsPrice">￥{{item.Price}}</div>
@@ -555,7 +562,7 @@
             <swiper display-multiple-items="3.2">
               <block v-for="item in QueryGoodsData2" :key="item.index">
                 <swiper-item>
-                  <a href>
+                  <a :href="'/pages/product/index/main?seocode='+item.SeoCode">
                     <img :src="item.GoodsImg" mode="widthFix" />
                     <div class="goodsName">{{item.GoodsName}}</div>
                     <div class="goodsPrice">￥{{item.Price}}</div>
@@ -595,14 +602,8 @@
           </a>
         </div>
         <div class="proBtn">
-          <a
-            class="addCart"
-            :href="Data.GoodsBase.GoodsType==4?frameAttrHref+'&IsBuyNow=false':normalAttrHref+'&IsBuyNow=false'"
-          >加入购物车</a>
-          <a
-            class="buyNow"
-            :href="Data.GoodsBase.GoodsType==4?frameAttrHref+'&IsBuyNow=true':normalAttrHref+'&IsBuyNow=true'"
-          >立即购买</a>
+          <a class="addCart" @click="addCart()">加入购物车</a>
+          <a class="buyNow" @click="buyNow()">立即购买</a>
         </div>
       </div>
     </template>
@@ -1306,6 +1307,32 @@ export default {
         url:
           "/pages/htmlPreview/main?url=" +
           encodeURIComponent("/TemplateForNewApp/userAgreement")
+      });
+    },
+    _selectCombineAttr(id, index) {
+      console.log(id, index, "ATTR");
+    },
+    addCart() {
+      // 判断是否是无属性商品
+      if (!this.Data.GoodsBase.IsSpecificationGoods) {
+        //无属性商品
+      } else {
+        var href =
+          this.Data.GoodsBase.GoodsType == 4
+            ? this.frameAttrHref + "&IsBuyNow=false"
+            : this.normalAttrHref + "&IsBuyNow=false";
+        wx.navigateTo({
+          url: href
+        });
+      }
+    },
+    buyNow() {
+      var href =
+        this.Data.GoodsBase.GoodsType == 4
+          ? this.frameAttrHref + "&IsBuyNow=true"
+          : this.normalAttrHref + "&IsBuyNow=true";
+      wx.navigateTo({
+        url: href
       });
     }
   }
