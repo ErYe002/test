@@ -168,6 +168,11 @@ export default {
             this.goodsList =
               this.listQuery.page > 1 ? this.goodsList.concat(Data) : Data;
             this.totalPage = TotalPage;
+            //webview页面跳转到原生搜索页时，只会带seocode参数，所以必须补全剩余的classid和classname
+            if(this.listQuery.page == 1 && Data.length > 0 && this.$root.$mp.query.from){
+              this.listQuery.classId = Data[0].ClassId
+              this.listQuery.className = Data[0].ClassName
+            }
             //没有搜索到任何数据
             if (!Data || Data.length <= 0) {
               this.isNoData = true;

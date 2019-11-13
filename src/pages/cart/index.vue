@@ -59,7 +59,11 @@
           <em>{{shopId == 1 ? '可得境内自营':'品质进口海淘'}}</em>
         </span>
         <span class="rules">
-          <img src="/static/images/icon_question.png" class="icon-question" @click="showTariffEvent"/>
+          <img
+            src="/static/images/icon_question.png"
+            class="icon-question"
+            @click="showTariffEvent"
+          />
           <em>{{shopId == 1 ? '满80包邮':'已包税'}}</em>
           <em class="space">|</em>
           <em class="coupon-btn" @click="showCouponListEvent">优惠券</em>
@@ -126,7 +130,13 @@
                   <div class="g-info">
                     <img class="g-img" :src="goodItem.ImageUrl" />
                     <div class="info">
-                      <a :href="'/pages/product/index/main?seocode='+goodItem.SeoCode+'&isComp=true'" class="g-name"><span class="oversea-tag" v-if="shopId == 2">海淘</span>{{goodItem.GoodsName}}</a>
+                      <a
+                        :href="'/pages/product/index/main?seocode='+goodItem.SeoCode+'&isComp=true'"
+                        class="g-name"
+                      >
+                        <span class="oversea-tag" v-if="shopId == 2">海淘</span>
+                        {{goodItem.GoodsName}}
+                      </a>
                       <template v-if="goodItem.Specifications">
                         <p class="g-attr" v-for="spItem in goodItem.Specifications" :key="spItem">
                           <span class="attr-text">{{spItem}}</span>
@@ -153,7 +163,10 @@
             <p class="tips">
               <span class="tag">{{mpItem.MeetPromotionType == 2 ? '满赠':'满减'}}</span>
               <span class="title">{{mpItem.MeetPriceHint}}</span>
-              <a :href="'/pages/search/pieceTogether/main?shopId='+shopId+'&promotionId='+mpItem.PromotionId+'&title=满减'" class="link">{{mpItem.IsMeet ? '再逛逛':'去凑单'}}></a>
+              <a
+                :href="'/pages/search/pieceTogether/main?shopId='+shopId+'&promotionId='+mpItem.PromotionId+'&title=满减'"
+                class="link"
+              >{{mpItem.IsMeet ? '再逛逛':'去凑单'}}></a>
             </p>
             <!-- 商品列表 -->
             <ul class="goods-list">
@@ -176,7 +189,13 @@
                   <div class="g-info">
                     <img class="g-img" :src="gItem.ImageUrl" />
                     <div class="info">
-                      <a :href="'/pages/product/index/main?seocode='+gItem.SeoCode+'&isComp=false'" class="g-name"><span class="oversea-tag" v-if="shopId == 2">海淘</span>{{gItem.GoodsName}}</a>
+                      <a
+                        :href="'/pages/product/index/main?seocode='+gItem.SeoCode+'&isComp=false'"
+                        class="g-name"
+                      >
+                        <span class="oversea-tag" v-if="shopId == 2">海淘</span>
+                        {{gItem.GoodsName}}
+                      </a>
                       <!-- 有属性商品光度和数量 -->
                       <template
                         v-if="gItem.SpecificationItems != null && gItem.SpecificationItems.length > 0"
@@ -202,16 +221,17 @@
                           v-for="spItem in gItem.SpecificationItems"
                           :key="spItem.RealGoodsId"
                         >
-                          <span :class="{attr: true, line: gItem.BuyType == 3}" v-if="gItem.BuyType != 3" @click="editCartItemEvent(gItem.UniqueId, '', spItem.RealGoodsId, spItem.Quantity)">
+                          <span
+                            :class="{attr: true, line: gItem.BuyType == 3}"
+                            v-if="gItem.BuyType != 3"
+                            @click="editCartItemEvent(gItem.UniqueId, '', spItem.RealGoodsId, spItem.Quantity)"
+                          >
                             <em
                               class="text"
                             >{{spItem.Specification}} {{spItem.AnotherName == null ? '' : spItem.AnotherName}}</em>
-                            <img
-                              class="icon"
-                              src="/static/images/icon_attr_down.png"
-                            />
+                            <img class="icon" src="/static/images/icon_attr_down.png" />
                           </span>
-                          <span v-else :class="{attr: true, line: gItem.BuyType == 3}" >
+                          <span v-else :class="{attr: true, line: gItem.BuyType == 3}">
                             <em
                               class="text"
                             >{{spItem.Specification}} {{spItem.AnotherName == null ? '' : spItem.AnotherName}}</em>
@@ -371,7 +391,13 @@
                   <div class="g-info">
                     <img class="g-img" :src="nItem.ImageUrl" />
                     <div class="info">
-                      <a :href="'/pages/product/index/main?seocode='+nItem.SeoCode+'&isComp=false'" class="g-name"><span class="oversea-tag" v-if="shopId == 2">海淘</span>{{nItem.GoodsName}}</a>
+                      <a
+                        :href="'/pages/product/index/main?seocode='+nItem.SeoCode+'&isComp=false'"
+                        class="g-name"
+                      >
+                        <span class="oversea-tag" v-if="shopId == 2">海淘</span>
+                        {{nItem.GoodsName}}
+                      </a>
                       <!-- 有属性商品光度和数量 -->
                       <template
                         v-if="nItem.SpecificationItems != null && nItem.SpecificationItems.length > 0"
@@ -585,7 +611,10 @@
                     />
                   </span>
                   <div class="g-info">
-                    <a :href="'/pages/product/index/main?seocode='+eItem.SeoCode+'&isComp=false'" class="g-name">{{eItem.PromotionTheme}}</a>
+                    <a
+                      :href="'/pages/product/index/main?seocode='+eItem.SeoCode+'&isComp=false'"
+                      class="g-name"
+                    >{{eItem.PromotionTheme}}</a>
                     <div class="info-box">
                       <img :src="eItem.ImageUrl" class="g-img" />
                       <div class="info">
@@ -682,7 +711,11 @@
           <div class="btn" @click="moveInFavoritesEvent">移入收藏</div>
           <div class="btn" @click="delGoodsEvent">删除</div>
         </template>
-        <button v-else class="kd-btn btn-big" @click="toOrderEvent">结算（{{model.Carts[0].GoodsQuantity}}）</button>
+        <button
+          v-else
+          class="kd-btn btn-big"
+          @click="toOrderEvent"
+        >结算（{{model.Carts[0].GoodsQuantity}}）</button>
       </div>
     </article>
     <coupon :is-show.sync="isShowCouponList" :shop-id="shopId" />
@@ -695,7 +728,7 @@
       @done="changeAttrDone"
       :quantity="editCartItemInfo.quantity"
     />
-    <tariff :is-show.sync="isShowTariff" :shop-id="shopId"/>
+    <tariff :is-show.sync="isShowTariff" :shop-id="shopId" />
   </article>
 </template>
 
@@ -721,7 +754,7 @@ export default {
       // selectedItemCount: 0,
       isShowAttr: false, //是否显示选择属性弹窗
       isShowTariff: false,
-      isEdit: false,  //是否正在编辑购物车
+      isEdit: false, //是否正在编辑购物车
       editCartItemInfo: {
         uniqueId: "",
         goodsId: "",
@@ -760,8 +793,8 @@ export default {
     showCouponListEvent() {
       this.isShowCouponList = true;
     },
-    showTariffEvent(){
-      this.isShowTariff = true
+    showTariffEvent() {
+      this.isShowTariff = true;
     },
     //获取猜你喜欢的商品
     _getLikeGoods() {
@@ -858,111 +891,123 @@ export default {
         });
       } else {
         wx.navigateTo({
-          url: "/pages/order/index/main?shopId=" + this.shopId + "&RoleId=" + this.model.RoleId
+          url:
+            "/pages/order/index/main?shopId=" +
+            this.shopId +
+            "&RoleId=" +
+            this.model.RoleId
         });
       }
     },
 
     //编辑购物车
-    editCartEvent(){
-      this.isEdit = !this.isEdit
+    editCartEvent() {
+      this.isEdit = !this.isEdit;
     },
 
     //移入收藏夹
-    moveInFavoritesEvent(){
+    moveInFavoritesEvent() {
       api.collectionCartGoods(this.selectedCartItem).then(() => {
-        this._getPageData()
-      })
+        this._getPageData();
+        this._getCartItemsCount();
+      });
     },
 
     //删除选中商品
-    delGoodsEvent(){
+    delGoodsEvent() {
       api.deleteCartGoods(this.selectedCartItem).then(() => {
-        this._getPageData()
-      })
+        this._getPageData();
+        this._getCartItemsCount();
+      });
     },
 
     //获取购物车数据
     _getPageData() {
       // this.selectedItemCount = 0;
-      this.selectedCartItem = []
+      this.selectedCartItem = [];
       api.getCartDetail(this.shopId).then(({ Data }) => {
-        let newData = Object.assign({}, Data);
-        if (newData.Carts.length > 0) {
-          let ids = [];
-          newData.Carts.forEach(ele => {
-            //处理打包商品
-            if (ele.Packages.length > 0) {
-              ele.Packages.forEach(item => {
-                ids.push(item.UniqueId);
-                if (item.IsSelected) {
-                  this.selectedCartItem.push(item.UniqueId)
-                  // this.selectedItemCount++;
-                }
-              });
-            }
-            //处理普通商品中的换购商品数据
-            if (ele.NormalGoods.length > 0) {
-              ele.NormalGoods.forEach(nItem => {
-                ids.push(nItem.UniqueId);
-                if (nItem.IsSelected) {
-                  // this.selectedItemCount++;
-                  this.selectedCartItem.push(nItem.UniqueId)
-                }
-                if (nItem.FreedomCollocations.length > 0) {
-                  nItem.FreedomCollocations.forEach(fItem => {
-                    fItem.SumQuantity = 0;
-                    if (fItem.IsSpecificationGoods) {
-                      //计算有属性换购商品的价格和数量
-                      fItem.SpecificationItems.forEach(spItem => {
-                        fItem.SumQuantity += spItem.Quantity;
-                      });
-                      fItem.SumPrice = fItem.SumQuantity * fItem.Price;
-                    } else {
-                      //计算无属性换购商品的价格和数量
-                      fItem.SumQuantity = fItem.Quantity;
-                      fItem.SumPrice = fItem.SumQuantity * fItem.Price;
-                    }
-                  });
-                }
-              });
-            }
-            //处理满类型商品中的换购商品数据
-            if (ele.MeetPromotions.length > 0) {
-              ele.MeetPromotions.forEach(nItem => {
-                if (nItem.BuyGoodsList.length > 0) {
-                  nItem.BuyGoodsList.forEach(fItem => {
-                    ids.push(fItem.UniqueId);
-                    if (fItem.IsSelected) {
-                      // this.selectedItemCount++;
-                      this.selectedCartItem.push(fItem.UniqueId)
-                    }
-                    if (fItem.FreedomCollocations.length > 0) {
-                      fItem.FreedomCollocations.forEach(fdItem => {
-                        fdItem.SumQuantity = 0;
-                        if (fdItem.IsSpecificationGoods) {
-                          //计算有属性换购商品的价格和数量
-                          fdItem.SpecificationItems.forEach(spItem => {
-                            fdItem.SumQuantity += spItem.Quantity;
-                          });
-                          fdItem.SumPrice = fdItem.SumQuantity * fdItem.Price;
-                        } else {
-                          //计算无属性换购商品的价格和数量
-                          fdItem.SumQuantity = fdItem.Quantity;
-                          fdItem.SumPrice = fdItem.SumQuantity * fdItem.Price;
-                        }
-                      });
-                    }
-                  });
-                }
-              });
-            }
-          });
-          this.canSelectedCartItem = ids;
-        }
-        this.model = Object.assign({}, newData);
-        this.isHasCartData =
+        if (Data == null) {
+          this.model = null;
+          this.isHasCartData = false
+          this._getLikeGoods()
+        } else {
+          let newData = Object.assign({}, Data);
+          if (newData.Carts.length > 0) {
+            let ids = [];
+            newData.Carts.forEach(ele => {
+              //处理打包商品
+              if (ele.Packages.length > 0) {
+                ele.Packages.forEach(item => {
+                  ids.push(item.UniqueId);
+                  if (item.IsSelected) {
+                    this.selectedCartItem.push(item.UniqueId);
+                    // this.selectedItemCount++;
+                  }
+                });
+              }
+              //处理普通商品中的换购商品数据
+              if (ele.NormalGoods.length > 0) {
+                ele.NormalGoods.forEach(nItem => {
+                  ids.push(nItem.UniqueId);
+                  if (nItem.IsSelected) {
+                    // this.selectedItemCount++;
+                    this.selectedCartItem.push(nItem.UniqueId);
+                  }
+                  if (nItem.FreedomCollocations.length > 0) {
+                    nItem.FreedomCollocations.forEach(fItem => {
+                      fItem.SumQuantity = 0;
+                      if (fItem.IsSpecificationGoods) {
+                        //计算有属性换购商品的价格和数量
+                        fItem.SpecificationItems.forEach(spItem => {
+                          fItem.SumQuantity += spItem.Quantity;
+                        });
+                        fItem.SumPrice = fItem.SumQuantity * fItem.Price;
+                      } else {
+                        //计算无属性换购商品的价格和数量
+                        fItem.SumQuantity = fItem.Quantity;
+                        fItem.SumPrice = fItem.SumQuantity * fItem.Price;
+                      }
+                    });
+                  }
+                });
+              }
+              //处理满类型商品中的换购商品数据
+              if (ele.MeetPromotions.length > 0) {
+                ele.MeetPromotions.forEach(nItem => {
+                  if (nItem.BuyGoodsList.length > 0) {
+                    nItem.BuyGoodsList.forEach(fItem => {
+                      ids.push(fItem.UniqueId);
+                      if (fItem.IsSelected) {
+                        // this.selectedItemCount++;
+                        this.selectedCartItem.push(fItem.UniqueId);
+                      }
+                      if (fItem.FreedomCollocations.length > 0) {
+                        fItem.FreedomCollocations.forEach(fdItem => {
+                          fdItem.SumQuantity = 0;
+                          if (fdItem.IsSpecificationGoods) {
+                            //计算有属性换购商品的价格和数量
+                            fdItem.SpecificationItems.forEach(spItem => {
+                              fdItem.SumQuantity += spItem.Quantity;
+                            });
+                            fdItem.SumPrice = fdItem.SumQuantity * fdItem.Price;
+                          } else {
+                            //计算无属性换购商品的价格和数量
+                            fdItem.SumQuantity = fdItem.Quantity;
+                            fdItem.SumPrice = fdItem.SumQuantity * fdItem.Price;
+                          }
+                        });
+                      }
+                    });
+                  }
+                });
+              }
+            });
+            this.canSelectedCartItem = ids;
+          }
+          this.model = Object.assign({}, newData);
+          this.isHasCartData =
           newData["Carts"] != null || newData["InvalidGoods"] != null;
+        }
       });
     }
   }
