@@ -445,16 +445,23 @@ export default {
       }
       console.log(this.formModel)
       api.submitOrder({...this.formModel}).then(({Data,Msg,State}) => {
-        console.log('收货地址 '+ Msg)
+        console.log(Data)
         if (State){
           console.log(Data.OrderId + '订单号')
-          //订单创建成功，唤起微信支付
-          this._wechatPay(Data.OrderId, () => {
-            // 关闭所有页面，打开到应用内的某个页面 去订单列表页
-            wx.reLaunch({
-              // url: '/home/groupDetail/groupDetail?grouponRecordId=' + Data.GrouponRecordId + '&orderId=' + Data.OrderId
+          if (Data.IsToPay) { 
+            //订单创建成功，唤起微信支付
+            this._wechatPay(Data.OrderId, () => {
+              // 关闭所有页面，打开到应用内的某个页面 去订单列表页
+              wx.reLaunch({
+                // url: '/home/groupDetail/groupDetail?grouponRecordId=' + Data.GrouponRecordId + '&orderId=' + Data.OrderId
+              })
             })
-          })
+          }else{
+            // 完全使用余额支付 wx.redirectTo
+            wx.redirectTo({
+              url: '/pages/order/submitResult/main?resultMsg='+Msg+'&shopId='+this.formModel.selectShopId+'&orderNo='+Data.OrderNo+'&OrderAmount='+Data.OrderAmount,
+            })
+          }
         }else{
           let tempMsg = "";
           if (Msg) {
@@ -490,7 +497,6 @@ export default {
           'signType': signType,
           'paySign': paySign,
           'success': function (res) {
-            wx.removeStorageSync('GroupCartInfo')
             api.paySuccess(orderId).then(() => {
               cn()  
             }).catch(() => {
@@ -505,9 +511,8 @@ export default {
               showCancel: false,
               confirmColor: '#cab894',
               success() {
-                wx.removeStorageSync('GroupCartInfo')
                 wx.reLaunch({
-                  url: '/pages/cart/main'
+                  url: '/pages/order/submitResult/main'
                 })
               }
             })
