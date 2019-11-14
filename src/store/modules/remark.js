@@ -7,7 +7,7 @@ const state = {
 const mutations = {
     [DATA_SET](state, info){
         state.ramarkData = info
-        wx.setStorageSync(REMARK_DATA, state.ramarkData)
+        // wx.setStorageSync(REMARK_DATA, state.ramarkData)
     },
     [DATA_CLEAR](state){
         state.ramarkData = ''
