@@ -195,7 +195,7 @@
       </article>
       <article class="like-goods-wrap" v-if="goodsList.length > 0">
         <p class="title">GUESS YOU LIKE IT | 猜你喜欢</p>
-        <!-- <ul class="list">
+        <ul class="list">
           <a :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'" class="item" v-for="item in goodsList" :key="item.SeoCode">
             <img :src="item.BrandImageUrl" class="brand-img"/>
             <img
@@ -213,7 +213,7 @@
               </span>
             </p>
           </a>
-        </ul>-->
+        </ul>
         <p class="no-more-tips" v-if="page == totalPage">已经到底了哦~</p>
       </article>
     </template>
