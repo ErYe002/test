@@ -36,12 +36,12 @@
             <div class="g-price" v-else>
               <em class="unit">¥</em>
               <b>{{item.Price}}</b>
-              <div :class="{tag: true, vip: item.PriceLable != '促销价'}">
+              <div :class="{tag: true, vip: item.isVIP}">
                 <img
-                  v-if="item.PriceLable != '促销价'"
+                  v-if="item.isVIP == true"
                   :src="'/static/images/level_0'+ roleId + '.jpg'"
                 />
-                <span>{{item.PriceLable != '促销价' ? '会员价' : '促销价'}}</span>
+                <span>{{item.PriceLable}}</span>
               </div>
             </div>
         </div>
@@ -114,6 +114,14 @@ export default {
         this.GoodsCount = Data.GoodsCount
         console.log(this.PackageGoods)
         console.log(this.NormalGoods)
+        
+        this.NormalGoods.forEach(function(item, index) {
+          if (item.PriceLable.indexOf('会员') >= 0) {
+            item.isVIP = true;
+          }else{
+            item.isVIP = false;
+          }
+        });
       })
     }
   }
