@@ -397,7 +397,10 @@
         <div class="compGoods">
           <block v-for="item in Data.Items" :key="item.index">
             <div class="compGoodBox">
-              <a class="compGoodImg" :href="'/main?seocode='+item.SeoCode+'&isComp=false'">
+              <a
+                class="compGoodImg"
+                :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'"
+              >
                 <img :src="item.Img" alt />
               </a>
               <div class="compGoodCon">
@@ -408,7 +411,11 @@
                     <div class="markPrice">￥{{item.MarketPrice}}</div>
                   </div>
                 </div>
-                <div class="compSelectBox" v-if="item.IsSpecificationGoods">
+                <div
+                  class="compSelectBox"
+                  v-if="item.IsSpecificationGoods"
+                  @click="_selectCombineAttr(item.GoodsId,index)"
+                >
                   <div>{{item.IsSeries?"请选择花色/度数":"请选择度数规格等参数"}}</div>
                   <div class="icon-bottom">﹀</div>
                 </div>
@@ -523,7 +530,7 @@
             <swiper display-multiple-items="3.2">
               <block v-for="item in QueryGoodsData" :key="item.index">
                 <swiper-item>
-                  <a href>
+                  <a :href="'/pages/product/index/main?seocode='+item.SeoCode">
                     <img :src="item.Img" mode="widthFix" />
                     <div class="goodsName">{{item.GoodsName}}</div>
                     <div class="goodsPrice">￥{{item.Price}}</div>
@@ -555,7 +562,7 @@
             <swiper display-multiple-items="3.2">
               <block v-for="item in QueryGoodsData2" :key="item.index">
                 <swiper-item>
-                  <a href>
+                  <a :href="'/pages/product/index/main?seocode='+item.SeoCode">
                     <img :src="item.GoodsImg" mode="widthFix" />
                     <div class="goodsName">{{item.GoodsName}}</div>
                     <div class="goodsPrice">￥{{item.Price}}</div>
@@ -595,14 +602,8 @@
           </a>
         </div>
         <div class="proBtn">
-          <a
-            class="addCart"
-            :href="Data.GoodsBase.GoodsType==4?frameAttrHref+'&IsBuyNow=false':normalAttrHref+'&IsBuyNow=false'"
-          >加入购物车</a>
-          <a
-            class="buyNow"
-            :href="Data.GoodsBase.GoodsType==4?frameAttrHref+'&IsBuyNow=true':normalAttrHref+'&IsBuyNow=true'"
-          >立即购买</a>
+          <a class="addCart" @click="addCart()">加入购物车</a>
+          <a class="buyNow" @click="buyNow()">立即购买</a>
         </div>
       </div>
     </template>
@@ -957,6 +958,79 @@
       </div>
       <div class="KnowBtn" @click="_close()">知道了</div>
     </bottomFlip>
+    <!-- 打包商品属性显示 -->
+    <bottomFlip :isShow.sync="isShowCombine">
+      <div class="js_maingoods" v-if="combineData!=null">
+        <div class="showMsg">
+          <div class="goods_img">
+            <img :src="combineData.ImageUrl" />
+          </div>
+          <div class="goods_name">
+            <span
+              class="spec-name"
+              :data-marketp="combineData.MarketPrice"
+            >{{combineData.GoodsName}}</span>
+          </div>
+          <div class="close_mc" id="close_mc">×</div>
+        </div>
+        <div class="over_cont">
+          <!-- 款式 -->
+          <template v-if="combineData.SeriesItems != null && combineData.SeriesItems.length > 0">
+            <div class="choice_color" :data-gid="combineData.GoodsId">
+              <span class="choice_title">
+                颜色：
+                <span>
+                  <block
+                    v-for="info in combineData.SeriesItems"
+                    :key="info.index"
+                  >
+                    <span v-if="info.GoodsId == combineData.GoodsId">
+                      {{info.AnotherName}}
+                    </span>
+                  </block>
+                </span>
+              </span>
+            </div>
+            <div class="goodsstylelist">
+              <div id="js_mainsytle" class="goodscolor">
+                <scroll-view scroll-x scroll-with-animation="true">
+                  <block v-for="info in combineData.SeriesItems" :key="info.index">
+                    <li :class="(info.GoodsId == combineData.GoodsId? 'select' :'')" @click="_selectCombineAttr(info.GoodsId)">
+                      <img :src="info.SeriesImg" />
+                    </li>
+                  </block>
+                </scroll-view>
+              </div>
+            </div>
+          </template>
+          <!-- 光度 -->
+          <block v-if="combineData.GoodsFields != null && combineData.GoodsFields.length > 0">
+            <div
+              class="div_single js_gdContent"
+              v-for="listinfo in combineData.GoodsFields"
+              :key="listinfo.index"
+            >
+              <div :data-field="listinfo.FieldId">
+                <span class="choice_title">
+                  {{index == 0 ? "光度 SPH" : ""}}
+                  {{index == 1 ? "散光 CYL" : ""}}
+                  {{index == 2 ? "轴位 AXIS" : ""}}
+                </span>
+              </div>
+              <ul class="js_gd">
+                <li
+                  :data-fieldid="item.Id"
+                  v-for="(item,index_) in listinfo.Children"
+                  :key="index_"
+                  @click="_selectGD(item.Id,listinfo.FieldId)"
+                >{{item.Value}}</li>
+              </ul>
+            </div>
+          </block>
+        </div>
+      </div>
+      <div class="KnowBtn" @click="selectAttr()">确定</div>
+    </bottomFlip>
   </div>
 </template>
 
@@ -991,7 +1065,10 @@ export default {
       QueryGoodsData: "",
       QueryGoodsType: "price",
       QueryGoodsType2: "PPTJ",
-      QueryGoodsData2: ""
+      QueryGoodsData2: "",
+      combineIndex: 0,
+      combineData: null,
+      isShowCombine: false
     };
   },
   computed: {},
@@ -1306,6 +1383,38 @@ export default {
         url:
           "/pages/htmlPreview/main?url=" +
           encodeURIComponent("/TemplateForNewApp/userAgreement")
+      });
+    },
+    _selectCombineAttr(id, index) {
+      console.log(id, index, "ATTR");
+      this.combineIndex = index ? index : this.combineIndex;
+      api.getCombineAttr(id).then(({ Data }) => {
+        this.combineData = Object.assign({},Data);
+        this.isShowCombine = true;
+        console.log(Data);
+      });
+    },
+    addCart() {
+      // 判断是否是无属性商品
+      if (!this.Data.GoodsBase.IsSpecificationGoods) {
+        //无属性商品
+      } else {
+        var href =
+          this.Data.GoodsBase.GoodsType == 4
+            ? this.frameAttrHref + "&IsBuyNow=false"
+            : this.normalAttrHref + "&IsBuyNow=false";
+        wx.navigateTo({
+          url: href
+        });
+      }
+    },
+    buyNow() {
+      var href =
+        this.Data.GoodsBase.GoodsType == 4
+          ? this.frameAttrHref + "&IsBuyNow=true"
+          : this.normalAttrHref + "&IsBuyNow=true";
+      wx.navigateTo({
+        url: href
       });
     }
   }
