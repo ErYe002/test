@@ -4,10 +4,10 @@
       <!-- 海外购：顶部提示 -->
       <view class='haitao-tips' v-if='orderInfo.ShopId == 2 && isShowHaitaoTips'>
         <view class='text-box'>
-          <image src="" class='icon' />
+          <image src="/static/images/jw_info_orange.png" class='icon' />
           <view class='text'>温馨提示：订单中含有不支持7天无理由退货的商品，请确认相关商品信息及收货地址后提交订单</view>
         </view>
-        <view class='icon-close' bindtap='hideHaitaoTips'>x</view>
+        <view class='icon-close' @click='hideHaitaoTips'>x</view>
       </view>
       <view class='address-box'>
         <!-- 收货地址没有验证通过 -->
@@ -243,6 +243,7 @@ export default {
       isCheckProtocol:true,
       isHaitaoProttocol:true,
       isCoverAddress:true,
+      isShowHaitaoTips: true, //是否展示海淘顶部提示
       isShowGoodsList:false,
       RoleId:"",
       formModel: {
@@ -413,9 +414,7 @@ export default {
      * 隐藏海淘顶部tips
      */
     hideHaitaoTips() {
-      this.setData({
-        isShowHaitaoTips: false
-      })
+      this.isShowHaitaoTips = false;
     },
    
     //提交订单 去支付
