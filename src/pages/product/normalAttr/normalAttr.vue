@@ -364,7 +364,7 @@
           this.setTogerData(postData, 0);
           api.buyNoProperty(postData).then(({Data}) => {
             console.log("无属性 返回", Data);
-            this.goToCart();
+            this.goToCart(immediately);
           });
         } else if (buyDoubleProperty === this.mainData.BuyUrl) {
           if (this.postIdDouble.sphLId === '' && this.postIdDouble.sphRId === '') {
@@ -393,7 +393,7 @@
           this.setTogerData(postData, 2);
           api.buyDoubleProperty(postData).then(({Data}) => {
             console.log("双属性 返回", Data);
-            this.goToCart();
+            this.goToCart(immediately);
           });
         } else if (buyDoubleCustomizedProperty === this.mainData.BuyUrl) {
           if (this.postIdDouble.sphLId === '' && this.postIdDouble.sphRId === '') {
@@ -424,6 +424,7 @@
           this.setTogerData(postData, 2);
           api.buyDoubleCustomizedProperty(postData).then(({Data}) => {
             console.log("双属性散光定制 返回", Data);
+            this.goToCart(immediately);
           });
         } else if (buyNoPropertyFrame === this.mainData.BuyUrl) {
           postData.set('Quantity', this.noPropertyQuantity);
@@ -431,7 +432,7 @@
 
           api.buyNoPropertyFrame(postData).then(({Data}) => {
             console.log("无属性框架 返回", Data);
-            this.goToCart();
+            this.goToCart(immediately);
           });
         } else if (buySinglePropertyFrame === this.mainData.BuyUrl) {
           console.log(this.buySinglePropertyFrame);
@@ -441,7 +442,7 @@
           this.setTogerData(postData, 1);
           api.buySingleProperty(postData).then(({Data}) => {
             console.log("无属性框架 返回", Data);
-            this.goToCart();
+            this.goToCart(immediately);
           });
         }
       },
@@ -505,13 +506,22 @@
             }
             return leftQuantity + rightQuantity;
         }
+      },
+      goToCart(imid) {
+        if (imid) {
+          wx.switchTab({
+            url: '/pages/cart/main'
+          });
+        } else {
+          wx.showToast({
+            title: "加入购物车成功",
+            icon: "none"
+          });
+        }
+
       }
-    },
-    goToCart(){
-      wx.switchTab({
-        url: '/pages/cart/main'
-      });
     }
+
   }
   ;
 </script>
