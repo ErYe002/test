@@ -37,7 +37,7 @@
       <view class='idcard-box' v-if='orderInfo.ShopId == 2'>
         <label class='label'>
           <view class='text'>身份证</view>
-          <input class='input' placeholder='请输入收货人身份证号码' :value='orderInfo.IDCard' bindinput='idCardChange' />
+          <input class='input' placeholder='请输入收货人身份证号码' :value='formModel.IDCard' v-model="formModel.IDCard" type="idcard" confirm-type="done" />
         </label>
         <view class="idcard-tips">
           <view class="t">注：</view>
@@ -333,6 +333,7 @@ export default {
         this.formModel.selectedExpressId = this.orderInfo.SelectedExpressId
         this.formModel.selectedPayMode = this.orderInfo.SelectedPayMode;
         this.formModel.warehouseId = this.orderInfo.WarehouseId
+        this.formModel.IDCard = this.orderInfo.IDCard
         console.log(Data)
       });
     },
@@ -408,16 +409,23 @@ export default {
         duration: 3000
       })
     },
+    /**
+     * 隐藏海淘顶部tips
+     */
+    hideHaitaoTips() {
+      this.setData({
+        isShowHaitaoTips: false
+      })
+    },
    
     //提交订单 去支付
     submitOrder() {
-      console.log(this.formModel)
       if(this.formModel.selectedConsigneeId.length == 0 || this.formModel.selectedConsigneeId.length == '00000000-0000-0000-0000-000000000000'){
         this._showErrorToast('请先设置收货地址')
         return 
       }
       if (this.formModel.selectShopId == 2) {
-        if (!/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(info.IDCard)) {
+        if (!/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(this.formModel.IDCard)) {
           this._showErrorToast('身份证号不正确，请重新输入')
           return 
         }
@@ -436,7 +444,7 @@ export default {
         this._showErrorToast('请先勾选同意购买需知')
         return 
       }
-      
+      console.log(this.formModel)
       api.submitOrder({...this.formModel}).then(({Data,Msg,State}) => {
         console.log('收货地址 '+ Msg)
         if (State){
