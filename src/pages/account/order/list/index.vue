@@ -172,7 +172,10 @@ export default {
         success (res) {
           if (res.confirm) {
             api.cancelOrder(orderId).then(() => {
-              _this.searchEvent()
+              this.listQuery.page = 1
+              this.isNoData = false
+              this.orderList = []
+              this._getListEvent();
             })
           } 
         }
