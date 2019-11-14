@@ -32,7 +32,7 @@
            v-for="(item,index) in atttGlassListData[groupSelectPosition].EyeGlassList"
            :key="item.Seocode" @click="chooseGlassEvent(index)">
         <img :src="item.ImageUrl" class="image-goods"/>
-        <div class="goods-name">{{item.GoodsName}}}</div>
+        <div class="goods-name">{{item.GoodsName}}</div>
 
         <div class="price-layout">
           <div class="goods-price">{{item.SellPrice}}</div>

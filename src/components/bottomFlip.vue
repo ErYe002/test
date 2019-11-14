@@ -53,7 +53,7 @@ export default {
     width: 100%;
     background: #fff;
     box-sizing: border-box;
-    transform: translateY(100%);
+    transform: translateY(120%);
     transition: all 0.3s;
   }
 

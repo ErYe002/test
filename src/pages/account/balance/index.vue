@@ -15,10 +15,10 @@
       </div>
       <div class="record">
         <div id="record_button">
-          <div @click="record_changeFunc" class="border_bottom" :class="{buttonChecked:IsDetail}">
+          <div @click="record_changeFunc(true)" class="border_bottom" :class="{buttonChecked:IsDetail}">
             <p>余额明细</p>
           </div>
-          <div @click="record_changeFunc" class="border_bottom" :class="{buttonChecked:!IsDetail}">
+          <div @click="record_changeFunc(false)" class="border_bottom" :class="{buttonChecked:!IsDetail}">
             <p>提现记录</p>
           </div>
         </div>
@@ -96,12 +96,10 @@ export default {
       balanceDetailList:[],
       cashHistoryList:[],
       //余额明细索引
-      detail_index:2,
+      detail_index:1,
       history_index:1,
       IsDetailEnd:false,
       IsHistoryEnd:false,
-      //提现页面是否第一次加载
-      IsHistoryFirstLoad:true,
       NotClear:true
     }
   },
@@ -147,11 +145,17 @@ export default {
       })
     },
     //页面切换
-    record_changeFunc(){
-      this.IsDetail=!this.IsDetail;
-      if(this.IsHistoryFirstLoad){
+    record_changeFunc(isDetail){
+      this.IsDetail=isDetail;
+      if(this.IsDetail){
+        this.balanceDetailList = [];
+        this.detail_index = 1;
+        this.get_getBalanceDetails({pageIndex:this.detail_index});
+      }
+      else{
+        this.cashHistoryList = [];
+        this.history_index = 1;
         this.get_BalanceWithdraws({pageIndex:this.history_index});
-        this.IsHistoryFirstLoad = false;
       }
     },
     get_getBalanceDetails({pageIndex=this.detail_index}){
