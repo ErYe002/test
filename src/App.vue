@@ -59,6 +59,8 @@ export default {
 </script>
 
 <style lang="less">
+@import "./font.css";
+
 //生成按钮类型
 .generate_btn_type(@bgColor: #cab894, @bdColor: #cab894, @color: #fff) {
   background: @bgColor;

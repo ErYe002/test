@@ -8,50 +8,55 @@
     </section>
     <section class="nav-box">
       <scroll-view class="nav-list" scroll-x enable-flex>
-        <p class="n-item active">
-          <b>推荐</b>
-          <em>RECOMMEND</em>
-        </p>
-        <p class="n-item">
-          <b>拼团</b>
-          <em>COLLAGE</em>
-        </p>
-        <p class="n-item">
-          <b>海淘</b>
-          <em>OVERSEAS</em>
-        </p>
-        <p class="n-item">
-          <b>框架</b>
-          <em>FRAMES</em>
-        </p>
-        <p class="n-item">
-          <b>更多</b>
-          <em>MORE</em>
+        <p
+          :class="{'n-item': true, active: item.Id == currentMenuId}"
+          v-for="item in menu"
+          :key="item.Id"
+        >
+          <b>{{item.ChName}}</b>
+          <em>{{item.EnName}}</em>
         </p>
       </scroll-view>
     </section>
-    <recommend/>
+    <recommend />
   </article>
 </template>
 
 <script>
-import recommend from './components/recommend'
-import oversea from './components/oversea'
-import frames from './components/frames'
+import recommend from "./components/recommend";
+import oversea from "./components/oversea";
+import frames from "./components/frames";
+import api from "@/api";
 
 export default {
   data() {
-    return {};
+    return {
+      menu: [],
+      currentMenuId: 1
+    };
   },
-  components:{
+  components: {
     recommend,
     oversea,
     frames
   },
-  methods: {},
+  methods: {
+    _getMenuData() {
+      api.getHomeMenuData().then(({ Data }) => {
+        let list = Data.slice(0, 4);
+        list.push({
+          Id: 0,
+          ChName: "更多",
+          EnName: "MORE"
+        });
+        this.menu = list;
+        this.currentMenuId = this.menu[0]["Id"];
+      });
+    }
+  },
 
   created() {
-    // let app = getApp()
+    this._getMenuData();
   }
 };
 </script>
@@ -110,5 +115,4 @@ export default {
     }
   }
 }
-
 </style>
