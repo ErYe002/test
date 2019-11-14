@@ -33,6 +33,10 @@ const api = {
   getCombineData(goodsId) {
     return http.post(`/Goods/CompGoods?GoodsId=${goodsId}`);
   },
+  //打包商品获取属性
+  getCombineAttr(goodsId) {
+    return http.post(`/Goods/GoodsField?GoodsId=${goodsId}`);
+  },
 };
 
 export default api;

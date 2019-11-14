@@ -95,6 +95,7 @@ export default {
       },
       startDate:"",
       endDate: "",
+      userBirthday: "",
       isShow: false,
       tempSex: -1
     }
@@ -111,7 +112,7 @@ export default {
       const date = new Date();
       let year = date.getFullYear();
       this.startDate = (year-90)+"-01-01";
-      this.endDate = year + "-" + date.getMonth() + "-" + date.getDate();
+      this.endDate = year + "-" + (date.getMonth() + 1) + "-" + date.getDate();
       // console.log(this.startDate, this.endDate);
     },
     _setHeadPortrait(){
@@ -133,6 +134,16 @@ export default {
     },
     _getPersonnelProfile(){
       api.getPersonnelProfile().then(({Data})=>{
+        console.log(Data);
+        // Data.Birthday = "2019-10-10T11"
+        let birthday = "";
+        if(Data.Birthday != null && Data.Birthday != ''){
+          let tempArr = Data.Birthday.match(/(\S*)T/);
+          if(tempArr != null && tempArr.length > 0){
+            birthday = tempArr[1]
+          }
+        }
+
         this.userInfoModel = {
           HeadUrl: Data.HeadUrl,
           UserName: Data.UserName,
@@ -140,7 +151,7 @@ export default {
           LevelNum: Data.RoleId,
           GradeName: Data.GradeName,
           Sex: Data.Sex,
-          Birthday: Data.Birthday.match(/(\S*)T/)[1]
+          Birthday: birthday //Data.Birthday.match(/(\S*)T/)[1]
         };
       });
     },
@@ -218,6 +229,7 @@ export default {
   }
   .picker-Msg{
     line-height: 50px;
+    height: 50px;
   }
 }
 .sex-line{
