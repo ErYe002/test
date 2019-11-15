@@ -10,7 +10,7 @@
             v-if="model.BannerList != null && model.BannerList.length > 0"
           >
             <swiper-item v-for="item in model.BannerList" :key="item.Id">
-              <img :src="item.ImageUrl" />
+              <img :src="item.ImageUrl" @click="$navigateTo(item.TargetUrl)"/>
             </swiper-item>
           </swiper>
           <ul class="pages">
@@ -34,7 +34,7 @@
               class="goods-list"
               v-if="model.TwoFloorFourSmallGoodsList != null && model.TwoFloorFourSmallGoodsList.length >0"
             >
-              <a class="link" v-for="item in model.TwoFloorFourSmallGoodsList" :key="item.id">
+              <a class="link" v-for="item in model.TwoFloorFourSmallGoodsList" :key="item.id" :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'">
                 <img :src="item.ImageUrl" />
               </a>
             </div>
@@ -59,11 +59,11 @@
           class="grid-box"
           v-if="model.OneBigThreeSmallList != null && model.OneBigThreeSmallList.length > 0"
         >
-          <img class="left-img" :src="model.OneBigThreeSmallList[0]['ImageUrl']" />
+          <img class="left-img" :src="model.OneBigThreeSmallList[0]['ImageUrl']" @click="$navigateTo(model.OneBigThreeSmallList[0]['TargetUrl'])"/>
           <div class="right-box">
-            <img class="img" :src="model.OneBigThreeSmallList[1]['ImageUrl']" />
-            <img class="img" :src="model.OneBigThreeSmallList[2]['ImageUrl']" />
-            <img class="img" :src="model.OneBigThreeSmallList[3]['ImageUrl']" />
+            <img class="img" :src="model.OneBigThreeSmallList[1]['ImageUrl']" @click="$navigateTo(model.OneBigThreeSmallList[1]['TargetUrl'])"/>
+            <img class="img" :src="model.OneBigThreeSmallList[2]['ImageUrl']" @click="$navigateTo(model.OneBigThreeSmallList[2]['TargetUrl'])"/>
+            <img class="img" :src="model.OneBigThreeSmallList[3]['ImageUrl']" @click="$navigateTo(model.OneBigThreeSmallList[3]['TargetUrl'])"/>
           </div>
         </section>
       </article>
@@ -71,9 +71,9 @@
         class="three-floor-wrap"
         v-if="model.OneBigTwoSmallList != null && model.OneBigTwoSmallList.length > 0"
       >
-        <img :src="model.OneBigTwoSmallList[0]['ImageUrl']" class="big-img" />
-        <img :src="model.OneBigTwoSmallList[1]['ImageUrl']" class="img" />
-        <img :src="model.OneBigTwoSmallList[2]['ImageUrl']" class="img" />
+        <img :src="model.OneBigTwoSmallList[0]['ImageUrl']" class="big-img" @click="$navigateTo(model.OneBigTwoSmallList[0]['TargetUrl'])"/>
+        <img :src="model.OneBigTwoSmallList[1]['ImageUrl']" class="img" @click="$navigateTo(model.OneBigTwoSmallList[1]['TargetUrl'])"/>
+        <img :src="model.OneBigTwoSmallList[2]['ImageUrl']" class="img" @click="$navigateTo(model.OneBigTwoSmallList[2]['TargetUrl'])"/>
       </article>
       <article class="four-floor-wrap">
         <section class="brand-box" v-if="brandList.length > 0">
@@ -81,92 +81,64 @@
           <div class="list-box">
             <ul class="list">
               <li class="item" v-for="item in brandList" :key="item.Id">
-                <a>
+                <a @click="$navigateTo(item.TargetUrl)">
                   <img class="normal" :src="item.ColorImageUrl" />
                   <!-- <img class="colorful" src="https://pic.keede.com/AppImages/8b0280ce-27ba-415d-86b5-5d12effaecbc.png"/> -->
                 </a>
               </li>
             </ul>
             <p class="dorpdown-icon">
-              <img src="/static/images/icon_dropdown.png" v-if="model.BrandList.length > 12" />
+              <img
+                :class="{up: brandList.length > 12}"
+                src="/static/images/icon_dropdown.png"
+                v-if="model.BrandList.length > 12"
+                @click="toggleBrandEvent"
+              />
             </p>
           </div>
         </section>
-        <section class="seckill-box">
+        <section
+          class="seckill-box"
+          v-if="model.SeckillList != null && model.SeckillList.length > 0 && currentSeckillIdx >= 0"
+        >
           <p class="title">
             <b>每日秒杀 先到先得</b>
             <span>恢复原价代表已抢光</span>
           </p>
           <div class="goods-box">
-            <div class="goods">
-              <a class="link">
-                <div class="img-box">
-                  <img
-                    src="https://pic.keede.com/MobileMain/92b11fc4-b54b-4438-b09c-25239241862b-150-150.jpg"
-                    class="img"
-                  />
-                  <span class="tag">省</span>
-                </div>
-                <p class="info">
-                  <b class="price">¥909</b>
-                  <span class="btn">立即抢</span>
-                </p>
-              </a>
-              <a class="link">
-                <div class="img-box">
-                  <img
-                    src="https://pic.keede.com/MobileMain/92b11fc4-b54b-4438-b09c-25239241862b-150-150.jpg"
-                    class="img"
-                  />
-                  <span class="tag">省</span>
-                </div>
-                <p class="info">
-                  <b class="price">¥909</b>
-                  <span class="btn">立即抢</span>
-                </p>
-              </a>
+            <div :class="{goods: true, locked: model.SeckillList[currentSeckillIdx]['status'] != '抢购中'}">
+              <template v-if="model.SeckillList[currentSeckillIdx].currentSeckillLeftList != null && model.SeckillList[currentSeckillIdx].currentSeckillLeftList.length > 0">
+                <a class="link" :href="model.SeckillList[currentSeckillIdx]['status'] == '抢购中' ? ('/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false') : fasle" v-for="item in model.SeckillList[currentSeckillIdx].currentSeckillLeftList" :key="item.GoodsId">
+                  <div class="img-box">
+                    <img :src="item.ImageUrl" class="img" />
+                    <span class="tag">省</span>
+                  </div>
+                  <p class="info">
+                    <b class="price">¥{{item.PromotionPrice}}</b>
+                    <span class="btn">立即抢</span>
+                  </p>
+                </a>
+              </template>
             </div>
             <div class="time">
-              <div class="t-text">
-                <span class="clock">0:00</span>
-                <span class="text">已结束</span>
-              </div>
-              <div class="t-text current">
-                <span class="clock">0:00</span>
-                <span class="text">抢购中</span>
-              </div>
-              <div class="t-text">
-                <span class="clock">0:00</span>
-                <span class="text">未开始</span>
+              <div :class="{'t-text': true, current: idx == currentSeckillIdx}" v-for="(item, idx) in model.SeckillList" :key="item.Id" @click="changeSeckillIdx(idx)">
+                <span class="clock">{{item.shortTime}}</span>
+                <span class="text">{{item['status']}}</span>
               </div>
             </div>
-            <div class="goods locked">
-              <a class="link">
-                <div class="img-box">
-                  <img
-                    src="https://pic.keede.com/MobileMain/92b11fc4-b54b-4438-b09c-25239241862b-150-150.jpg"
-                    class="img"
-                  />
-                  <span class="tag">省</span>
-                </div>
-                <p class="info">
-                  <b class="price">¥909</b>
-                  <span class="btn">立即抢</span>
-                </p>
-              </a>
-              <a class="link">
-                <div class="img-box">
-                  <img
-                    src="https://pic.keede.com/MobileMain/92b11fc4-b54b-4438-b09c-25239241862b-150-150.jpg"
-                    class="img"
-                  />
-                  <span class="tag">省</span>
-                </div>
-                <p class="info">
-                  <b class="price">¥909</b>
-                  <span class="btn">立即抢</span>
-                </p>
-              </a>
+            <div :class="{goods: true, locked: model.SeckillList[currentSeckillIdx]['status'] != '抢购中'}">
+              <template v-if="model.SeckillList[currentSeckillIdx].currentSeckillRightList != null && model.SeckillList[currentSeckillIdx].currentSeckillRightList.length > 0">
+                <a class="link" :href="model.SeckillList[currentSeckillIdx]['status'] == '抢购中' ? ('/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false') : fasle" v-for="item in model.SeckillList[currentSeckillIdx].currentSeckillRightList" :key="item.GoodsId">
+                  <div class="img-box">
+                    <img :src="item.ImageUrl" class="img" />
+                    <span class="tag">省</span>
+                  </div>
+                  <p class="info">
+                    <b class="price">¥{{item.PromotionPrice}}</b>
+                    <span class="btn">立即抢</span>
+                  </p>
+                </a>
+              </template>
             </div>
           </div>
         </section>
@@ -196,19 +168,24 @@
       <article class="like-goods-wrap" v-if="goodsList.length > 0">
         <p class="title">GUESS YOU LIKE IT | 猜你喜欢</p>
         <ul class="list">
-          <a :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'" class="item" v-for="item in goodsList" :key="item.SeoCode">
-            <img :src="item.BrandImageUrl" class="brand-img"/>
-            <img
-              :src="item.ImageUrl"
-              class="img"
-            />
+          <a
+            :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'"
+            class="item"
+            v-for="item in goodsList"
+            :key="item.SeoCode"
+          >
+            <img :src="item.BrandImageUrl" class="brand-img" />
+            <img :src="item.ImageUrl" class="img" />
             <p class="name">{{item.GoodsName}}</p>
             <p class="desc">{{item.ShortDescription}}</p>
             <p class="info">
               <span class="rate">{{item.PraiseProportion != '' ? (item.PraiseProportion+'好评') : ''}}</span>
               <span class="price-info">
                 <em class="price">¥{{item.SalePrice}}</em>
-                <em class="tag" v-if="item.PriceLabel != null && item.PriceLabel != ''">{{item.PriceLabel}}</em>
+                <em
+                  class="tag"
+                  v-if="item.PriceLabel != null && item.PriceLabel != ''"
+                >{{item.PriceLabel}}</em>
                 <img src="/static/images/icon_small_cart.png" class="icon" />
               </span>
             </p>
@@ -223,6 +200,7 @@
 <script>
 import api from "@/api";
 import { mapState } from "vuex";
+import tools from '@/utils'
 
 export default {
   data() {
@@ -234,7 +212,8 @@ export default {
       size: 10,
       totalPage: 0,
       isLoding: false,
-      goodsList: []
+      goodsList: [],
+      currentSeckillIdx: 1
     };
   },
   computed: {
@@ -255,9 +234,44 @@ export default {
     swiperChangeEvent(e) {
       this.swiperIndex = e.mp.detail.current;
     },
+    //显示所有品牌
+    toggleBrandEvent() {
+      this.brandList =
+        this.brandList.length == this.model.BrandList.length
+          ? this.model.BrandList.slice(0, 12)
+          : this.model.BrandList;
+    },
+    changeSeckillIdx(idx){
+      this.currentSeckillIdx = idx
+    },
     _getPageData() {
       api.getHomeRecommendData().then(({ Data }) => {
         if (Data != null && Data.BrandList != null) {
+          //处理秒杀数据
+          Data.SeckillList.forEach((item, idx) => {
+            let startTime = new Date(item.StartTime);
+            let endTime = new Date(item.EndTime);
+            let nowTime = new Date();
+            if (startTime > nowTime) {
+              //秒杀未开始
+              item.status = "稍等抢";
+            } else if (startTime < nowTime && endTime > nowTime) {
+              //秒杀中
+              item.status = "抢购中";
+            } else if (endTime < nowTime) {
+              //秒杀结束
+              item.status = "已结束";
+            }
+            if (item.GoodsList.length > 2) {
+                item.currentSeckillLeftList = [...item.GoodsList.slice(0, 2)];
+                item.currentSeckillRightList = [
+                ...item.GoodsList.slice(2, item.GoodsList.length)
+              ];
+            } else {
+              item.currentSeckillLeftList = [...item.GoodsList];
+            }
+            item.shortTime = tools.formatDate('hh:mm', startTime)
+          });
           this.brandList =
             Data.BrandList.length > 12
               ? Data.BrandList.slice(0, 12)
@@ -552,6 +566,9 @@ export default {
           width: 20.5px;
           height: 10.5px;
           top: -2px;
+          &.up {
+            transform: rotateZ(180deg);
+          }
         }
       }
     }
@@ -579,10 +596,10 @@ export default {
       border: 0.5px solid #e9e9e9;
       padding: 10px 0;
       .time {
-        flex: 1;
         border-left: 0.5px solid #e9e9e9;
         border-right: 0.5px solid #e9e9e9;
         padding: 0 7px;
+        flex: 1;
         .t-text {
           display: flex;
           flex-direction: column;
@@ -690,6 +707,7 @@ export default {
         margin: 0 2.5px;
         border-radius: 10px;
         // overflow: hidden;
+        text-align: center;
         .img {
           display: block;
           width: 85.5px;
@@ -720,8 +738,9 @@ export default {
           }
         }
         .tag {
-          display: block;
-          width: 59.5px;
+          display: inline-block;
+          // width: 59.5px;
+          padding: 0 6px;
           height: 18px;
           line-height: 18px;
           font-size: 12px;
