@@ -131,6 +131,7 @@
       :sph-list="sphList"
       :cyl-list="cylList"
       :axis-list="axisList"
+      :sale-stock-type="SaleStockType"
       @backData="gdBackInfo"
     />
   </div>
@@ -184,11 +185,12 @@
         MaxDeduction: '',
         IsFreeCarriage: '',
         RealGoodsId: '',
-        goodsId: ''
+        goodsId: '',
+        IsConfirmedBuy: false
       };
     },
     onLoad(options) {
-      console.log("传递过来的参数", options.MarketPrice);
+      console.log("传递过来的参数", options);
       this.MaxSellNumber = options.MaxSellNumber;
       this.GoodsName = options.GoodsName;
       this.SeriesId = options.SeriesId;
@@ -234,7 +236,7 @@
           this.SeriesItems = Data.MainGoods.SeriesItems;
           this.GoodsFields = Data.MainGoods.GoodsFields;
           this.setGdInfo(Data.MainGoods.GoodsFields);
-
+          // this.SaleStockType = Data.MainGoods.SaleStockType;
 
           //设置当前选中的系列坐标
           if (Data.MainGoods.SeriesItems !== null) {
@@ -326,6 +328,7 @@
           }
           console.log('返回', this.postShowIdSingle);
         }
+        this.IsConfirmedBuy = Data.isConfirmedBuy;
       },
       setGdInfo(gdlist) {
         for (let item of gdlist) {
@@ -356,7 +359,7 @@
 
         let postData = new Map();
         postData.set('goodsId', this.mainData.MainGoods.GoodsId);
-        postData.set('IsConfirmedBuy', 'false');
+        postData.set('IsConfirmedBuy', this.IsConfirmedBuy);
         postData.set('ShopId', this.mainData.MainGoods.ShopId);
 
         if (buyNoProperty === this.mainData.BuyUrl) {
@@ -365,6 +368,8 @@
           api.buyNoProperty(postData).then(({Data}) => {
             console.log("无属性 返回", Data);
             this.goToCart(immediately);
+          }).catch((Msg)=>{
+            this.confirmedBuyShow(Msg);
           });
         } else if (buyDoubleProperty === this.mainData.BuyUrl) {
           if (this.postIdDouble.sphLId === '' && this.postIdDouble.sphRId === '') {
@@ -391,9 +396,11 @@
           }
 
           this.setTogerData(postData, 2);
-          api.buyDoubleProperty(postData).then(({Data}) => {
-            console.log("双属性 返回", Data);
+          api.buyDoubleProperty(postData).then(({Data, Msg, State}) => {
+            console.log("双属性 返回", Data, Msg, State);
             this.goToCart(immediately);
+          }).catch((Msg)=>{
+            this.confirmedBuyShow(Msg);
           });
         } else if (buyDoubleCustomizedProperty === this.mainData.BuyUrl) {
           if (this.postIdDouble.sphLId === '' && this.postIdDouble.sphRId === '') {
@@ -425,6 +432,8 @@
           api.buyDoubleCustomizedProperty(postData).then(({Data}) => {
             console.log("双属性散光定制 返回", Data);
             this.goToCart(immediately);
+          }).catch((Msg)=>{
+            this.confirmedBuyShow(Msg);
           });
         } else if (buyNoPropertyFrame === this.mainData.BuyUrl) {
           postData.set('Quantity', this.noPropertyQuantity);
@@ -433,6 +442,8 @@
           api.buyNoPropertyFrame(postData).then(({Data}) => {
             console.log("无属性框架 返回", Data);
             this.goToCart(immediately);
+          }).catch((Msg)=>{
+            this.confirmedBuyShow(Msg);
           });
         } else if (buySinglePropertyFrame === this.mainData.BuyUrl) {
           console.log(this.buySinglePropertyFrame);
@@ -443,6 +454,8 @@
           api.buySingleProperty(postData).then(({Data}) => {
             console.log("无属性框架 返回", Data);
             this.goToCart(immediately);
+          }).catch((Msg)=>{
+            this.confirmedBuyShow(Msg);
           });
         }
       },
@@ -519,6 +532,25 @@
           });
         }
 
+      },
+      confirmedBuyShow(Msg){
+        let self = this;
+        wx.showModal({
+          title: '提示',
+          content: Msg,
+          icon: "none",
+          confirmText: '确定',
+          cancelText: '取消',
+          confirmColor: '#CAB894',
+          success (res) {
+            if (res.confirm) {
+              console.log('用户点击确定');
+              self.IsConfirmedBuy = true;
+            } else if (res.cancel) {
+              console.log('用户点击取消');
+            }
+          }
+        });
       }
     }
 
