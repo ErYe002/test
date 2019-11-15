@@ -3,7 +3,7 @@
     <template v-if="model">
       <section class="info-box">
         <p class="title">
-          <img class="icon" src="/static/images/haiwaigou_tag.png" />
+          <text class="ht-tag">海淘</text>
           <span>订单编号：{{model.OrderNo}}</span>
         </p>
       </section>
@@ -160,5 +160,14 @@ export default {
 
 .timeline-box {
   padding: 10px 18px 18px;
+}
+
+.ht-tag {
+  font-size: 12px;
+  color: #fff;
+  background: #000;
+  padding: 2px 4px;
+  margin-right: 3px;
+  font-weight: 300;
 }
 </style>

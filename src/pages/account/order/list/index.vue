@@ -3,8 +3,19 @@
     <article class="fixed-top">
       <section class="search-box">
         <img class="icon" src="/static/images/icon_search.png" />
-        <input class="input" v-model="listQuery.queryString" placeholder="商品名称/订单号" @confirm="searchEvent" confirm-type="搜索"/>
-        <img v-if="listQuery.queryString != ''" @click="clearInputEvent" class="icon-clear" src="/static/images/clear-icon.png" />
+        <input
+          class="input"
+          v-model="listQuery.queryString"
+          placeholder="商品名称/订单号"
+          @confirm="searchEvent"
+          confirm-type="搜索"
+        />
+        <img
+          v-if="listQuery.queryString != ''"
+          @click="clearInputEvent"
+          class="icon-clear"
+          src="/static/images/clear-icon.png"
+        />
       </section>
       <section class="type-box" v-if="listQuery.queryString == ''">
         <ul class="type-list">
@@ -33,7 +44,10 @@
           <li class="o-item" v-for="(item, idx) in orderList" :key="idx">
             <a :href="'/pages/account/order/detail/main?orderId=' + item.OrderId" class="link">
               <div class="title">
-                <span class="order-no" @click.stop="copyOrderNo(item.OrderNo)"><img class="icon" v-if="item.ShopId == 2" src="/static/images/haiwaigou_tag.png"/>订单编号：{{item.OrderNo}}</span>
+                <span class="order-no" @click.stop="copyOrderNo(item.OrderNo)">
+                  <text class="ht-tag" v-if="item.ShopId == 2">海淘</text>
+                  订单编号：{{item.OrderNo}}
+                </span>
                 <span class="ops">
                   <span class="status">{{item.OrderState}}</span>
                   <img class="icon" src="/static/images/icon_right_grey.png" />
@@ -55,17 +69,26 @@
             </p>
             <ul class="btn-list">
               <li class="b-item" v-if="item.IsCancel">
-                <button class="kd-btn btn-default btn-small" @click="cancelOrderEvent(item.OrderId)">取消订单</button>
+                <button
+                  class="kd-btn btn-default btn-small"
+                  @click="cancelOrderEvent(item.OrderId)"
+                >取消订单</button>
               </li>
               <li class="b-item" v-if="item.ShopId != 2 && item.IsAfterSale">
-                <button class="kd-btn btn-default btn-small" @click="toAppTips('可得小程序暂时不支持退换货功能哦，请下载可得眼镜APP使用此功能')">退换货</button>
+                <button
+                  class="kd-btn btn-default btn-small"
+                  @click="toAppTips('可得小程序暂时不支持退换货功能哦，请下载可得眼镜APP使用此功能')"
+                >退换货</button>
               </li>
               <li class="b-item" v-if="item.IsLogistics">
-                <a class="kd-btn btn-default btn-small" :href="'/pages/account/logistics/main?shopId='+item.ShopId+'&orderId='+item.OrderId">查看物流</a>
+                <a
+                  class="kd-btn btn-default btn-small"
+                  :href="'/pages/account/logistics/main?shopId='+item.ShopId+'&orderId='+item.OrderId"
+                >查看物流</a>
               </li>
               <!-- <li class="b-item" v-if="item.IsAppraise">
                 <button class="kd-btn btn-default btn-small">评价</button>
-              </li> -->
+              </li>-->
               <li class="b-item" v-if="item.IsContactAirlines">
                 <button class="kd-btn btn-default btn-small" open-type="contact">联系客服</button>
               </li>
@@ -82,8 +105,14 @@
             </div>
             <div class="waitDivSecond">
               <p class="waitCommentGoodsName">{{item.GoodsName}}</p>
-              <a class="gotoOrder" :href="'/pages/account/order/detail/main?orderId='+item.OrderId">查看订单</a>
-              <a class="gotoComment" :href="'/pages/account/order/comment/main?orderId=' + item.OrderId +'&goodsId=' + item.GoodsId + '&goodsImageUrl=' + item.GoodsImageUrl">评价晒单</a>
+              <a
+                class="gotoOrder"
+                :href="'/pages/account/order/detail/main?orderId='+item.OrderId"
+              >查看订单</a>
+              <a
+                class="gotoComment"
+                :href="'/pages/account/order/comment/main?orderId=' + item.OrderId +'&goodsId=' + item.GoodsId + '&goodsImageUrl=' + item.GoodsImageUrl"
+              >评价晒单</a>
             </div>
           </li>
         </template>
@@ -119,8 +148,8 @@ export default {
     };
   },
   onLoad(options) {
-    if(options && options.queryState){
-      this.listQuery.queryState = options.queryState
+    if (options && options.queryState) {
+      this.listQuery.queryState = options.queryState;
     }
     this._getListEvent();
   },
@@ -136,23 +165,23 @@ export default {
   methods: {
     switchTypeEvent(state) {
       this.listQuery.queryState = state;
-      this.listQuery.page = 1
-      this.isNoData = false
-      this.orderList = []
+      this.listQuery.page = 1;
+      this.isNoData = false;
+      this.orderList = [];
       this._getListEvent();
     },
-    searchEvent(){
+    searchEvent() {
       this.listQuery.queryState = 0;
-      this.listQuery.page = 1
-      this.isNoData = false
-      this.orderList = []
+      this.listQuery.page = 1;
+      this.isNoData = false;
+      this.orderList = [];
       this._getListEvent();
     },
-    clearInputEvent(){
-      this.listQuery.queryString = ''
+    clearInputEvent() {
+      this.listQuery.queryString = "";
       this.listQuery.queryState = 0;
-      this.listQuery.page = 1
-      this.isNoData = false
+      this.listQuery.page = 1;
+      this.isNoData = false;
       this._getListEvent();
     },
     toAppTips(content) {
@@ -163,35 +192,35 @@ export default {
       });
     },
     //取消订单
-    cancelOrderEvent(orderId){
-      const _this = this
+    cancelOrderEvent(orderId) {
+      const _this = this;
       wx.showModal({
         title: "提示",
-        content: '您确定要取消订单吗？',
+        content: "您确定要取消订单吗？",
         confirmColor: "#cab894",
-        success (res) {
+        success(res) {
           if (res.confirm) {
             api.cancelOrder(orderId).then(() => {
-              this.listQuery.page = 1
-              this.isNoData = false
-              this.orderList = []
-              this._getListEvent();
-            })
-          } 
+              _this.listQuery.page = 1;
+              _this.isNoData = false;
+              _this.orderList = [];
+              _this._getListEvent();
+            });
+          }
         }
       });
     },
-    copyOrderNo(text){
+    copyOrderNo(text) {
       wx.setClipboardData({
         data: text,
-        success(){
+        success() {
           wx.showToast({
-            title: '已复制订单号',
-            icon: 'success',
+            title: "已复制订单号",
+            icon: "success",
             duration: 2000
-          })
+          });
         }
-      })
+      });
     },
     _getListEvent() {
       this._reuqest().then(({ Data, TotalPage }) => {
@@ -218,18 +247,16 @@ export default {
               .finally(() => {
                 this.isLoading = false;
               });
-          }
-          else if(this.listQuery.queryState == 6){
+          } else if (this.listQuery.queryState == 6) {
             api
               .pendingComments(this.listQuery.page)
-              .then(res=>{
+              .then(res => {
                 resolve(res);
               })
-              .finally(()=>{
+              .finally(() => {
                 this.isLoading = false;
               });
-          }
-           else {
+          } else {
             //按订单状态查询订单
             api
               .getOrderList({ ...this.listQuery })
@@ -342,10 +369,11 @@ page {
           justify-content: space-between;
           border-bottom: 0.5px solid #e5e5e5;
           padding: 10px;
-          .order-no{
+          .order-no {
             display: flex;
             align-items: center;
-            .icon{
+            flex: 1;
+            .icon {
               display: block;
               width: 48px;
               height: 15px;
@@ -402,28 +430,28 @@ page {
       }
     }
 
-    .wait_evaluate{
-      display:flex;
-      flex-direction:row;
+    .wait_evaluate {
+      display: flex;
+      flex-direction: row;
       padding-bottom: 5px;
-      border-bottom: 1px solid gainsboro; 
+      border-bottom: 1px solid gainsboro;
       margin-bottom: 10px;
-      .waitDivFirst{
-        margin-right:10px;
-        .waitCommentGoodsImg{
-          height:50px;
-          width:50px;
+      .waitDivFirst {
+        margin-right: 10px;
+        .waitCommentGoodsImg {
+          height: 50px;
+          width: 50px;
         }
-      } 
+      }
       .waitDivSecond {
         position: relative;
-        .waitCommentGoodsName{
+        .waitCommentGoodsName {
           font-size: 12px;
         }
-        .gotoOrder{
-          border:1px solid #ccc;
+        .gotoOrder {
+          border: 1px solid #ccc;
           border-radius: 5px;
-          color:#ccc;
+          color: #ccc;
           position: absolute;
           right: 80px;
           bottom: 0px;
@@ -433,12 +461,12 @@ page {
           width: 55px;
           display: flex;
           justify-content: center;
-          align-items:center;
+          align-items: center;
         }
-        .gotoComment{
-          border:1px solid #cab894;
+        .gotoComment {
+          border: 1px solid #cab894;
           border-radius: 5px;
-          color:#cab894;
+          color: #cab894;
           position: absolute;
           right: 10px;
           bottom: 0px;
@@ -448,11 +476,10 @@ page {
           width: 55px;
           display: flex;
           justify-content: center;
-          align-items:center;
+          align-items: center;
         }
       }
     }
-
   }
   .no-more-tips,
   .no-data-box {
@@ -467,5 +494,14 @@ page {
     width: 20px;
     height: 20px;
   }
+}
+
+.ht-tag {
+  font-size: 12px;
+  color: #fff;
+  background: #000;
+  padding: 2px 4px;
+  margin-right: 3px;
+  font-weight: 300;
 }
 </style>
