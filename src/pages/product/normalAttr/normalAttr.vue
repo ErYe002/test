@@ -186,7 +186,8 @@
         IsFreeCarriage: '',
         RealGoodsId: '',
         goodsId: '',
-        IsConfirmedBuy: false
+        IsConfirmedBuy: false,
+        shopId:''
       };
     },
     onLoad(options) {
@@ -236,6 +237,7 @@
           this.SeriesItems = Data.MainGoods.SeriesItems;
           this.GoodsFields = Data.MainGoods.GoodsFields;
           this.setGdInfo(Data.MainGoods.GoodsFields);
+          this.shopId = Data.MainGoods.ShopId;
           // this.SaleStockType = Data.MainGoods.SaleStockType;
 
           //设置当前选中的系列坐标
@@ -523,7 +525,7 @@
       goToCart(imid) {
         if (imid) {
           wx.switchTab({
-            url: '/pages/cart/main'
+            url: '/pages/cart/main?shopId='+this.shopId
           });
         } else {
           wx.showToast({
