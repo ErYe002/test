@@ -101,7 +101,7 @@ goodsId=${mapParms.get('goodsId')}
     return this.getMapParams('/cart/BuySingleProperty', mapParms);
   },
   getMapParams(url, mapPrams, otherUrl) {
-    return http.post(url + `?goodsId=${mapPrams.get('goodsId')}
+    return http.postByNoErrorTips(url + `?goodsId=${mapPrams.get('goodsId')}
 &IsConfirmedBuy=${mapPrams.get('IsConfirmedBuy')}
 &ShopId=${mapPrams.get('ShopId')}
 &MaxSellNumber=${mapPrams.get('MaxSellNumber')}
