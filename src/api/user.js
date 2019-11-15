@@ -22,7 +22,7 @@ const api = {
   },
   //通过code获取用户openid等信息
   getAppMainInfo(code) {
-    return http.post(
+    return http.postByNoLoading(
       '/ThirdPartnerLogin/WechatSamllApplciationOpenId?code=' + code
     );
   },

@@ -808,6 +808,7 @@ export default {
         this.domesticShop = Data.DomesticShop;
         this.overseasShop = Data.OverseasShop;
       });
+      this.$getCartCount()
     },
     //选中单个商品
     selectGoodsEvent(uniqueId) {

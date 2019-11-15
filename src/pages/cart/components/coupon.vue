@@ -40,6 +40,10 @@
         </div>
       </li>
     </scroll-view>
+    <p class="no-data" v-else>
+      <img src="/static/images/logo_text.png"/>
+      没有可用的优惠券
+    </p>
   </bottom-flip>
 </template>
 
@@ -73,6 +77,8 @@ export default {
         this.$emit('update:isShow', val)
         if(val == true){
           this._getCouponList()
+        } else {
+          this.couponList = []
         }
       },
       immediate: true
@@ -235,6 +241,19 @@ export default {
     &:last-child {
       border-bottom: none;
     }
+  }
+}
+
+.no-data{
+  text-align: center;
+  color: #666;
+  font-size: 12px;
+  padding-bottom: 50px;
+  img{
+    display: block;
+    width: 70px;
+    height: 70px;
+    margin: 40px auto 10px;
   }
 }
 </style>

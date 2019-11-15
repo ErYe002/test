@@ -69,7 +69,7 @@
         </div>-->
       </div>
     </section>
-    <section class="btn-box">
+    <section class="btn-box" v-if="info != null">
       <button class="kd-btn btn-lg" @click="saveEvent">确定</button>
     </section>
   </bottom-flip>
@@ -256,6 +256,26 @@ export default {
         })
         .then(({ Data }) => {
           this.$emit("done");
+        }).catch((msg) => {
+          if(msg.indexOf('愿意等待') != -1){
+            let _this = this
+            wx.showModal({
+              title: "提示",
+              content: msg,
+              confirmColor: "#cab894",
+              success(res) {
+                if (res.confirm) {
+                  _this._saveChangeRequest(selectedProperty, quantity, true)
+                }
+              }
+            });
+          } else {
+            wx.showToast({
+              title: msg,
+              icon: 'none',
+              duration: 5000
+            });
+          }
         });
     }
   }

@@ -53,11 +53,16 @@
       {{sellOutMsg}}
     </div>
 
-    <div class="btn-confirm" @click="disMissPoo" v-if="!sellOut">
-      确定
-    </div>
-    <div class="btn-confirm-sellout" @click="showArriveMsg" v-else>
-      到货通知
+    <div style="display: flex;height: 50px;width: 100%">
+      <div class="btn-confirm-sellout" @click="showArriveMsg" v-if="sellOut">
+        到货通知
+      </div>
+      <div class="btn-confirm" @click="disMissPoo" v-else>
+        确定
+      </div>
+      <div class="btn-confirm" @click="disMissPoo" v-if="sellOut && saleStockType==='1'">
+        继续购买
+      </div>
     </div>
   </bottom-flip>
 </template>
@@ -74,6 +79,7 @@
       sphList: [],
       cylList: [],
       axisList: [],
+      saleStockType: ''
     },
     data() {
       return {
@@ -81,7 +87,8 @@
         cylSelectPosition: -1,
         axisSelectPosition: -1,
         sellOut: false,
-        sellOutMsg: ""
+        sellOutMsg: "",
+        isConfirmedBuy: false
       };
     },
 
@@ -95,7 +102,7 @@
           //父与子组件同步isShow值
           this.$emit('update:isShow', val);
           if (val === true) {
-
+            this.isConfirmedBuy = false;
           }
         }
       },
@@ -107,6 +114,9 @@
       selectEvent(side, index) {
         if (side === 'S') {
           this.sphSelectPosition = index;
+          /*if ('2' === this.saleStockType) {
+
+          }*/
           this.sellOut = this.sphList[index].IsOutStock;
           this.sellOutMsg = this.sphList[index].OutStockMessage;
           // if (this.sphList[index].IsOutStock) {
@@ -143,10 +153,15 @@
 
         }
 
+        if (this.saleStockType === '1' && this.sellOut) {
+          this.isConfirmedBuy = true;
+        }
+
         this.$emit('backData', {
           selectSPHPosition: this.sphSelectPosition,
           selectCYLPosition: this.cylSelectPosition,
           selectAXISPosition: this.axisSelectPosition,
+          // isConfirmedBuy: this.isConfirmedBuy
         });
 
         this.hideEvent();
@@ -161,9 +176,9 @@
           title: '提示',
           content: '商品到货后，小可会第一时间给您发送APP消息通知，请注意查看',
           icon: "none",
-          confirmText:'知道了',
-          confirmColor:'#CAB894',
-          showCancel:false
+          confirmText: '知道了',
+          confirmColor: '#CAB894',
+          showCancel: false
         });
       }
     }
@@ -238,6 +253,7 @@
     width: 100%;
     height: 50px;
     display: flex;
+    flex: 1;
     justify-content: center;
     align-items: center;
   }
@@ -251,6 +267,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    display: flex;
+    flex: 1;
   }
 
   .sell-out-text {
@@ -258,6 +276,7 @@
     color: red;
     margin-left: 15px;
     height: 30px;
+
   }
 
 </style>

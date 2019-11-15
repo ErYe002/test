@@ -16,7 +16,7 @@
       <section class="goods-box">
         <ul class="list">
           <li class="item" v-for="item in orderInfo.GoodsDetail" :key="item.GoodsId">
-            <a class="link">
+            <a class="link" :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'">
               <img class="g-img" :src="item.Img" />
               <div class="g-info">
                 <p class="g-name">

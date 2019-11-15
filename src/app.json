@@ -56,7 +56,8 @@
         "index/main",
         "logistics/main",
         "chooseAddress/main",
-        "useCoupon/main"
+        "useCoupon/main",
+        "submitResult/main"
       ]
     }
   ],

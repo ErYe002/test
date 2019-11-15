@@ -32,11 +32,13 @@ export default {
     //储存当前机型信息到本地
     // const sysInfo = wx.getSystemInfoSync()
     // wx.setStorageSync('sysInfo', sysInfo)
+    this.setSearchHistoryByStorage()
   },
   methods: {
     ...mapActions('user', [
         'setTokenByStorage', 'removeToken'
     ]),
+    ...mapActions("search", ["setSearchHistoryByStorage"]),
     ...mapActions('wxinfo', [
         'setWXinfo'
     ]),
@@ -59,6 +61,8 @@ export default {
 </script>
 
 <style lang="less">
+@import "./font.css";
+
 //生成按钮类型
 .generate_btn_type(@bgColor: #cab894, @bdColor: #cab894, @color: #fff) {
   background: @bgColor;

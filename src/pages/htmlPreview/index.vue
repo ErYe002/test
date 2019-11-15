@@ -12,7 +12,11 @@ export default {
   },
   onLoad(options){
     if(options['path']){
-      this.url = 'https://m.kede.com/'+decodeURIComponent(options.path)
+      if(options['path'].indexOf('http') != -1){
+        this.url = options['path']
+      } else {
+        this.url = 'https://m.kede.com/'+decodeURIComponent(options.path)
+      }
     }
   },
   methods:{

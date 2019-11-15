@@ -66,7 +66,7 @@ const api = {
       //无属性商品
       requestUrl += ('&Quantity=' + quantity)
     }
-    return http.post(requestUrl)
+    return http.postByNoErrorTips(requestUrl)
   },
   //修改数量
   modifyQuantity({shopId, uniqueId, realGoodsId, quantity} = {}){
@@ -78,7 +78,7 @@ const api = {
   },
   //获取用户当前购物车内可用的礼券集合
   getCanUseCoupons(shopId){
-    return http.post(`/Cart/GetShopCartCouponList?shopId=${shopId}&isEffective=true`)
+    return http.postByNoErrorTips(`/Cart/GetShopCartCouponList?shopId=${shopId}&isEffective=true`)
   },
   //使用礼券
   useCoupon(couponNo, shopId){
@@ -140,6 +140,10 @@ const api = {
   //提交订单
   submitOrder({isUseScore, selectedConsigneeId, selectedPayMode, selectedExpressId, isUseBalance, invoiceType, invoiceTitle, invoiceItemId, selectInvoiceMode, axpayerIdentityNumber, bankName, bankAccount, companyAddress, mobileNo, IDCard, warehouseId, selectShopId} = {}){
     return http.post(`/Cart/SubmitOrder?IsUseScore=${isUseScore}&SelectConsigneeId=${selectedConsigneeId}&SelectPayMode=${selectedPayMode}&SelectExpressId=${selectedExpressId}&IsUseBalance=${isUseBalance}&SelectInvoiceType=${invoiceType}&InvoiceTitle=${invoiceTitle}&InvoiceItemId=${invoiceItemId}&SelectInvoiceMode=${selectInvoiceMode}&identityNumber=${axpayerIdentityNumber}&bankName=${bankName}&bankAccount=${bankAccount}&companyAddress=${companyAddress}&mobileNo=${mobileNo}&IDCard=${IDCard}&WarehouseId=${warehouseId}&SelectShopId=${selectShopId}`)
+  },
+  //获取购物车商品总数量
+  getCartCount(){
+    return http.postByNoLoading('/cart/GetAllShopCartGoodsQuantity')
   }
 };
 
