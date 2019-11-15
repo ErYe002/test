@@ -140,6 +140,10 @@ const api = {
   //提交订单
   submitOrder({isUseScore, selectedConsigneeId, selectedPayMode, selectedExpressId, isUseBalance, invoiceType, invoiceTitle, invoiceItemId, selectInvoiceMode, axpayerIdentityNumber, bankName, bankAccount, companyAddress, mobileNo, IDCard, warehouseId, selectShopId} = {}){
     return http.post(`/Cart/SubmitOrder?IsUseScore=${isUseScore}&SelectConsigneeId=${selectedConsigneeId}&SelectPayMode=${selectedPayMode}&SelectExpressId=${selectedExpressId}&IsUseBalance=${isUseBalance}&SelectInvoiceType=${invoiceType}&InvoiceTitle=${invoiceTitle}&InvoiceItemId=${invoiceItemId}&SelectInvoiceMode=${selectInvoiceMode}&identityNumber=${axpayerIdentityNumber}&bankName=${bankName}&bankAccount=${bankAccount}&companyAddress=${companyAddress}&mobileNo=${mobileNo}&IDCard=${IDCard}&WarehouseId=${warehouseId}&SelectShopId=${selectShopId}`)
+  },
+  //获取购物车商品总数量
+  getCartCount(){
+    return http.postByNoLoading('/cart/GetAllShopCartGoodsQuantity')
   }
 };
 

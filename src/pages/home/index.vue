@@ -304,6 +304,7 @@ export default {
         if (oldVal == "" && val != "") {
           //登录成功
           this._getPageData();
+          this.$getCartCount()
         } else if (oldVal != '' && val == ''){
           //退出登录
           this.userInfoModel = Object.assign({}, userInfoModelTemp)

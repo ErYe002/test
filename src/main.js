@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import App from './App';
 import store from './store';
+import cartApi from './api/cart'
 
 let MIXIN = {
   onUnload() {
@@ -12,6 +13,7 @@ let MIXIN = {
     }
   },
   methods: {
+    //根据连接跳转到对应原生页面
     $navigateTo(link) {
       if (!link) return;
       // console.log('link', link);
@@ -76,7 +78,18 @@ let MIXIN = {
       } else {
         doDirect(link)
       }
-    }
+    },
+    //设置tabbar购物车栏展示的商品数量：当商品有变动需要调用此接口进行更新（商品加购、购物车内商品增删改、提交订单成功等）
+    $getCartCount(){
+      console.log('获取购物车总数量')
+      cartApi.getCartCount().then(({Data}) => {
+        console.log('设置购物车总数量', Data)
+        wx.setTabBarBadge({
+          index: 2,
+          text: Data.toString()
+        })
+      })
+    },
   }
 };
 
