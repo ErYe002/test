@@ -66,7 +66,7 @@ const api = {
       //无属性商品
       requestUrl += ('&Quantity=' + quantity)
     }
-    return http.post(requestUrl)
+    return http.postByNoErrorTips(requestUrl)
   },
   //修改数量
   modifyQuantity({shopId, uniqueId, realGoodsId, quantity} = {}){
@@ -78,7 +78,7 @@ const api = {
   },
   //获取用户当前购物车内可用的礼券集合
   getCanUseCoupons(shopId){
-    return http.post(`/Cart/GetShopCartCouponList?shopId=${shopId}&isEffective=true`)
+    return http.postByNoErrorTips(`/Cart/GetShopCartCouponList?shopId=${shopId}&isEffective=true`)
   },
   //使用礼券
   useCoupon(couponNo, shopId){
