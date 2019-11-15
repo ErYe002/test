@@ -32,11 +32,13 @@ export default {
     //储存当前机型信息到本地
     // const sysInfo = wx.getSystemInfoSync()
     // wx.setStorageSync('sysInfo', sysInfo)
+    this.setSearchHistoryByStorage()
   },
   methods: {
     ...mapActions('user', [
         'setTokenByStorage', 'removeToken'
     ]),
+    ...mapActions("search", ["setSearchHistoryByStorage"]),
     ...mapActions('wxinfo', [
         'setWXinfo'
     ]),

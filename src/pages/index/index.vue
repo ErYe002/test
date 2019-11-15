@@ -1,10 +1,10 @@
 <template>
   <article class="wrap">
     <section class="search-box">
-      <div class="flex-wrap">
+      <a href="/pages/search/index/main" class="flex-wrap">
         <img src="/static/images/icon_search_black.png" class="icon" />
         <span class="text">"改变从选一副眼镜开始"</span>
-      </div>
+      </a>
     </section>
     <section class="nav-box">
       <scroll-view class="nav-list" scroll-x enable-flex>

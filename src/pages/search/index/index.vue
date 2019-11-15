@@ -63,7 +63,7 @@
 
 <script>
 import api from "@/api/search";
-import { mapState, mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   data() {
@@ -76,7 +76,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("search", ["historySearchList"])
+    ...mapGetters("search", ["historySearchList"])
   },
   onLoad(options) {
     if (options && options.shopId) {
