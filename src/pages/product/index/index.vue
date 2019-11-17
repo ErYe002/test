@@ -88,7 +88,7 @@
               <span class="priceTag" v-if="isComp">套餐价</span>
               <span
                 class="priceTag"
-                v-else-if="Data.GoodsBase.PriceLable=='降价'"
+                v-else-if="Data.GoodsBase.PriceLable!='会员价'"
               >{{Data.GoodsBase.PriceLable}}</span>
               <span class="priceTag" v-else>
                 <img
@@ -391,7 +391,7 @@
           <div>
             含
             <span>{{Data.Items.length}}</span>件商品，剩余
-            <span>{{Data.Items.length}}</span>件商品需要选择属性
+            <span>{{selectCompNum}}</span>件商品需要选择属性
           </div>
         </div>
         <div class="compGoods">
@@ -416,7 +416,10 @@
                   v-if="item.IsSpecificationGoods"
                   @click="_selectCombineAttr(item.GoodsId,index)"
                 >
-                  <div>{{item.IsSeries?"请选择花色/度数":"请选择度数规格等参数"}}</div>
+                  <div>
+                    <span v-if="item.ShowText==null">{{item.IsSeries?"请选择花色/度数":"请选择度数规格等参数"}}</span>
+                    <span v-else>{{item.ShowText}}</span>
+                  </div>
                   <div class="icon-bottom">﹀</div>
                 </div>
                 <div class="noAttr" v-else>x1</div>
@@ -548,6 +551,7 @@
             <div
               :class="'tjw '+(QueryGoodsType2=='PPTJ'?'selected':'')"
               @click="_getSameTypeData2('PPTJ')"
+              v-if="!isComp"
             >品牌推荐</div>
             <div
               :class="'tlb '+(QueryGoodsType2=='CNXH'?'selected':'')"
@@ -591,13 +595,13 @@
       <!-- 底部通栏 -->
       <div class="bottomNav">
         <div class="navBtn">
-          <a href="pages/index/main">
+          <a @click="goindex">
             <img src="/static/images/icon-pro-index.png" alt />首页
           </a>
-          <a href>
+          <a open-type="contact">
             <img src="/static/images/icon-pro-sev.png" alt />客服
           </a>
-          <a href="pages/cart/main">
+          <a @click="gocart">
             <img src="/static/images/icon-pro-cart.png" alt />购物车
           </a>
         </div>
@@ -735,9 +739,9 @@
                       >截止时间:{{(item.UseEndTime==null? "点击领券后获得时间" : item.UseEndTime)}}</em>
                     </span>
                     <span
-                      :class="'yhqbtn'+(item.HasPicked ? 'disabled' : '')"
+                      :class="'yhqbtn '+(item.HasPicked ? 'disabled' : '')"
                       :data-cid="item.PromotionID"
-                      @click="_getCoupon(item.PromotionID)"
+                      @click="_getCoupon(item.PromotionID,item.HasPicked)"
                     >{{(item.HasPicked ? "已领取" : "领券")}}</span>
                   </span>
                 </div>
@@ -980,13 +984,8 @@
               <span class="choice_title">
                 颜色：
                 <span>
-                  <block
-                    v-for="info in combineData.SeriesItems"
-                    :key="info.index"
-                  >
-                    <span v-if="info.GoodsId == combineData.GoodsId">
-                      {{info.AnotherName}}
-                    </span>
+                  <block v-for="info in combineData.SeriesItems" :key="info.index">
+                    <span v-if="info.GoodsId == combineData.GoodsId">{{info.AnotherName}}</span>
                   </block>
                 </span>
               </span>
@@ -995,7 +994,10 @@
               <div id="js_mainsytle" class="goodscolor">
                 <scroll-view scroll-x scroll-with-animation="true">
                   <block v-for="info in combineData.SeriesItems" :key="info.index">
-                    <li :class="(info.GoodsId == combineData.GoodsId? 'select' :'')" @click="_selectCombineAttr(info.GoodsId)">
+                    <li
+                      :class="(info.GoodsId == combineData.GoodsId? 'select' :'')"
+                      @click="_selectCombineAttr(info.GoodsId)"
+                    >
                       <img :src="info.SeriesImg" />
                     </li>
                   </block>
@@ -1022,7 +1024,9 @@
                   :data-fieldid="item.Id"
                   v-for="(item,index_) in listinfo.Children"
                   :key="index_"
-                  @click="_selectGD(item.Id,listinfo.FieldId)"
+                  @click="_selectGD(item.Id,item.Value)"
+                  :class="item.Id==combineGDId?'select':''"
+                  :data-Seid="combineGDId"
                 >{{item.Value}}</li>
               </ul>
             </div>
@@ -1036,6 +1040,7 @@
 
 <script>
 import api from "@/api/goods";
+import userapi from "@/api/user";
 import { mapActions, mapState } from "vuex";
 import bottomFlip from "@/components/bottomFlip";
 import wxParse from "mpvue-wxparse";
@@ -1068,18 +1073,17 @@ export default {
       QueryGoodsData2: "",
       combineIndex: 0,
       combineData: null,
-      isShowCombine: false
+      isShowCombine: false,
+      combineGDId: "",
+      selectCompData: [], //选中的打包具体属性数组
+      selectCompNum: 0, //剩余多少打包未选择属性
+      isLogin: false
     };
   },
   computed: {},
   onLoad(options) {
-    this._getPageData(options.seocode, options.isComp);
-  },
-  filters: {
-    toFixed: function(num) {
-      num = Number(num);
-      return num.toFixed(2);
-    }
+    this.isComp = options.isComp;
+    this.getisComp(options.seocode);
   },
   components: {
     bottomFlip,
@@ -1087,7 +1091,24 @@ export default {
   },
   methods: {
     ...mapActions("remark", ["setData"]),
-    _getPageData(seocode, isComp) {
+    getisComp(seocode) {
+      if (this.isComp != true) {
+        // api.IsCompGoods(seocode).then(({ Data }) => {
+        //   this.isComp = Data;
+        //   this._getPageData(seocode, this.isComp);
+        // });
+        this.isComp = false;
+        this._getPageData(seocode);
+      } else {
+        this.isComp = true;
+        this._getPageData(seocode);
+      }
+    },
+    _getPageData(seocode) {
+      //判断是否登录
+      userapi.checkToken().then(({ State }) => {
+        this.isLogin = State;
+      });
       //var seocode="revia6";//自营
       //var seocode = "htyx6"; //海淘
       //var seocode = "hankj744"; //有配件
@@ -1095,7 +1116,7 @@ export default {
       //var seocode = "ns33"; //多个活动
       //var isComp = false;
       //var isComp = true;
-      api.getGoodsDetail(seocode, isComp).then(({ Data }) => {
+      api.getGoodsDetail(seocode, this.isComp).then(({ Data }) => {
         console.log(Data);
         Data.GoodsBase.SalePrice = Data.GoodsBase.SalePrice.toFixed(2);
         Data.GoodsBase.MarketPrice = Data.GoodsBase.MarketPrice.toFixed(2);
@@ -1113,7 +1134,13 @@ export default {
         }
 
         if (Data.Items != null) {
+          var that = this;
           Data.Items = Data.Items.map(function(value, index) {
+            if (value.IsSpecificationGoods) {
+              that.selectCompNum++;
+            }
+            var obj = {};
+            that.selectCompData.push(obj);
             value.Price = value.Price.toFixed(2);
             value.MarketPrice = value.MarketPrice.toFixed(2);
             return value;
@@ -1138,13 +1165,14 @@ export default {
         }
 
         this.setData(Data.Remark);
-        this.isComp = isComp == "false" ? false : true;
         this.Data = Data;
         this._getGoodsAbout();
         if (this.Data.GoodsBase.ShopId == 2) {
           this._getSameTypeData("price");
         } else {
-          this._getSameTypeData2("PPTJ");
+          this.isComp
+            ? this._getSameTypeData2("CNXH")
+            : this._getSameTypeData2("PPTJ");
         }
         this._AttrHref();
       });
@@ -1366,14 +1394,24 @@ export default {
         : (this.isshowyhqmsg = true);
     },
     //领券
-    _getCoupon(id) {
-      console.log(id);
+    _getCoupon(id, bool) {
+      console.log(id, bool);
+      if (bool == true) {
+        return false;
+      }
+      api.presentCouponNo(id).then(({ Data }) => {
+        console.log(Data);
+        wx.showToast({
+          title: "请先选择一个光度",
+          icon: "none"
+        });
+      });
     },
     //度数换算跳转
     _showDSHS() {
       wx.navigateTo({
         url:
-          "/pages/htmlPreview/main?url=" +
+          "/pages/htmlPreview/main?path=" +
           encodeURIComponent("/TemplateForNewApp/degreeConversion")
       });
     },
@@ -1381,23 +1419,234 @@ export default {
     _userAgreement() {
       wx.navigateTo({
         url:
-          "/pages/htmlPreview/main?url=" +
+          "/pages/htmlPreview/main?path=" +
           encodeURIComponent("/TemplateForNewApp/userAgreement")
       });
     },
+    //打包获取属性（切换系列获取属性）
     _selectCombineAttr(id, index) {
-      console.log(id, index, "ATTR");
-      this.combineIndex = index ? index : this.combineIndex;
+      this.combineIndex = index != undefined ? index : this.combineIndex;
       api.getCombineAttr(id).then(({ Data }) => {
-        this.combineData = Object.assign({},Data);
+        Data.SalePrice = Data.SalePrice.toFixed(2);
+        Data.MarketPrice = Data.MarketPrice.toFixed(2);
+        this.combineData = Object.assign({}, Data);
         this.isShowCombine = true;
-        console.log(Data);
+        this.combineGDId = "";
+        //遍历打包数据获取当前打包系列颜色
+        var selectCompData = this.selectCompData[this.combineIndex];
+        console.log(123, Data, this.combineData, selectCompData);
+        if (this.combineData.SeriesItems.length > 0) {
+          this.combineData.SeriesItems.map(function(value, index) {
+            if (value.GoodsId == id) {
+              selectCompData.AnotherName = value.AnotherName + " / ";
+              selectCompData.GoodsId = value.GoodsId;
+            }
+          });
+        } else {
+          selectCompData.AnotherName = "";
+          selectCompData.GoodsId = this.combineData.GoodsId;
+        }
       });
+    },
+    //打包选属性
+    _selectGD(Id, Value) {
+      this.combineGDId = Id;
+      this.selectCompData[this.combineIndex].Id = Id;
+      this.selectCompData[this.combineIndex].Value = Value;
+      console.log(
+        this.combineGDId,
+        this.selectCompData[this.combineIndex].Value
+      );
+    },
+    //打包确认按钮
+    selectAttr() {
+      console.log(this.combineIndex, "index");
+      if (this.combineGDId == "") {
+        wx.showToast({
+          title: "请先选择一个光度",
+          icon: "none"
+        });
+      } else {
+        this.isShowCombine = false;
+        //获取选中的信息数据
+        this.selectCompData[
+          this.combineIndex
+        ].GoodsName = this.combineData.GoodsName;
+        this.selectCompData[
+          this.combineIndex
+        ].ImageUrl = this.combineData.ImageUrl;
+        this.selectCompData[
+          this.combineIndex
+        ].SalePrice = this.combineData.SalePrice;
+        this.selectCompData[
+          this.combineIndex
+        ].MarketPrice = this.combineData.MarketPrice;
+        console.log(this.selectCompData, "打包数据未赋值");
+        //更改打包的数组
+        this.Data.Items[this.combineIndex].Id = this.selectCompData[
+          this.combineIndex
+        ].Id;
+        this.Data.Items[this.combineIndex].GoodsName = this.selectCompData[
+          this.combineIndex
+        ].GoodsName;
+        this.Data.Items[this.combineIndex].Img = this.selectCompData[
+          this.combineIndex
+        ].ImageUrl;
+        this.Data.Items[this.combineIndex].SalePrice = this.selectCompData[
+          this.combineIndex
+        ].SalePrice;
+        this.Data.Items[this.combineIndex].MarketPrice = this.selectCompData[
+          this.combineIndex
+        ].MarketPrice;
+        this.Data.Items[this.combineIndex].ShowText =
+          this.selectCompData[this.combineIndex].AnotherName +
+          this.selectCompData[this.combineIndex].Value;
+        //改变未选择的套餐数量
+        var num = 0;
+        var allnum = 0;
+        this.selectCompData.map(function(value, index) {
+          if (JSON.stringify(value) != "{}") {
+            num++;
+          }
+        });
+        this.Data.Items.map(function(value, index) {
+          if (value.IsSpecificationGoods) {
+            allnum++;
+          }
+        });
+        this.selectCompNum = allnum - num;
+        console.log(this.Data.Items, "打包数据");
+      }
     },
     addCart() {
       // 判断是否是无属性商品
-      if (!this.Data.GoodsBase.IsSpecificationGoods) {
-        //无属性商品
+      if (!this.Data.GoodsBase.IsSpecificationGoods && !this.isComp) {
+        //无属性商品且非打包
+        var GoodsId = this.Data.GoodsBase.GoodsId;
+        var IsBuyByScore = false;
+        var IsConfirmedBuy = false;
+        var Quantity = 1;
+        var RealGoodsId = this.Data.GoodsBase.GoodsId;
+        var MaxSellNumber = this.Data.GoodsBase.MaxSellNumber;
+        var GoodsName = this.Data.GoodsBase.GoodsName;
+        var SeriesId = "00000000-0000-0000-0000-000000000000";
+        var SalePrice = this.Data.GoodsBase.SalePrice;
+        var MaxDeduction = this.Data.GoodsBase.MaxSellNumber;
+        var ShopId = this.Data.GoodsBase.ShopId;
+        var IsFreeCarriage = this.Data.GoodsBase.IsFreeCarriage;
+        api
+          .buyNoProperty(
+            GoodsId,
+            IsBuyByScore,
+            IsConfirmedBuy,
+            Quantity,
+            RealGoodsId,
+            MaxSellNumber,
+            GoodsName,
+            SeriesId,
+            SalePrice,
+            MaxDeduction,
+            ShopId,
+            IsFreeCarriage
+          )
+          .then(({ State }) => {
+            if (State) {
+              wx.showToast({
+                title: "加入购物车成功~",
+                icon: "none"
+              });
+            }
+          });
+      } else if (this.isComp) {
+        //打包商品
+        //判断打包商品是否全部选择了属性
+        if (this.selectCompNum == 0) {
+          //拼接打包提交链接
+          var GoodsId = this.Data.GoodsBase.GoodsId;
+          var Quantity = 1;
+          var IsConfirmedBuy = false; //是否愿意缺货等待，第一次进来为false，后续弹框确认
+          var ShopId = this.Data.GoodsBase.ShopId;
+          var IsFreeCarriage = this.Data.GoodsBase.IsFreeCarriage;
+          var GDPropertyItems = [];
+          var NoPropertyItems = [];
+          //遍历选中的打包光度属性selectCompData并赋值给GDPropertyItems;
+          //无属性商品数量赋值NoPropertyItems
+          this.Data.Items.map(function(value, index) {
+            if (value.IsSpecificationGoods) {
+              var obj = {};
+              var objItem = {};
+              obj.SpecificationItems = [];
+              obj.GoodsId = value.GoodsId;
+              objItem.GD = value.Id;
+              objItem.Quantity = 1;
+              obj.SpecificationItems.push(objItem);
+              //遍历有属性商品判断goodsid是否相等，相等则判断其光度ID是否一样，再相等则数量增加，否则增加商品
+              if (GDPropertyItems.length > 0) {
+                GDPropertyItems.map(function(value_1, index_1) {
+                  if (value_1.GoodsId == value.GoodsId) {
+                    //遍历属性值,判断其光度ID
+                    value_1.SpecificationItems.map(function(value_2, index_2) {
+                      if (value_2.GD == value.Id) {
+                        value_2.Quantity++;
+                      } else {
+                        //商品id一样光度不同
+                        value_1.SpecificationItems.push(objItem);
+                      }
+                    });
+                  } else {
+                    GDPropertyItems.push(obj);
+                  }
+                });
+              } else {
+                GDPropertyItems.push(obj);
+              }
+            } else {
+              console.log("无属性");
+              var obj = {};
+              obj.GoodsId = value.GoodsId;
+              obj.Quantity = 1;
+              //遍历无属性商品判断goodsid是否相等，相等则增加数量，否则增加商品
+              if (NoPropertyItems.length > 0) {
+                NoPropertyItems.map(function(value_, index_) {
+                  if (value_.GoodsId == value.GoodsId) {
+                    value_.Quantity++;
+                  } else {
+                    NoPropertyItems.push(obj);
+                  }
+                });
+              } else {
+                NoPropertyItems.push(obj);
+              }
+            }
+          });
+
+          GDPropertyItems = JSON.stringify(GDPropertyItems);
+          NoPropertyItems = JSON.stringify(NoPropertyItems);
+          console.log(GDPropertyItems, NoPropertyItems);
+          api
+            .buyCompGoods(
+              GoodsId,
+              Quantity,
+              IsConfirmedBuy,
+              ShopId,
+              IsFreeCarriage,
+              GDPropertyItems,
+              NoPropertyItems
+            )
+            .then(({ State }) => {
+              if (State) {
+                wx.showToast({
+                  title: "加入购物车成功~",
+                  icon: "none"
+                });
+              }
+            });
+        } else {
+          wx.showToast({
+            title: "请选择完全部属性再提交哦~",
+            icon: "none"
+          });
+        }
       } else {
         var href =
           this.Data.GoodsBase.GoodsType == 4
@@ -1408,13 +1657,165 @@ export default {
         });
       }
     },
-    buyNow() {
-      var href =
-        this.Data.GoodsBase.GoodsType == 4
-          ? this.frameAttrHref + "&IsBuyNow=true"
-          : this.normalAttrHref + "&IsBuyNow=true";
-      wx.navigateTo({
-        url: href
+    buyNow(IsConfirmedBuy) {
+      // 判断是否是无属性商品
+      if (!this.Data.GoodsBase.IsSpecificationGoods && !this.isComp) {
+        //无属性商品且非打包
+        var GoodsId = this.Data.GoodsBase.GoodsId;
+        var IsBuyByScore = false;
+        var IsConfirmedBuy = false;
+        var Quantity = 1;
+        var RealGoodsId = this.Data.GoodsBase.GoodsId;
+        var MaxSellNumber = this.Data.GoodsBase.MaxSellNumber;
+        var GoodsName = this.Data.GoodsBase.GoodsName;
+        var SeriesId = "00000000-0000-0000-0000-000000000000";
+        var SalePrice = this.Data.GoodsBase.SalePrice;
+        var MaxDeduction = this.Data.GoodsBase.MaxSellNumber;
+        var ShopId = this.Data.GoodsBase.ShopId;
+        var IsFreeCarriage = this.Data.GoodsBase.IsFreeCarriage;
+        api
+          .buyNoProperty(
+            GoodsId,
+            IsBuyByScore,
+            IsConfirmedBuy,
+            Quantity,
+            RealGoodsId,
+            MaxSellNumber,
+            GoodsName,
+            SeriesId,
+            SalePrice,
+            MaxDeduction,
+            ShopId,
+            IsFreeCarriage
+          )
+          .then(({ State }) => {
+            if (State) {
+              wx.showToast({
+                title: "加入购物车成功~",
+                icon: "none"
+              });
+              setTimeout(function() {
+                console.log(4);
+                wx.switchTab({
+                  url: "/pages/cart/main"
+                });
+              }, 1000);
+            }
+          });
+      } else if (this.isComp) {
+        //打包商品
+        //判断打包商品是否全部选择了属性
+        if (this.selectCompNum == 0) {
+          //拼接打包提交链接
+          var GoodsId = this.Data.GoodsBase.GoodsId;
+          var Quantity = 1;
+          var IsConfirmedBuy = false; //是否愿意缺货等待，第一次进来为false，后续弹框确认
+          var ShopId = this.Data.GoodsBase.ShopId;
+          var IsFreeCarriage = this.Data.GoodsBase.IsFreeCarriage;
+          var GDPropertyItems = [];
+          var NoPropertyItems = [];
+          //遍历选中的打包光度属性selectCompData并赋值给GDPropertyItems;
+          //无属性商品数量赋值NoPropertyItems
+          this.Data.Items.map(function(value, index) {
+            if (value.IsSpecificationGoods) {
+              var obj = {};
+              var objItem = {};
+              obj.SpecificationItems = [];
+              obj.GoodsId = value.GoodsId;
+              objItem.GD = value.Id;
+              objItem.Quantity = 1;
+              obj.SpecificationItems.push(objItem);
+              //遍历有属性商品判断goodsid是否相等，相等则判断其光度ID是否一样，再相等则数量增加，否则增加商品
+              if (GDPropertyItems.length > 0) {
+                GDPropertyItems.map(function(value_1, index_1) {
+                  if (value_1.GoodsId == value.GoodsId) {
+                    //遍历属性值,判断其光度ID
+                    value_1.SpecificationItems.map(function(value_2, index_2) {
+                      if (value_2.GD == value.Id) {
+                        value_2.Quantity++;
+                      } else {
+                        //商品id一样光度不同
+                        value_1.SpecificationItems.push(objItem);
+                      }
+                    });
+                  } else {
+                    GDPropertyItems.push(obj);
+                  }
+                });
+              } else {
+                GDPropertyItems.push(obj);
+              }
+            } else {
+              console.log("无属性");
+              var obj = {};
+              obj.GoodsId = value.GoodsId;
+              obj.Quantity = 1;
+              //遍历无属性商品判断goodsid是否相等，相等则增加数量，否则增加商品
+              if (NoPropertyItems.length > 0) {
+                NoPropertyItems.map(function(value_, index_) {
+                  if (value_.GoodsId == value.GoodsId) {
+                    value_.Quantity++;
+                  } else {
+                    NoPropertyItems.push(obj);
+                  }
+                });
+              } else {
+                NoPropertyItems.push(obj);
+              }
+            }
+          });
+
+          GDPropertyItems = JSON.stringify(GDPropertyItems);
+          NoPropertyItems = JSON.stringify(NoPropertyItems);
+          console.log(GDPropertyItems, NoPropertyItems);
+          api
+            .buyCompGoods(
+              GoodsId,
+              Quantity,
+              IsConfirmedBuy,
+              ShopId,
+              IsFreeCarriage,
+              GDPropertyItems,
+              NoPropertyItems
+            )
+            .then(({ State }) => {
+              if (State) {
+                wx.showToast({
+                  title: "加入购物车成功~",
+                  icon: "none"
+                });
+                setTimeout(function() {
+                  console.log(4);
+                  wx.switchTab({
+                    url: "/pages/cart/main"
+                  });
+                }, 1000);
+              }
+            });
+        } else {
+          wx.showToast({
+            title: "请选择完全部属性再提交哦~",
+            icon: "none"
+          });
+        }
+      } else {
+        var href =
+          this.Data.GoodsBase.GoodsType == 4
+            ? this.frameAttrHref + "&IsBuyNow=false"
+            : this.normalAttrHref + "&IsBuyNow=false";
+        wx.navigateTo({
+          url: href
+        });
+      }
+    },
+    gocart() {
+      wx.switchTab({
+        url: "/pages/cart/main"
+      });
+    },
+    goindex() {
+      wx.switchTab({
+        url: "/pages/index/main"
       });
     }
   }

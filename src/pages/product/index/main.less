@@ -779,6 +779,11 @@
               }
             }
           }
+          .noAttr{
+            width: 100%;
+            color: #888;
+            margin-top: 10px;
+          }
           .compSelectBox{
             width: 100%;
             height: 30px;
@@ -1050,15 +1055,15 @@
             }
           }
         }
-        .pricenote{
-          color: #8F8F8F;
-          display: inline-block;
-          font-size: 12px;
-          margin-bottom: 10px;
-          margin-top: 10px;
-          text-align: center;
-          width: 100%;
-        }
+      }
+      .pricenote{
+        color: #8F8F8F;
+        display: inline-block;
+        font-size: 12px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        text-align: center;
+        width: 100%;
       }
     }
     .bf-active{
@@ -1661,6 +1666,10 @@
               border-radius: 5px;
               margin-right: 2.2%;
               cursor: pointer;
+              &.select{
+                border: 1px solid #cab894;
+                color: #cab894;
+              }
             }
           }
         }
