@@ -55,7 +55,7 @@
               v-for="item in Data.Series"
               :key="item.index"
             >
-              <a :href="'/main?seocode='+item.SeoCode">
+              <a :href="'pages/product/index/main?seocode='+item.SeoCode">
                 <img :src="item.SeriesImg" />
                 <span>{{item.AnotherName}}</span>
               </a>
@@ -85,17 +85,19 @@
                 >￥{{Data.GoodsBase.MarketPrice}}</em>
                 <span v-if="Data.GoodsBase.ReducePrice>0">↓￥{{Data.GoodsBase.ReducePrice}}</span>
               </i>
-              <span class="priceTag" v-if="isComp">套餐价</span>
-              <span
-                class="priceTag"
-                v-else-if="Data.GoodsBase.PriceLable!='会员价'"
-              >{{Data.GoodsBase.PriceLable}}</span>
-              <span class="priceTag" v-else>
-                <img
-                  class="tagImg"
-                  :src="'/static/images/level_0'+(Data.UserInfo.RoleId?Data.UserInfo.RoleId:'0')+'.jpg'"
-                />会员价
-              </span>
+              <block v-if="Data.GoodsBase.PriceLable!=''">
+                <span class="priceTag" v-if="isComp">套餐价</span>
+                <span
+                  class="priceTag"
+                  v-else-if="Data.GoodsBase.PriceLable!='会员价'"
+                >{{Data.GoodsBase.PriceLable}}</span>
+                <span class="priceTag" v-else>
+                  <img
+                    class="tagImg"
+                    :src="'/static/images/level_0'+(Data.UserInfo.RoleId?Data.UserInfo.RoleId:'0')+'.jpg'"
+                  />会员价
+                </span>
+              </block>
             </div>
           </div>
           <div class="prolabelBox">
@@ -137,7 +139,8 @@
         </div>
       </div>
       <!-- 优惠活动一览 -->
-      <div class="blackLine">FULL OFFER | 优惠满满</div>
+      <div class="blackLine" v-if="Data.GoodsPagePromotion != null&& (Data.GoodsBase.GiftScore > 0|| Data.GoodsBase.ScoreDeductionPrice > 0|| Data.GoodsPagePromotion.isHave||Data.GoodsPagePromotion.FullReducePromotion != null|| Data.ErpGifts != null)"
+          >FULL OFFER | 优惠满满</div>
       <div class="actCon">
         <div
           class="act-lingquan actLine"
@@ -478,7 +481,7 @@
                   class="header-icon"
                   :src="item.HeadImg?item.HeadImg:'/static/images/default_img.gif'"
                 />
-                {{item.UserName}}
+                {{item.UserName==null?'':item.UserName}}
               </div>
               <div class="comment-header-right">
                 <div class="kd-level" :data-id="item.Rate">
@@ -598,16 +601,30 @@
           <a @click="goindex">
             <img src="/static/images/icon-pro-index.png" alt />首页
           </a>
-          <a open-type="contact">
+          <button open-type="contact" bindcontact="contactService">
             <img src="/static/images/icon-pro-sev.png" alt />客服
-          </a>
+          </button>
           <a @click="gocart">
             <img src="/static/images/icon-pro-cart.png" alt />购物车
           </a>
         </div>
         <div class="proBtn">
+          <block v-if="Data.GoodsBase.GoodsType==5&&isFromFrame">
+            <a class="selectnow" @click="selectNow()">立即选择</a>
+          </block>
+          <block v-else-if="Data.GoodsBase.GoodsType==5">
+            <a class="disabled">不支持单独购买</a>
+          </block>
+          <block v-else-if="!Data.GoodsBase.GoodsState">
+            <a class="disabled">商品已下架</a>
+          </block>
+          <block v-else-if="!Data.GoodsBase.IsCanBuy">
+            <a class="disabled">无法购买</a>
+          </block>
+          <block v-else>
           <a class="addCart" @click="addCart()">加入购物车</a>
           <a class="buyNow" @click="buyNow()">立即购买</a>
+          </block>
         </div>
       </div>
     </template>
@@ -906,7 +923,7 @@
                       <img :src="item.Img" />
                       <div class="jqhg-btn">
                         <span>{{item.GoodsName}}</span>
-                        <a :href="'/'+item.Seocode">
+                        <a :href="'pages/product/index/main?seocode='+item.Seocode">
                           商品详情
                           <em>&gt;</em>
                         </a>
@@ -942,13 +959,13 @@
                   </div>
                   <div class="mehg-btn">
                     <span>换购 {{item.GoodsName}}</span>
-                    <a
+                    <!-- <a
                       :href="'Piecetogether?promotionID='+item.PromotionID+'&couponTitle='+item.PromotionTheme+'&shopid='+Data.GoodsBase.ShopId"
                     >
                       点击凑单
                       <em>&gt;</em>
-                    </a>
-                    <a :href="'/'+item.SeoCode">
+                    </a>-->
+                    <a :href="'pages/product/index/main?seocode='+item.SeoCode">
                       商品详情
                       <em>&gt;</em>
                     </a>
@@ -958,7 +975,7 @@
             </div>
           </div>
         </div>
-        <div class="huanGouNote">以上价格计算仅为初步预估，不代表最终购买价格,换购默认1件</div>
+        <div class="huanGouNote">以上价格计算仅为初步预估，不代表最终购买价格,换购默认1件,优惠商品请把当前主商品加车后，前往购物车享受优惠</div>
       </div>
       <div class="KnowBtn" @click="_close()">知道了</div>
     </bottomFlip>
@@ -1077,7 +1094,8 @@ export default {
       combineGDId: "",
       selectCompData: [], //选中的打包具体属性数组
       selectCompNum: 0, //剩余多少打包未选择属性
-      isLogin: false
+      isLogin: false,
+      isFromFrame:false//属性页过来的镜片
     };
   },
   computed: {},
@@ -1399,12 +1417,19 @@ export default {
       if (bool == true) {
         return false;
       }
-      api.presentCouponNo(id).then(({ Data }) => {
-        console.log(Data);
-        wx.showToast({
-          title: "请先选择一个光度",
-          icon: "none"
-        });
+      api.presentCouponNo(id).then(({ State }) => {
+        console.log(State);
+        if (State) {
+          wx.showToast({
+            title: "领券成功",
+            icon: "none"
+          });
+        } else {
+          wx.showToast({
+            title: "领券失败，请稍后再试",
+            icon: "none"
+          });
+        }
       });
     },
     //度数换算跳转
@@ -1817,6 +1842,9 @@ export default {
       wx.switchTab({
         url: "/pages/index/main"
       });
+    },
+    selectNow(){
+      console.log("去属性页")
     }
   }
 };
