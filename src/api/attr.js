@@ -15,7 +15,7 @@ const api = {
   },
   //购买无属性框架商品
   buyNoPropertyFrame(mapPrams) {
-    return http.post(`/cart/BuyNoPropertyFrame?
+    return http.postByNoErrorTips(`/cart/BuyNoPropertyFrame?
 goodsId=${mapPrams.get('goodsId')}
 &IsConfirmedBuy=${mapPrams.get('IsConfirmedBuy')}
 &ShopId=${mapPrams.get('ShopId')}
@@ -37,7 +37,7 @@ goodsId=${mapPrams.get('goodsId')}
   },
   //购买框架和镜片（框架配镜）
   buyFrameAndGlass(mapParms) {
-    return http.post(`/Cart/BuyFrameAndGlass?
+    return http.postByNoErrorTips(`/Cart/BuyFrameAndGlass?
 goodsId=${mapParms.get('goodsId')}
 &IsConfirmedBuy=${mapParms.get('IsConfirmedBuy')}
 &ShopId=${mapParms.get('ShopId')}
