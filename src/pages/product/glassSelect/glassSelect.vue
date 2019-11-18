@@ -2,7 +2,7 @@
   <div style="height: 100%">
     <section>
       <div class="menu-pop-toggle-layout" @click="openMenu">
-        <span class="text-t6">当前选择：镜片选择</span>
+        <span class="text-t6">当前选择：{{groupName}}</span>
         <img class="ic-up-or-down" src="/static/images/ic_arrow_gray_down.png" v-if="!menuOpened"/>
 
         <img class="ic-up-or-down" src="/static/images/ic_arrow_gray_up.png" v-else/>
@@ -65,6 +65,7 @@
         menuOpened: false,
         groupSelectPosition: 0,
         glassSelectPosiition: 0,
+        groupName:'精选镜片'
       };
     },
     computed: {
@@ -77,7 +78,9 @@
       ...mapActions('groupGlassList', ['setGroupSelectPosition']),
 
       radioChange: function (e) {
+
         this.groupSelectPosition = Number(e.mp.detail.value);
+        this.groupName = this.atttGlassListData[this.groupSelectPosition].GroupName;
       },
       openMenu() {
         this.menuOpened = !this.menuOpened;

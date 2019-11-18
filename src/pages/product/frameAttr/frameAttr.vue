@@ -121,11 +121,11 @@
 
       </div>
 
-      <a class="btn-50-percent black" v-if="buyType===2">
+      <a class="btn-50-percent black" v-if="buyType===2" @click="buyGoods(false)">
         加入购物车
       </a>
 
-      <a class="btn-50-percent gold" @click="buyGoods">
+      <a class="btn-50-percent gold" @click="buyGoods(true)">
         立即购买
       </a>
     </section>
@@ -187,8 +187,8 @@
         MaxDeduction: '',
         IsFreeCarriage: '',
         RealGoodsId: '',
-        goodsId:'',
-        isConfirmedBuy:false
+        goodsId: '',
+        isConfirmedBuy: false
       };
     },
 
@@ -347,7 +347,7 @@
       selectGlassEvent() {
 
       },
-      confirmedBuyShow(Msg){
+      confirmedBuyShow(Msg) {
         let self = this;
         wx.showModal({
           title: '提示',
@@ -356,7 +356,7 @@
           confirmText: '确定',
           cancelText: '取消',
           confirmColor: '#CAB894',
-          success (res) {
+          success(res) {
             if (res.confirm) {
               console.log('用户点击确定');
               self.IsConfirmedBuy = true;
@@ -366,7 +366,7 @@
           }
         });
       },
-      buyGoods() {
+      buyGoods(immediately) {
 
         let pushData = new Map();
 
@@ -393,10 +393,17 @@
           pushData.set("IsFreeCarriage", 'false');
           api.buyNoPropertyFrame(pushData).then(({Data}) => {
             console.log("提交订单", Data);
-            wx.switchTab({
-              url: '/pages/cart/main'
-            });
-          }).catch((Msg)=>{
+            if (immediately) {
+              wx.switchTab({
+                url: '/pages/cart/main'
+              });
+            } else {
+              wx.showToast({
+                title: "加入购物车成功",
+                icon: "none"
+              });
+            }
+          }).catch((Msg) => {
             this.confirmedBuyShow(Msg);
           });
         } else {
@@ -456,10 +463,18 @@
           pushData.set("TongJu", this.postIdBean.pdId);
 
           api.buyFrameAndGlass(pushData).then(({Data}) => {
-            wx.switchTab({
-              url: '/pages/cart/main'
-            });
-          }).catch((Msg)=>{
+            if (immediately) {
+              wx.switchTab({
+                url: '/pages/cart/main'
+              });
+            } else {
+              wx.showToast({
+                title: "加入购物车成功",
+                icon: "none"
+              });
+            }
+
+          }).catch((Msg) => {
             this.confirmedBuyShow(Msg);
           });
         }
