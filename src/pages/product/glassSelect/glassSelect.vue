@@ -37,7 +37,7 @@
         <div class="price-layout">
           <div class="goods-price">{{item.SellPrice}}</div>
 
-          <a class="ck-detail" v-if="item.canEnable">查看详情</a>
+          <a class="ck-detail" v-if="item.canEnable" @click="goToGoodsDetail(item)">查看详情</a>
           <a class="ck-detail disable" v-else>查看详情</a>
         </div>
         <img src="/static/images/eye-select-sj.png" class="select-item-image"
@@ -50,7 +50,7 @@
 
 <script>
   import api from "@/api/attr";
-  import {mapState, mapGetters,mapActions} from "vuex";
+  import {mapState, mapGetters, mapActions} from "vuex";
 
   export default {
     name: "glass-select",
@@ -91,6 +91,11 @@
         this.setGroupSelectPosition({groupPosition: this.groupSelectPosition, glassosition: this.glassSelectPosiition});
         wx.navigateBack({
           delta: 1
+        });
+      },
+      goToGoodsDetail(item) {
+        wx.navigateTo({
+          url: '/pages/product/index/main?seocode='+item.Seocode+'&isComp=false'
         });
       }
 

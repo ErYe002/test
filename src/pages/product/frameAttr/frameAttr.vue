@@ -187,7 +187,8 @@
         MaxDeduction: '',
         IsFreeCarriage: '',
         RealGoodsId: '',
-        goodsId:''
+        goodsId:'',
+        isConfirmedBuy:false
       };
     },
 
@@ -346,12 +347,31 @@
       selectGlassEvent() {
 
       },
+      confirmedBuyShow(Msg){
+        let self = this;
+        wx.showModal({
+          title: '提示',
+          content: Msg,
+          icon: "none",
+          confirmText: '确定',
+          cancelText: '取消',
+          confirmColor: '#CAB894',
+          success (res) {
+            if (res.confirm) {
+              console.log('用户点击确定');
+              self.IsConfirmedBuy = true;
+            } else if (res.cancel) {
+              console.log('用户点击取消');
+            }
+          }
+        });
+      },
       buyGoods() {
 
         let pushData = new Map();
 
         pushData.set('goodsId', this.mainData.GoodsId);
-        pushData.set('IsConfirmedBuy', 'false');
+        pushData.set('IsConfirmedBuy', this.isConfirmedBuy);
         pushData.set('ShopId', this.mainData.MainGoods.ShopId);
         if (this.buyType === 2) {
           pushData.set('Quantity', this.onlyBuyFrameNum);
@@ -373,6 +393,11 @@
           pushData.set("IsFreeCarriage", 'false');
           api.buyNoPropertyFrame(pushData).then(({Data}) => {
             console.log("提交订单", Data);
+            wx.switchTab({
+              url: '/pages/cart/main'
+            });
+          }).catch((Msg)=>{
+            this.confirmedBuyShow(Msg);
           });
         } else {
           ///选择ID
@@ -434,6 +459,8 @@
             wx.switchTab({
               url: '/pages/cart/main'
             });
+          }).catch((Msg)=>{
+            this.confirmedBuyShow(Msg);
           });
         }
 
