@@ -1111,10 +1111,10 @@ export default {
     ...mapActions("remark", ["setData"]),
     getisComp(seocode) {
       if (this.isComp != true) {
-        // api.IsCompGoods(seocode).then(({ Data }) => {
-        //   this.isComp = Data;
-        //   this._getPageData(seocode, this.isComp);
-        // });
+        api.IsCompGoods(seocode).then(({ Data }) => {
+          this.isComp = Data;
+          this._getPageData(seocode, this.isComp);
+        });
         this.isComp = false;
         this._getPageData(seocode);
       } else {
