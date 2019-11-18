@@ -2,7 +2,7 @@
   <div style="height: 100%">
     <section>
       <div class="menu-pop-toggle-layout" @click="openMenu">
-        <span class="text-t6">当前选择：镜片选择</span>
+        <span class="text-t6">当前选择：{{groupName}}</span>
         <img class="ic-up-or-down" src="/static/images/ic_arrow_gray_down.png" v-if="!menuOpened"/>
 
         <img class="ic-up-or-down" src="/static/images/ic_arrow_gray_up.png" v-else/>
@@ -37,7 +37,7 @@
         <div class="price-layout">
           <div class="goods-price">{{item.SellPrice}}</div>
 
-          <a class="ck-detail" v-if="item.canEnable">查看详情</a>
+          <a class="ck-detail" v-if="item.canEnable" @click="goToGoodsDetail(item)">查看详情</a>
           <a class="ck-detail disable" v-else>查看详情</a>
         </div>
         <img src="/static/images/eye-select-sj.png" class="select-item-image"
@@ -50,7 +50,7 @@
 
 <script>
   import api from "@/api/attr";
-  import {mapState, mapGetters,mapActions} from "vuex";
+  import {mapState, mapGetters, mapActions} from "vuex";
 
   export default {
     name: "glass-select",
@@ -65,6 +65,7 @@
         menuOpened: false,
         groupSelectPosition: 0,
         glassSelectPosiition: 0,
+        groupName:'精选镜片'
       };
     },
     computed: {
@@ -77,7 +78,9 @@
       ...mapActions('groupGlassList', ['setGroupSelectPosition']),
 
       radioChange: function (e) {
+
         this.groupSelectPosition = Number(e.mp.detail.value);
+        this.groupName = this.atttGlassListData[this.groupSelectPosition].GroupName;
       },
       openMenu() {
         this.menuOpened = !this.menuOpened;
@@ -91,6 +94,11 @@
         this.setGroupSelectPosition({groupPosition: this.groupSelectPosition, glassosition: this.glassSelectPosiition});
         wx.navigateBack({
           delta: 1
+        });
+      },
+      goToGoodsDetail(item) {
+        wx.navigateTo({
+          url: '/pages/product/index/main?seocode='+item.Seocode+'&isComp=false'
         });
       }
 

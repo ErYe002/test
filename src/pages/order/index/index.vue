@@ -123,7 +123,7 @@
     <!-- <view class='useCouponScore'> -->
       <view class='counponContent'>
         <view class='couponTitle'>积分</view>
-        <view class='couponSubtitle'>{{orderInfo.TotalScoreContent+ '，' + orderInfo.UseScoreContent}}</view>
+        <view class='couponSubtitle'>{{orderInfo.TotalScoreContent+ '  ' + orderInfo.UseScoreContent}}</view>
       </view>
       <switch class="swiper" checked="" @change="changeUseScore" />
     </view>

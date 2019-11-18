@@ -121,11 +121,11 @@
 
       </div>
 
-      <a class="btn-50-percent black" v-if="buyType===2">
+      <a class="btn-50-percent black" v-if="buyType===2" @click="buyGoods(false)">
         加入购物车
       </a>
 
-      <a class="btn-50-percent gold" @click="buyGoods">
+      <a class="btn-50-percent gold" @click="buyGoods(true)">
         立即购买
       </a>
     </section>
@@ -187,7 +187,8 @@
         MaxDeduction: '',
         IsFreeCarriage: '',
         RealGoodsId: '',
-        goodsId:''
+        goodsId: '',
+        isConfirmedBuy: false
       };
     },
 
@@ -346,12 +347,31 @@
       selectGlassEvent() {
 
       },
-      buyGoods() {
+      confirmedBuyShow(Msg) {
+        let self = this;
+        wx.showModal({
+          title: '提示',
+          content: Msg,
+          icon: "none",
+          confirmText: '确定',
+          cancelText: '取消',
+          confirmColor: '#CAB894',
+          success(res) {
+            if (res.confirm) {
+              console.log('用户点击确定');
+              self.IsConfirmedBuy = true;
+            } else if (res.cancel) {
+              console.log('用户点击取消');
+            }
+          }
+        });
+      },
+      buyGoods(immediately) {
 
         let pushData = new Map();
 
         pushData.set('goodsId', this.mainData.GoodsId);
-        pushData.set('IsConfirmedBuy', 'false');
+        pushData.set('IsConfirmedBuy', this.isConfirmedBuy);
         pushData.set('ShopId', this.mainData.MainGoods.ShopId);
         if (this.buyType === 2) {
           pushData.set('Quantity', this.onlyBuyFrameNum);
@@ -373,6 +393,18 @@
           pushData.set("IsFreeCarriage", 'false');
           api.buyNoPropertyFrame(pushData).then(({Data}) => {
             console.log("提交订单", Data);
+            if (immediately) {
+              wx.switchTab({
+                url: '/pages/cart/main'
+              });
+            } else {
+              wx.showToast({
+                title: "加入购物车成功",
+                icon: "none"
+              });
+            }
+          }).catch((Msg) => {
+            this.confirmedBuyShow(Msg);
           });
         } else {
           ///选择ID
@@ -431,9 +463,19 @@
           pushData.set("TongJu", this.postIdBean.pdId);
 
           api.buyFrameAndGlass(pushData).then(({Data}) => {
-            wx.switchTab({
-              url: '/pages/cart/main'
-            });
+            if (immediately) {
+              wx.switchTab({
+                url: '/pages/cart/main'
+              });
+            } else {
+              wx.showToast({
+                title: "加入购物车成功",
+                icon: "none"
+              });
+            }
+
+          }).catch((Msg) => {
+            this.confirmedBuyShow(Msg);
           });
         }
 
