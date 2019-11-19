@@ -29,7 +29,7 @@
             <li>7天退换</li>
           </ul>
           <div class="new-user-box" v-if="model.IsNewUser || !token">
-            <img src="/static/images/new_user_img.png" class="coupon" />
+            <button class="coupon" open-type="getUserInfo" @getuserinfo="getUserInfo"><img src="/static/images/new_user_img.png" /></button>
             <div
               class="goods-list"
               v-if="model.TwoFloorFourSmallGoodsList != null && model.TwoFloorFourSmallGoodsList.length >0"
@@ -256,6 +256,7 @@
 <script>
 import api from "@/api";
 import { mapState } from "vuex";
+import authorization from "@/utils/authorization";
 import tools from "@/utils";
 
 export default {
@@ -286,6 +287,13 @@ export default {
     }
   },
   methods: {
+    getUserInfo(e) {
+      authorization.doLogin(e.mp.detail.encryptedData, e.mp.detail.iv, () => {
+        wx.navigateTo({
+          url: '/pages/account/coupon/main'
+        })
+      });
+    },
     //同步swiper page
     swiperChangeEvent(e) {
       this.swiperIndex = e.mp.detail.current;
@@ -443,9 +451,15 @@ export default {
         display: flex;
         align-items: center;
         .coupon {
-          display: block;
           width: 113px;
           height: 162px;
+          padding: 0;
+          margin: 0;
+          img{
+            display: block;
+            width: 113px;
+          height: 162px;
+          }
         }
         .goods-list {
           display: flex;
