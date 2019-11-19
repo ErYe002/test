@@ -65,7 +65,7 @@
         menuOpened: false,
         groupSelectPosition: 0,
         glassSelectPosiition: 0,
-        groupName:'精选镜片'
+        groupName: '精选镜片'
       };
     },
     computed: {
@@ -98,7 +98,7 @@
       },
       goToGoodsDetail(item) {
         wx.navigateTo({
-          url: '/pages/product/index/main?seocode='+item.Seocode+'&isComp=false'
+          url: '/pages/product/index/main?seocode=' + item.Seocode + '&isComp=false&groupSelectPosition=' + this.groupSelectPosition + '&glassSelectPosiition=' + this.glassSelectPosiition + '&isFromAttr=true'
         });
       }
 
