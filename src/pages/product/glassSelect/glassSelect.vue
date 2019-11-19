@@ -100,6 +100,7 @@
         wx.navigateTo({
           url: '/pages/product/index/main?seocode=' + item.Seocode + '&isComp=false&groupSelectPosition=' + this.groupSelectPosition + '&glassSelectPosiition=' + this.glassSelectPosiition + '&isFromAttr=true'
         });
+        this.setGroupSelectPosition({groupPosition: this.groupSelectPosition, glassosition: this.glassSelectPosiition});
       }
 
     }
