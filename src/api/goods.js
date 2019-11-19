@@ -7,7 +7,7 @@ const api = {
   },
   //判断是否打包商品
   IsCompGoods(seocode) {
-    return http.get(`/Goods/IsCompGoods?seocode=${seocode}`);
+    return http.getByNoErrorTips(`/Goods/IsCompGoods?seocode=${seocode}`);
   },
   //商品详情
   getGoodsDetail(seocode, isCompGoods) {

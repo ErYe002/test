@@ -163,7 +163,9 @@ const http = {
   get(url = '', data = null) {
     return request(url, 'get', data, {});
   },
-
+  getByNoErrorTips(url = '', data = null, header = {}) {
+    return request(url, 'get', data, header, true, false);
+  },
   upload(url = ''){
     return uploadFile(url);
   }

@@ -188,7 +188,9 @@
         IsFreeCarriage: '',
         RealGoodsId: '',
         goodsId: '',
-        isConfirmedBuy: false
+        isConfirmedBuy: false,
+        glassSelectPosiition:-1,
+        groupSelectPosition:-1
       };
     },
 
@@ -216,6 +218,8 @@
       this.IsFreeCarriage = options.IsFreeCarriage;
       this.RealGoodsId = options.RealGoodsId;
       this.goodsId = options.goodsId;
+      this.groupSelectPosition = options.groupSelectPosition;
+      this.glassSelectPosiition = options.glassSelectPosiition;
       this._getFrameData(options.goodsId);
       this._getOptometryBillBaiscDataLibrary();
     },
