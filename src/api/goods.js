@@ -19,7 +19,7 @@ const api = {
   },
   //海外商品获取同类别同周期等数据
   getQueryGoods(goodsType, price, period) {
-    return http.post(`/Goods/QueryGoods?goodsType=${goodsType}&price=${price}&period=${decodeURIComponent(period)}&shopId=2`);
+    return http.postByNoErrorTips(`/Goods/QueryGoods?goodsType=${goodsType}&price=${price}&period=${decodeURIComponent(period)}&shopId=2`);
   },
   //自营商品获取品牌推荐、热销排行数据
   getLikeGoods1(brandIds, KeyWord, Sort) {
