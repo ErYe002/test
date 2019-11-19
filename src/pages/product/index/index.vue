@@ -1119,10 +1119,10 @@ export default {
   computed: {},
   onLoad(options) {
     this.glassSelectPosiition =
-      options.glassSelectPosiition != undefined ? glassSelectPosiition : -1;
+      options.glassSelectPosiition != undefined ? options.glassSelectPosiition : -1;
     this.groupSelectPosition =
-      options.groupSelectPosition != undefined ? groupSelectPosition : -1;
-    this.isFromAttr = options.isFromAttr != undefined ? isFromAttr : false;
+      options.groupSelectPosition != undefined ? options.groupSelectPosition : -1;
+    this.isFromAttr = options.isFromAttr != undefined ? options.isFromAttr : false;
     this.isComp = options.isComp;
     this.getisComp(options.seocode);
   },
