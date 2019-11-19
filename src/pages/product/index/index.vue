@@ -139,8 +139,10 @@
         </div>
       </div>
       <!-- 优惠活动一览 -->
-      <div class="blackLine" v-if="Data.GoodsPagePromotion != null&& (Data.GoodsBase.GiftScore > 0|| Data.GoodsBase.ScoreDeductionPrice > 0|| Data.GoodsPagePromotion.isHave||Data.GoodsPagePromotion.FullReducePromotion != null|| Data.ErpGifts != null)"
-          >FULL OFFER | 优惠满满</div>
+      <div
+        class="blackLine"
+        v-if="Data.GoodsPagePromotion != null&& (Data.GoodsBase.GiftScore > 0|| Data.GoodsBase.ScoreDeductionPrice > 0|| Data.GoodsPagePromotion.isHave||Data.GoodsPagePromotion.FullReducePromotion != null|| Data.ErpGifts != null)"
+      >FULL OFFER | 优惠满满</div>
       <div class="actCon">
         <div
           class="act-lingquan actLine"
@@ -294,7 +296,7 @@
             <em>{{Data.CompGoods.MaxReduceMoney}}</em>
             &nbsp;共{{Data.CompGoods.CompCount}}款
           </div>
-          <block v-if="CompList" >
+          <block v-if="CompList">
             <div class="tczh-title">
               <div class="tczh-notelist">
                 <div class="tczh-note-1">
@@ -305,20 +307,28 @@
               </div>
               <div class="tczh-namelist">
                 <block v-for="item in Data.CompGoods.CompGoods" :key="item.index">
-                  <div :class="index==compIndex?'select':''" v-if="index<3" @click="selectComp(index)">套餐{{index+1}}</div>
+                  <div
+                    :class="index==compIndex?'select':''"
+                    v-if="index<3"
+                    @click="selectComp(index)"
+                  >套餐{{index+1}}</div>
                 </block>
               </div>
             </div>
             <div class="tczh-proListBox">
               <scroll-view scroll-x scroll-with-animation="true">
                 <div class="combproList">
-                  <li class="tczh-item" v-for="(combitem,combindex) in CompList.Items" :key="combindex">
+                  <li
+                    class="tczh-item"
+                    v-for="(combitem,combindex) in CompList.Items"
+                    :key="combindex"
+                  >
                     <a :href="'pages/product/index/main?seocode='+combitem.SeoCode">
-                    <div>
-                      <img :src="combitem.Img" />
-                    </div>
-                    <span>{{combitem.GoodsName}}</span>
-                    <em>￥{{combitem.Price}}</em>
+                      <div>
+                        <img :src="combitem.Img" />
+                      </div>
+                      <span>{{combitem.GoodsName}}</span>
+                      <em>￥{{combitem.Price}}</em>
                     </a>
                   </li>
                 </div>
@@ -626,8 +636,8 @@
             <a class="disabled">无法购买</a>
           </block>
           <block v-else>
-          <a class="addCart" @click="addCart()">加入购物车</a>
-          <a class="buyNow" @click="buyNow()">立即购买</a>
+            <a class="addCart" @click="addCart()">加入购物车</a>
+            <a class="buyNow" @click="buyNow()">立即购买</a>
           </block>
         </div>
       </div>
@@ -1099,18 +1109,20 @@ export default {
       selectCompData: [], //选中的打包具体属性数组
       selectCompNum: 0, //剩余多少打包未选择属性
       isLogin: false,
-      isFromAttr:false,//属性页过来的镜片
-      CompList:[],
-      compIndex:0,
-      groupSelectPosition:-1,
-      glassSelectPosiition:-1
+      isFromAttr: false, //属性页过来的镜片
+      CompList: [],
+      compIndex: 0,
+      groupSelectPosition: -1,
+      glassSelectPosiition: -1
     };
   },
   computed: {},
   onLoad(options) {
-    this.glassSelectPosiition=options.glassSelectPosiition!=undefined?glassSelectPosiition:-1;
-    this.groupSelectPosition=options.groupSelectPosition!=undefined?groupSelectPosition:-1;
-    this.isFromAttr=options.isFromAttr!=undefined?isFromAttr:false;
+    this.glassSelectPosiition =
+      options.glassSelectPosiition != undefined ? glassSelectPosiition : -1;
+    this.groupSelectPosition =
+      options.groupSelectPosition != undefined ? groupSelectPosition : -1;
+    this.isFromAttr = options.isFromAttr != undefined ? isFromAttr : false;
     this.isComp = options.isComp;
     this.getisComp(options.seocode);
   },
@@ -1161,8 +1173,8 @@ export default {
             }
           );
         }
-        if(Data.CompGoods!=null&&Data.CompGoods.CompGoods!=null){
-          this.CompList=Data.CompGoods.CompGoods[0];
+        if (Data.CompGoods != null && Data.CompGoods.CompGoods != null) {
+          this.CompList = Data.CompGoods.CompGoods[0];
         }
         if (Data.Items != null) {
           var that = this;
@@ -1856,18 +1868,26 @@ export default {
         url: "/pages/index/main"
       });
     },
-    selectNow(){
-      console.log("去属性页")
+    selectNow() {
+      console.log("去属性页");
     },
-    selectComp(compIndex){
-      this.CompList=this.Data.CompGoods.CompGoods[compIndex];
-      this.compIndex=compIndex;
+    selectComp(compIndex) {
+      this.CompList = this.Data.CompGoods.CompGoods[compIndex];
+      this.compIndex = compIndex;
     },
-    BackToFrom(){
-      var href =this.frameAttrHref + "&IsBuyNow=false&groupSelectPosition="+this.groupSelectPosition+"&glassSelectPosiition="+this.glassSelectPosiition
-        wx.navigateTo({
-          url: href
-        });
+    BackToFrom() {
+      var href =
+        this.frameAttrHref +
+        "&IsBuyNow=false&groupSelectPosition=" +
+        this.groupSelectPosition +
+        "&glassSelectPosiition=" +
+        this.glassSelectPosiition;
+      // wx.navigateTo({
+      //   url: href
+      // });
+      wx.navigateBack({
+        delta: 2
+      });
     }
   }
 };
