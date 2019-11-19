@@ -1200,8 +1200,8 @@ export default {
         if (Data.GoodsPagePromotion.Coupons != null) {
           Data.GoodsPagePromotion.Coupons = Data.GoodsPagePromotion.Coupons.map(
             function(value, index) {
-              value.UseStartTime = value.UseStartTime.replace("T", " ");
-              value.UseEndTime = value.UseEndTime.replace("T", " ");
+              value.UseStartTime = value.UseStartTime.replace("T", " ").slice(0,19);
+              value.UseEndTime = value.UseEndTime.replace("T", " ").slice(0,19);
               return value;
             }
           );
