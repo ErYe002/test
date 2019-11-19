@@ -23,7 +23,7 @@
             :poster="Data.GoodsBase.VieoImageUrl"
           ></video>
         </div>
-        <div class="typeChange" v-if="Data.GoodsBase.VieoUrl!=null">
+        <div class="typeChange" v-if="Data.GoodsBase.VieoUrl!=null&&Data.GoodsBase.VieoUrl!=''">
           <a :class="'videoBtn '+ (bannerType=='Video'?'selected':'')" v-on:click="_showVideo()">
             <img
               :src="(bannerType=='Video'?'/static/images/video-select.png':'/static/images/video-none.png')"
@@ -55,9 +55,9 @@
               v-for="item in Data.Series"
               :key="item.index"
             >
-              <a :href="'pages/product/index/main?seocode='+item.SeoCode">
+              <a :href="'/pages/product/index/main?seocode='+item.SeoCode">
                 <img :src="item.SeriesImg" />
-                <span>{{item.AnotherName}}</span>
+                <span v-if="Data.GoodsBase.SeoCode==item.SeoCode">{{item.AnotherName}}</span>
               </a>
             </view>
           </scroll-view>
@@ -323,7 +323,7 @@
                     v-for="(combitem,combindex) in CompList.Items"
                     :key="combindex"
                   >
-                    <a :href="'pages/product/index/main?seocode='+combitem.SeoCode">
+                    <a :href="'/pages/product/index/main?seocode='+combitem.SeoCode">
                       <div>
                         <img :src="combitem.Img" />
                       </div>
@@ -937,7 +937,7 @@
                       <img :src="item.Img" />
                       <div class="jqhg-btn">
                         <span>{{item.GoodsName}}</span>
-                        <a :href="'pages/product/index/main?seocode='+item.Seocode">
+                        <a :href="'/pages/product/index/main?seocode='+item.Seocode">
                           商品详情
                           <em>&gt;</em>
                         </a>
@@ -979,7 +979,7 @@
                       点击凑单
                       <em>&gt;</em>
                     </a>-->
-                    <a :href="'pages/product/index/main?seocode='+item.SeoCode">
+                    <a :href="'/pages/product/index/main?seocode='+item.SeoCode">
                       商品详情
                       <em>&gt;</em>
                     </a>
