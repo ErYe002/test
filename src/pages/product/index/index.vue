@@ -294,28 +294,32 @@
             <em>{{Data.CompGoods.MaxReduceMoney}}</em>
             &nbsp;共{{Data.CompGoods.CompCount}}款
           </div>
-          <block v-for="item in Data.CompGoods.CompGoods" :key="item.index">
+          <block v-if="CompList" >
             <div class="tczh-title">
               <div class="tczh-notelist">
                 <div class="tczh-note-1">
-                  套餐{{item.index}}
-                  <em>￥{{item.Price}}</em>
-                  <i>立省￥{{item.ReduceMoney}}</i>
+                  套餐1
+                  <em>￥{{CompList.Price}}</em>
+                  <i>立省￥{{CompList.ReduceMoney}}</i>
                 </div>
               </div>
               <div class="tczh-namelist">
-                <div class="select">套餐{{index+1}}</div>
+                <block v-for="item in Data.CompGoods.CompGoods" :key="item.index">
+                  <div :class="index==compIndex?'select':''" v-if="index<3" @click="selectComp(index)">套餐{{index+1}}</div>
+                </block>
               </div>
             </div>
             <div class="tczh-proListBox">
               <scroll-view scroll-x scroll-with-animation="true">
                 <div class="combproList">
-                  <li class="tczh-item" v-for="(combitem,combindex) in item.Items" :key="combindex">
+                  <li class="tczh-item" v-for="(combitem,combindex) in CompList.Items" :key="combindex">
+                    <a :href="'pages/product/index/main?seocode='+combitem.SeoCode">
                     <div>
                       <img :src="combitem.Img" />
                     </div>
                     <span>{{combitem.GoodsName}}</span>
                     <em>￥{{combitem.Price}}</em>
+                    </a>
                   </li>
                 </div>
               </scroll-view>
@@ -609,8 +613,8 @@
           </a>
         </div>
         <div class="proBtn">
-          <block v-if="Data.GoodsBase.GoodsType==5&&isFromFrame">
-            <a class="selectnow" @click="selectNow()">立即选择</a>
+          <block v-if="Data.GoodsBase.GoodsType==5&&isFromAttr">
+            <a class="selectnow" @click="BackToFrom()">立即选择</a>
           </block>
           <block v-else-if="Data.GoodsBase.GoodsType==5">
             <a class="disabled">不支持单独购买</a>
@@ -1095,11 +1099,18 @@ export default {
       selectCompData: [], //选中的打包具体属性数组
       selectCompNum: 0, //剩余多少打包未选择属性
       isLogin: false,
-      isFromFrame:false//属性页过来的镜片
+      isFromAttr:false,//属性页过来的镜片
+      CompList:[],
+      compIndex:0,
+      groupSelectPosition:-1,
+      glassSelectPosiition:-1
     };
   },
   computed: {},
   onLoad(options) {
+    this.glassSelectPosiition=options.glassSelectPosiition!=undefined?glassSelectPosiition:-1;
+    this.groupSelectPosition=options.groupSelectPosition!=undefined?groupSelectPosition:-1;
+    this.isFromAttr=options.isFromAttr!=undefined?isFromAttr:false;
     this.isComp = options.isComp;
     this.getisComp(options.seocode);
   },
@@ -1150,7 +1161,9 @@ export default {
             }
           );
         }
-
+        if(Data.CompGoods!=null&&Data.CompGoods.CompGoods!=null){
+          this.CompList=Data.CompGoods.CompGoods[0];
+        }
         if (Data.Items != null) {
           var that = this;
           Data.Items = Data.Items.map(function(value, index) {
@@ -1845,6 +1858,16 @@ export default {
     },
     selectNow(){
       console.log("去属性页")
+    },
+    selectComp(compIndex){
+      this.CompList=this.Data.CompGoods.CompGoods[compIndex];
+      this.compIndex=compIndex;
+    },
+    BackToFrom(){
+      var href =this.frameAttrHref + "&IsBuyNow=false&groupSelectPosition="+this.groupSelectPosition+"&glassSelectPosiition="+this.glassSelectPosiition
+        wx.navigateTo({
+          url: href
+        });
     }
   }
 };

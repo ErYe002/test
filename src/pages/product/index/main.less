@@ -379,6 +379,15 @@
       justify-content: space-between;
       color: #3E3E3E;
       position: relative;
+      .tczh-namelist{
+        display: flex;
+        ._div{
+          margin-right: 10px;
+        }
+        .select{
+          color: #cab894;
+        }
+      }
       &::after{
         background: #EBEBEB;
         top: 0;
@@ -421,6 +430,9 @@
         box-sizing: border-box;
         margin-right: 3%;
         position: relative;
+        ._a{
+          width: 75px;
+        }
         &::after{
           content: "+";
           position: absolute;
@@ -1719,7 +1731,7 @@
 .detailCon{
   ._image{
     display: block;
-    width: 100%;
+    width: 100%!important;
   }
 }
 
