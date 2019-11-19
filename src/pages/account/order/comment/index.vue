@@ -4,17 +4,22 @@
         <img class="headImg" :src='goodsImageUrl' />  
         <div class="goodsGrade">
             评分：
-            <img class='gradeStar' :src="src1" @click="gradeImgClick(1)" />
-            <img class='gradeStar' :src="src2" @click="gradeImgClick(2)" />
-            <img class='gradeStar' :src="src3" @click="gradeImgClick(3)" />
-            <img class='gradeStar' :src="src4" @click="gradeImgClick(4)" />
-            <img class='gradeStar' :src="src5" @click="gradeImgClick(5)" />
+            <img class='gradeStar' :src="src1" @click="gradeImgClick(1,1)" />
+            <img class='gradeStar' :src="src2" @click="gradeImgClick(1,2)" />
+            <img class='gradeStar' :src="src3" @click="gradeImgClick(1,3)" />
+            <img class='gradeStar' :src="src4" @click="gradeImgClick(1,4)" />
+            <img class='gradeStar' :src="src5" @click="gradeImgClick(1,5)" />
         </div>
     </div>
     <div class="commentBody">
         <div class="commentContent">
-            <textarea class="commentContentTextArea" v-model="commentContent">
+            <textarea class="commentContentTextArea" v-model="commentContent" autoheight='true' maxlength="500"
+                placeholder="写出真实使用体验，上传9张照片，将有机会选入心得内容，获得更多关注哦" 
+            >
             </textarea>
+            <p class="canInputNum">
+                {{500-commentContent.length}}/500
+            </p>
         </div>
         <div class="commentImg">
             <div class="commentImgBtn" @click="chooseImg">
@@ -27,6 +32,24 @@
                     <img class="uploadImgDel" @click="removeImg(index)" src="/static/images/delete.png" />
                 </li>
             </ul>
+        </div>
+    </div>
+    <div class="otherGrade">
+        <div class="serviceGrade">
+            服务态度：
+            <img class='gradeStar' :src="serviceSrc1" @click="gradeImgClick(2,1)" />
+            <img class='gradeStar' :src="serviceSrc2" @click="gradeImgClick(2,2)" />
+            <img class='gradeStar' :src="serviceSrc3" @click="gradeImgClick(2,3)" />
+            <img class='gradeStar' :src="serviceSrc4" @click="gradeImgClick(2,4)" />
+            <img class='gradeStar' :src="serviceSrc5" @click="gradeImgClick(2,5)" />
+        </div>
+        <div class="expressGrade">
+            物流服务：
+            <img class='gradeStar' :src="expressSrc1" @click="gradeImgClick(3,1)" />
+            <img class='gradeStar' :src="expressSrc2" @click="gradeImgClick(3,2)" />
+            <img class='gradeStar' :src="expressSrc3" @click="gradeImgClick(3,3)" />
+            <img class='gradeStar' :src="expressSrc4" @click="gradeImgClick(3,4)" />
+            <img class='gradeStar' :src="expressSrc5" @click="gradeImgClick(3,5)" />
         </div>
     </div>
     <div clsss="submit">
@@ -48,7 +71,19 @@ export default {
       src3:'/static/images/starBlank.png',
       src4:'/static/images/starBlank.png',
       src5:'/static/images/starBlank.png',
+      serviceSrc1:'/static/images/starBlank.png',
+      serviceSrc2:'/static/images/starBlank.png',
+      serviceSrc3:'/static/images/starBlank.png',
+      serviceSrc4:'/static/images/starBlank.png',
+      serviceSrc5:'/static/images/starBlank.png',
+      expressSrc1:'/static/images/starBlank.png',
+      expressSrc2:'/static/images/starBlank.png',
+      expressSrc3:'/static/images/starBlank.png',
+      expressSrc4:'/static/images/starBlank.png',
+      expressSrc5:'/static/images/starBlank.png',
       goodsgrade:0,
+      serviceGrade:0,
+      expressGrade:0,
       orderId:'',
       goodsId:'',
       goodsImageUrl:'',
@@ -63,50 +98,140 @@ export default {
   onLoad(options) {
     this.orderId = options.orderId;
     this.goodsId = options.goodsId;
-    this.goodsImageUrl=options.goodsImageUrl;
+    this.goodsImageUrl=options.goodsImageUrl == '' || options.goodsImageUrl == null?'/static/images/default_img.gif':options.goodsImageUrl;
   },
   methods: {
-    gradeImgClick(key) {
+    gradeImgClick(op,key) {
       switch (key){
         case 1:
-            this.src1='/static/images/starRed.png';
-            this.src2='/static/images/starBlank.png';
-            this.src3='/static/images/starBlank.png';
-            this.src4='/static/images/starBlank.png';
-            this.src5='/static/images/starBlank.png';
-            this.goodsgrade=1;
+            if(op==1){
+                this.goodsgrade = 1;
+                this.src1='/static/images/starRed.png';
+                this.src2='/static/images/starBlank.png';
+                this.src3='/static/images/starBlank.png';
+                this.src4='/static/images/starBlank.png';
+                this.src5='/static/images/starBlank.png';
+            }
+            else if(op==2){
+                this.serviceGrade = 1;
+                this.serviceSrc1='/static/images/starRed.png';
+                this.serviceSrc2='/static/images/starBlank.png';
+                this.serviceSrc3='/static/images/starBlank.png';
+                this.serviceSrc4='/static/images/starBlank.png';
+                this.serviceSrc5='/static/images/starBlank.png';
+            }
+            else{
+                this.expressGrade = 1;
+                this.expressSrc1='/static/images/starRed.png';
+                this.expressSrc2='/static/images/starBlank.png';
+                this.expressSrc3='/static/images/starBlank.png';
+                this.expressSrc4='/static/images/starBlank.png';
+                this.expressSrc5='/static/images/starBlank.png';
+            }
             break;
         case 2:
-            this.src1='/static/images/starRed.png';
-            this.src2='/static/images/starRed.png';
-            this.src3='/static/images/starBlank.png';
-            this.src4='/static/images/starBlank.png';
-            this.src5='/static/images/starBlank.png';
-            this.goodsgrade=2;
+            if(op==1){
+                this.goodsgrade = 2;
+                this.src1='/static/images/starRed.png';
+                this.src2='/static/images/starRed.png';
+                this.src3='/static/images/starBlank.png';
+                this.src4='/static/images/starBlank.png';
+                this.src5='/static/images/starBlank.png';
+            }
+            else if(op==2){
+                this.serviceGrade = 2;
+                this.serviceSrc1='/static/images/starRed.png';
+                this.serviceSrc2='/static/images/starRed.png';
+                this.serviceSrc3='/static/images/starBlank.png';
+                this.serviecSrc4='/static/images/starBlank.png';
+                this.sercieSrc5='/static/images/starBlank.png';
+            }
+            else{
+                this.expressGrade = 2;
+                this.expressSrc1='/static/images/starRed.png';
+                this.expressSrc2='/static/images/starRed.png';
+                this.expressSrc3='/static/images/starBlank.png';
+                this.expressSrc4='/static/images/starBlank.png';
+                this.expressSrc5='/static/images/starBlank.png';
+            }
             break;
         case 3:
-            this.src1='/static/images/starRed.png';
-            this.src2='/static/images/starRed.png';
-            this.src3='/static/images/starRed.png';
-            this.src4='/static/images/starBlank.png';
-            this.src5='/static/images/starBlank.png';
-            this.goodsgrade=3;
+            if(op==1){
+                this.goodsgrade = 3;
+                this.src1='/static/images/starRed.png';
+                this.src2='/static/images/starRed.png';
+                this.src3='/static/images/starRed.png';
+                this.src4='/static/images/starBlank.png';
+                this.src5='/static/images/starBlank.png';
+            }
+            else if(op==2){
+                this.serviceGrade = 3;
+                this.serviceSrc1='/static/images/starRed.png';
+                this.serviceSrc2='/static/images/starRed.png';
+                this.serviceSrc3='/static/images/starRed.png';
+                this.serviceSrc4='/static/images/starBlank.png';
+                this.serviceSrc5='/static/images/starBlank.png';
+            }
+            else{
+                this.expressGrade = 3;
+                this.expressSrc1='/static/images/starRed.png';
+                this.expressSrc2='/static/images/starRed.png';
+                this.expressSrc3='/static/images/starRed.png';
+                this.expressSrc4='/static/images/starBlank.png';
+                this.expressSrc5='/static/images/starBlank.png';
+            }
             break;
         case 4:
-            this.src1='/static/images/starRed.png';
-            this.src2='/static/images/starRed.png';
-            this.src3='/static/images/starRed.png';
-            this.src4='/static/images/starRed.png';
-            this.src5='/static/images/starBlank.png';
-            this.goodsgrade=4;
+            if(op==1){
+                this.goodsgrade = 4;
+                this.src1='/static/images/starRed.png';
+                this.src2='/static/images/starRed.png';
+                this.src3='/static/images/starRed.png';
+                this.src4='/static/images/starRed.png';
+                this.src5='/static/images/starBlank.png';
+            }
+            else if(op==2){
+                this.serviceGrade = 4;
+                this.serviceSrc1='/static/images/starRed.png';
+                this.serviceSrc2='/static/images/starRed.png';
+                this.serviceSrc3='/static/images/starRed.png';
+                this.serviceSrc4='/static/images/starRed.png';
+                this.serivceSrc5='/static/images/starBlank.png';
+            }
+            else{
+                this.expressGrade = 4;
+                this.expressSrc1='/static/images/starRed.png';
+                this.expressSrc2='/static/images/starRed.png';
+                this.expressSrc3='/static/images/starRed.png';
+                this.expressSrc4='/static/images/starRed.png';
+                this.expressSrc5='/static/images/starBlank.png';
+            }
             break;
         case 5:
-            this.src1='/static/images/starRed.png';
-            this.src2='/static/images/starRed.png';
-            this.src3='/static/images/starRed.png';
-            this.src4='/static/images/starRed.png';
-            this.src5='/static/images/starRed.png';
-            this.goodsgrade=5;
+            if(op==1){
+                this.goodsgrade = 5;
+                this.src1='/static/images/starRed.png';
+                this.src2='/static/images/starRed.png';
+                this.src3='/static/images/starRed.png';
+                this.src4='/static/images/starRed.png';
+                this.src5='/static/images/starRed.png';
+            }
+            else if(op==2){
+                this.serviceGrade = 5;
+                this.serviceSrc1='/static/images/starRed.png';
+                this.serviceSrc2='/static/images/starRed.png';
+                this.serviceSrc3='/static/images/starRed.png';
+                this.serviceSrc4='/static/images/starRed.png';
+                this.serviceSrc5='/static/images/starRed.png';
+            }
+            else{
+                this.expressGrade = 5;
+                this.expressSrc1='/static/images/starRed.png';
+                this.expressSrc2='/static/images/starRed.png';
+                this.expressSrc3='/static/images/starRed.png';
+                this.expressSrc4='/static/images/starRed.png';
+                this.expressSrc5='/static/images/starRed.png';
+            }
             break;
       }
     },
@@ -155,7 +280,7 @@ export default {
                     currentTemp.uploadFile(index,total);
                 }
                 else{
-                    api.addGoodsComment(currentTemp.orderId,currentTemp.goodsId,currentTemp.goodsgrade,currentTemp.commentContent,currentTemp.uploadedImgPath)
+                    api.addGoodsComment(currentTemp.orderId,currentTemp.goodsId,currentTemp.goodsgrade,currentTemp.commentContent,currentTemp.uploadedImgPath,currentTemp.serviceGrade,currentTemp.expressGrade)
                     .then(({Data})=>{
                         wx.showToast({
                             title:"评价成功!",
@@ -171,7 +296,7 @@ export default {
     },
     submit(){
         if(this.images.length == 0){
-            api.addGoodsComment(this.orderId,this.goodsId,this.goodsgrade,this.commentContent).then(({Data}) => {
+            api.addGoodsComment(this.orderId,this.goodsId,this.goodsgrade,this.commentContent,null,this.serviceGrade,expressGrade).then(({Data}) => {
                 wx.showToast({
                         title:"评价成功!",
                         icon:"none"
@@ -222,12 +347,18 @@ export default {
     }
     .commentBody{
         margin:10px 10px;
-        padding-bottom: 30px;
+        padding-bottom: 30rpx;
         .commentContent{
             margin:10px 5px;
             .commentContentTextArea{
                 width: 100%;
+                font-size:24rpx;
             }
+        }
+        .canInputNum{
+            font-size: 20rpx;
+            color:gray;
+            text-align: right;
         }
         .commentImg{
             display: flex;
@@ -276,6 +407,37 @@ export default {
                         right: 0;
                     }
                 }
+            }
+        }
+    }
+    .otherGrade{
+        border-top: 20rpx solid #eee;
+        padding:0 20rpx;
+        .serviceGrade{
+            border-bottom: 1px solid #eee;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-items:center;
+            text-align: center;
+            padding:30rpx 0;
+            .gradeStar{
+                height: 20px;
+                width: 20px;
+                margin-right: 10px;
+            }
+        }
+        .expressGrade{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-items:center;
+            text-align: center;
+            padding:26rpx 0;
+            .gradeStar{
+                height: 20px;
+                width: 20px;
+                margin-right: 10px;
             }
         }
     }
