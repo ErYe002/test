@@ -10,7 +10,7 @@
             v-if="model.BannerList != null && model.BannerList.length > 0"
           >
             <swiper-item v-for="item in model.BannerList" :key="item.Id">
-              <img :src="item.ImageUrl" @click="$navigateTo(item.TargetUrl)"/>
+              <img :src="item.ImageUrl" @click="$navigateTo(item.TargetUrl)" />
             </swiper-item>
           </swiper>
           <ul class="pages">
@@ -34,7 +34,12 @@
               class="goods-list"
               v-if="model.TwoFloorFourSmallGoodsList != null && model.TwoFloorFourSmallGoodsList.length >0"
             >
-              <a class="link" v-for="item in model.TwoFloorFourSmallGoodsList" :key="item.id" :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'">
+              <a
+                class="link"
+                v-for="item in model.TwoFloorFourSmallGoodsList"
+                :key="item.id"
+                :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'"
+              >
                 <img :src="item.ImageUrl" />
               </a>
             </div>
@@ -52,18 +57,34 @@
         </section>
       </article>
       <article class="second-floor-wrap">
-        <button class="group-link">
+        <navigator open-type="navigate" target="miniProgram" app-id="wx59914c27d9618111" class="group-link">
           <img :src="model.GroupBuyImageUrl" />
-        </button>
+        </navigator>
         <section
           class="grid-box"
           v-if="model.OneBigThreeSmallList != null && model.OneBigThreeSmallList.length > 0"
         >
-          <img class="left-img" :src="model.OneBigThreeSmallList[0]['ImageUrl']" @click="$navigateTo(model.OneBigThreeSmallList[0]['TargetUrl'])"/>
+          <img
+            class="left-img"
+            :src="model.OneBigThreeSmallList[0]['ImageUrl']"
+            @click="$navigateTo(model.OneBigThreeSmallList[0]['TargetUrl'])"
+          />
           <div class="right-box">
-            <img class="img" :src="model.OneBigThreeSmallList[1]['ImageUrl']" @click="$navigateTo(model.OneBigThreeSmallList[1]['TargetUrl'])"/>
-            <img class="img" :src="model.OneBigThreeSmallList[2]['ImageUrl']" @click="$navigateTo(model.OneBigThreeSmallList[2]['TargetUrl'])"/>
-            <img class="img" :src="model.OneBigThreeSmallList[3]['ImageUrl']" @click="$navigateTo(model.OneBigThreeSmallList[3]['TargetUrl'])"/>
+            <img
+              class="img"
+              :src="model.OneBigThreeSmallList[1]['ImageUrl']"
+              @click="$navigateTo(model.OneBigThreeSmallList[1]['TargetUrl'])"
+            />
+            <img
+              class="img"
+              :src="model.OneBigThreeSmallList[2]['ImageUrl']"
+              @click="$navigateTo(model.OneBigThreeSmallList[2]['TargetUrl'])"
+            />
+            <img
+              class="img"
+              :src="model.OneBigThreeSmallList[3]['ImageUrl']"
+              @click="$navigateTo(model.OneBigThreeSmallList[3]['TargetUrl'])"
+            />
           </div>
         </section>
       </article>
@@ -71,9 +92,21 @@
         class="three-floor-wrap"
         v-if="model.OneBigTwoSmallList != null && model.OneBigTwoSmallList.length > 0"
       >
-        <img :src="model.OneBigTwoSmallList[0]['ImageUrl']" class="big-img" @click="$navigateTo(model.OneBigTwoSmallList[0]['TargetUrl'])"/>
-        <img :src="model.OneBigTwoSmallList[1]['ImageUrl']" class="img" @click="$navigateTo(model.OneBigTwoSmallList[1]['TargetUrl'])"/>
-        <img :src="model.OneBigTwoSmallList[2]['ImageUrl']" class="img" @click="$navigateTo(model.OneBigTwoSmallList[2]['TargetUrl'])"/>
+        <img
+          :src="model.OneBigTwoSmallList[0]['ImageUrl']"
+          class="big-img"
+          @click="$navigateTo(model.OneBigTwoSmallList[0]['TargetUrl'])"
+        />
+        <img
+          :src="model.OneBigTwoSmallList[1]['ImageUrl']"
+          class="img"
+          @click="$navigateTo(model.OneBigTwoSmallList[1]['TargetUrl'])"
+        />
+        <img
+          :src="model.OneBigTwoSmallList[2]['ImageUrl']"
+          class="img"
+          @click="$navigateTo(model.OneBigTwoSmallList[2]['TargetUrl'])"
+        />
       </article>
       <article class="four-floor-wrap">
         <section class="brand-box" v-if="brandList.length > 0">
@@ -106,9 +139,18 @@
             <span>恢复原价代表已抢光</span>
           </p>
           <div class="goods-box">
-            <div :class="{goods: true, locked: model.SeckillList[currentSeckillIdx]['status'] != '抢购中'}">
-              <template v-if="model.SeckillList[currentSeckillIdx].currentSeckillLeftList != null && model.SeckillList[currentSeckillIdx].currentSeckillLeftList.length > 0">
-                <a class="link" :href="model.SeckillList[currentSeckillIdx]['status'] == '抢购中' ? ('/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false') : fasle" v-for="item in model.SeckillList[currentSeckillIdx].currentSeckillLeftList" :key="item.GoodsId">
+            <div
+              :class="{goods: true, locked: model.SeckillList[currentSeckillIdx]['status'] != '抢购中'}"
+            >
+              <template
+                v-if="model.SeckillList[currentSeckillIdx].currentSeckillLeftList != null && model.SeckillList[currentSeckillIdx].currentSeckillLeftList.length > 0"
+              >
+                <a
+                  class="link"
+                  :href="model.SeckillList[currentSeckillIdx]['status'] == '抢购中' ? ('/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false') : fasle"
+                  v-for="item in model.SeckillList[currentSeckillIdx].currentSeckillLeftList"
+                  :key="item.GoodsId"
+                >
                   <div class="img-box">
                     <img :src="item.ImageUrl" class="img" />
                     <span class="tag">省</span>
@@ -121,14 +163,28 @@
               </template>
             </div>
             <div class="time">
-              <div :class="{'t-text': true, current: idx == currentSeckillIdx}" v-for="(item, idx) in model.SeckillList" :key="item.Id" @click="changeSeckillIdx(idx)">
+              <div
+                :class="{'t-text': true, current: idx == currentSeckillIdx}"
+                v-for="(item, idx) in model.SeckillList"
+                :key="item.Id"
+                @click="changeSeckillIdx(idx)"
+              >
                 <span class="clock">{{item.shortTime}}</span>
                 <span class="text">{{item['status']}}</span>
               </div>
             </div>
-            <div :class="{goods: true, locked: model.SeckillList[currentSeckillIdx]['status'] != '抢购中'}">
-              <template v-if="model.SeckillList[currentSeckillIdx].currentSeckillRightList != null && model.SeckillList[currentSeckillIdx].currentSeckillRightList.length > 0">
-                <a class="link" :href="model.SeckillList[currentSeckillIdx]['status'] == '抢购中' ? ('/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false') : fasle" v-for="item in model.SeckillList[currentSeckillIdx].currentSeckillRightList" :key="item.GoodsId">
+            <div
+              :class="{goods: true, locked: model.SeckillList[currentSeckillIdx]['status'] != '抢购中'}"
+            >
+              <template
+                v-if="model.SeckillList[currentSeckillIdx].currentSeckillRightList != null && model.SeckillList[currentSeckillIdx].currentSeckillRightList.length > 0"
+              >
+                <a
+                  class="link"
+                  :href="model.SeckillList[currentSeckillIdx]['status'] == '抢购中' ? ('/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false') : fasle"
+                  v-for="item in model.SeckillList[currentSeckillIdx].currentSeckillRightList"
+                  :key="item.GoodsId"
+                >
                   <div class="img-box">
                     <img :src="item.ImageUrl" class="img" />
                     <span class="tag">省</span>
@@ -200,7 +256,7 @@
 <script>
 import api from "@/api";
 import { mapState } from "vuex";
-import tools from '@/utils'
+import tools from "@/utils";
 
 export default {
   data() {
@@ -241,8 +297,8 @@ export default {
           ? this.model.BrandList.slice(0, 12)
           : this.model.BrandList;
     },
-    changeSeckillIdx(idx){
-      this.currentSeckillIdx = idx
+    changeSeckillIdx(idx) {
+      this.currentSeckillIdx = idx;
     },
     _getPageData() {
       api.getHomeRecommendData().then(({ Data }) => {
@@ -263,14 +319,14 @@ export default {
               item.status = "已结束";
             }
             if (item.GoodsList.length > 2) {
-                item.currentSeckillLeftList = [...item.GoodsList.slice(0, 2)];
-                item.currentSeckillRightList = [
+              item.currentSeckillLeftList = [...item.GoodsList.slice(0, 2)];
+              item.currentSeckillRightList = [
                 ...item.GoodsList.slice(2, item.GoodsList.length)
               ];
             } else {
               item.currentSeckillLeftList = [...item.GoodsList];
             }
-            item.shortTime = tools.formatDate('hh:mm', startTime)
+            item.shortTime = tools.formatDate("hh:mm", startTime);
           });
           this.brandList =
             Data.BrandList.length > 12
@@ -450,6 +506,7 @@ export default {
       display: block;
       width: 354.5px;
       height: 59px;
+      margin: 0 auto;
     }
   }
   .grid-box {

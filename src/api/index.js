@@ -16,7 +16,20 @@ const api = {
       return http.postByNoLoading(url)
     }
     return http.post(url)
-  }
+  },
+  //获取首页-框架页数据
+  getHomeFramesData(){
+    return http.postByNoLoading(`/Home/AppHomeFramesPage?versionNo=4.2.0`)
+  },
+  //获取首页-框架页商品列表
+  getHomeFramesGoods({wordIdList, stringWordIds, pageSize = 10, pageIndex = 1, isDefaultGoods = true} = {}){
+    let url = `/Home/FilterFramesGoodsListByWordIds`
+    let data = {wordIdList, stringWordIds: JSON.stringify(stringWordIds), pageSize, pageIndex, isDefaultGoods}
+    if(pageIndex == 1 && stringWordIds == null){
+      return http.postByNoLoading(url, data)
+    }
+    return http.post(url, data)
+  },
 }
 
 export default api

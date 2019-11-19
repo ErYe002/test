@@ -154,20 +154,16 @@
       <p class="title">我的服务</p>
       <ul class="list">
         <li class="item">
-          <button open-type="getUserInfo" @getuserinfo="getUserInfo" v-if="!token" class="link">
-            <img src="/static/images/home_mygroup.png" class="icon" />
-            <p class="text">我的拼团</p>
-          </button>
-          <a
-            v-else
+          <navigator
             open-type="navigate"
             target="miniProgram"
             app-id="wx59914c27d9618111"
             class="link"
+            version="release"
           >
             <img src="/static/images/home_mygroup.png" class="icon" />
             <p class="text">我的拼团</p>
-          </a>
+          </navigator>
         </li>
         <li class="item">
           <button
