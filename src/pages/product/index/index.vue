@@ -366,7 +366,7 @@
             </span>
           </div>
         </div>
-        <div class="xuanGou">
+        <div class="xuanGou" v-if="Data.GoodsBase.IsSpecificationGoods">
           <span class="xuanGou-name">选购</span>
           <a
             :href="Data.GoodsBase.GoodsType==4?frameAttrHref+'&IsBuyNow=false':normalAttrHref+'&IsBuyNow=false'"
@@ -1131,6 +1131,7 @@ export default {
       options.groupSelectPosition != undefined ? options.groupSelectPosition : -1;
     this.isFromAttr = options.isFromAttr != undefined ? options.isFromAttr : false;
     this.isComp = options.isComp;
+    console.log(options.isComp,"是否打包",this.isComp != true)
     this.getisComp(options.seocode);
   },
   components: {
@@ -1143,7 +1144,6 @@ export default {
       if (this.isComp != 'true') {
         api.IsCompGoods(seocode).then(({ Data }) => {
           this.isComp = Data;
-          this._getPageData(seocode, this.isComp);
         });
         this.isComp = false;
         this._getPageData(seocode);
