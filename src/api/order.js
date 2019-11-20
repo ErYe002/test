@@ -40,7 +40,7 @@ const api = {
     );
   },
   //添加商品评论
-  addGoodsComment(OrderId, GoodsId, GoodsScore, Remark,ImageUrl) {
+  addGoodsComment(OrderId, GoodsId, GoodsScore, Remark,ImageUrl,Srate,Erate) {
     return http.post(
       `/comment/AddGoodsComment`,
       {
@@ -48,7 +48,9 @@ const api = {
         GoodsId:GoodsId,
         GoodsScore:GoodsScore,
         Remark:Remark,
-        ImageUrl:ImageUrl
+        ImageUrl:ImageUrl,
+        Srate:Srate,
+        Erate:Erate
       },
       {
         'content-type':'application/x-www-form-urlencoded'
