@@ -296,7 +296,7 @@ export default {
     },
     submit(){
         if(this.images.length == 0){
-            api.addGoodsComment(this.orderId,this.goodsId,this.goodsgrade,this.commentContent,null,this.serviceGrade,expressGrade).then(({Data}) => {
+            api.addGoodsComment(this.orderId,this.goodsId,this.goodsgrade,this.commentContent,null,this.serviceGrade,this.expressGrade).then(({Data}) => {
                 wx.showToast({
                         title:"评价成功!",
                         icon:"none"

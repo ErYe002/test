@@ -30,6 +30,14 @@ const api = {
     }
     return http.post(url, data)
   },
+  //获取首页-海淘页数据
+  appHomeOverseasPage(){
+    return http.post(`/home/AppHomeOverSeasPage?versionNo=4.2.0`)
+  },
+  //获取海淘推荐商品
+  getOverSeasRecommendGoodsByPage({appHomeId = '2280bd19-eb19-4eef-aa8c-9b99e4456098',overseasModuleType ,pageSize = 10,pageIndex = 1}){
+    return http.post(`/home/GetOverseasRecommendGoodsByPage?appHomeId=${appHomeId}&overseasModuleType=${overseasModuleType}&pageSize=${pageSize}&pageIndex=${pageIndex}`)
+  }
 }
 
 export default api
