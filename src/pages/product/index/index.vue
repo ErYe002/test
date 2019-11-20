@@ -636,8 +636,15 @@
             <a class="disabled">无法购买</a>
           </block>
           <block v-else>
-            <a class="addCart" @click="addCart()">加入购物车</a>
-            <a class="buyNow" @click="buyNow()">立即购买</a>
+            <!-- 区分登录 -->
+            <block v-if="isLogin">
+              <a class="addCart" @click="addCart()">加入购物车</a>
+              <a class="buyNow" @click="buyNow()">立即购买</a>
+            </block>
+            <block v-else>
+              <button class="addCart" open-type="getUserInfo">加入购物车</button>
+              <button class="buyNow" open-type="getUserInfo">立即购买</button>
+            </block>
           </block>
         </div>
       </div>
@@ -1133,7 +1140,7 @@ export default {
   methods: {
     ...mapActions("remark", ["setData"]),
     getisComp(seocode) {
-      if (this.isComp != true) {
+      if (this.isComp != 'true') {
         api.IsCompGoods(seocode).then(({ Data }) => {
           this.isComp = Data;
           this._getPageData(seocode, this.isComp);
@@ -1149,6 +1156,7 @@ export default {
       //判断是否登录
       userapi.checkToken().then(({ State }) => {
         this.isLogin = State;
+        console.log(State,"登录状态")
       });
       //var seocode="revia6";//自营
       //var seocode = "htyx6"; //海淘
@@ -1888,6 +1896,9 @@ export default {
       wx.navigateBack({
         delta: 2
       });
+    },
+    getUserInfo(){
+
     }
   }
 };
