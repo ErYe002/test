@@ -829,14 +829,14 @@
                 :key="item.index"
               >{{item.Content==null ? "" : "(" + item.Content + ")"}}</em>
             </div>
-            <div class>
+            <!-- <div class>
               <a
                 :href="'Piecetogether?promotionID='+Data.GoodsPagePromotion.FullReducePromotion.PromotionID+'&couponTitle='+Data.GoodsPagePromotion.FullReducePromotion.PromotionTheme+'&shopid='+Data.GoodsBase.ShopId"
               >
                 点击凑单
                 <em>&gt;</em>
               </a>
-            </div>
+            </div> -->
           </div>
           <div
             class="mfzp-type"
@@ -895,12 +895,12 @@
                   <div class="mezp-pro">
                     <div class="imgbox">
                       <img :src="item.Img" />
-                      <a
+                      <!-- <a
                         :href="'Piecetogether?promotionID='+item.PromotionID+'&couponTitle='+item.PromotionTheme+'&shopid'+Data.GoodsBase.ShopId"
                       >
                         点击凑单
                         <em>&gt;</em>
-                      </a>
+                      </a> -->
                     </div>
                     <span>{{item.GoodsName}}{{(item.ExchangeQuantity > 0 ? "(限赠" + item.ExchangeQuantity + ")" : "")}}</span>
                     <em v-if="item.Content!=null">· {{item.Content}}</em>
@@ -910,7 +910,9 @@
             </div>
           </div>
         </div>
+        <div class="huanGouNote">以上价格计算仅为初步预估，不代表最终购买价格,换购默认1件,优惠商品请把当前主商品加车后，前往购物车享受优惠</div>
       </div>
+
       <div class="KnowBtn" @click="_close()">知道了</div>
     </bottomFlip>
     <!-- 换购、满换 弹出框-->
