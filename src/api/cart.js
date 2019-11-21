@@ -144,7 +144,15 @@ const api = {
   //获取购物车商品总数量
   getCartCount(){
     return http.postByNoLoading('/cart/GetAllShopCartGoodsQuantity')
-  }
+  },
+  //微信支付
+  payOrder(orderId, openId) {
+    return http.post(`/Payment/WechatPayForSmallApplication?orderId=${orderId}&ip=&wechatOpenId=${openId}`)
+  },
+  //支付成功通知服务器
+  paySuccess(orderId) {
+    return http.post(`/Payment/WechatPayQueryOrderIsSuccessPay?orderId=${orderId}`)
+  },
 };
 
 export default api;

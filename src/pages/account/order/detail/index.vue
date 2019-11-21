@@ -93,7 +93,7 @@
           <li class="b-item" v-if="orderInfo.IsLogistics">
             <a :href="'/pages/account/logistics/main?shopId='+orderInfo.ShopId+'&orderId='+orderInfo.OrderId" class="kd-btn btn-default btn-small">查看物流</a>
           </li>
-          <li class="b-item" v-if="orderInfo.IsPayment">
+          <li class="b-item" v-if="orderInfo.IsPayment" @click="_wechatPay(orderInfo.OrderId)">
             <button class="kd-btn btn-small">付款</button>
           </li>
         </ul>
@@ -105,6 +105,8 @@
 <script>
 import api from "@/api/order";
 import tools from '@/utils'
+import cartApi from "@/api/cart";
+import { mapState } from "vuex";
 
 export default {
   data() {
@@ -112,6 +114,9 @@ export default {
       orderId: "",
       orderInfo: null
     };
+  },
+  computed: {
+    ...mapState("wxinfo", ["openId"])
   },
   onLoad(options) {
     if (options && options.orderId) {
@@ -132,6 +137,50 @@ export default {
         content,
         confirmColor: "#cab894"
       });
+    },
+    _wechatPay(orderId) {
+      const _this = this;
+      cartApi
+        .payOrder(orderId, _this.openId)
+        .then(result => {
+          const { nonceStr, paySign, signType, timeStamp } = result.Data;
+          const package1 = result.Data.package; //package是小程序关键字
+          wx.showLoading();
+          wx.requestPayment({
+            timeStamp: timeStamp,
+            nonceStr: nonceStr,
+            package: package1,
+            signType: signType,
+            paySign: paySign,
+            success: function(res) {
+              this.listQuery.page = 1;
+              cartApi
+                .paySuccess(orderId)
+                .then(() => {
+                  _this._getListEvent();
+                })
+                .catch(() => {
+                  _this._getListEvent();
+                });
+            },
+            fail: function() {
+              // wx.reportMonitor("3", 1);
+              wx.showModal({
+                title: "提示",
+                content: "支付失败，您可以稍后再进行支付",
+                showCancel: false,
+                confirmColor: "#cab894",
+                success() {}
+              });
+            },
+            complete: function() {
+              wx.hideLoading();
+            }
+          });
+        })
+        .catch(() => {
+          // wx.reportMonitor("3", 1);
+        });
     },
     //取消订单
     cancelOrderEvent(){
