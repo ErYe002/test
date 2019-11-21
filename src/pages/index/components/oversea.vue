@@ -7,7 +7,7 @@
 	  >
         <div class="swiperDiv" v-for="(item,index) in BannerList" :key="index">
           <swiper-item>
-            <a href="" >
+            <a @click="$navigateTo(item.TargetUrl)">
               <img class="swiperImg" :src="item.ImageUrl" />
             </a>
           </swiper-item>
@@ -25,7 +25,7 @@
       <div class="headBar">
 		<div class="tag">
 			<img class="tagLogo" src='/static/images/overseaTag2.png' />
-			<p class="tagTitle">直邮 保税仓</p>
+			<p class="tagTitle">直邮保税仓</p>
 		</div>
 		<div class="tag">
 			<img class="tagLogo" src='/static/images/overseaTag3.png' />
@@ -43,9 +43,8 @@
 		<div class="list-box" v-if="BrandList.length > 0">
 			<ul class="list">
 				<li class="item" v-for="item in BrandList" :key="item.Id">
-				<a click="">
+				<a @click="$navigateTo(item.TargetUrl)">
 					<img class="normal" :src="item.ColorImageUrl" />
-					<!-- <img class="colorful" src="https://pic.keede.com/AppImages/8b0280ce-27ba-415d-86b5-5d12effaecbc.png"/> -->
 				</a>
 				</li>
 			</ul>
@@ -69,23 +68,23 @@
 			<text class="topImgBarText">  FEATURED SPECIALS | 精选特惠</text>
 			<em class="topImgBarEm">到货时间<i class="topImgBarEmI">?</i></em>
 		</div>
-		<a class="topImgBody" :href='AdvertisementTopImage.TargetUrl'>
+		<a class="topImgBody" @click='$navigateTo(AdvertisementTopImage.TargetUrl)'>
 			<img class="topImgBodyImg" :src='AdvertisementTopImage.ImageUrl' />
 		</a>
     </div>
     <div class="middleImg">
 	  <a class="midImgNavBg" href="www.baidu.com">
-		  <img class="midImgNavBgImg" :src="AdvertisementList[0].ImageUrl" />
+		  <img class="midImgNavBgImg" @click="$navigateTo(AdvertisementList[0].TargetUrl)" :src="AdvertisementList[0].ImageUrl" />
 		  <a class="midImgNavL" href="www.163.com">
-			<img class="midImgNavLImg" :src="AdvertisementList[1].ImageUrl" />
+			<img class="midImgNavLImg" @click="$navigateTo(AdvertisementList[1].TargetUrl)" :src="AdvertisementList[1].ImageUrl" />
 		  </a>
 		  <a class="midImgNavR" href="www.163.com">
-			<img class="midImgNavRImg" :src="AdvertisementList[2].ImageUrl" />
+			<img class="midImgNavRImg" @click="$navigateTo(AdvertisementList[2].TargetUrl)" :src="AdvertisementList[2].ImageUrl" />
 		  </a>
 	  </a>
     </div>
     <div class="bottomImg">
-	  <a class="bottomImgA" href="">
+	  <a class="bottomImgA" @click="$navigateTo(AdvertisementBottomImage.TargetUrl)">
 		  <img class="bottomImgAImg" :src="AdvertisementBottomImage.ImageUrl" />
 	  </a>
     </div>
@@ -94,49 +93,49 @@
 		  <div @click="footerLogoNavDivClick(1)" :class="{active:footerLogoNavDivCheck == 1,footerLogoNavDiv:footerLogoNavDivCheck !=1}" >
 			  <img v-if="footerLogoNavDivCheck!=1" class="footerLogoNavDivImg" src="/static/images/overseaList1.png" />
 			  <img v-if="footerLogoNavDivCheck==1" class="footerLogoNavDivImg" src="/static/images/overseaList1-show.png" />
-			  <p class="footerLogoNavDivP">价好物美</p>
+			  <p class="footerLogoNavDivP">{{OverSeasTabList[0].Value}}</p>
 			  <span></span>
 		  </div>
 		  <div @click="footerLogoNavDivClick(2)" :class="{active:footerLogoNavDivCheck == 2,footerLogoNavDiv:footerLogoNavDivCheck !=2}">
 			  <img v-if="footerLogoNavDivCheck!=2" class="footerLogoNavDivImg" src="/static/images/overseaList2.png" />
 			  <img v-if="footerLogoNavDivCheck==2" class="footerLogoNavDivImg" src="/static/images/overseaList2-show.png" />
-			  <p class="footerLogoNavDivP">新品体验</p>
+			  <p class="footerLogoNavDivP">{{OverSeasTabList[1].Value}}</p>
 			  <span></span>
 		  </div>
 		  <div @click="footerLogoNavDivClick(3)" :class="{active:footerLogoNavDivCheck == 3,footerLogoNavDiv:footerLogoNavDivCheck !=3}">
 			  <img v-if="footerLogoNavDivCheck!=3" class="footerLogoNavDivImg" src="/static/images/overseaList3.png" />
 			  <img v-if="footerLogoNavDivCheck==3" class="footerLogoNavDivImg" src="/static/images/overseaList3-show.png" />
-			  <p class="footerLogoNavDivP">花样彩瞳</p>
+			  <p class="footerLogoNavDivP">{{OverSeasTabList[2].Value}}</p>
 			  <span></span>
 		  </div>
 		  <div @click="footerLogoNavDivClick(4)" :class="{active:footerLogoNavDivCheck == 4,footerLogoNavDiv:footerLogoNavDivCheck !=4}" >
 			  <img v-if="footerLogoNavDivCheck!=4" class="footerLogoNavDivImg" src="/static/images/overseaList4.png" />
 			  <img v-if="footerLogoNavDivCheck==4" class="footerLogoNavDivImg" src="/static/images/overseaList4-show.png" />
-			  <p class="footerLogoNavDivP">透明隐形</p>
+			  <p class="footerLogoNavDivP">{{OverSeasTabList[3].Value}}</p>
 			  <span></span>
 		  </div>
 		  <div @click="footerLogoNavDivClick(5)" :class="{active:footerLogoNavDivCheck == 5,footerLogoNavDiv:footerLogoNavDivCheck !=5}" >
 			  <img v-if="footerLogoNavDivCheck!=5" class="footerLogoNavDivImg" src="/static/images/overseaList5.png" />
 			  <img v-if="footerLogoNavDivCheck==5" class="footerLogoNavDivImg" src="/static/images/overseaList5-show.png" />
-			  <p class="footerLogoNavDivP">日韩隐形</p>
+			  <p class="footerLogoNavDivP">{{OverSeasTabList[4].Value}}</p>
 			  <span></span>
 		  </div>
       </div>
       <div class="footerRecommend">
-        <img class="footerNavBodyImg" v-if="recommendCheck == 1" :src="OverSeasTabList[0].AdvertisementImageUrl" />
-		<img class="footerNavBodyImg" v-if="recommendCheck == 2" />
-		<img class="footerNavBodyImg" v-if="recommendCheck == 3" />
-		<img class="footerNavBodyImg" v-if="recommendCheck == 4" />
-		<img class="footerNavBodyImg" v-if="recommendCheck == 5" />
+        <img class="footerNavBodyImg" v-if="footerLogoNavDivCheck == 1" @click="$navigateTo(OverSeasTabList[0].TargetUrl)" :src="OverSeasTabList[0].AdvertisementImageUrl" />
+		<img class="footerNavBodyImg" v-if="footerLogoNavDivCheck == 2" @click="$navigateTo(OverSeasTabList[1].TargetUrl)" :src="OverSeasTabList[1].AdvertisementImageUrl" />
+		<img class="footerNavBodyImg" v-if="footerLogoNavDivCheck == 3" @click="$navigateTo(OverSeasTabList[2].TargetUrl)" :src="OverSeasTabList[2].AdvertisementImageUrl" />
+		<img class="footerNavBodyImg" v-if="footerLogoNavDivCheck == 4" @click="$navigateTo(OverSeasTabList[3].TargetUrl)" :src="OverSeasTabList[3].AdvertisementImageUrl"/>
+		<img class="footerNavBodyImg" v-if="footerLogoNavDivCheck == 5" @click="$navigateTo(OverSeasTabList[4].TargetUrl)" :src="OverSeasTabList[4].AdvertisementImageUrl" />
         <div class="footerNavBodyContent">
 			<div class="recItemDiv" v-for="item in RecommendList" :key="item.key">
-				<a class="recItemA" >
+				<a class="recItemA" :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'" >
 					<img class="recImg" :src="item.ImageUrl" />
 					<p class="recTitle">{{item.GoodsName}}</p>
 					<p class="recNational">{{item.National}}</p>
 					<p class="recDesc">{{item.ShortDescription}}</p>
 					<div class="recPrice">
-						<i class="recPraiseProportion">
+						<i class="recPraiseProportion" v-if="!item.PraiseProportion == ''">
 							{{item.PraiseProportion}}好评
 						</i>
 						<em class="recSalePrice">
@@ -152,369 +151,81 @@
 				</a>
 			</div>
         </div>
+		<div class="recEndInfo" v-if="IsRecEnd">
+			<p>就到这里了呦~~~</p>
+		</div>
       </div>
     </div>
   </article>
 </template>
 
 <script>
+import api from "@/api/index";
 export default {
   data(){
     return {
-	  recommendCheck:1,
 	  swiperIndex:0,
       //横幅1
-      BannerList:[{
-			"Id": "d696e44e-0d26-4573-a4f9-5a86b3f14220",
-			"OrderIndex": 1,
-			"ImageUrl": "https://pic.keede.com/AppImages/525d5f09-7fad-4779-8012-478f128473c2.jpg",
-			"TargetUrl": "http://m.kede.com/event/ht201911"
-		}, {
-			"Id": "9cb68632-aeb8-4fe3-bfd7-21fcc47d27a8",
-			"OrderIndex": 2,
-			"ImageUrl": "https://pic.keede.com/AppImages/7090a044-3ba4-4cf5-b4c7-efa7dfc29a7a.jpg",
-			"TargetUrl": "http://m.kede.com/Motecon3.html"
-		}, {
-			"Id": "cf71e2e3-28a6-4ed2-a5e1-4f63cb922eb6",
-			"OrderIndex": 3,
-			"ImageUrl": "https://pic.keede.com/AppImages/70551f81-91b1-464a-a349-5ad6e48c03fa.jpg",
-			"TargetUrl": "http://m.kede.com/olens12.html"
-		}],
+      BannerList:[],
       //品牌2
-      BrandList:[{
-			"Id": "ebb87125-b088-4d94-8758-bb479ec18838",
-			"OrderIndex": 1,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/2ee96400-8fdb-4589-bc22-4b094c16c157.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/cd65c41c-c6ec-4e55-8725-f7a120654950.png",
-			"TargetUrl": "http://m.kede.com/acuvueh.html"
-		}, {
-			"Id": "7fdd2450-077f-471c-98e4-8b195b3d14b5",
-			"OrderIndex": 2,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/ebe6e76b-e7f7-4a92-b952-323aebd3392d.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/f429736a-02fe-45b5-9002-c6a3add57700.png",
-			"TargetUrl": "http://m.kede.com/shobih.html"
-		}, {
-			"Id": "30d0357b-3515-4779-85d0-f4b1ae390d73",
-			"OrderIndex": 3,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/237a3636-3ecd-40d8-9dd1-9b7430fafb03.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/b5e91ccb-13c7-46c2-97ab-a286ead1aa35.png",
-			"TargetUrl": "http://m.kede.com/feliamo.html"
-		}, {
-			"Id": "35d52ce3-eae4-4704-8087-bcff0020aa8a",
-			"OrderIndex": 4,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/2d452df8-3cff-4d7a-8cb2-27085e30f5a9.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/717c563f-38ef-45dc-89a0-95ea86abca0a.png",
-			"TargetUrl": "http://m.kede.com/olens.html"
-		}, {
-			"Id": "38573fef-fbbe-4d78-8f8e-dd1fcde21f40",
-			"OrderIndex": 5,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/555eca87-e307-4222-87e0-39d2676f1072.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/d791f6f1-5806-49ee-b040-9a31a312d6dd.png",
-			"TargetUrl": "http://m.kede.com/evercolor.html"
-		}, {
-			"Id": "cdbc7a0e-9f13-49f7-be07-81f4d13ce4fe",
-			"OrderIndex": 6,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/529edd35-49dc-4a72-b963-7ddfb3486f85.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/8fea21cf-95d3-4ff6-b969-a878a413bd52.png",
-			"TargetUrl": "http://m.kede.com/Diyday.html"
-		}, {
-			"Id": "88dca3dd-eba1-44f7-bdac-2bfa9ba0f8a2",
-			"OrderIndex": 7,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/b316ab62-cb11-4411-936b-792876c3c0aa.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/705ee970-b9cd-460f-a506-84487571a5f5.png",
-			"TargetUrl": "http://m.kede.com/lilmoon.html"
-		}, {
-			"Id": "68904cfc-8c1a-4b7c-b7f7-8559eea12f82",
-			"OrderIndex": 8,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/bca24a77-14c3-4200-ad38-6e007e756883.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/8720c775-6e14-4871-8b08-e50f7add6879.png",
-			"TargetUrl": "http://m.kede.com/BL.html"
-		}, {
-			"Id": "73b59576-87e9-44ee-ac04-ff5b00c48d65",
-			"OrderIndex": 9,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/ef7e609f-671f-4b5c-8e23-4957fb9fa17d.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/285934a6-1f0a-4e23-b35d-7a3144e4859b.png",
-			"TargetUrl": "http://m.kede.com/largan.html"
-		}, {
-			"Id": "45954eba-93b0-456d-87c8-265a5e5ef05d",
-			"OrderIndex": 10,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/cb608a54-f875-46ea-ad90-29543d93e790.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/8ee191a0-9eb1-473c-9bc3-b5a7a94cdf2b.png",
-			"TargetUrl": "http://m.kede.com/PienAgeww.html"
-		}, {
-			"Id": "fb07bdd3-8083-4673-8cf3-911479ae2c10",
-			"OrderIndex": 11,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/64c92814-ac8c-4557-a6f8-281e00d85dd1.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/18cc06a6-70fe-4584-9a58-afa99fe4d67b.png",
-			"TargetUrl": "http://m.kede.com/minette.html"
-		}, {
-			"Id": "40cdbc16-1799-4324-b992-6cff640f92e2",
-			"OrderIndex": 12,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/189529b3-8690-4169-95db-7d53ef1ee311.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/8cf3b696-10da-418f-8a35-3fa7267a2f3d.png",
-			"TargetUrl": "http://m.kede.com/miacareh.html"
-		}],
-	  OriginalBrandList:[{
-			"Id": "ebb87125-b088-4d94-8758-bb479ec18838",
-			"OrderIndex": 1,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/2ee96400-8fdb-4589-bc22-4b094c16c157.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/cd65c41c-c6ec-4e55-8725-f7a120654950.png",
-			"TargetUrl": "http://m.kede.com/acuvueh.html"
-		}, {
-			"Id": "7fdd2450-077f-471c-98e4-8b195b3d14b5",
-			"OrderIndex": 2,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/ebe6e76b-e7f7-4a92-b952-323aebd3392d.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/f429736a-02fe-45b5-9002-c6a3add57700.png",
-			"TargetUrl": "http://m.kede.com/shobih.html"
-		}, {
-			"Id": "30d0357b-3515-4779-85d0-f4b1ae390d73",
-			"OrderIndex": 3,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/237a3636-3ecd-40d8-9dd1-9b7430fafb03.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/b5e91ccb-13c7-46c2-97ab-a286ead1aa35.png",
-			"TargetUrl": "http://m.kede.com/feliamo.html"
-		}, {
-			"Id": "35d52ce3-eae4-4704-8087-bcff0020aa8a",
-			"OrderIndex": 4,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/2d452df8-3cff-4d7a-8cb2-27085e30f5a9.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/717c563f-38ef-45dc-89a0-95ea86abca0a.png",
-			"TargetUrl": "http://m.kede.com/olens.html"
-		}, {
-			"Id": "38573fef-fbbe-4d78-8f8e-dd1fcde21f40",
-			"OrderIndex": 5,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/555eca87-e307-4222-87e0-39d2676f1072.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/d791f6f1-5806-49ee-b040-9a31a312d6dd.png",
-			"TargetUrl": "http://m.kede.com/evercolor.html"
-		}, {
-			"Id": "cdbc7a0e-9f13-49f7-be07-81f4d13ce4fe",
-			"OrderIndex": 6,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/529edd35-49dc-4a72-b963-7ddfb3486f85.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/8fea21cf-95d3-4ff6-b969-a878a413bd52.png",
-			"TargetUrl": "http://m.kede.com/Diyday.html"
-		}, {
-			"Id": "88dca3dd-eba1-44f7-bdac-2bfa9ba0f8a2",
-			"OrderIndex": 7,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/b316ab62-cb11-4411-936b-792876c3c0aa.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/705ee970-b9cd-460f-a506-84487571a5f5.png",
-			"TargetUrl": "http://m.kede.com/lilmoon.html"
-		}, {
-			"Id": "68904cfc-8c1a-4b7c-b7f7-8559eea12f82",
-			"OrderIndex": 8,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/bca24a77-14c3-4200-ad38-6e007e756883.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/8720c775-6e14-4871-8b08-e50f7add6879.png",
-			"TargetUrl": "http://m.kede.com/BL.html"
-		}, {
-			"Id": "73b59576-87e9-44ee-ac04-ff5b00c48d65",
-			"OrderIndex": 9,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/ef7e609f-671f-4b5c-8e23-4957fb9fa17d.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/285934a6-1f0a-4e23-b35d-7a3144e4859b.png",
-			"TargetUrl": "http://m.kede.com/largan.html"
-		}, {
-			"Id": "45954eba-93b0-456d-87c8-265a5e5ef05d",
-			"OrderIndex": 10,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/cb608a54-f875-46ea-ad90-29543d93e790.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/8ee191a0-9eb1-473c-9bc3-b5a7a94cdf2b.png",
-			"TargetUrl": "http://m.kede.com/PienAgeww.html"
-		}, {
-			"Id": "fb07bdd3-8083-4673-8cf3-911479ae2c10",
-			"OrderIndex": 11,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/64c92814-ac8c-4557-a6f8-281e00d85dd1.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/18cc06a6-70fe-4584-9a58-afa99fe4d67b.png",
-			"TargetUrl": "http://m.kede.com/minette.html"
-		}, {
-			"Id": "40cdbc16-1799-4324-b992-6cff640f92e2",
-			"OrderIndex": 12,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/189529b3-8690-4169-95db-7d53ef1ee311.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/8cf3b696-10da-418f-8a35-3fa7267a2f3d.png",
-			"TargetUrl": "http://m.kede.com/miacareh.html"
-		}, {
-			"Id": "1a1b29f3-7f3f-4afa-b233-c190346a35db",
-			"OrderIndex": 13,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/839d2faa-f184-44cb-934a-4efbcc6254a4.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/77be8a97-8555-4456-99e0-af6e583668ad.png",
-			"TargetUrl": "http://m.kede.com/cooper.html"
-		}, {
-			"Id": "9710cedc-f7c4-41ec-a989-c1ab413431f6",
-			"OrderIndex": 14,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/ae6f28d2-cac0-4863-a479-c0f19e4fbf45.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/350a9869-21cd-4540-b6a0-dfe37b870917.png",
-			"TargetUrl": "http://m.kede.com/camax.html"
-		}, {
-			"Id": "2523af59-af16-4fea-b9ad-3d61e1650a2c",
-			"OrderIndex": 15,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/f02baabc-c2e3-496f-82f4-84617eb32f00.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/b0689162-b257-4602-b901-6e3919326002.png",
-			"TargetUrl": "http://m.kede.com/sancity.html"
-		}, {
-			"Id": "4325cdc3-54d8-4546-a0e6-988596d1a6f5",
-			"OrderIndex": 16,
-			"DefaultImageUrl": "https://pic.keede.com/AppImages/f973f6a3-6bbd-44c6-9ffd-9cb06b37d94d.png",
-			"ColorImageUrl": "https://pic.keede.com/AppImages/dc37c847-61c8-4c86-abe4-6251432a713d.png",
-			"TargetUrl": "http://m.kede.com/sancityre.html"
-		}],
+      BrandList:[],
+	  OriginalBrandList:[],
       //3 Floor 广告顶部图片
-      AdvertisementTopImage:{
-			"Id": "a0d60f24-e3f5-496b-b8f0-847b865cf6f6",
-			"OrderIndex": 0,
-			"LayoutPosition": "上图",
-			"ImageUrl": "https://pic.keede.com/AppImages/a9c0d647-5a5b-4388-a062-00b64e468be5.jpg",
-			"TargetUrl": "http://m.kede.com/sancityre.html"
-		},
-      AdvertisementList:[{
-			"Id": "956a9374-6b12-4c21-a7d5-c03ceb739d98",
-			"OrderIndex": 1,
-			"LayoutPosition": "中大图",
-			"ImageUrl": "https://pic.keede.com/AppImages/50bc34fb-2da1-42db-b9eb-4223c31cd583.jpg",
-			"TargetUrl": "http://m.kede.com/shobih94.html"
-		}, {
-			"Id": "fac00758-8f6a-47bf-b6c3-5e8c946e1103",
-			"OrderIndex": 2,
-			"LayoutPosition": "中小图左",
-			"ImageUrl": "https://pic.keede.com/AppImages/64fa46b3-60ec-44fa-95af-eb59ccfed592.jpg",
-			"TargetUrl": "http://m.kede.com/htyx1.html"
-		}, {
-			"Id": "cbf3bfea-cee4-49df-9245-e41b89f80deb",
-			"OrderIndex": 3,
-			"LayoutPosition": "中小图右",
-			"ImageUrl": "https://pic.keede.com/AppImages/b0b0c0da-23c3-4091-96bb-a886ad86027f.jpg",
-			"TargetUrl": "http://m.kede.com/htyx9.html"
-		}],
-      AdvertisementBottomImage: {
-			"Id": "5a0ca5c8-e087-4171-9a8f-f6eec34ed3d1",
-			"OrderIndex": 4,
-			"LayoutPosition": "下图",
-			"ImageUrl": "https://pic.keede.com/AppImages/2e4532dd-eff7-41a4-a70e-67e093cf98a4.jpg",
-			"TargetUrl": "http://m.kede.com/acuvueh2.html"
-		},
-      OverSeasTabList:[{
-        "Key": 4,
-        "Value": "价好物美",
-        "AdvertisementImageUrl": "https://pic.keede.com/AppImages/585d49c2-725e-4dda-9e1f-5db6d746b500.jpg",
-        "TargetUrl": "http://m.kede.com/htyx2.html"
-      }, {
-        "Key": 5,
-        "Value": "新品体验",
-        "AdvertisementImageUrl": "https://pic.keede.com/AppImages/d8fbcf00-7786-4418-a7d8-8245dc6ff5d3.jpg",
-        "TargetUrl": "http://m.kede.com/htyx1.html"
-      }, {
-        "Key": 6,
-        "Value": "花样彩瞳",
-        "AdvertisementImageUrl": "https://pic.keede.com/AppImages/2966e27d-f060-4e19-9eca-26c602a93f81.jpg",
-        "TargetUrl": "http://m.kede.com/shobih91.html"
-      }, {
-        "Key": 7,
-        "Value": "透明隐形",
-        "AdvertisementImageUrl": "https://pic.keede.com/AppImages/e235426b-fbb4-4450-91a9-ffd286d191a8.jpg",
-        "TargetUrl": "http://m.kede.com/acuvueh2.html"
-      }, {
-        "Key": 8,
-        "Value": "日韩隐形",
-        "AdvertisementImageUrl": "",
-        "TargetUrl": null
-	  }],
-	  RecommendList: [{
-			"National": "上海保税区",
-			"SeoCode": "cooper2",
-			"GoodsName": "酷柏奥克拉UltraFlex 1 Day Extra睛润日拋30片",
-			"ImageUrl": "https://pic.keede.com/MobileMain/ea8681b8-2fb6-42ea-b6a5-495b38c66b1b-350-350.jpg",
-			"BrandImageUrl": "",
-			"SalePrice": 117.00,
-			"PriceLabel": "已降2元",
-			"PraiseProportion": "80.0%",
-			"ShortDescription": "台湾原装进口"
-		}, {
-			"National": "上海保税区",
-			"SeoCode": "largan1",
-			"GoodsName": "星欧珠光彩色日拋隐形眼镜10片裝-巴黎金",
-			"ImageUrl": "https://pic.keede.com/MobileMain/94b31b25-2720-4ab8-bdad-67cec85ad6aa-350-350.jpg",
-			"BrandImageUrl": "",
-			"SalePrice": 86.00,
-			"PriceLabel": "已降3元",
-			"PraiseProportion": "100.0%",
-			"ShortDescription": "双眸闪耀珍珠光泽"
-		}, {
-			"National": "韩国",
-			"SeoCode": "olens16",
-			"GoodsName": "OLENS Someday 清新系列彩色隐形眼镜月抛2片装-甜心棕色",
-			"ImageUrl": "https://pic.keede.com/MobileMain/2c019649-a614-4382-a61d-45a6fe589b48-350-350.jpg",
-			"BrandImageUrl": "",
-			"SalePrice": 127.00,
-			"PriceLabel": "已降17元",
-			"PraiseProportion": "100.0%",
-			"ShortDescription": ""
-		}, {
-			"National": "韩国",
-			"SeoCode": "olens57",
-			"GoodsName": "OLENS Purspur 纯臻系列彩色隐形眼镜季抛1片装-柔润棕色",
-			"ImageUrl": "https://pic.keede.com/MobileMain/9d1efc6f-0df5-4582-869b-d05116b194d7-350-350.jpg",
-			"BrandImageUrl": "",
-			"SalePrice": 135.00,
-			"PriceLabel": "已降9元",
-			"PraiseProportion": "",
-			"ShortDescription": ""
-		}, {
-			"National": "韩国",
-			"SeoCode": "olens22",
-			"GoodsName": "OLENS Blossom 樱花3色彩色隐形眼镜月抛2片装-樱花粽色",
-			"ImageUrl": "https://pic.keede.com/MobileMain/76f72a65-2c39-4c3e-a47f-929ff58f4a38-350-350.jpg",
-			"BrandImageUrl": "",
-			"SalePrice": 122.00,
-			"PriceLabel": "已降15元",
-			"PraiseProportion": "100.0%",
-			"ShortDescription": ""
-		}, {
-			"National": "韩国",
-			"SeoCode": "olens31",
-			"GoodsName": "OLENS Spanish 西班牙系列彩色隐形眼镜月抛2片装-滢彩绿色",
-			"ImageUrl": "https://pic.keede.com/MobileMain/a9b35f18-8772-46e6-a0cc-708217a4ee8f-350-350.jpg",
-			"BrandImageUrl": "",
-			"SalePrice": 122.00,
-			"PriceLabel": "已降15元",
-			"PraiseProportion": "100.0%",
-			"ShortDescription": ""
-		}, {
-			"National": "韩国",
-			"SeoCode": "olens77",
-			"GoodsName": "OLENS Silicone 狗狗眼彩色隐形眼镜半年抛1片装-自然棕色",
-			"ImageUrl": "https://pic.keede.com/MobileMain/9c591b73-b85a-4ec5-a18e-e7fa1955f178-350-350.jpg",
-			"BrandImageUrl": "",
-			"SalePrice": 88.00,
-			"PriceLabel": "已降1元",
-			"PraiseProportion": "100.0%",
-			"ShortDescription": ""
-		}, {
-			"National": "日本",
-			"SeoCode": "shobih91",
-			"GoodsName": "SHO-BI新PienAge55美妆彩片日抛型12片-101_GIRLY",
-			"ImageUrl": "https://pic.keede.com/MobileMain/b7a08cd1-d890-48a2-9168-4c537e895ab4-350-350.jpg",
-			"BrandImageUrl": "",
-			"SalePrice": 144.00,
-			"PriceLabel": "已降4元",
-			"PraiseProportion": "100.0%",
-			"ShortDescription": ""
-		}, {
-			"National": "上海保税区",
-			"SeoCode": "cooper1",
-			"GoodsName": "酷柏奥克拉UltraFlex 55双周抛6片",
-			"ImageUrl": "https://pic.keede.com/MobileMain/3e72c239-767a-4df2-adbc-7a64cc2343af-350-350.jpg",
-			"BrandImageUrl": "",
-			"SalePrice": 93.00,
-			"PriceLabel": "已降6元",
-			"PraiseProportion": "88.9%",
-			"ShortDescription": "台湾原装进口"
-		}, {
-			"National": "韩国",
-			"SeoCode": "olens61",
-			"GoodsName": "OLENS SIO幻彩系列彩色隐形眼镜半年抛1片装-自然棕色",
-			"ImageUrl": "https://pic.keede.com/MobileMain/7838bdeb-b1a6-44bc-a823-e394105845d2-350-350.jpg",
-			"BrandImageUrl": "",
-			"SalePrice": 134.00,
-			"PriceLabel": "",
-			"PraiseProportion": "100.0%",
-			"ShortDescription": ""
-		}],
-	footerLogoNavDivCheck:1,
+      AdvertisementTopImage:{},
+      AdvertisementList:[],
+      AdvertisementBottomImage: {},
+      OverSeasTabList:[],
+	  RecommendList: [],
+	  footerLogoNavDivCheck:1,
+	  currentPage:1,
+	  IsRecEnd:false,
+	  appHomeId:''
     }
   },
+  onLoad: function(){
+	  api.appHomeOverseasPage().then(({Data})=>{
+		this.BannerList=Data.BannerList;
+		this.OriginalBrandList=Data.BrandList;
+		this.BrandList = Data.BrandList.slice(0,12);
+		this.AdvertisementTopImage = Data.AdvertisementTopImage;
+		this.AdvertisementList = Data.AdvertisementList;
+		this.AdvertisementBottomImage = Data.AdvertisementBottomImage;
+		this.OverSeasTabList = Data.OverSeasTabList;
+		this.appHomeId = Data.AppHomeId;
+		api.getOverSeasRecommendGoodsByPage({appHomeId:this.appHomeId,overseasModuleType:this.OverSeasTabList[0].Key}).then(({Data,TotalPage})=>{
+			this.RecommendList = Data.map(ele=>{
+				//当PriceLabel中的价格含有“.00”时，进行去除
+				if(/\d+.\d+/.test(ele.PriceLabel)){
+					ele.PriceLabel = ele.PriceLabel.replace(/(\d+).00/g, "$1");
+				}
+				return ele;
+			});
+			if(TotalPage <= 1){
+				this.IsRecEnd = true;
+			}
+		})
+	  });
+	  
+  },
+  //上拉刷新
+  onReachBottom: function(){
+	if(!this.IsRecEnd){
+		api.getOverSeasRecommendGoodsByPage({appHomeId:this.appHomeId,overseasModuleType:this.OverSeasTabList[this.footerLogoNavDivCheck-1].Key,pageIndex:++this.currentPage})
+		.then(({Data,TotalPage})=>{
+			this.RecommendList = this.RecommendList.concat(Data.map(ele=>{
+				//当PriceLabel中的价格含有“.00”时，进行去除
+				if(/\d+.\d+/.test(ele.PriceLabel)){
+					ele.PriceLabel = ele.PriceLabel.replace(/(\d+).00/g, "$1");
+				}
+				return ele;
+			}));
+			if(TotalPage <= this.currentPage){
+				this.IsRecEnd = true;
+			}
+		})
+	}
+  },
+
   methods:{
 	//同步swiper page
     swiperChangeEvent(e) {
@@ -529,7 +240,20 @@ export default {
 	},
 	footerLogoNavDivClick(key){
 		this.footerLogoNavDivCheck=key;
-	}
+		this.IsRecEnd = false;
+		this.currentPage = 1;
+		api.getOverSeasRecommendGoodsByPage({appHomeId:this.appHomeId,overseasModuleType:this.OverSeasTabList[key-1].Key}).then(({Data,TotalPage})=>{
+			this.RecommendList = Data.map(ele=>{
+				if(/\d+.\d+/.test(ele.PriceLabel)){
+					ele.PriceLabel = ele.PriceLabel.replace(/(\d+).00/g, "$1");
+				}
+				return ele;
+			});
+			if(TotalPage <= 1){
+				this.IsRecEnd = true;
+			}
+		})
+	},
   }
 
 }
@@ -809,7 +533,7 @@ export default {
 				background: #A74C2D;
 			}
 		}
-		.footerLogoNavDiv:nth-child(-n+4):before{
+		div:nth-child(-n+4):before{
 			content:"";
 			width:1px;
 			height: 80%;
@@ -916,6 +640,16 @@ export default {
 						}
 					}
 				}
+			}
+		}
+		.recEndInfo{
+			text-align: center;
+			margin: auto;
+			p{
+				text-align: center;
+				font-size: 24rpx;
+				color:gray;
+				margin-bottom: 10rpx;
 			}
 		}
 	}
