@@ -5,7 +5,7 @@
       <img @click="hideEvent" class="icon-close" src="/static/images/icon_cart_tips_close.png"/>
     </p>
 
-    <scroll-view scroll-y="true" class="item-list">
+    <scroll-view scroll-y="true" class="item-list" :scroll-top="scrollHeight">
       <div>
         <span class="sph select" @click="changeTypeEvent(1)" v-if="sphList.length>0">
         光度 SPH
@@ -79,7 +79,10 @@
       sphList: [],
       cylList: [],
       axisList: [],
-      saleStockType: ''
+      saleStockType: '',
+      selectSph: '',
+      selectCyl: '',
+      selectAxis: ''
     },
     data() {
       return {
@@ -88,7 +91,8 @@
         axisSelectPosition: -1,
         sellOut: false,
         sellOutMsg: "",
-        isConfirmedBuy: false
+        isConfirmedBuy: false,
+        scrollHeight:0
       };
     },
 
@@ -103,6 +107,32 @@
           this.$emit('update:isShow', val);
           if (val === true) {
             this.isConfirmedBuy = false;
+            this.sphSelectPosition = -1;
+            this.cylSelectPosition = -1;
+            this.axisSelectPosition = -1;
+            this.scrollHeight = 0;
+
+
+            for (let i = 0; i < this.sphList.length; i++) {
+              let item = this.sphList[i];
+              if (item.Value === this.selectSph) {
+                this.sphSelectPosition = i;
+              }
+            }
+
+            for (let i = 0; i < this.cylList.length; i++) {
+              let item = this.cylList[i];
+              if (item.Value === this.selectCyl) {
+                this.cylSelectPosition = i;
+              }
+            }
+
+            for (let i = 0; i < this.axisList.length; i++) {
+              let item = this.axisList[i];
+              if (item.Value === this.selectAxis) {
+                this.axisSelectPosition = i;
+              }
+            }
           }
         }
       },
