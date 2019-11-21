@@ -75,7 +75,6 @@
     name: "gd-nromal-select-pop",
     props: {
       isShow: {type: Boolean, default: false},
-      gdList: [],
       sphList: [],
       cylList: [],
       axisList: [],
@@ -166,7 +165,7 @@
           return;
         }
 
-        if (this.gdList.length > 1) {
+        if (this.cylList.length > 0) {
           if (this.cylSelectPosition === -1) {
             wx.showToast({
               title: "请选择散光",
