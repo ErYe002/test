@@ -364,7 +364,7 @@
           success(res) {
             if (res.confirm) {
               console.log('用户点击确定');
-              self.IsConfirmedBuy = true;
+              self.isConfirmedBuy = true;
             } else if (res.cancel) {
               console.log('用户点击取消');
             }
