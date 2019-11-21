@@ -31,22 +31,22 @@
           <div class="attr-line">
             <!-- <span class="lable">右眼R</span> -->
             <div
-              class="select-list"
+              :class="{'select-list': true, 'long': info.CYLFieldProperty != null}"
               @click="showGdPopEvent"
               v-if="info.HasProperty && info.GDFieldProperty != null"
             >
               <view
                 class="picker"
                 v-if="selectedGDIdx >= 0"
-              >光度：{{info.GDFieldProperty.Children[selectedGDIdx]['Value']}}</view>
+              >光度:{{info.GDFieldProperty.Children[selectedGDIdx]['Value']}}</view>
               <view
                 class="picker"
-                v-if="selectedCYLIdx >= 0"
-              >散光：{{info.CYLFieldProperty.Children[selectedCYLIdx]['Value']}}</view>
+                v-if="info.CYLFieldProperty != null && selectedCYLIdx >= 0"
+              >散光:{{info.CYLFieldProperty.Children[selectedCYLIdx]['Value']}}</view>
               <view
                 class="picker"
-                v-if="selectedAXISIdx >= 0"
-              >轴位：{{info.AXISFieldProperty.Children[selectedAXISIdx]['Value']}}</view>
+                v-if="info.AXISFieldProperty != null && selectedAXISIdx >= 0"
+              >轴位:{{info.AXISFieldProperty.Children[selectedAXISIdx]['Value']}}</view>
               <view class="empty" v-if="selectedGDIdx == -1 && selectedCYLIdx == -1 && selectedAXISIdx == -1">请选择</view>
               <img src="/static/images/icon_attr_down.png" class="icon" />
             </div>
@@ -78,7 +78,7 @@
         <button class="kd-btn btn-lg" @click="saveEvent">确定</button>
       </section>
     </bottom-flip>
-    <gd-nromal-select-pop :is-show.sync="isShowGdPop" :sph-list="info != null && info.GDFieldProperty != null ? info.GDFieldProperty.Children : []" :cyl-list="info != null && info.CYLFieldProperty != null ? info.CYLFieldProperty.Children : []" :axis-list="info != null && info.AXISFieldProperty != null ? info.AXISFieldProperty.Children : []" @backData="selectGdDoneEvent" :select-sph="selectedGDIdx" :select-cyl="selectedCYLIdx" :select-axis="selectedAXISIdx"/>
+    <gd-nromal-select-pop :is-show.sync="isShowGdPop" :sph-list="info != null && info.GDFieldProperty != null ? info.GDFieldProperty.Children : []" :cyl-list="info != null && info.CYLFieldProperty != null ? info.CYLFieldProperty.Children : []" :axis-list="info != null && info.AXISFieldProperty != null ? info.AXISFieldProperty.Children : []" @backData="selectGdDoneEvent" :select-sph-position="selectedGDIdx" :select-cyl-position="selectedCYLIdx" :select-axis-position="selectedAXISIdx"/>
   </div>
 </template>
 
@@ -133,6 +133,8 @@ export default {
         if (val == true) {
           this.info = null;
           this._getData();
+        } else {
+          Object.assign(this.$data, this.$options.data())
         }
       },
       immediate: true
@@ -353,7 +355,7 @@ export default {
       border-bottom: 0.5px dashed #dedede;
       display: flex;
       width: 100%;
-      height: 90px;
+      height: 93px;
       .s-item {
         text-align: center;
         margin: 0 5.5px;
@@ -427,6 +429,15 @@ export default {
           right: 10px;
           top: 50%;
           transform: translate3d(0, -50%, 0);
+        }
+        &.long{
+          box-sizing: border-box;
+          padding-left: 10px;
+          justify-content: flex-start;
+          .picker{
+            font-size: 12px;
+            margin-right: 5px;
+          }
         }
       }
       .num-box {
