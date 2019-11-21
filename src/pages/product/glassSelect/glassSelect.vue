@@ -149,6 +149,7 @@
 
   .dropdown-box {
     position: fixed;
+    width: 100%;
     top: 40px;
     left: 0;
     height: 100%;
