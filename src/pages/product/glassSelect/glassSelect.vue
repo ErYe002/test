@@ -37,7 +37,7 @@
         <div class="price-layout">
           <div class="goods-price">{{item.SellPrice}}</div>
 
-          <a class="ck-detail" v-if="item.canEnable" @click="goToGoodsDetail(item)">查看详情</a>
+          <a class="ck-detail" v-if="item.canEnable" @click="goToGoodsDetail(item,index)">查看详情</a>
           <a class="ck-detail disable" v-else>查看详情</a>
         </div>
         <img src="/static/images/eye-select-sj.png" class="select-item-image"
@@ -57,7 +57,15 @@
 
     onLoad(options) {
       if (options) {
+        console.log('穿过来的参数', options);
         this.groupName = this.atttGlassListData[0].GroupName;
+        if (options.groupSelectPosition !== undefined && options.groupSelectPosition != -1 ) {
+          this.groupSelectPosition = Number(options.groupSelectPosition);
+          console.log('穿过来的参数进来了');
+        }
+        if (options.glassSelectPosiition !== undefined && options.glassSelectPosiition != -1) {
+          this.glassSelectPosiition = Number(options.glassSelectPosiition);
+        }
       }
     },
     data() {
@@ -96,10 +104,11 @@
           delta: 1
         });
       },
-      goToGoodsDetail(item) {
+      goToGoodsDetail(item, index) {
         wx.navigateTo({
           url: '/pages/product/index/main?seocode=' + item.Seocode + '&isComp=false&groupSelectPosition=' + this.groupSelectPosition + '&glassSelectPosiition=' + this.glassSelectPosiition + '&isFromAttr=true'
         });
+        this.glassSelectPosiition = index;
         this.setGroupSelectPosition({groupPosition: this.groupSelectPosition, glassosition: this.glassSelectPosiition});
       }
 

@@ -189,8 +189,8 @@
         RealGoodsId: '',
         goodsId: '',
         isConfirmedBuy: false,
-        glassSelectPosiition:-1,
-        groupSelectPosition:-1
+        glassSelectPosiition: -1,
+        groupSelectPosition: -1
       };
     },
 
@@ -218,8 +218,6 @@
       this.IsFreeCarriage = options.IsFreeCarriage;
       this.RealGoodsId = options.RealGoodsId;
       this.goodsId = options.goodsId;
-      this.groupSelectPosition = options.groupSelectPosition;
-      this.glassSelectPosiition = options.glassSelectPosiition;
       this._getFrameData(options.goodsId);
       this._getOptometryBillBaiscDataLibrary();
     },
@@ -234,6 +232,9 @@
         handler: function (val, oldVal) {
           if (this.groupGlassData.length > 0) {
             let glassList = this.groupGlassData[val.groupPosition].EyeGlassList;
+            this.groupSelectPosition = val.groupPosition;
+            this.glassSelectPosiition = val.glassosition;
+
             if (glassList.length > val.glassosition) {
               this.glassBean = glassList[val.glassosition];
               this.glassSelected = true;
@@ -341,7 +342,7 @@
         if (this.postInfoBean.cylR !== '' && this.postInfoBean.cylL !== '') {
           this.setAttrGlassList({GlassGroup: this.mainData.GlassGroup, frameEyeInfo: this.postInfoBean});
           wx.navigateTo({
-            url: '/pages/product/glassSelect/main',
+            url: '/pages/product/glassSelect/main?groupSelectPosition=' + this.groupSelectPosition + '&glassSelectPosiition=' + this.glassSelectPosiition,
           });
         } else {
           wx.showToast({title: '请选择双眼光度', icon: 'none'});
@@ -397,6 +398,7 @@
           pushData.set("IsFreeCarriage", 'false');
           api.buyNoPropertyFrame(pushData).then(({Data}) => {
             console.log("提交订单", Data);
+            this.$getCartCount();
             if (immediately) {
               wx.switchTab({
                 url: '/pages/cart/main'
@@ -467,6 +469,8 @@
           pushData.set("TongJu", this.postIdBean.pdId);
 
           api.buyFrameAndGlass(pushData).then(({Data}) => {
+
+            this.$getCartCount();
             if (immediately) {
               wx.switchTab({
                 url: '/pages/cart/main'
