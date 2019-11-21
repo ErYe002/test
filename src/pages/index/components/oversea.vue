@@ -184,30 +184,12 @@ export default {
 	  appHomeId:''
     }
   },
-  onLoad: function(){
-	  api.appHomeOverseasPage().then(({Data})=>{
-		this.BannerList=Data.BannerList;
-		this.OriginalBrandList=Data.BrandList;
-		this.BrandList = Data.BrandList.slice(0,12);
-		this.AdvertisementTopImage = Data.AdvertisementTopImage;
-		this.AdvertisementList = Data.AdvertisementList;
-		this.AdvertisementBottomImage = Data.AdvertisementBottomImage;
-		this.OverSeasTabList = Data.OverSeasTabList;
-		this.appHomeId = Data.AppHomeId;
-		api.getOverSeasRecommendGoodsByPage({appHomeId:this.appHomeId,overseasModuleType:this.OverSeasTabList[0].Key}).then(({Data,TotalPage})=>{
-			this.RecommendList = Data.map(ele=>{
-				//当PriceLabel中的价格含有“.00”时，进行去除
-				if(/\d+.\d+/.test(ele.PriceLabel)){
-					ele.PriceLabel = ele.PriceLabel.replace(/(\d+).00/g, "$1");
-				}
-				return ele;
-			});
-			if(TotalPage <= 1){
-				this.IsRecEnd = true;
-			}
-		})
-	  });
-	  
+  async onLoad(){
+	this.init();
+  },
+  //下拉刷新
+  onPullDownRefresh() {
+    this.init();
   },
   //上拉刷新
   onReachBottom: function(){
@@ -229,6 +211,31 @@ export default {
   },
 
   methods:{
+	init(){
+		api.appHomeOverseasPage().then(({Data})=>{
+		this.BannerList=Data.BannerList;
+		this.OriginalBrandList=Data.BrandList;
+		this.BrandList = Data.BrandList.slice(0,12);
+		this.AdvertisementTopImage = Data.AdvertisementTopImage;
+		this.AdvertisementList = Data.AdvertisementList;
+		this.AdvertisementBottomImage = Data.AdvertisementBottomImage;
+		this.OverSeasTabList = Data.OverSeasTabList;
+		this.appHomeId = Data.AppHomeId;
+		this.footerLogoNavDivCheck = 1;
+		api.getOverSeasRecommendGoodsByPageNoLoading({appHomeId:this.appHomeId,overseasModuleType:this.OverSeasTabList[0].Key}).then(({Data,TotalPage})=>{
+			this.RecommendList = Data.map(ele=>{
+				//当PriceLabel中的价格含有“.00”时，进行去除
+				if(/\d+.\d+/.test(ele.PriceLabel)){
+					ele.PriceLabel = ele.PriceLabel.replace(/(\d+).00/g, "$1");
+				}
+				return ele;
+			});
+			if(TotalPage <= 1){
+				this.IsRecEnd = true;
+			}
+		})
+	  });
+	},
 	//同步swiper page
     swiperChangeEvent(e) {
       this.swiperIndex = e.mp.detail.current;
@@ -389,7 +396,7 @@ export default {
 			color: #000;
 			display: inline-block;
 			margin-left: 15px;
-			font-size: 30rpx;
+			font-size: 26rpx;
 		}
 		.topImgBarEm{
 			color: #fff;
