@@ -135,18 +135,20 @@
 					<p class="recNational">{{item.National}}</p>
 					<p class="recDesc">{{item.ShortDescription}}</p>
 					<div class="recPrice">
-						<i class="recPraiseProportion" v-if="!item.PraiseProportion == ''">
+						<i class="recPraiseProportion" >
 							{{item.PraiseProportion}}好评
 						</i>
-						<em class="recSalePrice">
+						<div>
+							<em class="recSalePrice">
 							￥{{item.SalePrice}}
-						</em>
-						<em class="recPriceLabel" v-if="item.PriceLabel != ''">
-							{{item.PriceLabel}}
-						</em>
-						<em class="recShopCartLogo">
-							<img class="recShopCartLogoImg" src="/static/images/redCart.png" />
-						</em>
+							</em>
+							<em class="recPriceLabel" v-if="item.PriceLabel != ''">
+								{{item.PriceLabel}}
+							</em>
+							<em class="recShopCartLogo">
+								<img class="recShopCartLogoImg" src="/static/images/redCart.png" />
+							</em>
+						</div>
 					</div>
 				</a>
 			</div>
@@ -610,32 +612,38 @@ export default {
 						display:flex;
 						flex-direction: row;
 						flex-wrap:nowrap;
-						justify-content: space-around;
+						justify-content: space-between;
 						.recPraiseProportion{
 							color:#878788;
 							font-size: 18rpx;
-							margin:auto;
+							margin:auto 4rpx;
 						}
-						.recSalePrice{
-							color:#e25256;
-							font-size: 30rpx;
-							margin:auto;
-						}
-						.recPriceLabel{
-							color:#fff;
-							font-size: 14rpx;
-							background: #E25256;
-							border-radius:40%;
-							margin: auto;
-							padding: 8rpx;
-						}
-						.recShopCartLogo{
+						div{
 							display: flex;
 							flex-direction: row;
-							align-items: center;
-							.recShopCartLogoImg{
-								width:30rpx;
-								height: 30rpx;;
+							flex-wrap:nowrap;
+							justify-content: flex-end;
+							.recSalePrice{
+								color:#e25256;
+								font-size: 30rpx;
+								margin:auto 4rpx;
+							}
+							.recPriceLabel{
+								color:#fff;
+								font-size: 14rpx;
+								background: #E25256;
+								border-radius:40%;
+								margin: auto 4rpx;
+								padding: 8rpx;
+							}
+							.recShopCartLogo{
+								display: flex;
+								flex-direction: row;
+								align-items: center;
+								.recShopCartLogoImg{
+									width:30rpx;
+									height: 30rpx;;
+								}
 							}
 						}
 					}
