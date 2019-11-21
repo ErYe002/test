@@ -1137,7 +1137,6 @@ export default {
     this.isFromAttr =
       options.isFromAttr != undefined ? options.isFromAttr : false;
     this.isComp = options.isComp;
-    console.log(options.isComp, "是否打包", this.isComp != "true");
     this.getisComp(options.seocode);
   },
   components: {
@@ -1147,23 +1146,18 @@ export default {
   methods: {
     ...mapActions("remark", ["setData"]),
     getisComp(seocode) {
-      if (this.isComp != "true") {
-        api
-          .IsCompGoods(seocode)
-          .then(({ Data }) => {
-            console.log(Data);
-            this.isComp = Data;
-            this._getPageData(seocode);
-          })
-          .catch(({ Data }) => {
-            console.log(Data);
-            this.isComp = Data;
-            this._getPageData(seocode);
-          });
-      } else {
-        this.isComp = true;
-        this._getPageData(seocode);
-      }
+      api
+        .IsCompGoods(seocode)
+        .then(({ Data }) => {
+          console.log(Data);
+          this.isComp = Data;
+          this._getPageData(seocode);
+        })
+        .catch(({ Data }) => {
+          console.log(Data);
+          this.isComp = Data;
+          this._getPageData(seocode);
+        });
     },
     _getPageData(seocode) {
       //判断是否登录
@@ -1663,6 +1657,8 @@ export default {
               objItem.GD = value.Id;
               objItem.Quantity = 1;
               obj.SpecificationItems.push(objItem);
+              var isadd=false;
+              var isSameGd=false
               //遍历有属性商品判断goodsid是否相等，相等则判断其光度ID是否一样，再相等则数量增加，否则增加商品
               if (GDPropertyItems.length > 0) {
                 GDPropertyItems.map(function(value_1, index_1) {
@@ -1671,15 +1667,18 @@ export default {
                     value_1.SpecificationItems.map(function(value_2, index_2) {
                       if (value_2.GD == value.Id) {
                         value_2.Quantity++;
-                      } else {
-                        //商品id一样光度不同
-                        value_1.SpecificationItems.push(objItem);
+                        isSameGd=true;
                       }
                     });
-                  } else {
-                    GDPropertyItems.push(obj);
+                    if(!isSameGd){
+                      value_1.SpecificationItems.push(objItem);
+                    }
+                    isadd=true;
                   }
                 });
+                if(!isadd){
+                  GDPropertyItems.push(obj);
+                }
               } else {
                 GDPropertyItems.push(obj);
               }
@@ -1688,15 +1687,18 @@ export default {
               var obj = {};
               obj.GoodsId = value.GoodsId;
               obj.Quantity = 1;
+              var isadd=false;
               //遍历无属性商品判断goodsid是否相等，相等则增加数量，否则增加商品
               if (NoPropertyItems.length > 0) {
                 NoPropertyItems.map(function(value_, index_) {
                   if (value_.GoodsId == value.GoodsId) {
                     value_.Quantity++;
-                  } else {
-                    NoPropertyItems.push(obj);
+                    isadd=true;
                   }
                 });
+                if(!isadd){
+                  NoPropertyItems.push(obj);
+                }
               } else {
                 NoPropertyItems.push(obj);
               }
@@ -1808,6 +1810,8 @@ export default {
               objItem.GD = value.Id;
               objItem.Quantity = 1;
               obj.SpecificationItems.push(objItem);
+              var isadd=false;
+              var isSameGd=false
               //遍历有属性商品判断goodsid是否相等，相等则判断其光度ID是否一样，再相等则数量增加，否则增加商品
               if (GDPropertyItems.length > 0) {
                 GDPropertyItems.map(function(value_1, index_1) {
@@ -1816,15 +1820,18 @@ export default {
                     value_1.SpecificationItems.map(function(value_2, index_2) {
                       if (value_2.GD == value.Id) {
                         value_2.Quantity++;
-                      } else {
-                        //商品id一样光度不同
-                        value_1.SpecificationItems.push(objItem);
+                        isSameGd=true;
                       }
                     });
-                  } else {
-                    GDPropertyItems.push(obj);
+                    if(!isSameGd){
+                      value_1.SpecificationItems.push(objItem);
+                    }
+                    isadd=true;
                   }
                 });
+                if(!isadd){
+                  GDPropertyItems.push(obj);
+                }
               } else {
                 GDPropertyItems.push(obj);
               }
@@ -1833,15 +1840,18 @@ export default {
               var obj = {};
               obj.GoodsId = value.GoodsId;
               obj.Quantity = 1;
+              var isadd=false;
               //遍历无属性商品判断goodsid是否相等，相等则增加数量，否则增加商品
               if (NoPropertyItems.length > 0) {
                 NoPropertyItems.map(function(value_, index_) {
                   if (value_.GoodsId == value.GoodsId) {
                     value_.Quantity++;
-                  } else {
-                    NoPropertyItems.push(obj);
+                    isadd=true;
                   }
                 });
+                if(!isadd){
+                  NoPropertyItems.push(obj);
+                }
               } else {
                 NoPropertyItems.push(obj);
               }
