@@ -1,7 +1,7 @@
 <template>
   <ul class="goods-list">
     <li class="goods-item" v-for="item in dataList" :key="item.GoodsId">
-      <a :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'" class="link">
+      <a :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp='+item.IsCompGoods" class="link">
         <div class="g-img-box">
           <img class="tag-img" v-if="item.GoodsTagImage" :src="item.GoodsTagImage" />
           <img class="g-img" :src="item.GoodsImg" mode="aspectFill" />
