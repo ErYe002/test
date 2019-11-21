@@ -150,11 +150,9 @@
           v-on:click="_showCoupon()"
         >
           <span class="act-name">领券</span>
-          <span
-            class="coupon"
-            v-for="item in Data.GoodsPagePromotion.Coupons"
-            :key="item.index"
-          >满{{item.MeetAmount}}-{{item.DeductionAmount}}</span>
+          <block v-for="item in Data.GoodsPagePromotion.Coupons" :key="item.index">
+            <span class="coupon" v-if="index<3">满{{item.MeetAmount}}-{{item.DeductionAmount}}</span>
+          </block>
           <span class="act-info">
             领券
             <span class="icon">></span>
@@ -1127,12 +1125,17 @@ export default {
   computed: {},
   onLoad(options) {
     this.glassSelectPosiition =
-      options.glassSelectPosiition != undefined ? options.glassSelectPosiition : -1;
+      options.glassSelectPosiition != undefined
+        ? options.glassSelectPosiition
+        : -1;
     this.groupSelectPosition =
-      options.groupSelectPosition != undefined ? options.groupSelectPosition : -1;
-    this.isFromAttr = options.isFromAttr != undefined ? options.isFromAttr : false;
+      options.groupSelectPosition != undefined
+        ? options.groupSelectPosition
+        : -1;
+    this.isFromAttr =
+      options.isFromAttr != undefined ? options.isFromAttr : false;
     this.isComp = options.isComp;
-    console.log(options.isComp,"是否打包",this.isComp != 'true')
+    console.log(options.isComp, "是否打包", this.isComp != "true");
     this.getisComp(options.seocode);
   },
   components: {
@@ -1142,16 +1145,19 @@ export default {
   methods: {
     ...mapActions("remark", ["setData"]),
     getisComp(seocode) {
-      if (this.isComp != 'true') {
-        api.IsCompGoods(seocode).then(({ Data }) => {
-          console.log(Data);
-          this.isComp = Data;
-          this._getPageData(seocode);
-        }).catch(({Data})=>{
-          console.log(Data);
-          this.isComp = Data;
-          this._getPageData(seocode);
-        });
+      if (this.isComp != "true") {
+        api
+          .IsCompGoods(seocode)
+          .then(({ Data }) => {
+            console.log(Data);
+            this.isComp = Data;
+            this._getPageData(seocode);
+          })
+          .catch(({ Data }) => {
+            console.log(Data);
+            this.isComp = Data;
+            this._getPageData(seocode);
+          });
       } else {
         this.isComp = true;
         this._getPageData(seocode);
@@ -1161,7 +1167,7 @@ export default {
       //判断是否登录
       userapi.checkToken().then(({ State }) => {
         this.isLogin = State;
-        console.log(State,"登录状态")
+        console.log(State, "登录状态");
       });
       //var seocode="revia6";//自营
       //var seocode = "htyx6"; //海淘
@@ -1213,8 +1219,14 @@ export default {
         if (Data.GoodsPagePromotion.Coupons != null) {
           Data.GoodsPagePromotion.Coupons = Data.GoodsPagePromotion.Coupons.map(
             function(value, index) {
-              value.UseStartTime = value.UseStartTime.replace("T", " ").slice(0,19);
-              value.UseEndTime = value.UseEndTime.replace("T", " ").slice(0,19);
+              value.UseStartTime = value.UseStartTime.replace("T", " ").slice(
+                0,
+                19
+              );
+              value.UseEndTime = value.UseEndTime.replace("T", " ").slice(
+                0,
+                19
+              );
               return value;
             }
           );
@@ -1461,6 +1473,12 @@ export default {
           wx.showToast({
             title: "领券成功",
             icon: "none"
+          });
+          //改变领券数据
+          this.Data.GoodsPagePromotion.Coupons.map(function(value, index) {
+            if (value.PromotionID == id) {
+              value.HasPicked = true;
+            }
           });
         } else {
           wx.showToast({
@@ -1902,9 +1920,7 @@ export default {
         delta: 2
       });
     },
-    getUserInfo(){
-
-    }
+    getUserInfo() {}
   }
 };
 </script>
