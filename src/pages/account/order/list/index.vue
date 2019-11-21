@@ -54,13 +54,15 @@
                 </span>
               </div>
               <div class="goods-list">
-                <img
+                <template v-for="(imgItem, index) in item.Details">
+                  <img
                   class="g-img"
                   :src="imgItem.Img"
                   mode="aspectFill"
-                  v-for="imgItem in item.Details"
                   :key="imgItem.GoodsId"
+                  v-if="index < 4"
                 />
+                </template>
               </div>
             </a>
             <p class="amount-box">
