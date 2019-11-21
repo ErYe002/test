@@ -8,17 +8,26 @@
     </section>
     <section class="nav-box">
       <scroll-view class="nav-list" scroll-x enable-flex>
-        <p
+        <div
           :class="{'n-item': true, active: item.Id == currentMenuId}"
           v-for="item in menu"
           :key="item.Id"
+          @click="changeIndexEvent(item.Id)"
         >
-          <b>{{item.ChName}}</b>
-          <em>{{item.EnName}}</em>
-        </p>
+          <navigator open-type="navigate" target="miniProgram" app-id="wx59914c27d9618111" class="link" v-if="item.Id == 2">
+            <b>{{item.ChName}}</b>
+            <em>{{item.EnName}}</em>
+          </navigator>
+          <div class="link" v-else>
+            <b>{{item.ChName}}</b>
+            <em>{{item.EnName}}</em>
+          </div>
+        </div>
       </scroll-view>
     </section>
-    <recommend />
+    <recommend v-if="currentMenuId == 1"/>
+    <oversea v-if="currentMenuId == 3"/>
+    <frames v-if="currentMenuId == 4"/>
   </article>
 </template>
 
@@ -52,6 +61,11 @@ export default {
         this.menu = list;
         this.currentMenuId = this.menu[0]["Id"];
       });
+    },
+    changeIndexEvent(mid){
+      if(mid != 2 && mid != 0){
+       this.currentMenuId = mid
+      }
     }
   },
 
@@ -90,26 +104,30 @@ export default {
     height: 35px;
     .n-item {
       flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      b {
-        font-size: 17px;
-        color: #040000ff;
-      }
-      em {
-        font-size: 8.5px;
-        color: #595758ff;
-        font-weight: 300;
-      }
-      &.active {
+      .link{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         b {
-          font-weight: bold;
-          font-size: 25px;
+          font-size: 17px;
+          color: #040000ff;
         }
         em {
-          display: none;
+          font-size: 8.5px;
+          color: #595758ff;
+          font-weight: 300;
+        }
+      }
+      &.active {
+        .link{
+          b {
+          font-weight: bold;
+            font-size: 23px;
+          }
+          em {
+            display: none;
+          }
         }
       }
     }

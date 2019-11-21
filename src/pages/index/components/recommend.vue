@@ -235,7 +235,7 @@
             <p class="name">{{item.GoodsName}}</p>
             <p class="desc">{{item.ShortDescription}}</p>
             <p class="info">
-              <span class="rate">{{item.PraiseProportion != '' ? (item.PraiseProportion+'好评') : ''}}</span>
+              <span class="rate">{{item.PraiseProportion != '' && item.PraiseProportion != '0.0%' && item.PraiseProportion != '%' ? (item.PraiseProportion+'好评') : ''}}</span>
               <span class="price-info">
                 <em class="price">¥{{item.SalePrice}}</em>
                 <em
@@ -259,19 +259,21 @@ import { mapState } from "vuex";
 import authorization from "@/utils/authorization";
 import tools from "@/utils";
 
+const defaultData = {
+  swiperIndex: 0,
+  model: null,
+  brandList: [],
+  page: 1,
+  size: 10,
+  totalPage: 0,
+  isLoding: false,
+  goodsList: [],
+  currentSeckillIdx: 1
+}
+
 export default {
   data() {
-    return {
-      swiperIndex: 0,
-      model: null,
-      brandList: [],
-      page: 1,
-      size: 10,
-      totalPage: 0,
-      isLoding: false,
-      goodsList: [],
-      currentSeckillIdx: 1
-    };
+    return Object.assign({}, defaultData);
   },
   computed: {
     ...mapState("user", ["token"])
@@ -285,6 +287,12 @@ export default {
       this.page++;
       this._getGoodsListData();
     }
+  },
+  //下拉刷新
+  async onPullDownRefresh() {
+    Object.assign(this.$data, {...defaultData})
+    await this._getPageData()
+    await this._getGoodsListData();
   },
   methods: {
     getUserInfo(e) {

@@ -78,7 +78,7 @@
             <p class="name">{{item.GoodsName}}</p>
             <p class="desc">{{item.ShortDescription}}</p>
             <p class="info">
-              <span class="rate">{{item.PraiseProportion != '' ? (item.PraiseProportion+'好评') : ''}}</span>
+              <span class="rate">{{item.PraiseProportion != '' && item.PraiseProportion != '0.0%' && item.PraiseProportion != '%' ? (item.PraiseProportion+'好评') : ''}}</span>
               <span class="price-info">
                 <em class="price">¥{{item.SalePrice}}</em>
                 <em
@@ -126,6 +126,12 @@ export default {
       this.listQuery.pageIndex++;
       this._getListData();
     }
+  },
+  //下拉刷新
+  async onPullDownRefresh() {
+    Object.assign(this.$data, this.$options.data())
+    await this._getPageData()
+    await this._getListData();
   },
   methods: {
     filterEvent(wordId, isDisabled) {
