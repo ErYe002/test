@@ -57,7 +57,7 @@
 
     onLoad(options) {
       if (options) {
-
+        this.groupName = this.atttGlassListData[0].GroupName;
       }
     },
     data() {
@@ -65,7 +65,7 @@
         menuOpened: false,
         groupSelectPosition: 0,
         glassSelectPosiition: 0,
-        groupName: '精选镜片'
+        groupName: ''
       };
     },
     computed: {

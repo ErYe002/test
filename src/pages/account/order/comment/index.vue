@@ -307,6 +307,7 @@ export default {
             })
         }
         else{
+            this.uploadedImgPath = [],
             this.uploadFile(0,this.images.length)
         }
     }

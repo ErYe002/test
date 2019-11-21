@@ -150,11 +150,9 @@
           v-on:click="_showCoupon()"
         >
           <span class="act-name">领券</span>
-          <span
-            class="coupon"
-            v-for="item in Data.GoodsPagePromotion.Coupons"
-            :key="item.index"
-          >满{{item.MeetAmount}}-{{item.DeductionAmount}}</span>
+          <block v-for="item in Data.GoodsPagePromotion.Coupons" :key="item.index">
+            <span class="coupon" v-if="index<3">满{{item.MeetAmount}}-{{item.DeductionAmount}}</span>
+          </block>
           <span class="act-info">
             领券
             <span class="icon">></span>
@@ -452,7 +450,7 @@
           <span class="act-name">瞳学评论({{Data.Remark==null?"0":Data.Remark.TotalCount}})</span>
           <a
             class="act-info"
-            v-if="Data.Remark != null"
+            v-if="Data.Remark != null&&Data.Remark.TotalCount!=null&&Data.Remark.TotalCoun>0"
             :href="'/pages/product/remark/main?goodsid='+Data.GoodsBase.GoodsId+'&label=全部'"
           >
             {{Data.Remark.PraiseRatio}}%好评 &nbsp;全部
@@ -833,7 +831,7 @@
             </div>
             <div class>
               <a
-                :href="'Piecetogether?promotionID='+Data.GoodsPagePromotion.FullReducePromotion.PromotionID+'&couponTitle='+Data.GoodsPagePromotion.FullReducePromotion.PromotionTheme+'&shopid='+Data.GoodsBase.ShopId"
+                :href="'/pages/search/pieceTogether?promotionID='+Data.GoodsPagePromotion.FullReducePromotion.PromotionID+'&couponTitle='+Data.GoodsPagePromotion.FullReducePromotion.PromotionTheme+'&shopid='+Data.GoodsBase.ShopId"
               >
                 点击凑单
                 <em>&gt;</em>
@@ -898,7 +896,7 @@
                     <div class="imgbox">
                       <img :src="item.Img" />
                       <a
-                        :href="'Piecetogether?promotionID='+item.PromotionID+'&couponTitle='+item.PromotionTheme+'&shopid'+Data.GoodsBase.ShopId"
+                        :href="'/pages/search/pieceTogether?promotionID='+item.PromotionID+'&couponTitle='+item.PromotionTheme+'&shopid'+Data.GoodsBase.ShopId"
                       >
                         点击凑单
                         <em>&gt;</em>
@@ -912,7 +910,9 @@
             </div>
           </div>
         </div>
+        <div class="huanGouNote">以上价格计算仅为初步预估，不代表最终购买价格,换购默认1件,优惠商品请把当前主商品加车后，前往购物车享受优惠</div>
       </div>
+
       <div class="KnowBtn" @click="_close()">知道了</div>
     </bottomFlip>
     <!-- 换购、满换 弹出框-->
@@ -980,12 +980,12 @@
                   </div>
                   <div class="mehg-btn">
                     <span>换购 {{item.GoodsName}}</span>
-                    <!-- <a
-                      :href="'Piecetogether?promotionID='+item.PromotionID+'&couponTitle='+item.PromotionTheme+'&shopid='+Data.GoodsBase.ShopId"
+                    <a
+                      :href="'/pages/search/pieceTogether?promotionID='+item.PromotionID+'&couponTitle='+item.PromotionTheme+'&shopid='+Data.GoodsBase.ShopId"
                     >
                       点击凑单
                       <em>&gt;</em>
-                    </a>-->
+                    </a>
                     <a :href="'/pages/product/index/main?seocode='+item.SeoCode">
                       商品详情
                       <em>&gt;</em>
@@ -1030,11 +1030,12 @@
             </div>
             <div class="goodsstylelist">
               <div id="js_mainsytle" class="goodscolor">
-                <scroll-view scroll-x scroll-with-animation="true">
+                <scroll-view scroll-x scroll-with-animation="true" scroll-into-view="select_img">
                   <block v-for="info in combineData.SeriesItems" :key="info.index">
                     <li
                       :class="(info.GoodsId == combineData.GoodsId? 'select' :'')"
                       @click="_selectCombineAttr(info.GoodsId)"
+                      :id="info.GoodsId == combineData.GoodsId? 'select_img' :'_img'"
                     >
                       <img :src="info.SeriesImg" />
                     </li>
@@ -1126,12 +1127,17 @@ export default {
   computed: {},
   onLoad(options) {
     this.glassSelectPosiition =
-      options.glassSelectPosiition != undefined ? options.glassSelectPosiition : -1;
+      options.glassSelectPosiition != undefined
+        ? options.glassSelectPosiition
+        : -1;
     this.groupSelectPosition =
-      options.groupSelectPosition != undefined ? options.groupSelectPosition : -1;
-    this.isFromAttr = options.isFromAttr != undefined ? options.isFromAttr : false;
+      options.groupSelectPosition != undefined
+        ? options.groupSelectPosition
+        : -1;
+    this.isFromAttr =
+      options.isFromAttr != undefined ? options.isFromAttr : false;
     this.isComp = options.isComp;
-    console.log(options.isComp,"是否打包",this.isComp != true)
+    console.log(options.isComp, "是否打包", this.isComp != "true");
     this.getisComp(options.seocode);
   },
   components: {
@@ -1141,12 +1147,19 @@ export default {
   methods: {
     ...mapActions("remark", ["setData"]),
     getisComp(seocode) {
-      if (this.isComp != 'true') {
-        api.IsCompGoods(seocode).then(({ Data }) => {
-          this.isComp = Data;
-        });
-        this.isComp = false;
-        this._getPageData(seocode);
+      if (this.isComp != "true") {
+        api
+          .IsCompGoods(seocode)
+          .then(({ Data }) => {
+            console.log(Data);
+            this.isComp = Data;
+            this._getPageData(seocode);
+          })
+          .catch(({ Data }) => {
+            console.log(Data);
+            this.isComp = Data;
+            this._getPageData(seocode);
+          });
       } else {
         this.isComp = true;
         this._getPageData(seocode);
@@ -1156,7 +1169,7 @@ export default {
       //判断是否登录
       userapi.checkToken().then(({ State }) => {
         this.isLogin = State;
-        console.log(State,"登录状态")
+        console.log(State, "登录状态");
       });
       //var seocode="revia6";//自营
       //var seocode = "htyx6"; //海淘
@@ -1208,8 +1221,14 @@ export default {
         if (Data.GoodsPagePromotion.Coupons != null) {
           Data.GoodsPagePromotion.Coupons = Data.GoodsPagePromotion.Coupons.map(
             function(value, index) {
-              value.UseStartTime = value.UseStartTime.replace("T", " ").slice(0,19);
-              value.UseEndTime = value.UseEndTime.replace("T", " ").slice(0,19);
+              value.UseStartTime = value.UseStartTime.replace("T", " ").slice(
+                0,
+                19
+              );
+              value.UseEndTime = value.UseEndTime.replace("T", " ").slice(
+                0,
+                19
+              );
               return value;
             }
           );
@@ -1456,6 +1475,12 @@ export default {
           wx.showToast({
             title: "领券成功",
             icon: "none"
+          });
+          //改变领券数据
+          this.Data.GoodsPagePromotion.Coupons.map(function(value, index) {
+            if (value.PromotionID == id) {
+              value.HasPicked = true;
+            }
           });
         } else {
           wx.showToast({
@@ -1897,9 +1922,7 @@ export default {
         delta: 2
       });
     },
-    getUserInfo(){
-
-    }
+    getUserInfo() {}
   }
 };
 </script>

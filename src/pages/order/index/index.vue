@@ -127,13 +127,13 @@
       </view>
       <switch class="swiper" checked="" @change="changeUseScore" />
     </view>
-    <view class='useCouponScore' v-if="orderInfo.ShopId == 1 && orderInfo.AvailableBalance > 0">
+    <view class='useCouponScore' v-if="orderInfo.ShopId == 1 && orderInfo.AllBalance > 0">
     <!-- <view class='useCouponScore'> -->
       <view class='counponContent'>
         <view class='couponTitle'>余额</view>
-        <view class='couponSubtitle'>可用￥{{orderInfo.AllBalance}}，使用￥{{orderInfo.NewAvailableBalance}}</view>
+        <view class='couponSubtitle'>可用￥{{orderInfo.AllBalance}} <span v-if="formModel.isUseBalance">，使用￥{{orderInfo.NewAvailableBalance}} </span></view>
       </view>
-      <switch class="swiper" checked="" @change="changeUseBalance" />
+      <switch class="swiper" checked="" @change="changeUseBalance" /> 
     </view>
     
     <div class="sectionLine"></div>

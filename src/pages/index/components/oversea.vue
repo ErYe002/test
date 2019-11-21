@@ -135,18 +135,20 @@
 					<p class="recNational">{{item.National}}</p>
 					<p class="recDesc">{{item.ShortDescription}}</p>
 					<div class="recPrice">
-						<i class="recPraiseProportion" v-if="!item.PraiseProportion == ''">
+						<i class="recPraiseProportion" >
 							{{item.PraiseProportion}}好评
 						</i>
-						<em class="recSalePrice">
+						<div>
+							<em class="recSalePrice">
 							￥{{item.SalePrice}}
-						</em>
-						<em class="recPriceLabel" v-if="item.PriceLabel != ''">
-							{{item.PriceLabel}}
-						</em>
-						<em class="recShopCartLogo">
-							<img class="recShopCartLogoImg" src="/static/images/redCart.png" />
-						</em>
+							</em>
+							<em class="recPriceLabel" v-if="item.PriceLabel != ''">
+								{{item.PriceLabel}}
+							</em>
+							<em class="recShopCartLogo">
+								<img class="recShopCartLogoImg" src="/static/images/redCart.png" />
+							</em>
+						</div>
 					</div>
 				</a>
 			</div>
@@ -182,30 +184,12 @@ export default {
 	  appHomeId:''
     }
   },
-  onLoad: function(){
-	  api.appHomeOverseasPage().then(({Data})=>{
-		this.BannerList=Data.BannerList;
-		this.OriginalBrandList=Data.BrandList;
-		this.BrandList = Data.BrandList.slice(0,12);
-		this.AdvertisementTopImage = Data.AdvertisementTopImage;
-		this.AdvertisementList = Data.AdvertisementList;
-		this.AdvertisementBottomImage = Data.AdvertisementBottomImage;
-		this.OverSeasTabList = Data.OverSeasTabList;
-		this.appHomeId = Data.AppHomeId;
-		api.getOverSeasRecommendGoodsByPage({appHomeId:this.appHomeId,overseasModuleType:this.OverSeasTabList[0].Key}).then(({Data,TotalPage})=>{
-			this.RecommendList = Data.map(ele=>{
-				//当PriceLabel中的价格含有“.00”时，进行去除
-				if(/\d+.\d+/.test(ele.PriceLabel)){
-					ele.PriceLabel = ele.PriceLabel.replace(/(\d+).00/g, "$1");
-				}
-				return ele;
-			});
-			if(TotalPage <= 1){
-				this.IsRecEnd = true;
-			}
-		})
-	  });
-	  
+  async onLoad(){
+	this.init();
+  },
+  //下拉刷新
+  onPullDownRefresh() {
+    this.init();
   },
   //上拉刷新
   onReachBottom: function(){
@@ -227,6 +211,31 @@ export default {
   },
 
   methods:{
+	init(){
+		api.appHomeOverseasPage().then(({Data})=>{
+		this.BannerList=Data.BannerList;
+		this.OriginalBrandList=Data.BrandList;
+		this.BrandList = Data.BrandList.slice(0,12);
+		this.AdvertisementTopImage = Data.AdvertisementTopImage;
+		this.AdvertisementList = Data.AdvertisementList;
+		this.AdvertisementBottomImage = Data.AdvertisementBottomImage;
+		this.OverSeasTabList = Data.OverSeasTabList;
+		this.appHomeId = Data.AppHomeId;
+		this.footerLogoNavDivCheck = 1;
+		api.getOverSeasRecommendGoodsByPageNoLoading({appHomeId:this.appHomeId,overseasModuleType:this.OverSeasTabList[0].Key}).then(({Data,TotalPage})=>{
+			this.RecommendList = Data.map(ele=>{
+				//当PriceLabel中的价格含有“.00”时，进行去除
+				if(/\d+.\d+/.test(ele.PriceLabel)){
+					ele.PriceLabel = ele.PriceLabel.replace(/(\d+).00/g, "$1");
+				}
+				return ele;
+			});
+			if(TotalPage <= 1){
+				this.IsRecEnd = true;
+			}
+		})
+	  });
+	},
 	//同步swiper page
     swiperChangeEvent(e) {
       this.swiperIndex = e.mp.detail.current;
@@ -387,7 +396,7 @@ export default {
 			color: #000;
 			display: inline-block;
 			margin-left: 15px;
-			font-size: 30rpx;
+			font-size: 26rpx;
 		}
 		.topImgBarEm{
 			color: #fff;
@@ -610,32 +619,38 @@ export default {
 						display:flex;
 						flex-direction: row;
 						flex-wrap:nowrap;
-						justify-content: space-around;
+						justify-content: space-between;
 						.recPraiseProportion{
 							color:#878788;
 							font-size: 18rpx;
-							margin:auto;
+							margin:auto 4rpx;
 						}
-						.recSalePrice{
-							color:#e25256;
-							font-size: 30rpx;
-							margin:auto;
-						}
-						.recPriceLabel{
-							color:#fff;
-							font-size: 14rpx;
-							background: #E25256;
-							border-radius:40%;
-							margin: auto;
-							padding: 8rpx;
-						}
-						.recShopCartLogo{
+						div{
 							display: flex;
 							flex-direction: row;
-							align-items: center;
-							.recShopCartLogoImg{
-								width:30rpx;
-								height: 30rpx;;
+							flex-wrap:nowrap;
+							justify-content: flex-end;
+							.recSalePrice{
+								color:#e25256;
+								font-size: 30rpx;
+								margin:auto 4rpx;
+							}
+							.recPriceLabel{
+								color:#fff;
+								font-size: 14rpx;
+								background: #E25256;
+								border-radius:40%;
+								margin: auto 4rpx;
+								padding: 8rpx;
+							}
+							.recShopCartLogo{
+								display: flex;
+								flex-direction: row;
+								align-items: center;
+								.recShopCartLogoImg{
+									width:30rpx;
+									height: 30rpx;;
+								}
 							}
 						}
 					}
