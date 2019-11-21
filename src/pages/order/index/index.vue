@@ -114,7 +114,7 @@
     <view class='amount-box'>
       <view class='flex-line'>
         <view class='couponTitle'>优惠券</view>
-          <navigator :url="'/pages/order/useCoupon/main?shopId='+formModel.selectShopId+'&couponNo='+formModel.CouponNo">
+          <navigator :url="'/pages/order/useCoupon/main?shopId='+formModel.selectShopId+'&couponNo='+orderInfo.CouponNo">
             <view class='couponSubtitle'>{{orderInfo.CouponContent + ' >'}}</view>
           </navigator>
       </view>
@@ -127,13 +127,13 @@
       </view>
       <switch class="swiper" checked="" @change="changeUseScore" />
     </view>
-    <view class='useCouponScore' v-if="orderInfo.ShopId == 1 && orderInfo.AvailableBalance > 0">
+    <view class='useCouponScore' v-if="orderInfo.ShopId == 1 && orderInfo.AllBalance > 0">
     <!-- <view class='useCouponScore'> -->
       <view class='counponContent'>
         <view class='couponTitle'>余额</view>
-        <view class='couponSubtitle'>可用￥{{orderInfo.AllBalance}}，使用￥{{orderInfo.NewAvailableBalance}}</view>
+        <view class='couponSubtitle'>可用￥{{orderInfo.AllBalance}} <span v-if="formModel.isUseBalance">，使用￥{{orderInfo.NewAvailableBalance}} </span></view>
       </view>
-      <switch class="swiper" checked="" @change="changeUseBalance" />
+      <switch class="swiper" checked="" @change="changeUseBalance" /> 
     </view>
     
     <div class="sectionLine"></div>
@@ -233,6 +233,7 @@
 <script>
 
 import api from "@/api/cart";
+import cartApi from "@/api/cart";
 import {mapState} from "vuex"
 import goodsList from "@/pages/order/components/goodsList";
 
@@ -246,6 +247,10 @@ export default {
       isShowHaitaoTips: true, //是否展示海淘顶部提示
       isShowGoodsList:false,
       RoleId:"",
+      payMsg:"",
+      payOrderNo:"",
+      submitResultInfo:{},
+      submitResultMsg:"",
       formModel: {
         isUseScore : true, 
         isUseBalance : true,
@@ -267,7 +272,9 @@ export default {
       },
     }
   },
-  computed :{...mapState("order",["SelectedExpressId","SelectedConsigneeId","IsChangeCoupon"])},
+  computed :{...mapState("order",["SelectedExpressId","SelectedConsigneeId","IsChangeCoupon"]),
+            ...mapState("wxinfo", ["openId"])
+  },
   components: {
     goodsList,
   },
@@ -446,16 +453,13 @@ export default {
       console.log(this.formModel)
       api.submitOrder({...this.formModel}).then(({Data,Msg,State}) => {
         console.log(Data)
+        this.submitResultInfo = Data;
+        this.submitResultMsg = Msg
         if (State){
           console.log(Data.OrderId + '订单号')
           if (Data.IsToPay) { 
             //订单创建成功，唤起微信支付
-            this._wechatPay(Data.OrderId, () => {
-              // 关闭所有页面，打开到应用内的某个页面 去订单列表页
-              wx.reLaunch({
-                // url: '/home/groupDetail/groupDetail?grouponRecordId=' + Data.GrouponRecordId + '&orderId=' + Data.OrderId
-              })
-            })
+            this._wechatPay(Data.OrderId)
           }else{
             // 完全使用余额支付 wx.redirectTo
             wx.redirectTo({
@@ -477,54 +481,51 @@ export default {
       })
     },
     // 微信支付
-    _wechatPay(orderId, cn) {
-    api.payOrder(orderId, app.globalData.openId).then((result) => {
-      const { nonceStr, paySign, signType, timeStamp } = result.Data
-      const package1 = result.Data.package  //package是小程序关键字
-      api.logging(app.globalData.token + '，订单号：' + orderId + '-唤起微信支付参数', {
-        timeStamp,
-        nonceStr,
-        package: package1,
-        signType,
-        paySign
-      });
-      wx.showLoading();
-      wx.requestPayment(
-        {
-          'timeStamp': timeStamp,
-          'nonceStr': nonceStr,
-          'package': package1,
-          'signType': signType,
-          'paySign': paySign,
-          'success': function (res) {
-            api.paySuccess(orderId).then(() => {
-              cn()  
-            }).catch(() => {
-              cn()
-            })
-          },
-          'fail': function (e) {
-            wx.reportMonitor('3', 1)
-            wx.showModal({
-              title: '提示',
-              content: '支付失败，即将为您跳转到购物车页，您可以稍后再进行支付',
-              showCancel: false,
-              confirmColor: '#cab894',
-              success() {
-                wx.reLaunch({
-                  url: '/pages/order/submitResult/main'
+    _wechatPay(orderId) {
+      const _this = this;
+      cartApi
+        .payOrder(orderId, _this.openId)
+        .then(result => {
+          const { nonceStr, paySign, signType, timeStamp } = result.Data;
+          const package1 = result.Data.package; //package是小程序关键字
+          wx.showLoading();
+          wx.requestPayment({
+            timeStamp: timeStamp,
+            nonceStr: nonceStr,
+            package: package1,
+            signType: signType,
+            paySign: paySign,
+            success: function(res) {
+              cartApi
+                .paySuccess(orderId)
+                .then(() => {
                 })
-              }
-            })
-          },
-          'complete': function () {
-            wx.hideLoading();
-          }
+                .catch(() => {
+                });
+                _this.$getCartCount();
+                wx.redirectTo({
+                  url: '/pages/order/submitResult/main?resultMsg='+this.submitResultMsg+'&shopId='+this.formModel.selectShopId+'&orderNo='+this.submitResultInfo.OrderNo+'&OrderAmount='+this.submitResultInfo.OrderAmount,
+                })
+            },
+            fail: function() {
+              // wx.reportMonitor("3", 1);
+              wx.showModal({
+                title: "提示",
+                content: "支付失败，您可以稍后再进行支付",
+                showCancel: false,
+                confirmColor: "#cab894",
+                success() {}
+              });
+            },
+            complete: function() {
+              wx.hideLoading();
+            }
+          });
         })
-    }).catch(() => {
-      // wx.reportMonitor('3', 1)
-    })
-  },
+        .catch(() => {
+          // wx.reportMonitor("3", 1);
+        });
+    },
     
   }
 }

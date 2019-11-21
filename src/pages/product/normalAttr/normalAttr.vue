@@ -143,7 +143,7 @@
 
 <script>
   import api from "@/api/attr";
-  import gdNromalSelectPop from "../components/gdNromalSelectPop"
+  import gdNromalSelectPop from "@/components/gdNromalSelectPop"
 
   const buyNoProperty = 'api/cart/BuyNoProperty';
   const buyDoubleProperty = 'api/cart/BuyDoubleProperty';
@@ -552,7 +552,7 @@
             icon: "none"
           });
         }
-
+        this.$getCartCount();
       },
       confirmedBuyShow(Msg) {
         let self = this;
