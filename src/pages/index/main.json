@@ -1,4 +1,5 @@
 {
-    "navigationBarTitleText": "可得眼镜"
+    "navigationBarTitleText": "可得眼镜",
+    "enablePullDownRefresh": true
   }
   

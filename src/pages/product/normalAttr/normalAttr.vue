@@ -132,6 +132,9 @@
       :cyl-list="cylList"
       :axis-list="axisList"
       :sale-stock-type="SaleStockType"
+      :select-sph="selectSph"
+      :select-cyl="selectCyl"
+      :select-axis="selectAxis"
       @backData="gdBackInfo"
     />
   </div>
@@ -187,7 +190,10 @@
         RealGoodsId: '',
         goodsId: '',
         IsConfirmedBuy: false,
-        shopId:''
+        shopId: '',
+        selectSph: '',
+        selectCyl: '',
+        selectAxis: ''
       };
     },
     onLoad(options) {
@@ -290,6 +296,19 @@
       openGdSelectPop(side) {
         this.openSide = side;
         this.isShowGdSelectPop = true;
+        if (side === 'R') {
+          this.selectSph = this.postShowDouble.sphR;
+          this.selectCyl = this.postShowDouble.cylR;
+          this.selectAxis = this.postShowDouble.axisR;
+        } else if (side === 'L') {
+          this.selectSph = this.postShowDouble.sphL;
+          this.selectCyl = this.postShowDouble.cylL;
+          this.selectAxis = this.postShowDouble.axisL;
+        } else {
+          this.selectSph = this.postShowSingle.sph;
+          this.selectCyl = this.postShowSingle.cyl;
+          this.selectAxis = this.postShowSingle.axis;
+        }
       },
       gdBackInfo(Data) {
 
@@ -370,7 +389,7 @@
           api.buyNoProperty(postData).then(({Data}) => {
             console.log("无属性 返回", Data);
             this.goToCart(immediately);
-          }).catch((Msg)=>{
+          }).catch((Msg) => {
             this.confirmedBuyShow(Msg);
           });
         } else if (buyDoubleProperty === this.mainData.BuyUrl) {
@@ -401,7 +420,7 @@
           api.buyDoubleProperty(postData).then(({Data, Msg, State}) => {
             console.log("双属性 返回", Data, Msg, State);
             this.goToCart(immediately);
-          }).catch((Msg)=>{
+          }).catch((Msg) => {
             this.confirmedBuyShow(Msg);
           });
         } else if (buyDoubleCustomizedProperty === this.mainData.BuyUrl) {
@@ -434,7 +453,7 @@
           api.buyDoubleCustomizedProperty(postData).then(({Data}) => {
             console.log("双属性散光定制 返回", Data);
             this.goToCart(immediately);
-          }).catch((Msg)=>{
+          }).catch((Msg) => {
             this.confirmedBuyShow(Msg);
           });
         } else if (buyNoPropertyFrame === this.mainData.BuyUrl) {
@@ -444,7 +463,7 @@
           api.buyNoPropertyFrame(postData).then(({Data}) => {
             console.log("无属性框架 返回", Data);
             this.goToCart(immediately);
-          }).catch((Msg)=>{
+          }).catch((Msg) => {
             this.confirmedBuyShow(Msg);
           });
         } else if (buySinglePropertyFrame === this.mainData.BuyUrl) {
@@ -456,7 +475,7 @@
           api.buySingleProperty(postData).then(({Data}) => {
             console.log("无属性框架 返回", Data);
             this.goToCart(immediately);
-          }).catch((Msg)=>{
+          }).catch((Msg) => {
             this.confirmedBuyShow(Msg);
           });
         }
@@ -525,7 +544,7 @@
       goToCart(imid) {
         if (imid) {
           wx.switchTab({
-            url: '/pages/cart/main?shopId='+this.shopId
+            url: '/pages/cart/main?shopId=' + this.shopId
           });
         } else {
           wx.showToast({
@@ -535,7 +554,7 @@
         }
 
       },
-      confirmedBuyShow(Msg){
+      confirmedBuyShow(Msg) {
         let self = this;
         wx.showModal({
           title: '提示',
@@ -544,7 +563,7 @@
           confirmText: '确定',
           cancelText: '取消',
           confirmColor: '#CAB894',
-          success (res) {
+          success(res) {
             if (res.confirm) {
               console.log('用户点击确定');
               self.IsConfirmedBuy = true;
