@@ -7,8 +7,11 @@
     <div class="item" v-for="(item, idx) in coupons" :key="idx">
       <div class="couponbg" :data-id='item.CouponNo' :data-valid='item.IsEffective' @click="selectCoupon">
         <view class="checked-box" >
-          <img v-if="couponNo == item.CouponNo" src="/static/images/icon_checked.png" />
-          <view v-else class="no-checked"></view>
+          <span v-if="item.IsEffective == true">
+            <img class="img-checked" v-if="couponNo == item.CouponNo" src="/static/images/icon_checked.png" />
+            <img v-else class="img-checked" src="/static/images/icon_no_checked.png" />
+          </span>
+          
         </view>
         <div class="couponLeft">
           <div class="couponLeftTitle">￥{{item.DiscountAmount}}</div>
@@ -171,15 +174,15 @@ page {
 }
 
 .checked-box {
-  width: 80rpx;
+  width: 60rpx;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.no-checked {
+.img-checked {
   display: block;
-  width: 24rpx;
-  height: 24rpx;
+  width: 30rpx;
+  height: 30rpx;
   box-sizing: border-box;
 }
 

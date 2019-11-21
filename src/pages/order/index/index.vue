@@ -114,7 +114,7 @@
     <view class='amount-box'>
       <view class='flex-line'>
         <view class='couponTitle'>优惠券</view>
-          <navigator :url="'/pages/order/useCoupon/main?shopId='+formModel.selectShopId+'&couponNo='+formModel.CouponNo">
+          <navigator :url="'/pages/order/useCoupon/main?shopId='+formModel.selectShopId+'&couponNo='+orderInfo.CouponNo">
             <view class='couponSubtitle'>{{orderInfo.CouponContent + ' >'}}</view>
           </navigator>
       </view>
