@@ -40,7 +40,7 @@
                 class="header-icon"
                 :src="item.HeadImg?item.HeadImg:'/static/images/default_img.gif'"
               />
-              {{item.UserName}}
+              {{item.UserName!=null?item.UserName:''}}
             </div>
             <div class="comment-header-right">
               <div class="kd-level" :data-id="item.Rate">

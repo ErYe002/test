@@ -452,7 +452,7 @@
           <span class="act-name">瞳学评论({{Data.Remark==null?"0":Data.Remark.TotalCount}})</span>
           <a
             class="act-info"
-            v-if="Data.Remark != null"
+            v-if="Data.Remark != null&&Data.Remark.TotalCount!=null&&Data.Remark.TotalCoun>0"
             :href="'/pages/product/remark/main?goodsid='+Data.GoodsBase.GoodsId+'&label=全部'"
           >
             {{Data.Remark.PraiseRatio}}%好评 &nbsp;全部
@@ -1030,11 +1030,12 @@
             </div>
             <div class="goodsstylelist">
               <div id="js_mainsytle" class="goodscolor">
-                <scroll-view scroll-x scroll-with-animation="true">
+                <scroll-view scroll-x scroll-with-animation="true" scroll-into-view="select_img">
                   <block v-for="info in combineData.SeriesItems" :key="info.index">
                     <li
                       :class="(info.GoodsId == combineData.GoodsId? 'select' :'')"
                       @click="_selectCombineAttr(info.GoodsId)"
+                      :id="info.GoodsId == combineData.GoodsId? 'select_img' :'_img'"
                     >
                       <img :src="info.SeriesImg" />
                     </li>
@@ -1131,7 +1132,7 @@ export default {
       options.groupSelectPosition != undefined ? options.groupSelectPosition : -1;
     this.isFromAttr = options.isFromAttr != undefined ? options.isFromAttr : false;
     this.isComp = options.isComp;
-    console.log(options.isComp,"是否打包",this.isComp != true)
+    console.log(options.isComp,"是否打包",this.isComp != 'true')
     this.getisComp(options.seocode);
   },
   components: {
@@ -1143,6 +1144,11 @@ export default {
     getisComp(seocode) {
       if (this.isComp != 'true') {
         api.IsCompGoods(seocode).then(({ Data }) => {
+          console.log(Data);
+          this.isComp = Data;
+          this._getPageData(seocode);
+        }).catch(({Data})=>{
+          console.log(Data);
           this.isComp = Data;
           this._getPageData(seocode);
         });
