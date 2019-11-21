@@ -127,7 +127,7 @@
       </view>
       <switch class="swiper" checked="" @change="changeUseScore" />
     </view>
-    <view class='useCouponScore' v-if="orderInfo.ShopId == 1 && orderInfo.NewAvailableBalance > 0">
+    <view class='useCouponScore' v-if="orderInfo.ShopId == 1 && orderInfo.AvailableBalance > 0">
     <!-- <view class='useCouponScore'> -->
       <view class='counponContent'>
         <view class='couponTitle'>余额</view>
