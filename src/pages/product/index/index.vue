@@ -829,14 +829,14 @@
                 :key="item.index"
               >{{item.Content==null ? "" : "(" + item.Content + ")"}}</em>
             </div>
-            <!-- <div class>
+            <div class>
               <a
-                :href="'Piecetogether?promotionID='+Data.GoodsPagePromotion.FullReducePromotion.PromotionID+'&couponTitle='+Data.GoodsPagePromotion.FullReducePromotion.PromotionTheme+'&shopid='+Data.GoodsBase.ShopId"
+                :href="'/pages/search/pieceTogether?promotionID='+Data.GoodsPagePromotion.FullReducePromotion.PromotionID+'&couponTitle='+Data.GoodsPagePromotion.FullReducePromotion.PromotionTheme+'&shopid='+Data.GoodsBase.ShopId"
               >
                 点击凑单
                 <em>&gt;</em>
               </a>
-            </div> -->
+            </div>
           </div>
           <div
             class="mfzp-type"
@@ -895,12 +895,12 @@
                   <div class="mezp-pro">
                     <div class="imgbox">
                       <img :src="item.Img" />
-                      <!-- <a
-                        :href="'Piecetogether?promotionID='+item.PromotionID+'&couponTitle='+item.PromotionTheme+'&shopid'+Data.GoodsBase.ShopId"
+                      <a
+                        :href="'/pages/search/pieceTogether?promotionID='+item.PromotionID+'&couponTitle='+item.PromotionTheme+'&shopid'+Data.GoodsBase.ShopId"
                       >
                         点击凑单
                         <em>&gt;</em>
-                      </a> -->
+                      </a>
                     </div>
                     <span>{{item.GoodsName}}{{(item.ExchangeQuantity > 0 ? "(限赠" + item.ExchangeQuantity + ")" : "")}}</span>
                     <em v-if="item.Content!=null">· {{item.Content}}</em>
@@ -980,12 +980,12 @@
                   </div>
                   <div class="mehg-btn">
                     <span>换购 {{item.GoodsName}}</span>
-                    <!-- <a
-                      :href="'Piecetogether?promotionID='+item.PromotionID+'&couponTitle='+item.PromotionTheme+'&shopid='+Data.GoodsBase.ShopId"
+                    <a
+                      :href="'/pages/search/pieceTogether?promotionID='+item.PromotionID+'&couponTitle='+item.PromotionTheme+'&shopid='+Data.GoodsBase.ShopId"
                     >
                       点击凑单
                       <em>&gt;</em>
-                    </a>-->
+                    </a>
                     <a :href="'/pages/product/index/main?seocode='+item.SeoCode">
                       商品详情
                       <em>&gt;</em>
