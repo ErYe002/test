@@ -1144,9 +1144,8 @@ export default {
       if (this.isComp != 'true') {
         api.IsCompGoods(seocode).then(({ Data }) => {
           this.isComp = Data;
+          this._getPageData(seocode);
         });
-        this.isComp = false;
-        this._getPageData(seocode);
       } else {
         this.isComp = true;
         this._getPageData(seocode);
