@@ -76,9 +76,9 @@ export default {
     },
     //使用优惠券
     useCoupon(couponNo){
-      console.log('====couponNo ======'+"couponNo")
       api.useCoupon(couponNo).then(({State, Data,Msg}) => {
         if (State){
+          console.log('====couponNo ======'+"使用优惠券成功 "+couponNo)
           this.setIsChangeCoupon(true)
           wx.navigateBack({
             delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,

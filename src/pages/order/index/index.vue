@@ -235,6 +235,7 @@
 import api from "@/api/cart";
 import cartApi from "@/api/cart";
 import {mapState} from "vuex"
+import {mapActions} from "vuex"
 import goodsList from "@/pages/order/components/goodsList";
 
 export default {
@@ -325,13 +326,14 @@ export default {
     IsChangeCoupon:{
       handler: function(val,oldVal){
         console.log("=====使用优惠券=====" + val)
-        if (val) {
+        if (val == true) {
           this.getConfirmOrderDetail();
         }
       },immediate: true
     }
   },
   methods: {
+    ...mapActions("order",["setIsChangeCoupon"]),
     getConfirmOrderDetail(){
       console.log('-----------')
       console.log(this.formModel)
@@ -342,6 +344,7 @@ export default {
         this.formModel.selectedPayMode = this.orderInfo.SelectedPayMode;
         this.formModel.warehouseId = this.orderInfo.WarehouseId
         this.formModel.IDCard = this.orderInfo.IDCard
+        this.setIsChangeCoupon(false)
         console.log(Data)
       });
     },
