@@ -643,9 +643,10 @@
               <button
                 class="addCart"
                 open-type="getUserInfo"
-                bindgetuserinfo="bindGetUserInfo"
+                @getuserinfo="loginEvent"
+                data-isBuyNow='true'
               >加入购物车</button>
-              <button class="buyNow" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">立即购买</button>
+              <button class="buyNow" open-type="getUserInfo" @getuserinfo="loginEvent" data-isBuyNow='false'>立即购买</button>
             </block>
           </block>
         </div>
@@ -1087,6 +1088,7 @@ import userapi from "@/api/user";
 import { mapActions, mapState } from "vuex";
 import bottomFlip from "@/components/bottomFlip";
 import wxParse from "mpvue-wxparse";
+import authorization from "@/utils/authorization";
 
 export default {
   data() {
@@ -1157,7 +1159,7 @@ export default {
           this.isComp = Data;
           this._getPageData(seocode);
         })
-        .catch(error  => {
+        .catch(error => {
           this.isComp = false;
           this._getPageData(seocode);
         });
@@ -1176,7 +1178,7 @@ export default {
       //var isComp = false;
       //var isComp = true;
       api.getGoodsDetail(seocode, this.isComp).then(({ Data }) => {
-        console.log(Data,this.isComp);
+        console.log(Data, this.isComp);
         Data.GoodsBase.SalePrice = Data.GoodsBase.SalePrice.toFixed(2);
         Data.GoodsBase.MarketPrice = Data.GoodsBase.MarketPrice.toFixed(2);
         Data.GoodsBase.ReducePrice = Data.GoodsBase.ReducePrice.toFixed(2);
@@ -1914,9 +1916,6 @@ export default {
         url: "/pages/index/main"
       });
     },
-    selectNow() {
-      console.log("去属性页");
-    },
     selectComp(compIndex) {
       this.CompList = this.Data.CompGoods.CompGoods[compIndex];
       this.compIndex = compIndex;
@@ -1935,16 +1934,21 @@ export default {
         delta: 2
       });
     },
-    getUserInfo(e) {
-      const {
-      userInfo
-    } = e.detail;
-    if (userInfo) {
-      this.isLogin=true
-    }
-    },
-    bindGetUserInfo(e) {
-      console.log(e.detail.userInfo);
+    loginEvent(e) {
+      const isBuyNow = e.currentTarget.dataset.isBuyNow;
+      authorization.doLogin(
+        e.mp.detail.encryptedData,
+        e.mp.detail.iv,
+        () => {
+          this.isLogin = true;
+          console.log(this.isLogin);
+          if(isBuyNow){
+            this.buyNow()
+          }else{
+            this.addCart()
+          }
+        }
+      );
     }
   }
 };
