@@ -1617,6 +1617,7 @@ export default {
     },
     addCart(IsConfirmedBuy) {
       // 判断是否是无属性商品
+      var that=this;
       if (!this.Data.GoodsBase.IsSpecificationGoods && !this.isComp) {
         //无属性商品且非打包
         var GoodsId = this.Data.GoodsBase.GoodsId;
@@ -1662,7 +1663,7 @@ export default {
               content: error,
               success(res) {
                 if (res.confirm) {
-                  addCart(true);
+                  that.addCart(true);
                 } else if (res.cancel) {
                   return false;
                 }
@@ -1779,6 +1780,7 @@ export default {
       }
     },
     buyNow(IsConfirmedBuy) {
+      var that=this;
       // 判断是否是无属性商品
       if (!this.Data.GoodsBase.IsSpecificationGoods && !this.isComp) {
         //无属性商品且非打包
@@ -1816,7 +1818,6 @@ export default {
                 icon: "none"
               });
               setTimeout(function() {
-                console.log(4);
                 wx.switchTab({
                   url: "/pages/cart/main"
                 });
@@ -1829,7 +1830,7 @@ export default {
               content: error,
               success(res) {
                 if (res.confirm) {
-                  buyNow(true);
+                  that.buyNow(true);
                 } else if (res.cancel) {
                   return false;
                 }
@@ -1927,7 +1928,6 @@ export default {
                   icon: "none"
                 });
                 setTimeout(function() {
-                  console.log(4);
                   wx.switchTab({
                     url: "/pages/cart/main"
                   });
