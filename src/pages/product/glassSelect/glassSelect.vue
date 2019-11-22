@@ -9,7 +9,7 @@
       </div>
     </section>
 
-    <section class="dropdown-box">
+    <section class="dropdown-box" v-if="menuOpened">
       <div class="trans-bg-60" v-if="menuOpened" @click="openMenu"></div>
       <div class="pop-group-select-layout" v-if="menuOpened">
         <radio-group class="radio-group" @change="radioChange">
