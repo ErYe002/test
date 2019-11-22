@@ -618,6 +618,7 @@
           </button>
           <a @click="gocart">
             <img src="/static/images/icon-pro-cart.png" alt />购物车
+            <i class="cartNum">{{cartNum}}</i>
           </a>
         </div>
         <div class="proBtn">
@@ -1090,6 +1091,7 @@
 <script>
 import api from "@/api/goods";
 import userapi from "@/api/user";
+import cartapi from "@/api/cart";
 import { mapActions, mapState } from "vuex";
 import bottomFlip from "@/components/bottomFlip";
 import wxParse from "mpvue-wxparse";
@@ -1132,7 +1134,8 @@ export default {
       CompList: [],
       compIndex: 0,
       groupSelectPosition: -1,
-      glassSelectPosiition: -1
+      glassSelectPosiition: -1,
+      cartNum:0,
     };
   },
   computed: {},
@@ -1149,6 +1152,7 @@ export default {
       options.isFromAttr != undefined ? options.isFromAttr : false;
     this.isComp = options.isComp;
     this.getisComp(options.seocode);
+    this._getCartNum()
   },
   components: {
     bottomFlip,
@@ -1168,6 +1172,12 @@ export default {
           this.isComp = false;
           this._getPageData(seocode);
         });
+    },
+    _getCartNum(){
+      cartapi.getCartCount().then(({ Data }) => {
+        console.log(Data,1233);
+        this.cartNum = Data;
+      })
     },
     _getPageData(seocode) {
       //判断是否登录
@@ -1643,6 +1653,7 @@ export default {
                 title: "加入购物车成功~",
                 icon: "none"
               });
+              this._getCartNum()
             }
           })
           .catch(error => {
@@ -1748,6 +1759,7 @@ export default {
                   title: "加入购物车成功~",
                   icon: "none"
                 });
+                this._getCartNum()
               }
             });
         } else {
