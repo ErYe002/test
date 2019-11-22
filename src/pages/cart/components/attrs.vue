@@ -1,57 +1,62 @@
 <template>
-  <bottom-flip :is-show.sync="isShow">
-    <section class="wrap" v-if="info != null">
-      <p class="title">{{info.SelectedGoodsHint}}</p>
-      <div class="style-box" v-if="info.GoodsItems != null && info.GoodsItems.length > 0">
-        <p class="text">款式花色</p>
-        <scroll-view
-          class="style-list"
-          enable-flex="true"
-          scroll-x="true"
-          :scroll-into-view="'sItem'+selectedGoodsId"
-        >
-          <li
-            :class="{'s-item': true, 'selected': selectedGoodsId == item.GoodsId}"
-            v-for="item in info.GoodsItems"
-            :key="item.GoodsId"
-            :id="'sItem'+item.GoodsId"
-            @click="changeStyleEvent(item.GoodsId)"
+  <div>
+    <bottom-flip :is-show.sync="isShow">
+      <section class="wrap" v-if="info != null">
+        <p class="title">{{info.SelectedGoodsHint}}</p>
+        <div class="style-box" v-if="info.GoodsItems != null && info.GoodsItems.length > 0">
+          <p class="text">款式花色</p>
+          <scroll-view
+            class="style-list"
+            enable-flex="true"
+            scroll-x="true"
+            :scroll-into-view="'sItem'+selectedGoodsId"
           >
-            <img :src="item.ImageUrl" class="s-img" />
-            <span class="s-name">{{item.AnotherName}}</span>
-          </li>
-        </scroll-view>
-      </div>
-      <div class="attr-box">
-        <p class="text">
-          <span class="left">{{info.HasProperty ? '光度及':''}}数量</span>
-          <span class="right" v-if="info.MaxQuantity > 0">最大限购数量：{{info.MaxQuantity}}</span>
-        </p>
-        <div class="attr-line">
-          <!-- <span class="lable">右眼R</span> -->
-          <picker
-            class="select-list"
-            mode="selector"
-            @change="gdPickerChangeEvent"
-            :range="info.GDFieldProperty.Children"
-            range-key="Value"
-            :value="selectedGDIdx"
-            v-if="info.HasProperty && info.GDFieldProperty != null"
-          >
-            <view
-              class="picker"
-              v-if="selectedGDIdx > 0"
-            >{{info.GDFieldProperty.Children[selectedGDIdx]['Value']}}</view>
-            <view class="empty" v-else>请选择光度</view>
-            <img src="/static/images/icon_attr_down.png" class="icon" />
-          </picker>
-          <div class="num-box">
-            <i class="cut" @click="modifyQuantityEvent(0)">-</i>
-            <input class="input" :value="newQuantity" disabled />
-            <i class="add" @click="modifyQuantityEvent(1)">+</i>
-          </div>
+            <li
+              :class="{'s-item': true, 'selected': selectedGoodsId == item.GoodsId}"
+              v-for="item in info.GoodsItems"
+              :key="item.GoodsId"
+              :id="'sItem'+item.GoodsId"
+              @click="changeStyleEvent(item.GoodsId)"
+            >
+              <img :src="item.ImageUrl" class="s-img" />
+              <span class="s-name">{{item.AnotherName}}</span>
+            </li>
+          </scroll-view>
         </div>
-        <!-- <div class="attr-line">
+        <div class="attr-box">
+          <p class="text">
+            <span class="left">{{info.HasProperty ? '光度及':''}}数量</span>
+            <span class="right" v-if="info.MaxQuantity > 0">最大限购数量：{{info.MaxQuantity}}</span>
+          </p>
+          <div class="attr-line">
+            <!-- <span class="lable">右眼R</span> -->
+            <div
+              :class="{'select-list': true, 'long': info.CYLFieldProperty != null}"
+              @click="showGdPopEvent"
+              v-if="info.HasProperty && info.GDFieldProperty != null"
+            >
+              <view
+                class="picker"
+                v-if="selectedGDIdx >= 0"
+              >光度:{{info.GDFieldProperty.Children[selectedGDIdx]['Value']}}</view>
+              <view
+                class="picker"
+                v-if="info.CYLFieldProperty != null && selectedCYLIdx >= 0"
+              >散光:{{info.CYLFieldProperty.Children[selectedCYLIdx]['Value']}}</view>
+              <view
+                class="picker"
+                v-if="info.AXISFieldProperty != null && selectedAXISIdx >= 0"
+              >轴位:{{info.AXISFieldProperty.Children[selectedAXISIdx]['Value']}}</view>
+              <view class="empty" v-if="selectedGDIdx == -1 && selectedCYLIdx == -1 && selectedAXISIdx == -1">请选择</view>
+              <img src="/static/images/icon_attr_down.png" class="icon" />
+            </div>
+            <div class="num-box">
+              <i class="cut" @click="modifyQuantityEvent(0)">-</i>
+              <input class="input" :value="newQuantity" disabled />
+              <i class="add" @click="modifyQuantityEvent(1)">+</i>
+            </div>
+          </div>
+          <!-- <div class="attr-line">
           <span class="lable">左眼L</span>
           <picker
             class="select-list"
@@ -66,26 +71,32 @@
             <input class="input" value="1" disabled />
             <i class="add">+</i>
           </div>
-        </div>-->
-      </div>
-    </section>
-    <section class="btn-box" v-if="info != null">
-      <button class="kd-btn btn-lg" @click="saveEvent">确定</button>
-    </section>
-  </bottom-flip>
+          </div>-->
+        </div>
+      </section>
+      <section class="btn-box" v-if="info != null">
+        <button class="kd-btn btn-lg" @click="saveEvent">确定</button>
+      </section>
+    </bottom-flip>
+    <gd-nromal-select-pop :is-show.sync="isShowGdPop" :sph-list="info != null && info.GDFieldProperty != null ? info.GDFieldProperty.Children : []" :cyl-list="info != null && info.CYLFieldProperty != null ? info.CYLFieldProperty.Children : []" :axis-list="info != null && info.AXISFieldProperty != null ? info.AXISFieldProperty.Children : []" @backData="selectGdDoneEvent" :select-sph-position="selectedGDIdx" :select-cyl-position="selectedCYLIdx" :select-axis-position="selectedAXISIdx"/>
+  </div>
 </template>
 
 <script>
 import bottomFlip from "@/components/bottomFlip";
 import cartApi from "@/api/cart";
+import gdNromalSelectPop from "@/components/gdNromalSelectPop";
 
 export default {
   data() {
     return {
       info: null,
-      selectedGDIdx: 0,
+      selectedGDIdx: -1,
+      selectedCYLIdx: -1,
+      selectedAXISIdx: -1,
       newQuantity: 1,
-      selectedGoodsId: ""
+      selectedGoodsId: "",
+      isShowGdPop: false
     };
   },
   props: {
@@ -122,6 +133,8 @@ export default {
         if (val == true) {
           this.info = null;
           this._getData();
+        } else {
+          Object.assign(this.$data, this.$options.data())
         }
       },
       immediate: true
@@ -134,9 +147,19 @@ export default {
     }
   },
   components: {
-    bottomFlip
+    bottomFlip,
+    gdNromalSelectPop
   },
   methods: {
+    showGdPopEvent(){
+      this.isShowGdPop = true
+    },
+    selectGdDoneEvent(e){
+      console.log(e)
+      this.selectedGDIdx = e.selectSPHPosition
+      this.selectedCYLIdx = e.selectCYLPosition
+      this.selectedAXISIdx = e.selectAXISPosition
+    },
     _getData() {
       cartApi
         .getEditGoodsInCartData({
@@ -149,14 +172,22 @@ export default {
           if (Data.GDFieldProperty) {
             Data.GDFieldProperty.Children.forEach((ele, idx) => {
               if (ele.IsSelected) {
-                this.selectedGDIdx = idx + 1;
+                this.selectedGDIdx = idx;
               }
             });
-            Data.GDFieldProperty.Children.unshift({
-              Id: "",
-              IsSelected: false,
-              Quantity: 0,
-              Value: "请选择光度"
+          }
+          if (Data.CYLFieldProperty) {
+            Data.CYLFieldProperty.Children.forEach((ele, idx) => {
+              if (ele.IsSelected) {
+                this.selectedCYLIdx = idx;
+              }
+            });
+          }
+          if (Data.AXISFieldProperty) {
+            Data.AXISFieldProperty.Children.forEach((ele, idx) => {
+              if (ele.IsSelected) {
+                this.selectedAXISIdx = idx;
+              }
             });
           }
 
@@ -182,7 +213,7 @@ export default {
     modifyQuantityEvent(type) {
       if (type == 0) {
         if (this.newQuantity <= 0) {
-          this.newQuantity = 0
+          this.newQuantity = 0;
           return;
         }
         this.newQuantity--;
@@ -191,26 +222,47 @@ export default {
       }
     },
     //修改光度
-    gdPickerChangeEvent(e) {
-      let index = e.mp.detail.value;
-      this.selectedGDIdx = index;
-    },
+    // gdPickerChangeEvent(e) {
+    //   let index = e.mp.detail.value;
+    //   this.selectedGDIdx = index;
+    // },
     //保存修改
     saveEvent() {
-      if (this.info.HasProperty && this.selectedGDIdx == 0) {
-        wx.showToast({
-          title: "请先选择一个光度",
-          icon: "none"
-        });
-        return;
+      if (this.info.HasProperty) {
+        if(this.selectedGDIdx == -1){
+          wx.showToast({
+            title: "请先选择一个光度",
+            icon: "none"
+          });
+          return;
+        }
+        if(this.info['CYLFieldProperty'] != null && this.selectedCYLIdx == -1){
+          wx.showToast({
+            title: "请选择散光",
+            icon: "none"
+          });
+          return;
+        }
+        if(this.info['AXISFieldProperty'] != null && this.selectedAXISIdx == -1){
+          wx.showToast({
+            title: "请选择轴位",
+            icon: "none"
+          });
+          return;
+        }
       }
-      let selectedProperty = [],
+      let selectedProperty = [], obj = {},
         quantity = 0;
       if (this.info.HasProperty) {
-        selectedProperty.push({
-          GD: this.info.GDFieldProperty.Children[this.selectedGDIdx].Id,
-          Quantity: this.newQuantity
-        });
+        obj.GD = this.info.GDFieldProperty.Children[this.selectedGDIdx].Id
+        obj.Quantity = this.newQuantity
+        if(this.info['CYLFieldProperty'] != null && this.selectedCYLIdx != -1){
+          obj.SG = this.info.CYLFieldProperty.Children[this.selectedCYLIdx].Id
+        }
+        if(this.info['AXISFieldProperty'] != null && this.selectedAXISIdx != -1){
+          obj.ZW = this.info.AXISFieldProperty.Children[this.selectedAXISIdx].Id
+        }
+        selectedProperty.push(obj);
       } else {
         quantity = this.newQuantity;
       }
@@ -230,10 +282,10 @@ export default {
         });
         return;
       }
-      if(this.info.MaxQuantity > 0){
-        if(vldQuantity > this.info.MaxQuantity){
+      if (this.info.MaxQuantity > 0) {
+        if (vldQuantity > this.info.MaxQuantity) {
           wx.showToast({
-            title: "最多只能加购"+this.info.MaxQuantity+"件哦",
+            title: "最多只能加购" + this.info.MaxQuantity + "件哦",
             icon: "none",
             duration: 2000
           });
@@ -241,6 +293,8 @@ export default {
         }
       }
       this._saveChangeRequest(selectedProperty, quantity);
+
+      // [{"GD":"63343a72-9906-4fbc-86dc-c7117ad29e74","Quantity":"1"},{"GD":"63343a72-9906-4fbc-86dc-c7117ad29e74","Quantity":"1","SG":"978f0f3f-4e81-4496-a96d-a497ab779614","ZW":"5c873d18-b2a9-413b-97d4-81677dea09ce"}]
     },
     _saveChangeRequest(selectedProperty, quantity, isConfirmedBuy = false) {
       cartApi
@@ -256,23 +310,24 @@ export default {
         })
         .then(({ Data }) => {
           this.$emit("done");
-        }).catch((msg) => {
-          if(msg.indexOf('愿意等待') != -1){
-            let _this = this
+        })
+        .catch(msg => {
+          if (msg.indexOf("愿意等待") != -1) {
+            let _this = this;
             wx.showModal({
               title: "提示",
               content: msg,
               confirmColor: "#cab894",
               success(res) {
                 if (res.confirm) {
-                  _this._saveChangeRequest(selectedProperty, quantity, true)
+                  _this._saveChangeRequest(selectedProperty, quantity, true);
                 }
               }
             });
           } else {
             wx.showToast({
               title: msg,
-              icon: 'none',
+              icon: "none",
               duration: 5000
             });
           }
@@ -300,7 +355,7 @@ export default {
       border-bottom: 0.5px dashed #dedede;
       display: flex;
       width: 100%;
-      height: 90px;
+      height: 93px;
       .s-item {
         text-align: center;
         margin: 0 5.5px;
@@ -354,7 +409,10 @@ export default {
         height: 35px;
         line-height: 35px;
         border: 0.5px solid #c4c4c4ff;
-        text-align: center;
+        // text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         margin: 0 10px;
         position: relative;
         .picker {
@@ -371,6 +429,15 @@ export default {
           right: 10px;
           top: 50%;
           transform: translate3d(0, -50%, 0);
+        }
+        &.long{
+          box-sizing: border-box;
+          padding-left: 10px;
+          justify-content: flex-start;
+          .picker{
+            font-size: 12px;
+            margin-right: 5px;
+          }
         }
       }
       .num-box {

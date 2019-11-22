@@ -75,14 +75,17 @@
     name: "gd-nromal-select-pop",
     props: {
       isShow: {type: Boolean, default: false},
-      gdList: [],
       sphList: [],
       cylList: [],
       axisList: [],
       saleStockType: '',
       selectSph: '',
       selectCyl: '',
-      selectAxis: ''
+      selectAxis: '',
+      selectSphPosition: {type: Number, default: -1},
+      selectCylPosition: {type: Number, default: -1},
+      selectAxisPosition: {type: Number, default: -1}
+
     },
     data() {
       return {
@@ -92,7 +95,7 @@
         sellOut: false,
         sellOutMsg: "",
         isConfirmedBuy: false,
-        scrollHeight:0
+        scrollHeight: 0
       };
     },
 
@@ -107,9 +110,13 @@
           this.$emit('update:isShow', val);
           if (val === true) {
             this.isConfirmedBuy = false;
-            this.sphSelectPosition = -1;
-            this.cylSelectPosition = -1;
-            this.axisSelectPosition = -1;
+            console.log(this.selectSphPosition,
+              this.selectCylPosition,
+              this.selectAxisPosition);
+            this.sphSelectPosition = this.selectSphPosition;
+            this.cylSelectPosition = this.selectCylPosition;
+            this.axisSelectPosition = this.selectAxisPosition;
+
             this.scrollHeight = 0;
 
 
@@ -166,7 +173,7 @@
           return;
         }
 
-        if (this.gdList.length > 1) {
+        if (this.cylList.length > 0) {
           if (this.cylSelectPosition === -1) {
             wx.showToast({
               title: "请选择散光",

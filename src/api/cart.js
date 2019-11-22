@@ -57,7 +57,9 @@ const api = {
           })
           selectedPropertyList.push({
             GD: ele.GD,
-            Quantity: ele.Quantity
+            Quantity: ele.Quantity,
+            SG: ele.SG,
+            ZW: ele.ZW
           })
         })
         requestUrl += ('&SelectedProperty=' + JSON.stringify(selectedPropertyList))
