@@ -644,9 +644,14 @@
                 class="addCart"
                 open-type="getUserInfo"
                 @getuserinfo="loginEvent"
-                data-isBuyNow='true'
+                data-is-buy-now="true"
               >加入购物车</button>
-              <button class="buyNow" open-type="getUserInfo" @getuserinfo="loginEvent" data-isBuyNow='false'>立即购买</button>
+              <button
+                class="buyNow"
+                open-type="getUserInfo"
+                @getuserinfo="loginEvent"
+                data-is-buy-now="false"
+              >立即购买</button>
             </block>
           </block>
         </div>
@@ -1600,13 +1605,13 @@ export default {
         console.log(this.Data.Items, "打包数据");
       }
     },
-    addCart() {
+    addCart(IsConfirmedBuy) {
       // 判断是否是无属性商品
       if (!this.Data.GoodsBase.IsSpecificationGoods && !this.isComp) {
         //无属性商品且非打包
         var GoodsId = this.Data.GoodsBase.GoodsId;
         var IsBuyByScore = false;
-        var IsConfirmedBuy = false;
+        var IsConfirmedBuy =IsConfirmedBuy?IsConfirmedBuy:false;
         var Quantity = 1;
         var RealGoodsId = this.Data.GoodsBase.GoodsId;
         var MaxSellNumber = this.Data.GoodsBase.MaxSellNumber;
@@ -1632,12 +1637,26 @@ export default {
             IsFreeCarriage
           )
           .then(({ State }) => {
+            console.log(State);
             if (State) {
               wx.showToast({
                 title: "加入购物车成功~",
                 icon: "none"
               });
             }
+          })
+          .catch(error => {
+            wx.showModal({
+              title: "提示",
+              content: error,
+              success(res) {
+                if (res.confirm) {
+                  addCart(true);
+                } else if (res.cancel) {
+                  return false;
+                }
+              }
+            });
           });
       } else if (this.isComp) {
         //打包商品
@@ -1753,7 +1772,7 @@ export default {
         //无属性商品且非打包
         var GoodsId = this.Data.GoodsBase.GoodsId;
         var IsBuyByScore = false;
-        var IsConfirmedBuy = false;
+        var IsConfirmedBuy =IsConfirmedBuy?IsConfirmedBuy:false;
         var Quantity = 1;
         var RealGoodsId = this.Data.GoodsBase.GoodsId;
         var MaxSellNumber = this.Data.GoodsBase.MaxSellNumber;
@@ -1778,8 +1797,8 @@ export default {
             ShopId,
             IsFreeCarriage
           )
-          .then(({ State }) => {
-            if (State) {
+          .then(({ Data }) => {
+            if (Data) {
               wx.showToast({
                 title: "加入购物车成功~",
                 icon: "none"
@@ -1791,6 +1810,19 @@ export default {
                 });
               }, 1000);
             }
+          })
+          .catch(error => {
+            wx.showModal({
+              title: "提示",
+              content: error,
+              success(res) {
+                if (res.confirm) {
+                  addCart(true);
+                } else if (res.cancel) {
+                  return false;
+                }
+              }
+            });
           });
       } else if (this.isComp) {
         //打包商品
@@ -1936,19 +1968,15 @@ export default {
     },
     loginEvent(e) {
       const isBuyNow = e.currentTarget.dataset.isBuyNow;
-      authorization.doLogin(
-        e.mp.detail.encryptedData,
-        e.mp.detail.iv,
-        () => {
-          this.isLogin = true;
-          console.log(this.isLogin);
-          if(isBuyNow){
-            this.buyNow()
-          }else{
-            this.addCart()
-          }
+      authorization.doLogin(e.mp.detail.encryptedData, e.mp.detail.iv, () => {
+        this.isLogin = true;
+        console.log(this.isLogin);
+        if (isBuyNow) {
+          this.buyNow();
+        } else {
+          this.addCart();
         }
-      );
+      });
     }
   }
 };

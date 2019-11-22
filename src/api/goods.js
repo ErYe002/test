@@ -47,7 +47,7 @@ const api = {
   },
   //无属性商品提交
   buyNoProperty(GoodsId, IsBuyByScore, IsConfirmedBuy, Quantity, RealGoodsId, MaxSellNumber, GoodsName,SeriesId,MarketPrice,SalePrice,SaleScore,MaxDeduction,ShopId,IsFreeCarriage) {
-    return http.post(`/Cart/BuyNoProperty?
+    return http.postByNoErrorTips(`/Cart/BuyNoProperty?
     GoodsId=${GoodsId}
     &IsBuyByScore=${IsBuyByScore}
     &IsConfirmedBuy=${IsConfirmedBuy}
