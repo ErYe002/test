@@ -1817,7 +1817,7 @@ export default {
               content: error,
               success(res) {
                 if (res.confirm) {
-                  addCart(true);
+                  buyNow(true);
                 } else if (res.cancel) {
                   return false;
                 }
