@@ -1164,7 +1164,6 @@ export default {
       api
         .IsCompGoods(seocode)
         .then(({ Data }) => {
-          console.log(Data);
           this.isComp = Data;
           this._getPageData(seocode);
         })
@@ -1175,7 +1174,6 @@ export default {
     },
     _getCartNum(){
       cartapi.getCartCount().then(({ Data }) => {
-        console.log(Data,1233);
         this.cartNum = Data;
       })
     },
@@ -1183,17 +1181,8 @@ export default {
       //判断是否登录
       userapi.checkToken().then(({ State }) => {
         this.isLogin = State;
-        console.log(State, "登录状态");
       });
-      //var seocode="revia6";//自营
-      //var seocode = "htyx6"; //海淘
-      //var seocode = "hankj744"; //有配件
-      //var seocode = "revia180"; //打包
-      //var seocode = "ns33"; //多个活动
-      //var isComp = false;
-      //var isComp = true;
       api.getGoodsDetail(seocode, this.isComp).then(({ Data }) => {
-        console.log(Data, this.isComp);
         Data.GoodsBase.SalePrice = Data.GoodsBase.SalePrice.toFixed(2);
         Data.GoodsBase.MarketPrice = Data.GoodsBase.MarketPrice.toFixed(2);
         Data.GoodsBase.ReducePrice = Data.GoodsBase.ReducePrice.toFixed(2);
@@ -1479,12 +1468,10 @@ export default {
     },
     //领券
     _getCoupon(id, bool) {
-      console.log(id, bool);
       if (bool == true) {
         return false;
       }
       api.presentCouponNo(id).then(({ State }) => {
-        console.log(State);
         if (State) {
           wx.showToast({
             title: "领券成功",
@@ -1531,7 +1518,6 @@ export default {
         this.combineGDId = "";
         //遍历打包数据获取当前打包系列颜色
         var selectCompData = this.selectCompData[this.combineIndex];
-        console.log(123, Data, this.combineData, selectCompData);
         if (this.combineData.SeriesItems.length > 0) {
           this.combineData.SeriesItems.map(function(value, index) {
             if (value.GoodsId == id) {
@@ -1550,14 +1536,9 @@ export default {
       this.combineGDId = Id;
       this.selectCompData[this.combineIndex].Id = Id;
       this.selectCompData[this.combineIndex].Value = Value;
-      console.log(
-        this.combineGDId,
-        this.selectCompData[this.combineIndex].Value
-      );
     },
     //打包确认按钮
     selectAttr() {
-      console.log(this.combineIndex, "index");
       if (this.combineGDId == "") {
         wx.showToast({
           title: "请先选择一个光度",
@@ -1578,7 +1559,6 @@ export default {
         this.selectCompData[
           this.combineIndex
         ].MarketPrice = this.combineData.MarketPrice;
-        console.log(this.selectCompData, "打包数据未赋值");
         //更改打包的数组
         this.Data.Items[this.combineIndex].Id = this.selectCompData[
           this.combineIndex
@@ -1612,7 +1592,6 @@ export default {
           }
         });
         this.selectCompNum = allnum - num;
-        console.log(this.Data.Items, "打包数据");
       }
     },
     addCart(IsConfirmedBuy) {
@@ -1648,7 +1627,6 @@ export default {
             IsFreeCarriage
           )
           .then(({ State }) => {
-            console.log(State);
             if (State) {
               wx.showToast({
                 title: "加入购物车成功~",
@@ -1677,7 +1655,7 @@ export default {
           //拼接打包提交链接
           var GoodsId = this.Data.GoodsBase.GoodsId;
           var Quantity = 1;
-          var IsConfirmedBuy = false; //是否愿意缺货等待，第一次进来为false，后续弹框确认
+          var IsConfirmedBuy = true; //是否愿意缺货等待，第一次进来为false，后续弹框确认，打包默认true
           var ShopId = this.Data.GoodsBase.ShopId;
           var IsFreeCarriage = this.Data.GoodsBase.IsFreeCarriage;
           var GDPropertyItems = [];
@@ -1719,7 +1697,6 @@ export default {
                 GDPropertyItems.push(obj);
               }
             } else {
-              console.log("无属性");
               var obj = {};
               obj.GoodsId = value.GoodsId;
               obj.Quantity = 1;
@@ -1743,7 +1720,6 @@ export default {
 
           GDPropertyItems = JSON.stringify(GDPropertyItems);
           NoPropertyItems = JSON.stringify(NoPropertyItems);
-          console.log(GDPropertyItems, NoPropertyItems);
           api
             .buyCompGoods(
               GoodsId,
@@ -1844,7 +1820,7 @@ export default {
           //拼接打包提交链接
           var GoodsId = this.Data.GoodsBase.GoodsId;
           var Quantity = 1;
-          var IsConfirmedBuy = false; //是否愿意缺货等待，第一次进来为false，后续弹框确认
+          var IsConfirmedBuy = true; //是否愿意缺货等待，第一次进来为false，后续弹框确认,打包默认true
           var ShopId = this.Data.GoodsBase.ShopId;
           var IsFreeCarriage = this.Data.GoodsBase.IsFreeCarriage;
           var GDPropertyItems = [];
@@ -1886,7 +1862,6 @@ export default {
                 GDPropertyItems.push(obj);
               }
             } else {
-              console.log("无属性");
               var obj = {};
               obj.GoodsId = value.GoodsId;
               obj.Quantity = 1;
@@ -1910,7 +1885,6 @@ export default {
 
           GDPropertyItems = JSON.stringify(GDPropertyItems);
           NoPropertyItems = JSON.stringify(NoPropertyItems);
-          console.log(GDPropertyItems, NoPropertyItems);
           api
             .buyCompGoods(
               GoodsId,
@@ -1982,7 +1956,6 @@ export default {
       const isBuyNow = e.currentTarget.dataset.isBuyNow;
       authorization.doLogin(e.mp.detail.encryptedData, e.mp.detail.iv, () => {
         this.isLogin = true;
-        console.log(this.isLogin);
         if (isBuyNow) {
           this.buyNow();
         } else {
