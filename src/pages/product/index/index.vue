@@ -842,7 +842,7 @@
             </div>
             <div class>
               <a
-                :href="'/pages/search/pieceTogether?promotionID='+Data.GoodsPagePromotion.FullReducePromotion.PromotionID+'&couponTitle='+Data.GoodsPagePromotion.FullReducePromotion.PromotionTheme+'&shopid='+Data.GoodsBase.ShopId"
+                :href="'/pages/search/pieceTogether/main?promotionId='+Data.GoodsPagePromotion.FullReducePromotion.PromotionID+'&title='+Data.GoodsPagePromotion.FullReducePromotion.PromotionTheme+'&shopid='+Data.GoodsBase.ShopId"
               >
                 点击凑单
                 <em>&gt;</em>
@@ -907,7 +907,7 @@
                     <div class="imgbox">
                       <img :src="item.Img" />
                       <a
-                        :href="'/pages/search/pieceTogether?promotionID='+item.PromotionID+'&couponTitle='+item.PromotionTheme+'&shopid'+Data.GoodsBase.ShopId"
+                        :href="'/pages/search/pieceTogether/main?promotionId='+item.PromotionID+'&title='+item.PromotionTheme+'&shopid='+Data.GoodsBase.ShopId"
                       >
                         点击凑单
                         <em>&gt;</em>
@@ -992,7 +992,7 @@
                   <div class="mehg-btn">
                     <span>换购 {{item.GoodsName}}</span>
                     <a
-                      :href="'/pages/search/pieceTogether?promotionID='+item.PromotionID+'&couponTitle='+item.PromotionTheme+'&shopid='+Data.GoodsBase.ShopId"
+                      :href="'/pages/search/pieceTogether/main?promotionId='+item.PromotionID+'&title='+item.PromotionTheme+'&shopid='+Data.GoodsBase.ShopId"
                     >
                       点击凑单
                       <em>&gt;</em>
