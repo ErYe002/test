@@ -201,10 +201,14 @@ export default {
                 child.IsSelected = true;
                 return false;
               }
-              if (Data.AttrWordIdList.includes(child.WordId)) {
+              if(Data.AttrWordIdList != null){
+                if (Data.AttrWordIdList.includes(child.WordId)) {
                 child.IsDefault = true;
+                } else {
+                  child.IsDisabled = true;
+                }
               } else {
-                child.IsDisabled = true;
+                child.IsDefault = true
               }
             });
           });
