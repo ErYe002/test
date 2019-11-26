@@ -56,6 +56,12 @@ const api = {
         'content-type':'application/x-www-form-urlencoded'
       }
     );
+  },
+  //获取单条评论
+  getGoodsComment(commentId){
+    return http.post(
+      `/comment/GetGoodsComment?commentId=${commentId}`
+    )
   }
 };
 

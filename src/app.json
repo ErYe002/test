@@ -15,6 +15,7 @@
         "order/list/main",
         "order/detail/main",
         "order/comment/main",
+        "order/commentDetail/main",
         "address/addressList/main",
         "address/editAddress/main",
         "setting/home/main",
