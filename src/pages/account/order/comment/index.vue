@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="commentHead">
-        <img class="headImg" :src='goodsImageUrl' />  
+        <img class="headImg" :src='goodsImageUrl' @error="avatarError" />  
         <div class="goodsGrade">
             评分：
             <img class='gradeStar' :src="src1" @click="gradeImgClick(1,1)" />
@@ -60,7 +60,7 @@
 
 <script>
 import api from "@/api/order";
-import { mapState } from "vuex";
+import { mapState,mapActions } from "vuex";
 import config from '@/utils/config.js';
 
 export default {
@@ -98,9 +98,10 @@ export default {
   onLoad(options) {
     this.orderId = options.orderId;
     this.goodsId = options.goodsId;
-    this.goodsImageUrl=options.goodsImageUrl == '' || options.goodsImageUrl == null?'/static/images/default_img.gif':options.goodsImageUrl;
+    this.goodsImageUrl=options.goodsImageUrl == '' || options.goodsImageUrl == null?'https://pic.keede.com//app/images/goods_errimg.png':options.goodsImageUrl;
   },
   methods: {
+    ...mapActions('comment',['setCommentedId']),
     gradeImgClick(op,key) {
       switch (key){
         case 1:
@@ -238,6 +239,9 @@ export default {
     removeImg(key){
         this.images.splice(key,1);
     },
+    avatarError(){
+        this.goodsImageUrl='https://pic.keede.com//app/images/goods_errimg.png';
+    },
     chooseImg(){
         wx.chooseImage({
             sizeType:['original','compressed'],
@@ -286,6 +290,7 @@ export default {
                             title:"评价成功!",
                             icon:"none"
                         });
+                        this.setCommentedId(currentTemp.goodsId);
                         wx.navigateBack({
                             delta:1
                         })
@@ -301,6 +306,7 @@ export default {
                         title:"评价成功!",
                         icon:"none"
                     });
+                this.setCommentedId(currentTemp.goodsId);
                 wx.navigateBack({
                   delta:1
                 })

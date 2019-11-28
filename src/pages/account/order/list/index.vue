@@ -101,9 +101,9 @@
           </li>
         </template>
         <template v-if="listQuery.queryState == 6">
-          <li class="wait_evaluate" v-for="item in orderList" :key="item.GoodsId">
+          <li class="wait_evaluate" v-for="(item,index) in orderList" :key="index">
             <div class="waitDivFirst">
-              <img class="waitCommentGoodsImg" :src="item.GoodsImageUrl" mode="aspectFill" />
+              <img class="waitCommentGoodsImg" :src="item.GoodsImageUrl" @error="orderImgError(index)" mode="aspectFill" />
             </div>
             <div class="waitDivSecond">
               <p class="waitCommentGoodsName">{{item.GoodsName}}</p>
@@ -152,7 +152,22 @@ export default {
     };
   },
   computed: {
-    ...mapState("wxinfo", ["openId"])
+    ...mapState("wxinfo", ["openId"]),
+    ...mapState("comment", ["commentedId"])
+  },
+   watch:{
+    commentedId:{
+      handler: function(val,oldVal){
+        if(val != ''){
+          this.orderList.forEach((ele, idx) => {
+            if(ele.GoodsId == val){
+              this.orderList.splice(idx, 1);
+            }
+          });
+        }
+      },
+      immediate: true
+    }
   },
   onLoad(options) {
     if (options && options.queryState) {
@@ -322,6 +337,9 @@ export default {
           reject("正在请求数据，请稍候");
         }
       });
+    },
+    orderImgError(index){
+      this.orderList[index].GoodsImageUrl='https://pic.keede.com//app/images/goods_errimg.png';
     }
   }
 };
