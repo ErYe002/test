@@ -48,7 +48,7 @@ const api = {
         GoodsId:GoodsId,
         GoodsScore:GoodsScore,
         Remark:Remark,
-        ImageUrl:ImageUrl,
+        ImageUrl:JSON.stringify(ImageUrl),
         Srate:Srate,
         Erate:Erate
       },

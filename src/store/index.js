@@ -8,6 +8,7 @@ import wxinfo from './modules/wxinfo'
 import attGlassList from './modules/attrGlassList'
 import order from './modules/order'
 import remark from './modules/remark'
+import comment from './modules/comment'
 
 Vue.use(Vuex);
 
@@ -40,6 +41,10 @@ const store = new Vuex.Store({
     remark: {
       namespaced: true,
       ...remark
+    },
+    comment:{
+      namespaced:true,
+      ...comment
     }
   }
 });
