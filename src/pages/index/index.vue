@@ -9,12 +9,12 @@
     <section class="nav-box">
       <scroll-view class="nav-list" scroll-x enable-flex>
         <div
-          :class="{'n-item': true, active: item.Id == currentMenuId}"
+          :class="{'n-item': true, active: item.SeoCode == currentMenuCode}"
           v-for="item in menu"
           :key="item.Id"
-          @click="changeIndexEvent(item.Id)"
+          @click="changeIndexEvent(item.SeoCode)"
         >
-          <navigator open-type="navigate" target="miniProgram" app-id="wx59914c27d9618111" class="link" v-if="item.Id == 2">
+          <navigator open-type="navigate" target="miniProgram" app-id="wx59914c27d9618111" class="link" v-if="item.SeoCode == 'code350'">
             <b>{{item.ChName}}</b>
             <em>{{item.EnName}}</em>
           </navigator>
@@ -25,9 +25,9 @@
         </div>
       </scroll-view>
     </section>
-    <recommend v-if="currentMenuId == 1"/>
-    <oversea v-if="currentMenuId == 3"/>
-    <frames v-if="currentMenuId == 4"/>
+    <recommend v-if="currentMenuCode == 'code000'"/>
+    <oversea v-if="currentMenuCode == 'code050'"/>
+    <frames v-if="currentMenuCode == 'code200'"/>
   </article>
 </template>
 
@@ -41,7 +41,7 @@ export default {
   data() {
     return {
       menu: [],
-      currentMenuId: 1
+      currentMenuCode: 'code-1'
     };
   },
   components: {
@@ -52,19 +52,22 @@ export default {
   methods: {
     _getMenuData() {
       api.getHomeMenuData().then(({ Data }) => {
-        let list = Data.slice(0, 4);
+        let list = Data.filter((ele) => {
+          return ele.SeoCode == 'code000' || ele.SeoCode == 'code350' || ele.SeoCode == 'code200' || ele.SeoCode == 'code050'
+        });
         list.push({
           Id: 0,
           ChName: "更多",
-          EnName: "MORE"
+          EnName: "MORE",
+          SeoCode: 'code-1'
         });
         this.menu = list;
-        this.currentMenuId = this.menu[0]["Id"];
+        this.currentMenuCode = this.menu[0]["SeoCode"];
       });
     },
-    changeIndexEvent(mid){
-      if(mid != 2 && mid != 0){
-       this.currentMenuId = mid
+    changeIndexEvent(code){
+      if(code != 'code-1' && code != 'code350'){
+       this.currentMenuCode = code
       }
     }
   },
@@ -102,8 +105,9 @@ export default {
   .nav-list {
     display: flex;
     height: 35px;
+    justify-content: space-around;
     .n-item {
-      flex: 1;
+      // flex: 1;
       .link{
         display: flex;
         flex-direction: column;

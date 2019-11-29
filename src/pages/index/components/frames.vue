@@ -203,7 +203,7 @@ export default {
               }
               if(Data.AttrWordIdList != null){
                 if (Data.AttrWordIdList.includes(child.WordId)) {
-                child.IsDefault = true;
+                  child.IsDefault = true;
                 } else {
                   child.IsDisabled = true;
                 }
