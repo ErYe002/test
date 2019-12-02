@@ -39,7 +39,7 @@ const actions = {
         commit(HISTORY_SEARCH_SET, obj)
     },
     setSearchHistoryByStorage({ commit }) {
-        let list = wx.getStorageSync(HISTORY_SEARCH_STORAGE_KEY) || ''
+        let list = wx.getStorageSync(HISTORY_SEARCH_STORAGE_KEY) || []
         commit(HISTORY_SEARCH_SET, list)
     },
     removeSearchHistory({ commit }){
