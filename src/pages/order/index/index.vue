@@ -292,6 +292,11 @@ export default {
       this.RoleId = options.RoleId
       console.log(options)
     }
+    
+  },
+  onShow(){
+    console.log("------onshow-----")
+    //监测地址，快递变化, 每次返回到页面都刷新数据，（修改地址，地址id不变的情况下 回到页面也要刷新数据）
     this.getConfirmOrderDetail();
   },
   onPageScroll({ scrollTop }) {
@@ -307,9 +312,9 @@ export default {
     SelectedConsigneeId:{
       handler: function(val,oldVal){
         console.log("=====修改收货地址方式=== "+ val + " old =="  + oldVal)
-        if (val.length && val != oldVal) {
+        if (val.length) {
           this.formModel.selectedConsigneeId = val;
-          this.getConfirmOrderDetail();
+          // this.getConfirmOrderDetail();
         }
        
       },immediate: true
@@ -319,7 +324,7 @@ export default {
         console.log("=====修改快递方式=== "+ val + " old =="  + oldVal)
         if (val.length && val != oldVal) {
           this.formModel.selectedExpressId = val;
-          this.getConfirmOrderDetail();
+          // this.getConfirmOrderDetail();
         }
       },immediate: true
     },
@@ -327,7 +332,7 @@ export default {
       handler: function(val,oldVal){
         console.log("=====使用优惠券=====" + val)
         if (val == true) {
-          this.getConfirmOrderDetail();
+          // this.getConfirmOrderDetail();
         }
       },immediate: true
     }
@@ -335,7 +340,7 @@ export default {
   methods: {
     ...mapActions("order",["setIsChangeCoupon"]),
     getConfirmOrderDetail(){
-      console.log('-----------')
+      console.log('------getConfirmOrderDetail-----')
       console.log(this.formModel)
       api.getConfirmOrderDetail({...this.formModel}).then(({ Data, State, Msg }) => {
         this.orderInfo = Object.assign({}, Data);
