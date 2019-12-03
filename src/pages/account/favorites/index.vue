@@ -79,8 +79,9 @@ export default {
         confirmColor: "#cab894",
         success(res) {
           if (res.confirm) {
-            current.list.splice(key, 1);
             api.cancelFavoriteByGoodsId(key);
+            current.page = 1;
+            current._getPageData();
           }
         }
       });
