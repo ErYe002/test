@@ -14,7 +14,7 @@
           :key="item.Id"
           @click="changeIndexEvent(item.SeoCode)"
         >
-          <navigator open-type="navigate" target="miniProgram" app-id="wx59914c27d9618111" class="link" v-if="item.SeoCode == 'code350'">
+          <navigator open-type="navigate" target="miniProgram" app-id="wx59914c27d9618111" version="release" @fail="openMiniFail" class="link" v-if="item.SeoCode == 'code350'">
             <b>{{item.ChName}}</b>
             <em>{{item.EnName}}</em>
           </navigator>
@@ -69,6 +69,9 @@ export default {
       if(code != 'code-1' && code != 'code350'){
        this.currentMenuCode = code
       }
+    },
+    openMiniFail(e){
+      console.log('失败', e)
     }
   },
 

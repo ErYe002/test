@@ -149,7 +149,7 @@ const api = {
   },
   //微信支付
   payOrder(orderId, openId) {
-    return http.post(`/Payment/WechatPayForSmallApplication?orderId=${orderId}&ip=&wechatOpenId=${openId}`)
+    return http.post(`/Payment/WechatPayForMinprogram?orderId=${orderId}&ip=&wechatOpenId=${openId}`)
   },
   //支付成功通知服务器
   paySuccess(orderId) {

@@ -23,7 +23,7 @@ const api = {
   //通过code获取用户openid等信息
   getAppMainInfo(code) {
     return http.postByNoLoading(
-      '/ThirdPartnerLogin/WechatSamllApplciationOpenId?code=' + code
+      '/ThirdPartnerLogin/WeChatMinProgramOpenId?code=' + code
     );
   },
   //绑定手机号
@@ -51,7 +51,7 @@ const api = {
   //获取最新的AccessToken
   getAccessToken() {
     return http.post(
-      '/api/ThirdPartnerLogin/WechatSamllApplciationAccessToken'
+      '/api/ThirdPartnerLogin/WechatMinProgramAccessToken'
     );
   },
   //获取个人中心用户信息
