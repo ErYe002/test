@@ -75,50 +75,51 @@
           <div class="proprice">
             <div class="truePrice">
               <em>￥</em>
-              <span>{{Data.GoodsBase.SalePrice}}</span>
+              <span>{{Data.GoodsBase.SellPrice}}</span>
             </div>
             <div class="priceMsg">
-              <i class="price">
+              <i
+                class="price"
+                v-if="Data.GoodsBase.PriceLable!=null&&Data.GoodsBase.PriceLable == '限时直降'"
+              >
                 <em
                   class="oldPrice"
-                  v-if="Data.GoodsBase.MarketPrice>0"
-                >￥{{Data.GoodsBase.MarketPrice}}</em>
-                <span v-if="Data.GoodsBase.ReducePrice>0">↓￥{{Data.GoodsBase.ReducePrice}}</span>
+                  v-if="Data.GoodsBase.PlatformPrice>0"
+                >￥{{Data.GoodsBase.PlatformPrice}}</em>
+                <span v-if="Data.GoodsBase.ReducePrice>0">限时直降↓</span>
               </i>
               <block v-if="Data.GoodsBase.PriceLable!=''">
-                <span class="priceTag" v-if="isComp">套餐价</span>
+                <block v-if="isComp">
+                  <span class="priceTag">套餐价</span>
+                </block>
+                <block v-else>
+                  <span class="priceTag" v-if="Data.GoodsBase.RolePrice!=0&&Data.GoodsBase.RolePrice<Data.GoodsBase.SellPrice">
+                    <img
+                      class="tagImg"
+                      :src="'/static/images/level_0'+(Data.UserInfo.RoleId?Data.UserInfo.RoleId:'0')+'.jpg'"
+                    />
+                    价:￥{{Data.GoodsBase.RolePrice}}
+                  </span>
+                  <span
+                  class="priceTag SVIP"
+                  v-if="(Data.GoodsBase.SvipPrice!=0&&Data.GoodsBase.SvipPrice<Data.GoodsBase.SellPrice)&&(Data.GoodsBase.RolePrice!=0&&Data.GoodsBase.RolePrice>Data.GoodsBase.SvipPrice)"
+                >SVIP价:￥{{Data.GoodsBase.SvipPrice}}</span>
                 <span
-                  class="priceTag"
-                  v-else-if="Data.GoodsBase.PriceLable!='会员价'"
-                >{{Data.GoodsBase.PriceLable}}</span>
-                <span class="priceTag" v-else>
-                  <img
-                    class="tagImg"
-                    :src="'/static/images/level_0'+(Data.UserInfo.RoleId?Data.UserInfo.RoleId:'0')+'.jpg'"
-                  />会员价
-                </span>
+                  class="priceTag SVIP"
+                  v-if="(Data.GoodsBase.SvipPrice!=0&&Data.GoodsBase.SvipPrice<Data.GoodsBase.SellPrice)&&(Data.GoodsBase.RolePric==0)"
+                >SVIP价:￥{{Data.GoodsBase.SvipPrice}}</span>
+                </block>
               </block>
             </div>
           </div>
           <div class="prolabelBox">
             <div class="prolabel">
-              <span>快递:{{Data.GoodsBase.ShopId==2?Data.GoodsBase.AmoyFreight+"元":"满80包邮"}}</span>
               <span>已售: {{Data.GoodsBase.SaleQuantity}}件</span>
+            </div>
+            <div class="prolabel">
               <span class="proloveNum">
                 <i>♡</i>
                 {{Data.GoodsBase.CollectionCount}}
-              </span>
-            </div>
-            <div class="prolabel">
-              <span class="label">
-                <em class="icon"></em>正品保障
-              </span>
-              <span class="label">
-                <em class="icon"></em>
-                {{Data.GoodsBase.ShopId==2?"贴心客服":"7天退换"}}
-              </span>
-              <span class="label">
-                <em class="icon"></em>极速物流
               </span>
             </div>
           </div>
@@ -824,7 +825,7 @@
               <em>满额减</em>
               <span
                 v-if="Data.GoodsPagePromotion.LadderPrice == null || !Data.GoodsPagePromotion.LadderPrice.length>0"
-              >该品售价￥{{Data.GoodsBase.SalePrice}}</span>
+              >该品售价￥{{Data.GoodsBase.SellPrice}}</span>
             </div>
             <div
               v-if="Data.GoodsPagePromotion.FullReducePromotion.DeductionSettings != null && Data.GoodsPagePromotion.FullReducePromotion.DeductionSettings.length>0"
@@ -898,7 +899,7 @@
               <em>满额赠品</em>
               <span
                 v-if="Data.GoodsPagePromotion.LadderPrice == null || !Data.GoodsPagePromotion.LadderPrice.length>0"
-              >该品售价￥{{Data.GoodsBase.SalePrice}}</span>
+              >该品售价￥{{Data.GoodsBase.SellPrice}}</span>
             </div>
             <div class="mezp-list">
               <ul>
@@ -940,7 +941,7 @@
               <em>加钱换购</em>
               <span
                 v-if="Data.GoodsPagePromotion.LadderPrice == null || !Data.GoodsPagePromotion.LadderPrice.length"
-              >该品售价￥{{Data.GoodsBase.SalePrice}}</span>
+              >该品售价￥{{Data.GoodsBase.SellPrice}}</span>
             </div>
             <div class="jqhg-list">
               <ul>
@@ -974,7 +975,7 @@
               <em>满额换购</em>
               <span
                 v-if="Data.GoodsPagePromotion.LadderPrice == null || !Data.GoodsPagePromotion.LadderPrice.length>0"
-              >该品售价￥{{Data.GoodsBase.SalePrice}}</span>
+              >该品售价￥{{Data.GoodsBase.SellPrice}}</span>
             </div>
             <div class="mehg-list">
               <ul>
@@ -1135,7 +1136,8 @@ export default {
       compIndex: 0,
       groupSelectPosition: -1,
       glassSelectPosiition: -1,
-      cartNum:0,
+      cartNum: 0,
+      MinPrice:0//当前可以享受到的最低价格
     };
   },
   computed: {},
@@ -1152,7 +1154,7 @@ export default {
       options.isFromAttr != undefined ? options.isFromAttr : false;
     this.isComp = options.isComp;
     this.getisComp(options.seocode);
-    this._getCartNum()
+    this._getCartNum();
   },
   components: {
     bottomFlip,
@@ -1172,10 +1174,10 @@ export default {
           this._getPageData(seocode);
         });
     },
-    _getCartNum(){
+    _getCartNum() {
       cartapi.getCartCount().then(({ Data }) => {
         this.cartNum = Data;
-      })
+      });
     },
     _getPageData(seocode) {
       //判断是否登录
@@ -1183,12 +1185,27 @@ export default {
         this.isLogin = State;
       });
       api.getGoodsDetail(seocode, this.isComp).then(({ Data }) => {
-        Data.GoodsBase.SalePrice = Data.GoodsBase.SalePrice.toFixed(2);
+        Data.GoodsBase.SellPrice = Data.GoodsBase.SellPrice.toFixed(2);
+        Data.GoodsBase.RolePrice = Data.GoodsBase.RolePrice.toFixed(2);
+        Data.GoodsBase.SvipPrice = Data.GoodsBase.SvipPrice.toFixed(2);
         Data.GoodsBase.MarketPrice = Data.GoodsBase.MarketPrice.toFixed(2);
         Data.GoodsBase.ReducePrice = Data.GoodsBase.ReducePrice.toFixed(2);
         Data.GoodsBase.ScoreDeductionPrice = Data.GoodsBase.ScoreDeductionPrice.toFixed(
           2
         );
+        if(Data.GoodsBase.SellPrice>Data.GoodsBase.RolePrice&&Data.GoodsBase.RolePrice!=0){
+          if(Data.GoodsBase.RolePrice>Data.GoodsBase.SvipPrice&&Data.GoodsBase.SvipPrice!=0&&Data.UserInfo.IsSvip){
+            this.MinPrice=Data.GoodsBase.SvipPrice;
+          }else{
+            this.MinPrice=Data.GoodsBase.RolePrice;
+          }
+        }else{
+          if(Data.GoodsBase.SellPrice>Data.GoodsBase.SvipPrice&&Data.GoodsBase.SvipPrice!=0&&Data.UserInfo.IsSvip){
+            this.MinPrice=Data.GoodsBase.SvipPrice;
+          }else{
+            this.MinPrice=Data.GoodsBase.SellPrice;
+          }
+        }
         if (Data.GoodsPagePromotion.FreeCollocation != null) {
           Data.GoodsPagePromotion.FreeCollocation = Data.GoodsPagePromotion.FreeCollocation.map(
             function(value, index) {
@@ -1331,9 +1348,9 @@ export default {
         "&SeriesId=" +
         this.Data.GoodsBase.SeriesId +
         "&MarketPrice=" +
-        this.Data.GoodsBase.SalePrice +
+        this.Data.GoodsBase.SellPrice +
         "&SalePrice=" +
-        this.Data.GoodsBase.SalePrice +
+        MinPrice +
         "&SaleScore=" +
         this.Data.GoodsBase.SaleScore +
         "&IsScarcity=" +
@@ -1356,9 +1373,9 @@ export default {
         "&SeriesId=" +
         this.Data.GoodsBase.SeriesId +
         "&MarketPrice=" +
-        this.Data.GoodsBase.SalePrice +
+        this.Data.GoodsBase.SellPrice +
         "&SalePrice=" +
-        this.Data.GoodsBase.SalePrice +
+        MinPrice +
         "&SaleScore=" +
         this.Data.GoodsBase.SaleScore +
         "&IsScarcity=" +
@@ -1511,7 +1528,7 @@ export default {
     _selectCombineAttr(id, index) {
       this.combineIndex = index != undefined ? index : this.combineIndex;
       api.getCombineAttr(id).then(({ Data }) => {
-        Data.SalePrice = Data.SalePrice.toFixed(2);
+        Data.SellPrice = Data.SellPrice.toFixed(2);
         Data.MarketPrice = Data.MarketPrice.toFixed(2);
         this.combineData = Object.assign({}, Data);
         this.isShowCombine = true;
@@ -1555,7 +1572,7 @@ export default {
         ].ImageUrl = this.combineData.ImageUrl;
         this.selectCompData[
           this.combineIndex
-        ].SalePrice = this.combineData.SalePrice;
+        ].SellPrice = this.combineData.SellPrice;
         this.selectCompData[
           this.combineIndex
         ].MarketPrice = this.combineData.MarketPrice;
@@ -1569,9 +1586,9 @@ export default {
         this.Data.Items[this.combineIndex].Img = this.selectCompData[
           this.combineIndex
         ].ImageUrl;
-        this.Data.Items[this.combineIndex].SalePrice = this.selectCompData[
+        this.Data.Items[this.combineIndex].SellPrice = this.selectCompData[
           this.combineIndex
-        ].SalePrice;
+        ].SellPrice;
         this.Data.Items[this.combineIndex].MarketPrice = this.selectCompData[
           this.combineIndex
         ].MarketPrice;
@@ -1596,18 +1613,18 @@ export default {
     },
     addCart(IsConfirmedBuy) {
       // 判断是否是无属性商品
-      var that=this;
+      var that = this;
       if (!this.Data.GoodsBase.IsSpecificationGoods && !this.isComp) {
         //无属性商品且非打包
         var GoodsId = this.Data.GoodsBase.GoodsId;
         var IsBuyByScore = false;
-        var IsConfirmedBuy =IsConfirmedBuy?IsConfirmedBuy:false;
+        var IsConfirmedBuy = IsConfirmedBuy ? IsConfirmedBuy : false;
         var Quantity = 1;
         var RealGoodsId = this.Data.GoodsBase.GoodsId;
         var MaxSellNumber = this.Data.GoodsBase.MaxSellNumber;
         var GoodsName = this.Data.GoodsBase.GoodsName;
         var SeriesId = "00000000-0000-0000-0000-000000000000";
-        var SalePrice = this.Data.GoodsBase.SalePrice;
+        var SellPrice = this.Data.GoodsBase.SellPrice;
         var MaxDeduction = this.Data.GoodsBase.MaxSellNumber;
         var ShopId = this.Data.GoodsBase.ShopId;
         var IsFreeCarriage = this.Data.GoodsBase.IsFreeCarriage;
@@ -1621,7 +1638,7 @@ export default {
             MaxSellNumber,
             GoodsName,
             SeriesId,
-            SalePrice,
+            SellPrice,
             MaxDeduction,
             ShopId,
             IsFreeCarriage
@@ -1632,7 +1649,7 @@ export default {
                 title: "加入购物车成功~",
                 icon: "none"
               });
-              this._getCartNum()
+              this._getCartNum();
             }
           })
           .catch(error => {
@@ -1736,7 +1753,7 @@ export default {
                   title: "加入购物车成功~",
                   icon: "none"
                 });
-                this._getCartNum()
+                this._getCartNum();
               }
             });
         } else {
@@ -1756,19 +1773,19 @@ export default {
       }
     },
     buyNow(IsConfirmedBuy) {
-      var that=this;
+      var that = this;
       // 判断是否是无属性商品
       if (!this.Data.GoodsBase.IsSpecificationGoods && !this.isComp) {
         //无属性商品且非打包
         var GoodsId = this.Data.GoodsBase.GoodsId;
         var IsBuyByScore = false;
-        var IsConfirmedBuy =IsConfirmedBuy?IsConfirmedBuy:false;
+        var IsConfirmedBuy = IsConfirmedBuy ? IsConfirmedBuy : false;
         var Quantity = 1;
         var RealGoodsId = this.Data.GoodsBase.GoodsId;
         var MaxSellNumber = this.Data.GoodsBase.MaxSellNumber;
         var GoodsName = this.Data.GoodsBase.GoodsName;
         var SeriesId = "00000000-0000-0000-0000-000000000000";
-        var SalePrice = this.Data.GoodsBase.SalePrice;
+        var SellPrice = this.Data.GoodsBase.SellPrice;
         var MaxDeduction = this.Data.GoodsBase.MaxSellNumber;
         var ShopId = this.Data.GoodsBase.ShopId;
         var IsFreeCarriage = this.Data.GoodsBase.IsFreeCarriage;
@@ -1782,7 +1799,7 @@ export default {
             MaxSellNumber,
             GoodsName,
             SeriesId,
-            SalePrice,
+            SellPrice,
             MaxDeduction,
             ShopId,
             IsFreeCarriage
