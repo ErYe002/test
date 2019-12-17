@@ -377,7 +377,6 @@ export default {
         width: 173px;
         height: 173px;
       }
-      .name,
       .desc {
         white-space: initial;
         -webkit-box-orient: vertical;
@@ -393,21 +392,25 @@ export default {
         padding: 0 9px;
       }
       .name {
-        color: #b6a380ff;
+        color: #b6a380;
         font-size: 14px;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        margin-top: 5px;
       }
       .desc {
         font-size: 12px;
-        color: #878788ff;
+        color: #878788;
         height: 33px;
-        margin: 5px 0;
+        margin: 2px 0 5px;
       }
       .info {
         display: flex;
         justify-content: space-between;
         align-items: center;
         .rate {
-          color: #878788ff;
+          color: #878788;
           font-size: 10px;
         }
         .price-info {

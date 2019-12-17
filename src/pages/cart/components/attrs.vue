@@ -342,13 +342,13 @@ export default {
   padding: 21px;
   .title {
     font-size: 13px;
-    color: #7e7e7eff;
+    color: #7e7e7e;
   }
   .style-box {
     margin-top: 20px;
     .text {
       font-size: 15px;
-      color: #484848ff;
+      color: #484848;
     }
     .style-list {
       padding: 15px 0;
@@ -365,19 +365,19 @@ export default {
           width: 68px;
           height: 68px;
           margin-bottom: 5px;
-          border: 0.5px solid #d2d2d2ff;
+          border: 0.5px solid #d2d2d2;
           box-sizing: border-box;
         }
         .s-name {
-          color: #b6b6b6ff;
+          color: #b6b6b6;
           font-size: 11px;
         }
         &.selected {
           .s-img {
-            border: 2px solid #cab894ff;
+            border: 2px solid #cab894;
           }
           .s-name {
-            color: #484848ff;
+            color: #484848;
           }
         }
       }
@@ -391,7 +391,7 @@ export default {
       align-items: center;
       justify-content: space-between;
       .right {
-        color: #e31436ff;
+        color: #e31436;
         font-size: 12px;
       }
     }
@@ -402,13 +402,13 @@ export default {
       font-size: 13px;
       margin-bottom: 10px;
       .lable {
-        color: #484848ff;
+        color: #484848;
       }
       .select-list {
         flex: 1;
         height: 35px;
         line-height: 35px;
-        border: 0.5px solid #c4c4c4ff;
+        border: 0.5px solid #c4c4c4;
         // text-align: center;
         display: flex;
         align-items: center;
@@ -416,10 +416,10 @@ export default {
         margin: 0 10px;
         position: relative;
         .picker {
-          color: #000000ff;
+          color: #000000;
         }
         .empty {
-          color: #b6b6b6ff;
+          color: #b6b6b6;
         }
         .icon {
           display: block;

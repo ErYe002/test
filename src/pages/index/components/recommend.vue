@@ -416,7 +416,7 @@ export default {
   }
   .hot-box {
     .service-list {
-      color: #cfbb98ff;
+      color: #cfbb98;
       font-size: 12.5px;
       display: flex;
       align-items: center;
@@ -432,7 +432,7 @@ export default {
           width: 4.5px;
           height: 4.5px;
           border-radius: 50%;
-          background: #cfbb98ff;
+          background: #cfbb98;
           margin-right: 3.5px;
         }
       }
@@ -514,7 +514,7 @@ export default {
 }
 
 .second-floor-wrap {
-  background: #f5f5f5ff;
+  background: #f5f5f5;
   position: relative;
   padding-top: 30.5px;
   .group-link {
@@ -610,7 +610,9 @@ export default {
         flex-wrap: wrap;
         padding: 0 14px 5px;
         .item {
-          flex: 0 0 25%;
+          // flex: 0 0 25%;
+          width: 81.5px;
+            height: 41px;
           box-sizing: border-box;
           border-bottom: 0.5px solid #e9e9e9;
           border-right: 0.5px solid #e9e9e9;
@@ -743,7 +745,7 @@ export default {
             justify-content: space-between;
             .price {
               font-size: 12px;
-              color: #e25256ff;
+              color: #e25256;
             }
             .btn {
               width: 34px;
@@ -781,7 +783,7 @@ export default {
       height: 133px;
       .sc-item {
         width: 85.5px;
-        background: #f5f5f5ff;
+        background: #f5f5f5;
         position: relative;
         margin: 0 2.5px;
         border-radius: 10px;
@@ -801,7 +803,7 @@ export default {
           padding: 0 3px;
           b {
             font-size: 13px;
-            color: #e25256ff;
+            color: #e25256;
             margin-right: 3px;
           }
           .btn {
@@ -842,7 +844,7 @@ export default {
 }
 
 .like-goods-wrap {
-  background: #f5f5f5ff;
+  background: #f5f5f5;
   padding: 0 10.5px;
   .list {
     display: flex;
@@ -865,7 +867,6 @@ export default {
         width: 173px;
         height: 173px;
       }
-      .name,
       .desc {
         white-space: initial;
         -webkit-box-orient: vertical;
@@ -881,21 +882,25 @@ export default {
         padding: 0 9px;
       }
       .name {
-        color: #b6a380ff;
+        color: #b6a380;
         font-size: 14px;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        margin-top: 5px;
       }
       .desc {
         font-size: 12px;
-        color: #878788ff;
+        color: #878788;
         height: 33px;
-        margin: 5px 0;
+        margin: 2px 0 5px;
       }
       .info {
         display: flex;
         justify-content: space-between;
         align-items: center;
         .rate {
-          color: #878788ff;
+          color: #878788;
           font-size: 10px;
         }
         .price-info {
@@ -925,7 +930,7 @@ export default {
       }
 
       &:nth-child(odd) {
-        margin-right: 9.5px;
+        margin-right: 9px;
       }
     }
   }
