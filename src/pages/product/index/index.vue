@@ -1350,7 +1350,7 @@ export default {
         "&MarketPrice=" +
         this.Data.GoodsBase.SellPrice +
         "&SalePrice=" +
-        MinPrice +
+        this.MinPrice +
         "&SaleScore=" +
         this.Data.GoodsBase.SaleScore +
         "&IsScarcity=" +
@@ -1375,7 +1375,7 @@ export default {
         "&MarketPrice=" +
         this.Data.GoodsBase.SellPrice +
         "&SalePrice=" +
-        MinPrice +
+        this.MinPrice +
         "&SaleScore=" +
         this.Data.GoodsBase.SaleScore +
         "&IsScarcity=" +
@@ -1613,6 +1613,7 @@ export default {
     },
     addCart(IsConfirmedBuy) {
       // 判断是否是无属性商品
+      
       var that = this;
       if (!this.Data.GoodsBase.IsSpecificationGoods && !this.isComp) {
         //无属性商品且非打包
