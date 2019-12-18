@@ -5,9 +5,9 @@
       <div class="sureButton" @click="confirmCouponNo"><span>确定</span></div>
     </div>
     <div class="item" v-for="(item, idx) in coupons" :key="idx">
-      <div class="couponbg" :data-id='item.CouponNo' :data-valid='item.IsEffective' @click="selectCoupon">
+      <div class="couponbg" :data-id='item.CouponNo' :data-valid='item.IsEffective || item.CouponType == 8' @click="selectCoupon">
         <view class="checked-box" >
-          <span v-if="item.IsEffective == true">
+          <span v-if="item.IsEffective == true || item.CouponType == 8">
             <img class="img-checked" v-if="couponNo == item.CouponNo" src="/static/images/icon_checked.png" />
             <img v-else class="img-checked" src="/static/images/icon_no_checked.png" />
           </span>
