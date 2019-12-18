@@ -170,6 +170,14 @@
           <span class="act-name">抵扣</span>
           <span class="act-con">积分至多抵扣￥{{Data.GoodsBase.ScoreDeductionPrice}}</span>
         </div>
+        <div class="act-dikou actLine" v-if="Data.GoodsBase.FirstBuyContent!=null&&Data.GoodsBase.FirstBuyContent>0">
+          <span class="act-name">优惠</span>
+          <span class="act-con">新人专享价:￥{{Data.GoodsBase.FirstBuyContent}}</span>
+        </div>
+        <div class="act-dikou actLine" v-if="Data.GoodsPagePromotion.BuyReduceContent!=null">
+          <span class="act-name">量贩</span>
+          <span class="act-con">积分至多抵扣￥{{Data.GoodsPagePromotion.BuyReduceContent}}</span>
+        </div>
         <div
           class="act-zengpin actLine"
           v-if="Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.Gift != null && Data.GoodsPagePromotion.Gift.length>0"
