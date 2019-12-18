@@ -77,7 +77,7 @@
               <em>￥</em>
               <span>{{Data.GoodsBase.SellPrice}}</span>
             </div>
-            <div class="priceMsg">
+            <div class="priceMsg" >
               <i
                 class="price"
                 v-if="Data.GoodsBase.PriceLable!=null&&Data.GoodsBase.PriceLable == '限时直降'"
@@ -106,7 +106,7 @@
                 >SVIP价:￥{{Data.GoodsBase.SvipPrice}}</span>
                 <span
                   class="priceTag SVIP"
-                  v-if="(Data.GoodsBase.SvipPrice!=0&&Data.GoodsBase.SvipPrice-0<Data.GoodsBase.SellPrice-0)&&(Data.GoodsBase.RolePric==0)"
+                  v-if="(Data.GoodsBase.SvipPrice!=0&&Data.GoodsBase.SvipPrice-0<Data.GoodsBase.SellPrice-0)&&(Data.GoodsBase.RolePrice==0)"
                 >SVIP价:￥{{Data.GoodsBase.SvipPrice}}</span>
                 </block>
               </block>
@@ -174,9 +174,9 @@
           <span class="act-name">优惠</span>
           <span class="act-con">新人专享价:￥{{Data.GoodsBase.FirstBuyContent}}</span>
         </div>
-        <div class="act-dikou actLine" v-if="Data.GoodsPagePromotion.BuyReduceContent!=null">
+        <div class="act-dikou actLine" v-if="Data.GoodsPagePromotion.BuyReduceContent!=null&&Data.GoodsPagePromotion.BuyReduceContent!=''">
           <span class="act-name">量贩</span>
-          <span class="act-con">积分至多抵扣￥{{Data.GoodsPagePromotion.BuyReduceContent}}</span>
+          <span class="act-con">{{Data.GoodsPagePromotion.BuyReduceContent}}</span>
         </div>
         <div
           class="act-zengpin actLine"
@@ -453,7 +453,13 @@
         </div>
       </div>
       <!-- 评论 -->
-      <div class="line"></div>
+      <div class="prolabelLine">
+        <span >快递:{{Data.GoodsBase.ShopId == 2 ? (Data.GoodsBase.AmoyFreight + "元") : " 满80包邮"}}</span>
+        <span v-if="Data.GoodsBase.ShopId == 2">贴心客服</span>
+        <span v-else>7天退换</span>
+        <span >正品保障</span>
+        <span >急速物流</span>
+      </div>
       <div class="actCon remarkBox">
         <div class="act-remark actLine">
           <span class="act-name">瞳学评论({{Data.Remark==null?"0":Data.Remark.TotalCount}})</span>
@@ -1535,16 +1541,17 @@ export default {
     //打包获取属性（切换系列获取属性）
     _selectCombineAttr(id, index) {
       this.combineIndex = index != undefined ? index : this.combineIndex;
+      var that=this;
       api.getCombineAttr(id).then(({ Data }) => {
-        Data.SellPrice = Data.SellPrice.toFixed(2);
+        Data.SalePrice = Data.SalePrice.toFixed(2);
         Data.MarketPrice = Data.MarketPrice.toFixed(2);
-        this.combineData = Object.assign({}, Data);
-        this.isShowCombine = true;
-        this.combineGDId = "";
+        that.combineData = Object.assign({}, Data);
+        that.isShowCombine = true;
+        that.combineGDId = "";
         //遍历打包数据获取当前打包系列颜色
-        var selectCompData = this.selectCompData[this.combineIndex];
-        if (this.combineData.SeriesItems.length > 0) {
-          this.combineData.SeriesItems.map(function(value, index) {
+        var selectCompData = that.selectCompData[that.combineIndex];
+        if (that.combineData.SeriesItems.length > 0) {
+          that.combineData.SeriesItems.map(function(value, index) {
             if (value.GoodsId == id) {
               selectCompData.AnotherName = value.AnotherName + " / ";
               selectCompData.GoodsId = value.GoodsId;
@@ -1552,7 +1559,7 @@ export default {
           });
         } else {
           selectCompData.AnotherName = "";
-          selectCompData.GoodsId = this.combineData.GoodsId;
+          selectCompData.GoodsId = that.combineData.GoodsId;
         }
       });
     },
