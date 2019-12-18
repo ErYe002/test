@@ -1541,17 +1541,16 @@ export default {
     //打包获取属性（切换系列获取属性）
     _selectCombineAttr(id, index) {
       this.combineIndex = index != undefined ? index : this.combineIndex;
-      var that=this;
       api.getCombineAttr(id).then(({ Data }) => {
         Data.SalePrice = Data.SalePrice.toFixed(2);
         Data.MarketPrice = Data.MarketPrice.toFixed(2);
-        that.combineData = Object.assign({}, Data);
-        that.isShowCombine = true;
-        that.combineGDId = "";
+        this.combineData = Object.assign({}, Data);
+        this.isShowCombine = true;
+        this.combineGDId = "";
         //遍历打包数据获取当前打包系列颜色
-        var selectCompData = that.selectCompData[that.combineIndex];
-        if (that.combineData.SeriesItems.length > 0) {
-          that.combineData.SeriesItems.map(function(value, index) {
+        var selectCompData = this.selectCompData[this.combineIndex];
+        if (this.combineData.SeriesItems.length > 0) {
+          this.combineData.SeriesItems.map(function(value, index) {
             if (value.GoodsId == id) {
               selectCompData.AnotherName = value.AnotherName + " / ";
               selectCompData.GoodsId = value.GoodsId;
@@ -1559,7 +1558,7 @@ export default {
           });
         } else {
           selectCompData.AnotherName = "";
-          selectCompData.GoodsId = that.combineData.GoodsId;
+          selectCompData.GoodsId = this.combineData.GoodsId;
         }
       });
     },
