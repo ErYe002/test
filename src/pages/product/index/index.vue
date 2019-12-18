@@ -453,7 +453,11 @@
         </div>
       </div>
       <!-- 评论 -->
-      <div class="line"></div>
+      <div class="prolabelLine">
+        <span class="mr-20">快递:{{Data.GoodsBase.ShopId == 2 ? (Data.GoodsBase.AmoyFreight + "元") : " 满80包邮"}}</span>
+        <span v-if="Data.GoodsBase.ShopId == 2">贴心客服</span>
+        <span v-else>7天退换</span>
+      </div>
       <div class="actCon remarkBox">
         <div class="act-remark actLine">
           <span class="act-name">瞳学评论({{Data.Remark==null?"0":Data.Remark.TotalCount}})</span>
