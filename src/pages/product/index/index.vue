@@ -1543,12 +1543,10 @@ export default {
       this.combineIndex = index != undefined ? index : this.combineIndex;
       var that=this;
       api.getCombineAttr(id).then(({ Data }) => {
-        console.log(123,that.combineData);
         Data.SalePrice = Data.SalePrice.toFixed(2);
         Data.MarketPrice = Data.MarketPrice.toFixed(2);
         that.combineData = Object.assign({}, Data);
         that.isShowCombine = true;
-        console.log(456,that.combineData);
         that.combineGDId = "";
         //遍历打包数据获取当前打包系列颜色
         var selectCompData = that.selectCompData[that.combineIndex];
