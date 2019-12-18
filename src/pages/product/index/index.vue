@@ -88,12 +88,12 @@
                 >￥{{Data.GoodsBase.PlatformPrice}}</em>
                 <span v-if="Data.GoodsBase.ReducePrice>0">限时直降↓</span>
               </i>
-              <block v-if="Data.GoodsBase.PriceLable!=''">
+              <block>
                 <block v-if="isComp">
                   <span class="priceTag">套餐价</span>
                 </block>
                 <block v-else>
-                  <span class="priceTag" v-if="Data.GoodsBase.RolePrice!=0&&Data.GoodsBase.RolePrice<Data.GoodsBase.SellPrice">
+                  <span class="priceTag" v-if="Data.GoodsBase.RolePrice!=0&&Data.GoodsBase.RolePrice-0<Data.GoodsBase.SellPrice-0">
                     <img
                       class="tagImg"
                       :src="'/static/images/level_0'+(Data.UserInfo.RoleId?Data.UserInfo.RoleId:'0')+'.jpg'"
@@ -102,11 +102,11 @@
                   </span>
                   <span
                   class="priceTag SVIP"
-                  v-if="(Data.GoodsBase.SvipPrice!=0&&Data.GoodsBase.SvipPrice<Data.GoodsBase.SellPrice)&&(Data.GoodsBase.RolePrice!=0&&Data.GoodsBase.RolePrice>Data.GoodsBase.SvipPrice)"
+                  v-if="(Data.GoodsBase.SvipPrice!=0&&Data.GoodsBase.SvipPrice-0<Data.GoodsBase.SellPrice-0)&&(Data.GoodsBase.RolePrice!=0&&Data.GoodsBase.RolePrice-0>Data.GoodsBase.SvipPrice-0)"
                 >SVIP价:￥{{Data.GoodsBase.SvipPrice}}</span>
                 <span
                   class="priceTag SVIP"
-                  v-if="(Data.GoodsBase.SvipPrice!=0&&Data.GoodsBase.SvipPrice<Data.GoodsBase.SellPrice)&&(Data.GoodsBase.RolePric==0)"
+                  v-if="(Data.GoodsBase.SvipPrice!=0&&Data.GoodsBase.SvipPrice-0<Data.GoodsBase.SellPrice-0)&&(Data.GoodsBase.RolePric==0)"
                 >SVIP价:￥{{Data.GoodsBase.SvipPrice}}</span>
                 </block>
               </block>
