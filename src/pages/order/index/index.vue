@@ -142,7 +142,7 @@
         <view class='title'>{{orderInfo.BuySvipDiscountContent}}</view>
         <view class='subtitle'>{{orderInfo.BuySvipAmountConent}}</view>
       </view>
-      <switch class="swiper" checked="" @change="changeBuyVip" color="#cab894"/> 
+      <switch class="swiper" :checked="orderInfo.IsBuySvip" @change="changeBuyVip" color="#cab894"/> 
     </view>
     <view class='amount-box'>
       <view class='flex-line'>
@@ -156,7 +156,7 @@
         <view class='text'>¥{{orderInfo.SvipSellPrice}}</view>
       </view>
     </view>
-    <view class='amount-box' v-if="orderInfo.IsVip && orderInfo.SvipPromotionPrice > 0">
+    <view class='amount-box' v-if="(orderInfo.IsVip || orderInfo.IsBuySvip) && orderInfo.SvipPromotionPrice > 0">
       <view class='flex-line'>
         <view class='label'>SVIP优惠</view>
         <view class='text'>¥{{orderInfo.SvipPromotionPrice}}</view>
