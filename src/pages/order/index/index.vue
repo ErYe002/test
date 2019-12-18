@@ -125,7 +125,7 @@
         <view class='couponTitle'>积分</view>
         <view class='couponSubtitle'>{{orderInfo.TotalScoreContent+ '  ' + orderInfo.UseScoreContent}}</view>
       </view>
-      <switch class="swiper" checked="" @change="changeUseScore" />
+      <switch class="swiper" checked="" @change="changeUseScore" color="#cab894"/>
     </view>
     <view class='useCouponScore' v-if="orderInfo.ShopId == 1 && orderInfo.AllBalance > 0">
     <!-- <view class='useCouponScore'> -->
@@ -133,14 +133,33 @@
         <view class='couponTitle'>余额</view>
         <view class='couponSubtitle'>可用￥{{orderInfo.AllBalance}} <span v-if="formModel.isUseBalance">，使用￥{{orderInfo.NewAvailableBalance}} </span></view>
       </view>
-      <switch class="swiper" checked="" @change="changeUseBalance" /> 
+      <switch class="swiper" checked="" @change="changeUseBalance" color="#cab894"/> 
     </view>
     
     <div class="sectionLine"></div>
+    <view class='buy-vip-box' v-if="!orderInfo.IsVip && orderInfo.ShopId != 2">
+      <view class='b-left'>
+        <view class='title'>{{orderInfo.BuySvipDiscountContent}}</view>
+        <view class='subtitle'>{{orderInfo.BuySvipAmountConent}}</view>
+      </view>
+      <switch class="swiper" checked="" @change="changeBuyVip" color="#cab894"/> 
+    </view>
     <view class='amount-box'>
       <view class='flex-line'>
         <view class='label'>商品总金额</view>
         <view class='text'>¥{{orderInfo.TotalGoodsSalePrice}}</view>
+      </view>
+    </view>
+    <view class='amount-box' v-if="orderInfo.IsBuySvip">
+      <view class='flex-line'>
+        <view class='label'>SVIP年费</view>
+        <view class='text'>¥{{orderInfo.SvipSellPrice}}</view>
+      </view>
+    </view>
+    <view class='amount-box' v-if="orderInfo.IsVip && orderInfo.SvipPromotionPrice > 0">
+      <view class='flex-line'>
+        <view class='label'>SVIP优惠</view>
+        <view class='text'>¥{{orderInfo.SvipPromotionPrice}}</view>
       </view>
     </view>
     <view class='amount-box' v-if="orderInfo.MeetPriceDownPrice > 0">
@@ -164,7 +183,7 @@
     <view class='amount-box'>
       <view class='flex-line'>
         <view class='label'>运费</view>
-        <view class='text'>¥{{orderInfo.Carriage}}</view>
+        <view class='text'>¥{{orderInfo.IsUseSvipDeductionCarriage ? 'SVIP本次免邮' : orderInfo.Carriage}}</view>
       </view>
     </view>
     <view class='amount-box' v-if="orderInfo.ShopId == 1 && orderInfo.PaymentByBalance > 0">
@@ -255,6 +274,7 @@ export default {
       formModel: {
         isUseScore : true, 
         isUseBalance : true,
+        IsBuySvip: false,
         selectShopId : 1,
         selectedConsigneeId : "", 
         selectedPayMode: "",
@@ -361,6 +381,10 @@ export default {
     },
     changeUseBalance() {
       this.formModel.isUseBalance = !this.formModel.isUseBalance
+      this.getConfirmOrderDetail();
+    },
+    changeBuyVip(){
+      this.formModel.IsBuySvip = !this.formModel.IsBuySvip
       this.getConfirmOrderDetail();
     },
     changeUseScore() {
@@ -1024,4 +1048,23 @@ page {
   font-size: 24rpx;
 }
 
+
+.buy-vip-box{
+  display: flex;
+  margin: 14px;
+  background: #f2f2f2;
+  padding: 10px 5px 10px 15px;
+  .b-left{
+    flex: 1;
+  }
+  .title{
+    font-weight: bold;
+    font-size: 15px;
+  }
+  .subtitle{
+    color: #888888;
+    font-size: 12px;
+    font-weight: 300;
+  }
+}
 </style>

@@ -16,7 +16,21 @@
       <section class="goods-box">
         <ul class="list">
           <li class="item" v-for="item in orderInfo.GoodsDetail" :key="item.GoodsId">
-            <a class="link" :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'">
+            <div class="link" v-if="!orderInfo.IsCanViewGoodsDetail">
+              <img class="g-img" :src="item.Img" />
+              <div class="g-info">
+                <p class="g-name">
+                  <text class="ht-tag" v-if="item.ShopId == 2">海淘</text>
+                  {{item.GoodsName}}
+                </p>
+                <p class="g-attr">{{item.Specification}}</p>
+              </div>
+              <div class="price-info">
+                <b class="price">¥{{item.Price}}</b>
+                <span class="num">x {{item.Num}}</span>
+              </div>
+            </div>
+            <a class="link" :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'" v-else>
               <img class="g-img" :src="item.Img" />
               <div class="g-info">
                 <p class="g-name">

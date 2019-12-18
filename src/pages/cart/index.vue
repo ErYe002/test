@@ -277,12 +277,12 @@
                         <div class="price">
                           <em class="unit">¥</em>
                           <b>{{gItem.Price}}</b>
-                          <div :class="{tag: true, vip: gItem.PriceLable != '促销价'}">
+                          <div :class="{tag: true, vip: gItem.PriceLable == '会员价'}">
                             <img
-                              v-if="gItem.PriceLable != '促销价'"
+                              v-if="gItem.PriceLable == '会员价'"
                               :src="'/static/images/level_0'+ model.RoleId + '.jpg'"
                             />
-                            <span>{{gItem.PriceLable != '促销价' ? '会员价' : '促销价'}}</span>
+                            <span>{{gItem.PriceLable}}</span>
                           </div>
                         </div>
                         <div class="promotion">
@@ -481,12 +481,12 @@
                           <template v-else>
                             <em class="unit">¥</em>
                             <b>{{nItem.Price}}</b>
-                            <div :class="{tag: true, vip: nItem.PriceLable != '促销价'}">
+                            <div :class="{tag: true, vip: nItem.PriceLable == '会员价'}">
                               <img
-                                v-if="nItem.PriceLable != '促销价'"
+                                v-if="nItem.PriceLable == '会员价'"
                                 :src="'/static/images/level_0'+ model.RoleId + '.jpg'"
                               />
-                              <span>{{nItem.PriceLable != '促销价' ? '会员价' : '促销价'}}</span>
+                              <span>{{nItem.PriceLable}}</span>
                             </div>
                           </template>
                         </div>
@@ -808,7 +808,7 @@ export default {
         this.domesticShop = Data.DomesticShop;
         this.overseasShop = Data.OverseasShop;
       });
-      this.$getCartCount()
+      this.$getCartCount();
     },
     //选中单个商品
     selectGoodsEvent(uniqueId) {
@@ -929,8 +929,8 @@ export default {
       api.getCartDetail(this.shopId).then(({ Data }) => {
         if (Data == null) {
           this.model = null;
-          this.isHasCartData = false
-          this._getLikeGoods()
+          this.isHasCartData = false;
+          this._getLikeGoods();
         } else {
           let newData = Object.assign({}, Data);
           if (newData.Carts.length > 0) {
@@ -1007,7 +1007,7 @@ export default {
           }
           this.model = Object.assign({}, newData);
           this.isHasCartData =
-          newData["Carts"] != null || newData["InvalidGoods"] != null;
+            newData["Carts"] != null || newData["InvalidGoods"] != null;
         }
       });
     }

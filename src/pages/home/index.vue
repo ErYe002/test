@@ -1,7 +1,8 @@
 <template>
   <article>
-    <section class="user-box">
-      <img class="bg" src="/static/images/member_bg.jpg" mode="aspectFit" />
+    <section :class="{'user-box': true, 'svip': userInfoModel.IsSvip}">
+      <img class="bg" src="/static/images/svip_bg.png" v-if="userInfoModel.IsSvip"/>
+      <img class="bg" src="/static/images/member_bg.jpg" mode="aspectFit" v-else/>
       <img class="head" :src="userInfoModel.HeadUrl || '/static/images/default_img.gif'" />
       <button
         open-type="getUserInfo"
@@ -10,8 +11,19 @@
         class="kd-btn btn btn-small"
       >立即登录</button>
       <div v-else class="info-box">
-        <p class="name">{{userInfoModel.Nick}}</p>
-        <p class="level">
+        <p class="name">
+          <img class="icon" src="/static/images/left_svip.png" v-if="userInfoModel.IsSvip"/>
+          <span>{{userInfoModel.Nick}}</span>
+          <img class="icon" src="/static/images/right_svip.png" v-if="userInfoModel.IsSvip"/>
+        </p>
+        <p class="svip-level" v-if="userInfoModel.IsSvip">
+          <span> · </span>
+          <i>SVIP</i>
+          <span> | </span>
+          <em>{{userInfoModel.SvipBeginDate + '-' +  userInfoModel.SvipEndDate}}</em>
+          <span> · </span>
+        </p>
+        <p class="level" v-else>
           <img class="icon" :src="'/static/images/level_0'+userInfoModel.levelNum+'.jpg'" />
           <span class="text">会员</span>
         </p>
@@ -269,7 +281,8 @@ const userInfoModelTemp = {
   OrderCountOfCustomerService: 0,
   OrderCountOfWaitDeliver: 0,
   OrderCountOfWaitEvaluate: 0,
-  OrderCountOfWaitPay: 0
+  OrderCountOfWaitPay: 0,
+  IsSvip: false
 };
 
 const walletModelTemp = {
@@ -458,6 +471,9 @@ export default {
   }
   .info-box {
     margin-left: 10px;
+    .name{
+      font-size: 14px;
+    }
     .level {
       display: flex;
       align-items: center;
@@ -475,6 +491,44 @@ export default {
       .text {
         flex: 1;
         text-align: center;
+      }
+    }
+  }
+
+  &.svip{
+    .head{
+      box-sizing: border-box;
+      border: 1px solid #CAB894;
+    }
+    .info-box{
+      .name{
+        color: #CAB894;
+        display: flex;
+        align-items: center;
+        .icon{
+          display: block;
+          width: 8px;
+          height: 9.5px;
+        }
+        span{
+          margin: 0 5px;
+        }
+      }
+    }
+    .svip-level{
+      font-size: 9px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      background: #CAB894;
+      padding: 2px 5px;
+      border-radius: 10px;
+      margin-top: 10px;
+      i{
+        font-style: italic;
+      }
+      i,em{
+        margin: 0 4px;
       }
     }
   }

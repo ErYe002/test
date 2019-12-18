@@ -98,7 +98,7 @@ export default {
     }
     .text {
       font-size: 12px;
-      color: #9e9d9fff;
+      color: #9e9d9f;
     }
   }
 }
@@ -118,11 +118,11 @@ export default {
         justify-content: center;
         b {
           font-size: 17px;
-          color: #040000ff;
+          color: #040000;
         }
         em {
           font-size: 8.5px;
-          color: #595758ff;
+          color: #595758;
           font-weight: 300;
         }
       }

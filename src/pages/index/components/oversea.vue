@@ -341,7 +341,9 @@ export default {
 			flex-wrap: wrap;
 			padding: 0 14px 5px;
 			.item {
-			flex: 0 0 10%;
+			// flex: 0 0 10%;
+			width: 160rpx;
+				height: 90rpx;
 			box-sizing: border-box;
 			border-bottom: 0.5px solid #e9e9e9;
 			border-right: 0.5px solid #e9e9e9;
@@ -588,21 +590,20 @@ export default {
 					.recTitle{
 						color: #B6A380;
 						font-size: 28rpx;
-						overflow: hidden;
-						text-overflow: ellipsis;
-						display: -webkit-box;
-						-webkit-line-clamp: 2;
-						-webkit-box-orient: vertical;
-						min-height: 75rpx;
+						white-space:nowrap;
+						overflow:hidden;
+						text-overflow:ellipsis;
+						margin-bottom: 2px;
 					}
 					.recNational{
 						background: #C4C5C5;
 						color: #fff;
 						border-radius: 20rpx;
-						font-size: 24rpx;
+						font-size: 10px;
 						display: inline-block;
-						padding: 0 10rpx;
+						padding: 3px 10rpx;
 						width: fit-content;
+						margin-bottom: 2px;
 					}
 					.recDesc{
 						color: #878788;
