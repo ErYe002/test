@@ -197,7 +197,7 @@ export default {
         });
     },
     //取消订单
-    cancelOrderEvent(){
+    cancelOrderEvent(orderId){
       const _this = this
       wx.showModal({
         title: "提示",
@@ -205,7 +205,7 @@ export default {
         confirmColor: "#cab894",
         success (res) {
           if (res.confirm) {
-            api.cancelOrder(this.orderId).then(() => {
+            api.cancelOrder(orderId).then(() => {
               _this._getPageData()
             })
           } 
