@@ -76,7 +76,7 @@
           <div
             class="cart-list-box pack-box"
             v-for="(packItem, pidx) in cartItem.Packages"
-            :key="packItem.UniqueId"
+            :key="packItem.UniqueId+pidx"
           >
             <p class="tips">
               <span class="check-btn" v-if="packItem.IsDisplayDelete">
@@ -124,7 +124,7 @@
               <li
                 class="g-item"
                 v-for="(goodItem, gidx) in packItem.PackageItems"
-                :key="goodItem.GoodsId"
+                :key="goodItem.GoodsId+gidx"
               >
                 <div class="goods-box">
                   <div class="g-info">
@@ -158,7 +158,7 @@
           <div
             class="cart-list-box"
             v-for="(mpItem, midx) in cartItem.MeetPromotions"
-            :key="mpItem.PromotionId"
+            :key="mpItem.PromotionId+midx"
           >
             <p class="tips">
               <span class="tag">{{mpItem.MeetPromotionType == 2 ? '满赠':'满减'}}</span>
@@ -170,7 +170,7 @@
             </p>
             <!-- 商品列表 -->
             <ul class="goods-list">
-              <li class="g-item" v-for="(gItem, gidx) in mpItem.BuyGoodsList" :key="gItem.UniqueId">
+              <li class="g-item" v-for="(gItem, gidx) in mpItem.BuyGoodsList" :key="gItem.UniqueId+gidx">
                 <div class="goods-box">
                   <span class="check-btn" v-if="gItem.IsDisplayDelete">
                     <img
@@ -305,7 +305,7 @@
                   <p
                     class="repurchase-box"
                     v-for="(fItem, fidx) in gItem.FreeGifts"
-                    :key="fItem.UniqueId"
+                    :key="fItem.UniqueId+fidx"
                   >
                     <span class="tag">买送</span>
                     <template v-if="gItem.FreeGifts.length > 1">
@@ -366,12 +366,12 @@
         </template>
         <!-- 普通商品 -->
         <template v-if="cartItem.NormalGoods != null && cartItem.NormalGoods.length > 0">
-          <div class="cart-list-box" :key="idx">
+          <div class="cart-list-box">
             <ul class="goods-list">
               <li
                 class="g-item"
                 v-for="(nItem, nidx) in cartItem.NormalGoods"
-                :key="nItem.UniqueId"
+                :key="nItem.UniqueId+nidx"
               >
                 <div class="goods-box">
                   <span class="check-btn" v-if="nItem.IsDisplayDelete">
@@ -510,7 +510,7 @@
                   <p
                     class="repurchase-box"
                     v-for="(fItem, fidx) in nItem.FreeGifts"
-                    :key="fItem.UniqueId"
+                    :key="fItem.UniqueId+fidx"
                   >
                     <span class="tag">买送</span>
                     <template v-if="nItem.FreeGifts.length > 1">
@@ -572,7 +572,7 @@
         <template
           v-if="cartItem.AllExchangeAndGifts != null && cartItem.AllExchangeAndGifts.length > 0 && !isEdit"
         >
-          <div class="cart-list-box promotion-box" :key="idx">
+          <div class="cart-list-box promotion-box">
             <p class="tips">
               <span class="title">满赠换专区</span>
               <a class="link">可多选</a>
@@ -581,7 +581,7 @@
               <li
                 class="g-item"
                 v-for="(eItem, eidx) in cartItem.AllExchangeAndGifts"
-                :key="eItem.GoodsId"
+                :key="eItem.GoodsId+eidx"
               >
                 <div class="goods-box">
                   <span class="check-btn">
@@ -926,6 +926,7 @@ export default {
     _getPageData() {
       // this.selectedItemCount = 0;
       this.selectedCartItem = [];
+      this.canSelectedCartItem = [];
       api.getCartDetail(this.shopId).then(({ Data }) => {
         if (Data == null) {
           this.model = null;
@@ -935,13 +936,14 @@ export default {
           let newData = Object.assign({}, Data);
           if (newData.Carts.length > 0) {
             let ids = [];
+            let tempSelectedCartItem = []
             newData.Carts.forEach(ele => {
               //处理打包商品
               if (ele.Packages.length > 0) {
                 ele.Packages.forEach(item => {
                   ids.push(item.UniqueId);
                   if (item.IsSelected) {
-                    this.selectedCartItem.push(item.UniqueId);
+                    tempSelectedCartItem.push(item.UniqueId);
                     // this.selectedItemCount++;
                   }
                 });
@@ -952,7 +954,7 @@ export default {
                   ids.push(nItem.UniqueId);
                   if (nItem.IsSelected) {
                     // this.selectedItemCount++;
-                    this.selectedCartItem.push(nItem.UniqueId);
+                    tempSelectedCartItem.push(nItem.UniqueId);
                   }
                   if (nItem.FreedomCollocations.length > 0) {
                     nItem.FreedomCollocations.forEach(fItem => {
@@ -980,7 +982,7 @@ export default {
                       ids.push(fItem.UniqueId);
                       if (fItem.IsSelected) {
                         // this.selectedItemCount++;
-                        this.selectedCartItem.push(fItem.UniqueId);
+                        tempSelectedCartItem.push(fItem.UniqueId);
                       }
                       if (fItem.FreedomCollocations.length > 0) {
                         fItem.FreedomCollocations.forEach(fdItem => {
@@ -1003,9 +1005,10 @@ export default {
                 });
               }
             });
-            this.canSelectedCartItem = ids;
+            this.canSelectedCartItem = ids.concat([]);
+            this.selectedCartItem = tempSelectedCartItem.concat([])
           }
-          this.model = Object.assign({}, newData);
+          this.model = newData;
           this.isHasCartData =
             newData["Carts"] != null || newData["InvalidGoods"] != null;
         }
