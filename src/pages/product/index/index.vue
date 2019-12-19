@@ -441,7 +441,7 @@
                   @click="_selectCombineAttr(item.GoodsId,index)"
                 >
                   <div>
-                    <span v-if="item.ShowText==null">{{item.IsSeries?"请选择花色/度数":"请选择度数规格等参数"}}</span>
+                    <span v-if="item.ShowText==null" :data-text="item.ShowText">{{item.IsSeries?"请选择花色/度数":"请选择度数规格等参数"}}</span>
                     <span v-else>{{item.ShowText}}</span>
                   </div>
                   <div class="icon-bottom">﹀</div>
