@@ -94,7 +94,7 @@
                 </block>
                 <block v-else>
                   <span
-                    class="priceTag"
+                    class="priceTag rolepriceTag"
                     v-if="Data.GoodsBase.RolePrice!=0&&Data.GoodsBase.RolePrice-0<Data.GoodsBase.SellPrice-0"
                   >
                     <img
