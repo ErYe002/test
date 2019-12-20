@@ -77,7 +77,7 @@
               <em>￥</em>
               <span>{{Data.GoodsBase.SellPrice}}</span>
             </div>
-            <div class="priceMsg" >
+            <div class="priceMsg">
               <i
                 class="price"
                 v-if="Data.GoodsBase.PriceLable!=null&&Data.GoodsBase.PriceLable == '限时直降'"
@@ -93,7 +93,10 @@
                   <span class="priceTag">套餐价</span>
                 </block>
                 <block v-else>
-                  <span class="priceTag" v-if="Data.GoodsBase.RolePrice!=0&&Data.GoodsBase.RolePrice-0<Data.GoodsBase.SellPrice-0">
+                  <span
+                    class="priceTag"
+                    v-if="Data.GoodsBase.RolePrice!=0&&Data.GoodsBase.RolePrice-0<Data.GoodsBase.SellPrice-0"
+                  >
                     <img
                       class="tagImg"
                       :src="'/static/images/level_0'+(Data.UserInfo.RoleId?Data.UserInfo.RoleId:'0')+'.jpg'"
@@ -101,13 +104,13 @@
                     价:￥{{Data.GoodsBase.RolePrice}}
                   </span>
                   <span
-                  class="priceTag SVIP"
-                  v-if="(Data.GoodsBase.SvipPrice!=0&&Data.GoodsBase.SvipPrice-0<Data.GoodsBase.SellPrice-0)&&(Data.GoodsBase.RolePrice!=0&&Data.GoodsBase.RolePrice-0>Data.GoodsBase.SvipPrice-0)"
-                >SVIP价:￥{{Data.GoodsBase.SvipPrice}}</span>
-                <span
-                  class="priceTag SVIP"
-                  v-if="(Data.GoodsBase.SvipPrice!=0&&Data.GoodsBase.SvipPrice-0<Data.GoodsBase.SellPrice-0)&&(Data.GoodsBase.RolePrice==0)"
-                >SVIP价:￥{{Data.GoodsBase.SvipPrice}}</span>
+                    class="priceTag SVIP"
+                    v-if="(Data.GoodsBase.SvipPrice!=0&&Data.GoodsBase.SvipPrice-0<Data.GoodsBase.SellPrice-0)&&(Data.GoodsBase.RolePrice!=0&&Data.GoodsBase.RolePrice-0>Data.GoodsBase.SvipPrice-0)"
+                  >SVIP价:￥{{Data.GoodsBase.SvipPrice}}</span>
+                  <span
+                    class="priceTag SVIP"
+                    v-if="(Data.GoodsBase.SvipPrice!=0&&Data.GoodsBase.SvipPrice-0<Data.GoodsBase.SellPrice-0)&&(Data.GoodsBase.RolePrice==0)"
+                  >SVIP价:￥{{Data.GoodsBase.SvipPrice}}</span>
                 </block>
               </block>
             </div>
@@ -170,11 +173,17 @@
           <span class="act-name">抵扣</span>
           <span class="act-con">积分至多抵扣￥{{Data.GoodsBase.ScoreDeductionPrice}}</span>
         </div>
-        <div class="act-dikou actLine" v-if="Data.GoodsBase.FirstBuyContent!=null&&Data.GoodsBase.FirstBuyContent>0">
+        <div
+          class="act-dikou actLine"
+          v-if="Data.GoodsBase.FirstBuyContent!=null&&Data.GoodsBase.FirstBuyContent>0"
+        >
           <span class="act-name">优惠</span>
           <span class="act-con">新人专享价:￥{{Data.GoodsBase.FirstBuyContent}}</span>
         </div>
-        <div class="act-dikou actLine" v-if="Data.GoodsPagePromotion.BuyReduceContent!=null&&Data.GoodsPagePromotion.BuyReduceContent!=''">
+        <div
+          class="act-dikou actLine"
+          v-if="Data.GoodsPagePromotion.BuyReduceContent!=null&&Data.GoodsPagePromotion.BuyReduceContent!=''"
+        >
           <span class="act-name">量贩</span>
           <span class="act-con">{{Data.GoodsPagePromotion.BuyReduceContent}}</span>
         </div>
@@ -441,7 +450,10 @@
                   @click="_selectCombineAttr(item.GoodsId,index)"
                 >
                   <div>
-                    <span v-if="item.ShowText==null" :data-text="item.ShowText">{{item.IsSeries?"请选择花色/度数":"请选择度数规格等参数"}}</span>
+                    <span
+                      v-if="item.ShowText==null"
+                      :data-text="item.ShowText"
+                    >{{item.IsSeries?"请选择花色/度数":"请选择度数规格等参数"}}</span>
                     <span v-else>{{item.ShowText}}</span>
                   </div>
                   <div class="icon-bottom">﹀</div>
@@ -454,11 +466,11 @@
       </div>
       <!-- 评论 -->
       <div class="prolabelLine">
-        <span >快递:{{Data.GoodsBase.ShopId == 2 ? (Data.GoodsBase.AmoyFreight + "元") : " 满80包邮"}}</span>
+        <span>快递:{{Data.GoodsBase.ShopId == 2 ? (Data.GoodsBase.AmoyFreight + "元") : " 满80包邮"}}</span>
         <span v-if="Data.GoodsBase.ShopId == 2">贴心客服</span>
         <span v-else>7天退换</span>
-        <span >正品保障</span>
-        <span >急速物流</span>
+        <span>正品保障</span>
+        <span>急速物流</span>
       </div>
       <div class="actCon remarkBox">
         <div class="act-remark actLine">
@@ -1151,7 +1163,7 @@ export default {
       groupSelectPosition: -1,
       glassSelectPosiition: -1,
       cartNum: 0,
-      MinPrice:0//当前可以享受到的最低价格
+      MinPrice: 0 //当前可以享受到的最低价格
     };
   },
   computed: {},
@@ -1207,17 +1219,28 @@ export default {
         Data.GoodsBase.ScoreDeductionPrice = Data.GoodsBase.ScoreDeductionPrice.toFixed(
           2
         );
-        if(Data.GoodsBase.SellPrice>Data.GoodsBase.RolePrice&&Data.GoodsBase.RolePrice!=0){
-          if(Data.GoodsBase.RolePrice>Data.GoodsBase.SvipPrice&&Data.GoodsBase.SvipPrice!=0&&Data.UserInfo.IsSvip){
-            this.MinPrice=Data.GoodsBase.SvipPrice;
-          }else{
-            this.MinPrice=Data.GoodsBase.RolePrice;
+        if (
+          Data.GoodsBase.SellPrice > Data.GoodsBase.RolePrice &&
+          Data.GoodsBase.RolePrice != 0
+        ) {
+          if (
+            Data.GoodsBase.RolePrice > Data.GoodsBase.SvipPrice &&
+            Data.GoodsBase.SvipPrice != 0 &&
+            Data.UserInfo.IsSvip
+          ) {
+            this.MinPrice = Data.GoodsBase.SvipPrice;
+          } else {
+            this.MinPrice = Data.GoodsBase.RolePrice;
           }
-        }else{
-          if(Data.GoodsBase.SellPrice>Data.GoodsBase.SvipPrice&&Data.GoodsBase.SvipPrice!=0&&Data.UserInfo.IsSvip){
-            this.MinPrice=Data.GoodsBase.SvipPrice;
-          }else{
-            this.MinPrice=Data.GoodsBase.SellPrice;
+        } else {
+          if (
+            Data.GoodsBase.SellPrice > Data.GoodsBase.SvipPrice &&
+            Data.GoodsBase.SvipPrice != 0 &&
+            Data.UserInfo.IsSvip
+          ) {
+            this.MinPrice = Data.GoodsBase.SvipPrice;
+          } else {
+            this.MinPrice = Data.GoodsBase.SellPrice;
           }
         }
         if (Data.GoodsPagePromotion.FreeCollocation != null) {
@@ -1540,16 +1563,27 @@ export default {
     },
     //打包获取属性（切换系列获取属性）
     _selectCombineAttr(id, index) {
+      if (!this.isLogin) {
+        wx.showToast({
+            title: "请先登录",
+            icon: "none"
+          });
+        wx.switchTab({
+          url: "pages/home/main"
+        });
+        return false;
+      };
       this.combineIndex = index != undefined ? index : this.combineIndex;
+      var that = this;
       api.getCombineAttr(id).then(({ Data }) => {
         Data.SalePrice = Data.SalePrice.toFixed(2);
         Data.MarketPrice = Data.MarketPrice.toFixed(2);
-        this.combineData = Object.assign({}, Data);
-        this.isShowCombine = true;
-        this.combineGDId = "";
+        that.combineData = Object.assign({}, Data);
+        that.isShowCombine = true;
+        that.combineGDId = "";
         //遍历打包数据获取当前打包系列颜色
-        var selectCompData = this.selectCompData[this.combineIndex];
-        if (this.combineData.SeriesItems.length > 0) {
+        var selectCompData = that.selectCompData[that.combineIndex];
+        if (that.combineData.SeriesItems.length > 0) {
           this.combineData.SeriesItems.map(function(value, index) {
             if (value.GoodsId == id) {
               selectCompData.AnotherName = value.AnotherName + " / ";
@@ -1627,7 +1661,7 @@ export default {
     },
     addCart(IsConfirmedBuy) {
       // 判断是否是无属性商品
-      
+
       var that = this;
       if (!this.Data.GoodsBase.IsSpecificationGoods && !this.isComp) {
         //无属性商品且非打包
