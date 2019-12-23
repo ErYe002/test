@@ -1264,6 +1264,7 @@ export default {
             that.selectCompData.push(obj);
             value.Price = value.Price.toFixed(2);
             value.MarketPrice = value.MarketPrice.toFixed(2);
+            value.ShowText=null;
             return value;
           });
         }
