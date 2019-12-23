@@ -427,8 +427,44 @@
             <span>{{selectCompNum}}</span>件商品需要选择属性
           </div>
         </div>
-        <div class="compGoods">
+        <div class="compGoods" v-if="NowCompData==null">
           <block v-for="item in Data.Items" :key="item.index">
+            <div class="compGoodBox">
+              <a
+                class="compGoodImg"
+                :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'"
+              >
+                <img :src="item.Img" alt />
+              </a>
+              <div class="compGoodCon">
+                <div class="compGoodMsg">
+                  <div class="compGoodName">{{item.GoodsName}}</div>
+                  <div class="compGoodPrice">
+                    <div class="price">￥{{item.Price}}</div>
+                    <div class="markPrice">￥{{item.MarketPrice}}</div>
+                  </div>
+                </div>
+                <div
+                  class="compSelectBox"
+                  v-if="item.IsSpecificationGoods"
+                  @click="_selectCombineAttr(item.GoodsId,index)"
+                >
+                  <div>
+                    <span
+                      v-if="item.ShowText==null"
+                      :data-text="item.ShowText"
+                    >{{item.IsSeries?"请选择花色/度数":"请选择度数规格等参数"}}</span>
+                    <span v-else>{{item.ShowText}}</span>
+                  </div>
+                  <div class="icon-bottom">﹀</div>
+                </div>
+                <div class="noAttr" v-else>x1</div>
+              </div>
+            </div>
+          </block>
+        </div>
+        <div class="compGoods" v-else>
+          <block v-for="item in NowCompData" :key="item.index">
             <div class="compGoodBox">
               <a
                 class="compGoodImg"
@@ -1163,7 +1199,8 @@ export default {
       groupSelectPosition: -1,
       glassSelectPosiition: -1,
       cartNum: 0,
-      MinPrice: 0 //当前可以享受到的最低价格
+      MinPrice: 0,//当前可以享受到的最低价格
+      NowCompData:null
     };
   },
   computed: {},
@@ -1628,7 +1665,6 @@ export default {
         //更改打包的数组
         var someData=Object.assign({}, this.Data);
         this.Data=null;
-
         someData.Items[this.combineIndex].Id = this.selectCompData[
           this.combineIndex
         ].Id;
@@ -1648,6 +1684,7 @@ export default {
           this.selectCompData[this.combineIndex].AnotherName +
           this.selectCompData[this.combineIndex].Value;
         this.Data=someData;
+        this.NowCompData=someData.Items;
         //改变未选择的套餐数量
         var num = 0;
         var allnum = 0;
