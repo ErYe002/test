@@ -1570,7 +1570,7 @@ export default {
             icon: "none"
           });
         wx.switchTab({
-          url: "pages/home/main"
+          url: "/pages/home/main"
         });
         return false;
       };
@@ -1626,24 +1626,28 @@ export default {
           this.combineIndex
         ].MarketPrice = this.combineData.MarketPrice;
         //更改打包的数组
-        this.Data.Items[this.combineIndex].Id = this.selectCompData[
+        var someData=Object.assign({}, this.Data);
+        this.Data=null;
+
+        someData.Items[this.combineIndex].Id = this.selectCompData[
           this.combineIndex
         ].Id;
-        this.Data.Items[this.combineIndex].GoodsName = this.selectCompData[
+        someData.Items[this.combineIndex].GoodsName = this.selectCompData[
           this.combineIndex
         ].GoodsName;
-        this.Data.Items[this.combineIndex].Img = this.selectCompData[
+        someData.Items[this.combineIndex].Img = this.selectCompData[
           this.combineIndex
         ].ImageUrl;
-        this.Data.Items[this.combineIndex].SellPrice = this.selectCompData[
+        someData.Items[this.combineIndex].SellPrice = this.selectCompData[
           this.combineIndex
         ].SellPrice;
-        this.Data.Items[this.combineIndex].MarketPrice = this.selectCompData[
+        someData.Items[this.combineIndex].MarketPrice = this.selectCompData[
           this.combineIndex
         ].MarketPrice;
-        this.Data.Items[this.combineIndex].ShowText =
+        someData.Items[this.combineIndex].ShowText =
           this.selectCompData[this.combineIndex].AnotherName +
           this.selectCompData[this.combineIndex].Value;
+        this.Data=someData;
         //改变未选择的套餐数量
         var num = 0;
         var allnum = 0;
