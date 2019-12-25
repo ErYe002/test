@@ -14,7 +14,7 @@
           :key="item.Id"
           @click="changeIndexEvent(item.SeoCode)"
         >
-          <navigator open-type="navigate" target="miniProgram" app-id="wx59914c27d9618111" version="release" @fail="openMiniFail" class="link" v-if="item.SeoCode == 'code350'">
+          <navigator open-type="navigate" target="miniProgram" app-id="wxbb2e8b1089947444" version="release" @fail="openMiniFail" class="link" v-if="item.SeoCode == 'code350'">
             <b>{{item.ChName}}</b>
             <em>{{item.EnName}}</em>
           </navigator>

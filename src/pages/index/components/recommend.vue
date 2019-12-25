@@ -57,7 +57,7 @@
         </section>
       </article>
       <article class="second-floor-wrap">
-        <navigator open-type="navigate" target="miniProgram" app-id="wx59914c27d9618111" class="group-link">
+        <navigator open-type="navigate" target="miniProgram" app-id="wxbb2e8b1089947444" class="group-link">
           <img :src="model.GroupBuyImageUrl" />
         </navigator>
         <section
@@ -278,7 +278,8 @@ export default {
   computed: {
     ...mapState("user", ["token"])
   },
-  async onLoad() {
+  async created() {
+    console.log('created')
     await this._getPageData();
     await this._getGoodsListData();
   },

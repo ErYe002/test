@@ -169,7 +169,7 @@
           <navigator
             open-type="navigate"
             target="miniProgram"
-            app-id="wx59914c27d9618111"
+            app-id="wxbb2e8b1089947444"
             class="link"
             version="release"
           >
