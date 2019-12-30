@@ -1895,8 +1895,8 @@ export default {
             ShopId,
             IsFreeCarriage
           )
-          .then(({ Data }) => {
-            if (Data) {
+          .then(({ State }) => {
+            if (State) {
               wx.showToast({
                 title: "加入购物车成功~",
                 icon: "none"
