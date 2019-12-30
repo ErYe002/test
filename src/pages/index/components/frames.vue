@@ -117,7 +117,7 @@ export default {
       }
     };
   },
-  async onLoad() {
+  async created() {
     await this._getPageData();
     await this._getListData();
   },
