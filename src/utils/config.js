@@ -1,6 +1,6 @@
 module.exports = {
-  apiurl: 'http://192.168.117.39:8004',
-  salePlatformId: '65322024-9A29-4393-BAD5-CDA5B8034ADE'
+  // apiurl: 'http://192.168.117.39:8004',
+  // salePlatformId: '65322024-9A29-4393-BAD5-CDA5B8034ADE'
   // salePlatformId: '5758035A-B02A-46F2-A9BB-B1D318DABBF9'
 
   // apiurl: 'http://114.80.166.24:18050',
@@ -10,8 +10,8 @@ module.exports = {
   // salePlatformId: '6B1F905D-C1B6-489D-B547-F12DAAB98208',
 
   //线上环境
-  // apiurl: 'https://kdapi.keede.com/',
-  // salePlatformId: 'A7C026BA-2BF9-4318-8763-1F8DA23BA6B2'
+  apiurl: 'https://kdapi.keede.com/',
+  salePlatformId: 'A7C026BA-2BF9-4318-8763-1F8DA23BA6B2'
 
   // apiurl: 'https://mpapi.kede.com/',
   // salePlatformId: '65322024-9A29-4393-BAD5-CDA5B8034ADE'
