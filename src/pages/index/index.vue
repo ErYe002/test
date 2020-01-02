@@ -62,7 +62,8 @@ export default {
           // if(ele.SeoCode == 'code150'){
           //   ele.ChName = "隐形护理"
           // }
-          return ele.SeoCode == 'code000' || ele.SeoCode == 'code350' || ele.SeoCode == 'code200' || ele.SeoCode == 'code050'
+          return ele.SeoCode == 'code000' || ele.SeoCode == 'code350' || ele.SeoCode == 'code200' || ele.SeoCode == 'code050' 
+          // return ele.SeoCode == 'code000' || ele.SeoCode == 'code350' || ele.SeoCode == 'code200' || ele.SeoCode == 'code050' || ele.SeoCode == 'code150' || ele.SeoCode == 'code100'
         });
         list.push({
           Id: 0,
@@ -86,6 +87,9 @@ export default {
 
   created() {
     this._getMenuData();
+  },
+    onShareAppMessage(res) {
+
   }
 };
 </script>

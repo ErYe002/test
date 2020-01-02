@@ -2070,8 +2070,20 @@ export default {
           this.addCart();
         }
       });
-    }
-  }
+    },
+  },
+        /**
+   * 用户点击右上角分享
+   */
+    onShareAppMessage() {
+      return {
+        title: '¥' +
+          this.Data.GoodsBase.SellPrice +
+          ' ' +
+          this.Data.GoodsBase.GoodsName,
+        imageUrl: this.Data.GoodsBase.MainImageUrl || ''
+      };
+    },
 };
 </script>
 

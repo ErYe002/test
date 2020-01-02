@@ -59,9 +59,18 @@
                         <img src="/static/images/meitong_right.png" alt="" class="ar_left" @click="changeAction(1)">
                         <img src="/static/images/meitong_right.png" alt="" class="ar_right" @click="changeAction(2)">
                     </div>
-                    <img :src="model.GirlGoodsList[0]['ImageUrl']" alt="" :class='{"imgg":true,"peri-img1":true,"fade-in":active1=="mr_r","fade-in":active1=="mr_l"}'>
+                    <!-- <img :src="model.GirlGoodsList[0]['ImageUrl']" alt="" :class='{"imgg":true,"peri-img1":true,"fade-in":active1=="mr_r","fade-in":active1=="mr_l"}'>
                     <img :src="model.GirlGoodsList[1]['ImageUrl']" alt="" :class='{"imgg":true,"peri-img2":true,"fade-in1":active1=="mr_r","fade-in":active1=="mr_l"}'>
-                    <img :src="model.GirlGoodsList[2]['ImageUrl']" alt="" :class='{"imgg":true,"peri-img3":true,"fade-out":active1=="mr_r","fade-out":active1=="mr_l"}'>
+                    <img :src="model.GirlGoodsList[2]['ImageUrl']" alt="" :class='{"imgg":true,"peri-img3":true,"fade-out":active1=="mr_r","fade-out":active1=="mr_l"}'> -->
+                    <swiper class="imageContainer" @change="handleChange" previous-margin="100px" next-margin="90px" circular >
+                      <block v-for="(item, index) in model.GirlGoodsList" :key="index">
+                        <swiper-item class="item">
+                          <div class="img_box">
+                          <image :class="{imgg:true,active:currentIndex==index}" :src="item.ImageUrl"></image>
+                          </div>
+                        </swiper-item>
+                      </block>
+                    </swiper>
                 </div>
             </section>
         </article>
@@ -169,7 +178,8 @@ const defaultData = {
   totalPage: 0,
   isLoding: false,
   goodsList: [],
-  active1:''
+  active1:'',
+  currentIndex:0
 }
 
 export default {
@@ -273,7 +283,11 @@ export default {
             this.isLoding = false;
           });
       }
-    }
+    },
+     /* 这里实现控制中间凸显图片的样式 */
+    handleChange(e) {
+      this.currentIndex = e.target.current
+    },
   }
 };
 </script>
@@ -564,7 +578,7 @@ export default {
     padding: 0 10.5px 20px;
     .img-box{
         width: 100%;
-        height: 140px;
+        height: 160px;
         margin-top: 20px;
         // border: 1px solid green;
         // border-radius: 10px;
@@ -1039,4 +1053,40 @@ export default {
   text-align: center;
   margin: 20px 0;
 }
+
+.imageContainer{
+ width: 80%;
+ height: 160px;
+ position: absolute;
+ top:-13%;
+ left: 50%;
+ margin-left: -40%;
+}
+.item{
+ height: 160px;
+overflow: visible;
+.img_box{
+  position: relative;
+  // height: 100%;
+  overflow: visible;
+}
+}
+.imgg{
+ position: absolute;
+ width: 80px !important;
+ height: 120px;
+ border-radius: 15rpx;
+ z-index: 5;
+ opacity: 1;
+//  top: 13%;
+}
+.active{
+ opacity: 1;
+ width: 82px !important;
+ z-index: 10;
+ height: 140px;
+//  top: 7%;
+ transition:all .2s ease-in 0s;
+}
+
 </style>
