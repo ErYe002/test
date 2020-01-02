@@ -42,7 +42,9 @@
         <ul class="list">
           <li class="item" v-for="item in BrandList" :key="item.Id">
             <a @click="$navigateTo(item.TargetUrl)">
-              <img class="normal" :src="item.ColorImageUrl" />
+              <!-- <img class="normal" :src="item.ColorImageUrl" /> -->
+              <img :class="{normal:true,show:item.show,hide:!item.show}" :src="item.ColorImageUrl" />
+					    <img :class="{normal:true,show:!item.show,hide:item.show}" :src="item.DefaultImageUrl" />
             </a>
           </li>
         </ul>
@@ -321,6 +323,7 @@ export default {
         this.OverSeasTabList = Data.OverSeasTabList;
         this.appHomeId = Data.AppHomeId;
         this.footerLogoNavDivCheck = 1;
+        this.reversalBrand(Data.BrandList)
         api
           .getOverSeasRecommendGoodsByPageNoLoading({
             appHomeId: this.appHomeId,
@@ -350,6 +353,31 @@ export default {
         this.BrandList.length == this.OriginalBrandList.length
           ? this.OriginalBrandList.slice(0, 12)
           : this.OriginalBrandList;
+    },
+    //定时翻转品牌
+    reversalBrand(list){
+      let length = list.length;
+      let arr = []
+      for(var i =0;i<length;i++){
+        arr.push(i)
+      }
+      let timerID = setInterval(()=>{
+         let i = arr.length;
+        while (i) {
+            let j = Math.floor(Math.random() * i--);
+            [arr[j], arr[i]] = [arr[i], arr[j]];
+				}
+				
+        list[arr[0]].show = true;
+        this.BrandList =
+            list.length > 12
+              ? list.slice(0, 12)
+              : list;
+        arr.shift()
+        if(arr.length==0){
+          clearInterval(timerID)
+        }
+      },5000)
     },
     footerLogoNavDivClick(key) {
       this.footerLogoNavDivCheck = key;
@@ -459,7 +487,17 @@ export default {
           display: block;
           width: 160rpx;
           height: 90rpx;
+          transition: all 1s;
+				position: absolute;
         }
+         .show{
+            z-index: 1;
+            transform: rotateX(0deg)
+          }
+          .hide{
+            z-index: 0;
+            transform: rotateX(90deg)
+          }
         // &:nth-child(-n+4){
         //   border-top: none;
         // }
@@ -476,6 +514,7 @@ export default {
       background: #fff;
       left: 0;
       right: 0;
+      z-index: 5;
       margin: 0 auto;
       img {
         display: block;

@@ -41,7 +41,19 @@ const api = {
   //获取海淘推荐商品
   getOverSeasRecommendGoodsByPage({appHomeId,overseasModuleType ,pageSize = 10,pageIndex = 1}){
     return http.post(`/home/GetOverseasRecommendGoodsByPage?appHomeId=${appHomeId}&overseasModuleType=${overseasModuleType}&pageSize=${pageSize}&pageIndex=${pageIndex}`)
-  }
+  },
+    //获取首页-美瞳页数据
+    getHomeMeiTongData(){
+      return http.postByNoLoading(`/home/AppHomeColoredContactsPage?versionNo=4.2.0`)
+    },
+    //获取首页-美瞳页商品列表
+    getHomeMeiTongGoods(pageIndex, pageSize){
+      let url = `/home/GetAppHomeColoredContactsGoodsByPage?versionNo=4.2.0&pageSize=${pageSize}&pageIndex=${pageIndex}`
+      if(pageIndex == 1){
+        return http.postByNoLoading(url)
+      }
+      return http.post(url)
+    },
 }
 
 export default api

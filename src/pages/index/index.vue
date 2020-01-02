@@ -7,7 +7,7 @@
       </a>
     </section>
     <section class="nav-box">
-      <scroll-view class="nav-list" scroll-x enable-flex>
+      <scroll-view :class="{'nav-list':true,'nav-len1-5':menu.length<=5,'nav-len6':menu.length>5}" scroll-x enable-flex>
         <div
           :class="{'n-item': true, active: item.SeoCode == currentMenuCode}"
           v-for="item in menu"
@@ -28,6 +28,8 @@
     <recommend v-if="currentMenuCode == 'code000'"/>
     <oversea v-if="currentMenuCode == 'code050'"/>
     <frames v-if="currentMenuCode == 'code200'"/>
+    <meitong v-if="currentMenuCode == 'code100'"/>
+    <nurse v-if="currentMenuCode == 'code150'"/>
   </article>
 </template>
 
@@ -35,6 +37,8 @@
 import recommend from "./components/recommend";
 import oversea from "./components/oversea";
 import frames from "./components/frames";
+import meitong from "./components/meitong";
+import nurse from "./components/nurse";
 import api from "@/api";
 
 export default {
@@ -47,13 +51,18 @@ export default {
   components: {
     recommend,
     oversea,
-    frames
+    frames,
+    meitong,
+    nurse
   },
   methods: {
     _getMenuData() {
       api.getHomeMenuData().then(({ Data }) => {
         let list = Data.filter((ele) => {
-          return ele.SeoCode == 'code000' || ele.SeoCode == 'code350' || ele.SeoCode == 'code200' || ele.SeoCode == 'code050'
+          // if(ele.SeoCode == 'code150'){
+          //   ele.ChName = "隐形护理"
+          // }
+          return ele.SeoCode == 'code000' || ele.SeoCode == 'code350' || ele.SeoCode == 'code200' ||ele.SeoCode == 'code150' || ele.SeoCode == 'code050'|| ele.SeoCode == 'code100'
         });
         list.push({
           Id: 0,
@@ -106,9 +115,11 @@ export default {
 .nav-box {
   margin-bottom: 15px;
   .nav-list {
-    display: flex;
-    height: 35px;
-    justify-content: space-around;
+    // display: flex;
+    height: 36px;
+    // justify-content: space-around;
+    // width: 100%;
+    // white-space: nowrap;
     .n-item {
       // flex: 1;
       .link{
@@ -139,5 +150,21 @@ export default {
       }
     }
   }
+}
+.nav-len1-5{
+  display: flex;
+  justify-content: space-around;
+   .n-item {
+      // flex: 1;
+   }
+}
+.nav-len6{
+  width: 100%;
+  white-space: nowrap;
+    .n-item {
+      padding: 0 9px;
+      height: 100%;
+      display: inline-block;
+   }
 }
 </style>

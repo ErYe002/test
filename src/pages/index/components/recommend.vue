@@ -115,7 +115,8 @@
             <ul class="list">
               <li class="item" v-for="item in brandList" :key="item.Id">
                 <a @click="$navigateTo(item.TargetUrl)">
-                  <img class="normal" :src="item.ColorImageUrl" />
+                  <img :class="{normal:true,show:item.show,hide:!item.show}" :src="item.ColorImageUrl" />
+                  <img :class="{normal:true,show:!item.show,hide:item.show}" :src="item.DefaultImageUrl" />
                   <!-- <img class="colorful" src="https://pic.keede.com/AppImages/8b0280ce-27ba-415d-86b5-5d12effaecbc.png"/> -->
                 </a>
               </li>
@@ -345,6 +346,7 @@ export default {
             }
             item.shortTime = tools.formatDate("hh:mm", startTime);
           });
+          this.reversalBrand(Data.BrandList)
           this.brandList =
             Data.BrandList.length > 12
               ? Data.BrandList.slice(0, 12)
@@ -352,6 +354,33 @@ export default {
         }
         this.model = Data;
       });
+    },
+    //定时翻转品牌
+    reversalBrand(list){
+      let length = list.length;
+      let arr = []
+      for(var i =0;i<length;i++){
+        arr.push(i)
+      }
+      let timerID = setInterval(()=>{
+
+        let i = arr.length;
+        while (i) {
+            let j = Math.floor(Math.random() * i--);
+            [arr[j], arr[i]] = [arr[i], arr[j]];
+        }
+
+        // arr.sort(() => Math.random() - 0.5);
+        list[arr[0]].show = true;
+        this.brandList =
+            list.length > 12
+              ? list.slice(0, 12)
+              : list;
+        arr.shift()
+        if(arr.length==0){
+          clearInterval(timerID)
+        }
+      },5000)
     },
     //获取猜你喜欢商品列表
     _getGoodsListData() {
@@ -614,6 +643,7 @@ export default {
           // flex: 0 0 25%;
           width: 81.5px;
             height: 41px;
+            position: relative;
           box-sizing: border-box;
           border-bottom: 0.5px solid #e9e9e9;
           border-right: 0.5px solid #e9e9e9;
@@ -621,6 +651,16 @@ export default {
             display: block;
             width: 81.5px;
             height: 41px;
+            transition: all 1s;
+            position: absolute;
+          }
+           .show{
+            z-index: 1;
+            transform: rotateX(0deg)
+          }
+          .hide{
+            z-index: 0;
+            transform: rotateX(90deg)
           }
           // &:nth-child(-n+4){
           //   border-top: none;
@@ -635,6 +675,7 @@ export default {
         bottom: 5px;
         height: 1px;
         width: 100%;
+        z-index: 5;
         background: #fff;
         left: 0;
         right: 0;
