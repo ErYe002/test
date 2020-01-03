@@ -54,6 +54,19 @@ const api = {
       }
       return http.post(url)
     },
+    //获取首页-隐形护理页数据
+    getHomeNurseData(){
+      return http.postByNoLoading(`/home/AppHomeContactCarePage?versionNo=4.2.0`)
+    },
+    //获取首页-隐形护理页商品列表
+    getHomeNurseGoods(pageIndex, pageSize){
+      let url = `/home/GetAppHomeContactCareGoodsByPage?versionNo=4.2.0&pageSize=${pageSize}&pageIndex=${pageIndex}`
+      if(pageIndex == 1){
+        return http.postByNoLoading(url)
+      }
+      return http.post(url)
+    },
+    
 }
 
 export default api

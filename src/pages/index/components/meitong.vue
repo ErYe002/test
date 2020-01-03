@@ -56,13 +56,10 @@
                     <div class="bg">
                         <img :src="'/static/images/meitong_peric_left.png'"  class="peri-left"/>
                         <img :src="'/static/images/meitong_peric_right.png'" class="peri-right" />
-                        <img src="/static/images/meitong_right.png" alt="" class="ar_left" @click="changeAction(1)">
-                        <img src="/static/images/meitong_right.png" alt="" class="ar_right" @click="changeAction(2)">
+                        <!-- <img src="/static/images/meitong_right.png" alt="" class="ar_left" @click="changeAction(1)"> -->
+                        <!-- <img src="/static/images/meitong_right.png" alt="" class="ar_right" @click="changeAction(2)"> -->
                     </div>
-                    <!-- <img :src="model.GirlGoodsList[0]['ImageUrl']" alt="" :class='{"imgg":true,"peri-img1":true,"fade-in":active1=="mr_r","fade-in":active1=="mr_l"}'>
-                    <img :src="model.GirlGoodsList[1]['ImageUrl']" alt="" :class='{"imgg":true,"peri-img2":true,"fade-in1":active1=="mr_r","fade-in":active1=="mr_l"}'>
-                    <img :src="model.GirlGoodsList[2]['ImageUrl']" alt="" :class='{"imgg":true,"peri-img3":true,"fade-out":active1=="mr_r","fade-out":active1=="mr_l"}'> -->
-                    <swiper class="imageContainer" @change="handleChange" previous-margin="100px" next-margin="90px" circular >
+                    <swiper class="imageContainer" @change="handleChange" previous-margin="100px" next-margin="90px" circular autoplay>
                       <block v-for="(item, index) in model.GirlGoodsList" :key="index">
                         <swiper-item class="item">
                           <div class="img_box">
@@ -107,7 +104,7 @@
                     class="sc-item"
                     v-for="(item, idx) in model.HotSell"
                     :key="item.Id"
-                    :href="'/pages/product/index/main?seocode='+item.GoodsSeoCode+'&isComp=false'"
+                    :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'"
                     >
                     <img :src="item.ImageUrl" class="img" />
                     <p class="pirce">
@@ -178,7 +175,6 @@ const defaultData = {
   totalPage: 0,
   isLoding: false,
   goodsList: [],
-  active1:'',
   currentIndex:0
 }
 
@@ -215,35 +211,17 @@ export default {
           : this.model.BrandList;
     },
     changeAction(type){
-        let data = this.model.GirlGoodsList;
-        let temp;
+        let length = this.model.GirlGoodsList.length;
+        let currentIndex = this.currentIndex;
         if(type==2){
-            this.active1="mr_r";
+            currentIndex = currentIndex -1;
+            if(currentIndex<0){
+
+            }
         }else{
             this.active1="mr_l";
         }
-        setTimeout(()=>{
-             if(type==2){
-                temp = data.splice(0,1)
-                data = data.concat(temp)
-            }else{
-                temp = data.splice(data.length-1,1)
-                data = temp.concat(data)
-            }
-            this.model.GirlGoodsList =data
-        },500)
 
-        setTimeout(()=>{
-            this.active1="";
-            //  if(type==2){
-            //     temp = data.splice(0,1)
-            //     data = data.concat(temp)
-            // }else{
-            //     temp = data.splice(data.length-1,1)
-            //     data = temp.concat(data)
-            // }
-            // this.model.OneBigThreeSmallList =data
-        },500)
        
 
  
@@ -579,7 +557,7 @@ export default {
     .img-box{
         width: 100%;
         height: 160px;
-        margin-top: 20px;
+        // margin-top: 20px;
         // border: 1px solid green;
         // border-radius: 10px;
         // overflow: hidden;
@@ -622,88 +600,6 @@ export default {
             .peri-right{
                 right: 5.5px;
             }
-        }
-        .fade-in {
-            opacity: 1;
-            animation-name: fadeIn;
-            animation-iteration-count: 1;
-            animation-timing-function: linear;
-            animation-duration: 1s;
-        }
-          .fade-in1 {
-            opacity: 1;
-            animation-name: fadeIn1;
-            animation-iteration-count: 1;
-            animation-timing-function: linear;
-            animation-duration: 1s;
-        }
-        .fade-out {
-            opacity: 1;
-            animation-name: fadeOut;
-            animation-iteration-count: 1;
-            animation-timing-function: linear;
-            animation-duration: 1s;
-        }
-        @keyframes fadeIn {
-            0% {
-                margin-left: 0;
-                opacity: 1;
-            }
-            50% {
-                // margin-left: 11.5px;
-                opacity: 0;
-            }
-            100% {
-                margin-left: 11.5px;
-                opacity: 1;
-            }
-        }
-        @keyframes fadeIn1 {
-            0% {
-                margin-left: 0;
-                opacity: 1;
-            }
-            50% {
-                opacity: 0;
-                // margin-left: -11.5px;
-            }
-            100% {
-                margin-left: -11.5px;
-                opacity: 1;
-            }
-        }
-        @keyframes fadeOut {
-            0% {
-                margin-right: 0px;
-                opacity: 1;
-            }
-            50% {
-                opacity: 0;
-                // margin-right: 11.5px;
-            }
-            100% {
-                margin-right: 11.5px;
-                opacity: 1;
-            }
-        }
-
-        .imgg{
-            height: 100%;
-            position: absolute;
-            bottom: 0;
-            // transition: all 2s;
-        }
-        .peri-img1{
-            width: 71px;
-            left: 54px;
-        }
-        .peri-img2{
-            width: 82px;
-            left:136.5px;
-        }
-        .peri-img3{
-            width: 71px;
-            right: 54px;
         }
     }
 }
@@ -1058,7 +954,7 @@ export default {
  width: 80%;
  height: 160px;
  position: absolute;
- top:-13%;
+//  top:-13%;
  left: 50%;
  margin-left: -40%;
 }
@@ -1067,24 +963,26 @@ export default {
 overflow: visible;
 .img_box{
   position: relative;
-  // height: 100%;
+  height: 100%;
   overflow: visible;
 }
 }
 .imgg{
  position: absolute;
  width: 80px !important;
- height: 120px;
+ height: 135px!important;
  border-radius: 15rpx;
  z-index: 5;
  opacity: 1;
+ bottom: 5px;
 //  top: 13%;
 }
 .active{
  opacity: 1;
  width: 82px !important;
  z-index: 10;
- height: 140px;
+ bottom: 0px  !important;
+ height: 150px !important;
 //  top: 7%;
  transition:all .2s ease-in 0s;
 }

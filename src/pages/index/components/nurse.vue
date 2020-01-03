@@ -34,14 +34,14 @@
         <article>
             <section
                 class="activity-box"
-                v-if="model.BannerList != null && model.BannerList.length > 0"
+                v-if="model.ActivityList != null && model.ActivityList.length > 0"
                 >
                 <p class="title">WONDERFUL ACTIVITY | 活动精选</p>
                 <div class="img-box">
-                <img class="big-img" :src="model.BannerList[0]['ImageUrl']" @click="$navigateTo(model.BannerList[0]['TargetUrl'])"/>
+                <img class="big-img" :src="model.ActivityList[0]['ImageUrl']" @click="$navigateTo(model.ActivityList[0]['TargetUrl'])"/>
                 <div class="right-img-box">
-                    <img class="small-img" :src="model.BannerList[1]['ImageUrl']" @click="$navigateTo(model.BannerList[1]['TargetUrl'])"/>
-                    <img class="small-img" :src="model.BannerList[2]['ImageUrl']" @click="$navigateTo(model.BannerList[2]['TargetUrl'])"/>
+                    <img class="small-img" :src="model.ActivityList[1]['ImageUrl']" @click="$navigateTo(model.ActivityList[1]['TargetUrl'])"/>
+                    <img class="small-img" :src="model.ActivityList[2]['ImageUrl']" @click="$navigateTo(model.ActivityList[2]['TargetUrl'])"/>
                 </div>
                 </div>
             </section>
@@ -70,15 +70,15 @@
             </section>
             <section
                 class="rangking-box"
-                v-if="model.DailyRankingList != null && model.DailyRankingList.length > 0"
+                v-if="model.HotSell != null && model.HotSell.length > 0"
                 >
                 <p class="title">WEEKLY DEALS | 本周热卖</p>
                 <scroll-view class="scroll-view" scroll-x enable-flex>
                     <a
                     class="sc-item"
-                    v-for="(item, idx) in model.DailyRankingList"
+                    v-for="(item, idx) in model.HotSell"
                     :key="item.Id"
-                    :href="'/pages/product/index/main?seocode='+item.GoodsSeoCode+'&isComp=false'"
+                    :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'"
                     >
                     <img :src="item.ImageUrl" class="img" />
                     <p class="pirce">
@@ -92,12 +92,12 @@
             </section>
              <section
                 class="reputation-box"
-                v-if="model.DailyRankingList != null && model.DailyRankingList.length > 0"
+                v-if="model.HotSellGoods != null "
                 >
                 <p class="title">FEATURED SPECIALS | 口碑好物</p>
                 <div class="bottomImg">
-                    <a class="bottomImgA" @click="$navigateTo(model.BannerList[0].TargetUrl)">
-                        <img class="bottomImgAImg" :src="model.BannerList[0].ImageUrl" />
+                    <a class="bottomImgA" @click="$navigateTo(model.HotSellGoods.TargetUrl)">
+                        <img class="bottomImgAImg" :src="model.HotSellGoods.ImageUrl" />
                     </a>
                 </div>
             </section>
@@ -149,7 +149,6 @@ const defaultData = {
   totalPage: 0,
   isLoding: false,
   goodsList: [],
-  active1:''
 }
 
 export default {
@@ -176,13 +175,6 @@ export default {
     await this._getGoodsListData();
   },
   methods: {
-    getUserInfo(e) {
-      authorization.doLogin(e.mp.detail.encryptedData, e.mp.detail.iv, () => {
-        wx.navigateTo({
-          url: '/pages/account/coupon/main'
-        })
-      });
-    },
     //同步swiper page
     swiperChangeEvent(e) {
       this.swiperIndex = e.mp.detail.current;
@@ -194,42 +186,8 @@ export default {
           ? this.model.BrandList.slice(0, 12)
           : this.model.BrandList;
     },
-    changeAction(type){
-        let data = this.model.OneBigThreeSmallList;
-        let temp;
-        if(type==2){
-            this.active1="mr_r";
-        }else{
-            this.active1="mr_l";
-        }
-        setTimeout(()=>{
-             if(type==2){
-                temp = data.splice(0,1)
-                data = data.concat(temp)
-            }else{
-                temp = data.splice(data.length-1,1)
-                data = temp.concat(data)
-            }
-            this.model.OneBigThreeSmallList =data
-        },500)
-
-        setTimeout(()=>{
-            this.active1="";
-            //  if(type==2){
-            //     temp = data.splice(0,1)
-            //     data = data.concat(temp)
-            // }else{
-            //     temp = data.splice(data.length-1,1)
-            //     data = temp.concat(data)
-            // }
-            // this.model.OneBigThreeSmallList =data
-        },500)
-       
-
- 
-    },
     _getPageData() {
-      api.getHomeRecommendData().then(({ Data }) => {
+      api.getHomeNurseData().then(({ Data }) => {
         if (Data != null && Data.BrandList != null) {
           this.brandList =
             Data.BrandList.length > 12
@@ -244,7 +202,7 @@ export default {
       if (!this.isLoding) {
         this.isLoding = true;
         api
-          .getHomeRecommendGoods(this.page, this.size)
+          .getHomeNurseGoods(this.page, this.size)
           .then(({ Data, TotalPage }) => {
             if (Data != null && Data.length > 0) {
               let list = Data.map(ele => {
