@@ -17,7 +17,7 @@
             
             </section>
         </article>
-        <article>
+        <!-- <article>
             <section
                 class="newuser-box"
                 v-if="model.BannerList != null && model.BannerList.length > 0"
@@ -28,9 +28,10 @@
                     <img class="small-img" :src="model.BannerList[1]['ImageUrl']" @click="$navigateTo(model.BannerList[1]['TargetUrl'])"/>
                     <img class="small-img" :src="model.BannerList[2]['ImageUrl']" @click="$navigateTo(model.BannerList[2]['TargetUrl'])"/>
                     <img class="small-img" :src="model.BannerList[1]['ImageUrl']" @click="$navigateTo(model.BannerList[1]['TargetUrl'])"/>
+                    
                 </div>
             </section>
-        </article>
+        </article> -->
         <article>
             <section
                 class="activity-box"
@@ -61,7 +62,7 @@
                     </div>
                     <swiper class="imageContainer" @change="handleChange" previous-margin="100px" next-margin="90px" circular autoplay>
                       <block v-for="(item, index) in model.GirlGoodsList" :key="index">
-                        <swiper-item class="item">
+                        <swiper-item class="item" @click="currentIndex==index?$navigateTo(item.TargetUrl):''">
                           <div class="img_box">
                           <image :class="{imgg:true,active:currentIndex==index}" :src="item.ImageUrl"></image>
                           </div>
@@ -118,7 +119,7 @@
             </section>
              <section
                 class="reputation-box"
-                v-if="model.HotSellGoods != null"
+                v-if="model.HotSellGoods != null&&model.HotSellGoods != ''"
                 >
                 <p class="title">FEATURED SPECIALS | 口碑好物</p>
                 <div class="bottomImg">
@@ -265,7 +266,7 @@ export default {
      /* 这里实现控制中间凸显图片的样式 */
     handleChange(e) {
       this.currentIndex = e.target.current
-    },
+    }
   }
 };
 </script>
@@ -807,7 +808,7 @@ export default {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 0 3px;
+          padding: 10px 3px;
           b {
             font-size: 13px;
             color: #e25256;
@@ -957,16 +958,16 @@ export default {
 //  top:-13%;
  left: 50%;
  margin-left: -40%;
-}
-.item{
- height: 160px;
-overflow: visible;
-.img_box{
-  position: relative;
-  height: 100%;
+  .item{
+  height: 160px;
   overflow: visible;
-}
-}
+    .img_box{
+      position: relative;
+      height: 100%;
+      overflow: visible;
+    }
+  }
+  
 .imgg{
  position: absolute;
  width: 80px !important;
@@ -985,6 +986,8 @@ overflow: visible;
  height: 150px !important;
 //  top: 7%;
  transition:all .2s ease-in 0s;
+}
+
 }
 
 </style>

@@ -1,6 +1,6 @@
 <template>
   <!-- 评论 -->
-  <div>
+  <div class="page">
     <div class="actCon remarkBox">
       <div class="act-remark actLine">
         <img src="/static/images/smile.jpg" class="smile" alt />
@@ -178,7 +178,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.page{
+  background: #f5f5f5;
+}
 .remarkBox {
+  background: #fff;
   .act-remark {
     padding: 10px 15px;
     display: flex;
@@ -203,6 +207,7 @@ export default {
   }
 }
 .remarkTag {
+  background: #fff;
   padding: 0 15px;
   max-height: 52px;
   overflow: hidden;
@@ -218,6 +223,7 @@ export default {
     margin-bottom: 8px;
     margin-right: 8px;
     padding: 2px 6px;
+    border-radius: 5px;
     &.badlabel {
       background: #f3f3f3;
     }
@@ -228,8 +234,8 @@ export default {
   }
 }
 .showTagBtn {
+  background: #fff;
   width: 120%;
-  border-bottom: 1px solid #ececec;
   margin: 0 auto;
   margin-left: -10%;
   text-align: center;
@@ -244,11 +250,16 @@ export default {
 }
 .remarkCon {
   .remarkBox {
+    margin: 10px;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #fff;
+
     padding: 10px 15px;
     position: relative;
-    padding-bottom: 20px;
-    font-size: 12px;
-    border-bottom: 5px solid #f5f5f5;
+    // padding-bottom: 20px;
+    // font-size: 12px;
+    // border-bottom: 5px solid #f5f5f5;
   }
   .comment-header {
     display: flex;
@@ -304,10 +315,14 @@ export default {
   .comment-pic-li {
     display: inline-block;
     margin-right: 10px;
+    border-radius: 5px;
+    overflow: hidden;
   }
   .comment-pic ._img {
     width: 100px;
     height: 100px;
+    border-radius: 5px;
+    overflow: hidden;
     background: #ececec;
   }
 }

@@ -61,6 +61,10 @@ const api = {
     &ShopId=${ShopId}
     &IsFreeCarriage=${IsFreeCarriage}`);
   },
+    //获取关于商品社区文章
+    getHotCommentList(GoodsId, PageSize) {
+      return http.post(`/Community/GetHotCommentListByGoodsId?goodsId=${GoodsId}&pageSize=${PageSize}`);
+    },
 };
 
 export default api;

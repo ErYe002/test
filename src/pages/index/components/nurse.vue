@@ -17,7 +17,7 @@
             
             </section>
         </article>
-        <article>
+        <!-- <article>
             <section
                 class="newuser-box"
                 v-if="model.BannerList != null && model.BannerList.length > 0"
@@ -30,7 +30,7 @@
                     <img class="small-img" :src="model.BannerList[1]['ImageUrl']" @click="$navigateTo(model.BannerList[1]['TargetUrl'])"/>
                 </div>
             </section>
-        </article>
+        </article> -->
         <article>
             <section
                 class="activity-box"
@@ -845,7 +845,7 @@ export default {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 0 3px;
+          padding: 10px 3px;
           b {
             font-size: 13px;
             color: #e25256;
