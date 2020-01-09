@@ -117,7 +117,7 @@
 
 
     <div class="bottom-layou">
-      <img src="/static/images/icon_sph_conversion.png" class="gd-huansuan"/>
+      <img src="/static/images/icon_sph_conversion.png" class="gd-huansuan" @click="_showDSHS()"/>
       <img src="/static/images/icon_contact_service_new.png" class="contact-service"/>
     </div>
 
@@ -578,7 +578,15 @@
             }
           }
         });
-      }
+      },
+       //度数换算跳转
+    _showDSHS() {
+      wx.navigateTo({
+        url:
+          "/pages/htmlPreview/main?path=" +
+          encodeURIComponent("/TemplateForNewApp/degreeConversion")
+      });
+    },
     }
 
   }

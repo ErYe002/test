@@ -3,7 +3,7 @@
   <div class="page">
     <div class="actCon remarkBox">
       <div class="act-remark actLine">
-        <img src="/static/images/smile.jpg" class="smile" alt />
+        <img src="/static/images/smile.png" class="smile" alt />
         <span>{{ramarkData.PraiseRatio}}%</span>
         好评
       </div>

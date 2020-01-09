@@ -550,11 +550,11 @@
       </div>
       <!-- 评论 -->
       <div class="prolabelLine">
-        <span>快递:{{Data.GoodsBase.ShopId == 2 ? (Data.GoodsBase.AmoyFreight + "元") : " 满80包邮"}}</span>
-        <span v-if="Data.GoodsBase.ShopId == 2">贴心客服</span>
-        <span v-else>7天退换</span>
-        <span>正品保障</span>
-        <span>急速物流</span>
+        <span><img src="/static/images/product_duihao.png">&nbsp;快递:{{Data.GoodsBase.ShopId == 2 ? (Data.GoodsBase.AmoyFreight + "元") : " 满80包邮"}}</span>
+        <span v-if="Data.GoodsBase.ShopId == 2"><img src="/static/images/product_duihao.png">&nbsp;贴心客服</span>
+        <span v-else><img src="/static/images/product_duihao.png">&nbsp;7天退换</span>
+        <span><img src="/static/images/product_duihao.png">&nbsp;正品保障</span>
+        <span><img src="/static/images/product_duihao.png">&nbsp;急速物流</span>
       </div>
       <div class="promotionBox" >
           <div class="blackLine">REVIEWS AND COMMUNITIES | 评论与社区</div>
@@ -650,7 +650,7 @@
                             <div class="com-content">
                                 <div class="com-text">
                                     <div class="com-text-top">
-                                      <img :src="item.UserInfo.HeadUrl?item.UserInfo.HeadUrl:'/static/images/default_img.gif'" alt="" class="heder-img">
+                                      <img :src="item.UserInfo.HeadUrl?item.UserInfo.HeadUrl:'/static/images/default_img.gif'" @error="error" alt="" class="heder-img">
                                       <div>
                                         <span class="com-name">{{item.UserInfo.UserName}}</span><br/>
                                         <span class="com-label">社区心得</span>
@@ -1319,6 +1319,9 @@ export default {
           this.isComp = false;
           this._getPageData(seocode);
         });
+    },
+    error(z,b,c){
+      console.log(z,b,c)
     },
     _getCartNum() {
       cartapi.getCartCount().then(({ Data }) => {

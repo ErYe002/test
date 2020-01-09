@@ -1,21 +1,26 @@
 <template>
   <article>
     <template v-if="model != null">
-        <article class="first-floor-wrap">
-            <section class="banner-box">
-            <ul
-                class="swiper"
-                v-if="model.BannerList != null && model.BannerList.length > 0"
+       <article class="first-floor-wrap">
+          <section class="banner-box">
+            <swiper
+              class="swiper"
+              @change="swiperChangeEvent"
+              autoplay
+              v-if="model.BannerList != null && model.BannerList.length > 0"
             >
-                <!-- <swiper-item v-for="item in model.BannerList" :key="item.Id">
+              <swiper-item v-for="item in model.BannerList" :key="item.Id">
                 <img :src="item.ImageUrl" @click="$navigateTo(item.TargetUrl)" />
-                </swiper-item> -->
-                <li >
-                <img :src="model.BannerList[0].ImageUrl" @click="$navigateTo(model.BannerList[0].TargetUrl)" />
-                </li>
+              </swiper-item>
+            </swiper>
+            <ul class="pages">
+              <li
+                :class="{active: idx == swiperIndex}"
+                v-for="(item,idx) in model.BannerList"
+                :key="idx"
+              ></li>
             </ul>
-            
-            </section>
+          </section>
         </article>
         <!-- <article>
             <section
@@ -53,8 +58,8 @@
                     <ul class="list">
                     <li class="item" v-for="item in brandList" :key="item.Id">
                         <a @click="$navigateTo(item.TargetUrl)">
-                        <img class="normal" :src="item.ColorImageUrl" />
-                        <!-- <img class="colorful" src="https://pic.keede.com/AppImages/8b0280ce-27ba-415d-86b5-5d12effaecbc.png"/> -->
+                          <img :class="{normal:true,show:item.show,hide:!item.show}" :src="item.ColorImageUrl" />
+                          <img :class="{normal:true,show:!item.show,hide:item.show}" :src="item.DefaultImageUrl" />
                         </a>
                     </li>
                     </ul>
@@ -186,9 +191,37 @@ export default {
           ? this.model.BrandList.slice(0, 12)
           : this.model.BrandList;
     },
+      //定时翻转品牌
+    reversalBrand(list){
+      let length = list.length;
+      let arr = []
+      for(var i =0;i<length;i++){
+        arr.push(i)
+      }
+      let timerID = setInterval(()=>{
+
+        let i = arr.length;
+        while (i) {
+            let j = Math.floor(Math.random() * i--);
+            [arr[j], arr[i]] = [arr[i], arr[j]];
+        }
+
+        // arr.sort(() => Math.random() - 0.5);
+        list[arr[0]].show = true;
+        // this.brandList =
+        //     list.length > 12
+        //       ? list.slice(0, 12)
+        //       : list;
+        arr.shift()
+        if(arr.length==0){
+          clearInterval(timerID)
+        }
+      },5000)
+    },
     _getPageData() {
       api.getHomeNurseData().then(({ Data }) => {
         if (Data != null && Data.BrandList != null) {
+           this.reversalBrand(Data.BrandList)
           this.brandList =
             Data.BrandList.length > 12
               ? Data.BrandList.slice(0, 12)
@@ -658,6 +691,7 @@ export default {
           // flex: 0 0 25%;
           width: 81.5px;
             height: 41px;
+            position: relative;
           box-sizing: border-box;
           border-bottom: 0.5px solid #e9e9e9;
           border-right: 0.5px solid #e9e9e9;
@@ -665,6 +699,16 @@ export default {
             display: block;
             width: 81.5px;
             height: 41px;
+            transition: all 1s;
+            position: absolute;
+          }
+           .show{
+            z-index: 1;
+            transform: rotateX(0deg)
+          }
+          .hide{
+            z-index: 0;
+            transform: rotateX(90deg)
           }
           // &:nth-child(-n+4){
           //   border-top: none;
@@ -679,6 +723,7 @@ export default {
         bottom: 5px;
         height: 1px;
         width: 100%;
+        z-index: 5;
         background: #fff;
         left: 0;
         right: 0;
@@ -838,18 +883,25 @@ export default {
           display: block;
           width: 85.5px;
           height: 85.5px;
-          border-top-left-radius: 10px;
+          border-top-left-radius: 11px;
           border-bottom-left-radius: 10px;
+          position: absolute;
+          left: 0;
+          bottom: 22px;
         }
         .pirce {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 10px 3px;
+           position: absolute;
+          left: 5px;
+          bottom: 23px;
+          padding: 0 3px;
           b {
             font-size: 13px;
             color: #e25256;
             margin-right: 3px;
+            font-weight: bold;
           }
           .btn {
             width: 34px;
@@ -877,8 +929,8 @@ export default {
         }
         .ranking {
           position: absolute;
-          left: 0;
-          top: 0;
+          left: -1px;
+          top: -1px;
           display: block;
           width: 54px;
           height: 54px;
