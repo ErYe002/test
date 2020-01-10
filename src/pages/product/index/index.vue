@@ -176,101 +176,106 @@
             <span class="act-name">抵扣</span>
             <span class="act-con">积分至多抵扣￥{{Data.GoodsBase.ScoreDeductionPrice}}</span>
           </div>
-          <div class="discountsFull">
+          <div class="discountsFull" 
+              v-if="(Data.GoodsBase.FirstBuyContent!=null&&Data.GoodsBase.FirstBuyContent>0)||(Data.GoodsPagePromotion.BuyReduceContent!=null&&Data.GoodsPagePromotion.BuyReduceContent!='')||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.Gift != null && Data.GoodsPagePromotion.Gift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FullGift != null && Data.GoodsPagePromotion.FullGift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FreeCollocation != null && Data.GoodsPagePromotion.FreeCollocation.length>0)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.FullReducePromotion != null)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.ChangeBuy != null && Data.GoodsPagePromotion.ChangeBuy.length>0)||(Data.ErpGifts != null && Data.ErpGifts.length>0)"  
+            >
+              <span class="act-name">优惠</span>
+              <div class="discountsFull-item">
+                <div
+                  class="act-dikou actLine"
+                  v-if="Data.GoodsBase.FirstBuyContent!=null&&Data.GoodsBase.FirstBuyContent>0"
+                >
+                  <!-- <span class="act-name">优惠</span> -->
+                  <span class="act-con">新人专享价:￥{{Data.GoodsBase.FirstBuyContent}}</span>
+                </div>
+                <div
+                  class="act-dikou actLine"
+                  v-if="Data.GoodsPagePromotion.BuyReduceContent!=null&&Data.GoodsPagePromotion.BuyReduceContent!=''"
+                >
+                  <!-- <span class="act-name">量贩</span> -->
+                  <span class="act-con">{{Data.GoodsPagePromotion.BuyReduceContent}}</span>
+                </div>
+                <div
+                  class="act-zengpin actLine"
+                  v-if="Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.Gift != null && Data.GoodsPagePromotion.Gift.length>0"
+                  @click=" _showActive('ZP')"
+                >
+                  <!-- <span class="act-name">赠品</span> -->
+                  <span
+                    class="act-con"
+                  >{{Data.GoodsPagePromotion.Gift[0].GoodsName}}{{Data.GoodsPagePromotion.Gift.length>1?"等":""}}</span>
+                  <span class="act-info">
+                    <span class="icon">></span>
+                  </span>
+                </div>
+                <block
+                  v-if="Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FullGift != null && Data.GoodsPagePromotion.FullGift.length>0"
+                >
+                  <div
+                    class="act-manzeng actLine"
+                    v-for="item in Data.GoodsPagePromotion.FullGift"
+                    :key="item.index"
+                    @click=" _showActive('MZ')"
+                  >
+                    <!-- <span class="act-name">满赠</span> -->
+                    <span class="act-con">{{item.PromotionTheme}}</span>
+                    <span class="act-info">
+                      <span class="icon">></span>
+                    </span>
+                  </div>
+                </block>
+                <div
+                  class="act-huangou actLine"
+                  v-if="Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FreeCollocation != null && Data.GoodsPagePromotion.FreeCollocation.length>0"
+                  @click=" _showActive2('HG')"
+                >
+                  <!-- <span class="act-name">换购</span> -->
+                  <span class="act-con">{{Data.GoodsPagePromotion.FreeCollocation[0].PromotionTheme}}</span>
+                  <span class="act-info">
+                    <span class="icon">></span>
+                  </span>
+                </div>
+                <div
+                  class="act-manjian actLine"
+                  v-if="Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.FullReducePromotion != null"
+                  @click=" _showActive('MJ')"
+                >
+                  <!-- <span class="act-name">满减</span> -->
+                  <span class="act-con">{{Data.GoodsPagePromotion.FullReducePromotion.PromotionTheme}}</span>
+                  <span class="act-info">
+                    <span class="icon">></span>
+                  </span>
+                </div>
+                <block
+                  v-if="Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.ChangeBuy != null && Data.GoodsPagePromotion.ChangeBuy.length>0"
+                >
+                  <div
+                    class="act-manhuan actLine"
+                    v-for="item in Data.GoodsPagePromotion.ChangeBuy"
+                    :key="item.index"
+                    @click=" _showActive2('MH')"
+                  >
+                    <!-- <span class="act-name">满换</span> -->
+                    <span class="act-con">{{item.PromotionTheme}}</span>
+                    <span class="act-info">
+                      <span class="icon">></span>
+                    </span>
+                  </div>
+                </block>
+                <div
+                  class="act-peijian actLine"
+                  v-if="Data.ErpGifts != null && Data.ErpGifts.length>0"
+                  @click=" _showActive('PJ')"
+                >
+                  <!-- <span class="act-name">配件</span> -->
+                  <span class="act-con">{{Data.ErpGifts[0].GoodsName}}</span>
+                  <span class="act-info">
+                    <span class="icon">></span>
+                  </span>
+                </div>
+              </div>
+          </div>
 
-          </div>
-          <div
-            class="act-dikou actLine"
-            v-if="Data.GoodsBase.FirstBuyContent!=null&&Data.GoodsBase.FirstBuyContent>0"
-          >
-            <span class="act-name">优惠</span>
-            <span class="act-con">新人专享价:￥{{Data.GoodsBase.FirstBuyContent}}</span>
-          </div>
-          <div
-            class="act-dikou actLine"
-            v-if="Data.GoodsPagePromotion.BuyReduceContent!=null&&Data.GoodsPagePromotion.BuyReduceContent!=''"
-          >
-            <span class="act-name">量贩</span>
-            <span class="act-con">{{Data.GoodsPagePromotion.BuyReduceContent}}</span>
-          </div>
-          <div
-            class="act-zengpin actLine"
-            v-if="Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.Gift != null && Data.GoodsPagePromotion.Gift.length>0"
-            @click=" _showActive('ZP')"
-          >
-            <span class="act-name">赠品</span>
-            <span
-              class="act-con"
-            >{{Data.GoodsPagePromotion.Gift[0].GoodsName}}{{Data.GoodsPagePromotion.Gift.length>1?"等":""}}</span>
-            <span class="act-info">
-              <span class="icon">></span>
-            </span>
-          </div>
-          <block
-            v-if="Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FullGift != null && Data.GoodsPagePromotion.FullGift.length>0"
-          >
-            <div
-              class="act-manzeng actLine"
-              v-for="item in Data.GoodsPagePromotion.FullGift"
-              :key="item.index"
-              @click=" _showActive('MZ')"
-            >
-              <span class="act-name">满赠</span>
-              <span class="act-con">{{item.PromotionTheme}}</span>
-              <span class="act-info">
-                <span class="icon">></span>
-              </span>
-            </div>
-          </block>
-          <div
-            class="act-huangou actLine"
-            v-if="Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FreeCollocation != null && Data.GoodsPagePromotion.FreeCollocation.length>0"
-            @click=" _showActive2('HG')"
-          >
-            <span class="act-name">换购</span>
-            <span class="act-con">{{Data.GoodsPagePromotion.FreeCollocation[0].PromotionTheme}}</span>
-            <span class="act-info">
-              <span class="icon">></span>
-            </span>
-          </div>
-          <div
-            class="act-manjian actLine"
-            v-if="Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.FullReducePromotion != null"
-            @click=" _showActive('MJ')"
-          >
-            <span class="act-name">满减</span>
-            <span class="act-con">{{Data.GoodsPagePromotion.FullReducePromotion.PromotionTheme}}</span>
-            <span class="act-info">
-              <span class="icon">></span>
-            </span>
-          </div>
-          <block
-            v-if="Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.ChangeBuy != null && Data.GoodsPagePromotion.ChangeBuy.length>0"
-          >
-            <div
-              class="act-manhuan actLine"
-              v-for="item in Data.GoodsPagePromotion.ChangeBuy"
-              :key="item.index"
-              @click=" _showActive2('MH')"
-            >
-              <span class="act-name">满换</span>
-              <span class="act-con">{{item.PromotionTheme}}</span>
-              <span class="act-info">
-                <span class="icon">></span>
-              </span>
-            </div>
-          </block>
-          <div
-            class="act-peijian actLine"
-            v-if="Data.ErpGifts != null && Data.ErpGifts.length>0"
-            @click=" _showActive('PJ')"
-          >
-            <span class="act-name">配件</span>
-            <span class="act-con">{{Data.ErpGifts[0].GoodsName}}</span>
-            <span class="act-info">
-              <span class="icon">></span>
-            </span>
-          </div>
         </div>
       </div>
       <!-- 海淘明细 -->
@@ -748,7 +753,7 @@
           <text class="link" @click="_userAgreement">《可得用户注册协议》</text>
         </div>
         <div class="detailCon" v-if="GoodsAbout">
-          <wxParse :content="GoodsAbout.Discription" />
+          <wxParse :content="GoodsAbout.Discription" :imageProp='imageProp'/>
         </div>
       </div>
       <div class="overline">——— 我是有底线的 ———</div>
@@ -1283,7 +1288,8 @@ export default {
       glassSelectPosiition: -1,
       cartNum: 0,
       MinPrice: 0,//当前可以享受到的最低价格
-      NowCompData:null
+      NowCompData:null,
+      imageProp:{mode:'widthFix'}//详情关于 配置
     };
   },
   computed: {},
