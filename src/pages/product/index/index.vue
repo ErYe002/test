@@ -655,7 +655,8 @@
                             <div class="com-content">
                                 <div class="com-text">
                                     <div class="com-text-top">
-                                      <img :src="item.UserInfo.HeadUrl?item.UserInfo.HeadUrl:'/static/images/default_img.gif'" @error="error" alt="" class="heder-img">
+                                      <!-- <image :src="item.UserInfo.HeadUrl"/> -->
+                                      <img :src="item.UserInfo.HeadUrl?item.UserInfo.HeadUrl:'/static/images/default_img.gif'" alt="" class="heder-img">
                                       <div>
                                         <span class="com-name">{{item.UserInfo.UserName}}</span><br/>
                                         <span class="com-label">社区心得</span>
@@ -676,69 +677,89 @@
               </div>
           </div>
       </div>
-
-      <!-- 同价位 同类别 同周期 -->
-      <div class="promotionBox" v-if="Data.GoodsBase.ShopId==2">
-        <div class="guessLike">
-          <div class="goodsTypeTag">
-            <div
-              :class="'tjw '+(QueryGoodsType=='price'?'selected':'')"
-              @click="_getSameTypeData('price')"
-            >同价位</div>
-            <div
-              :class="'tlb '+(QueryGoodsType=='goodsType'?'selected':'')"
-              @click="_getSameTypeData('goodsType')"
-            >同类别</div>
-            <div
-              :class="'tzq '+(QueryGoodsType=='period'?'selected':'')"
-              @click="_getSameTypeData('period')"
-            >同周期</div>
-          </div>
-          <div class="goodsTypeBox" v-if="QueryGoodsData!=null">
-            <swiper display-multiple-items="3.2">
-              <block v-for="item in QueryGoodsData" :key="item.index">
-                <swiper-item>
-                  <a :href="'/pages/product/index/main?seocode='+item.SeoCode">
-                    <img :src="item.Img" mode="widthFix" />
-                    <div class="goodsName">{{item.GoodsName}}</div>
-                    <div class="goodsPrice">￥{{item.Price}}</div>
-                  </a>
-                </swiper-item>
-              </block>
-            </swiper>
+      <div class="promotionBox">
+        <div class="brand-store" v-if="Data.BrandStore != null && Data.BrandStore.Name !=null&& Data.BrandStore.ImageUrl !=null">
+            <div class="brand-tips">
+                <img :src="Data.BrandStore.ImageUrl?Data.BrandStore.ImageUrl:'/static/images/default_img.gif'" alt="" class="brand-img">
+                <div>
+                  <div class="brand-name">{{Data.BrandStore.Name}}</div>
+                  <div class="brand-follow" v-if="!IsFollow" @click="follow(Data.BrandStore.Id)">+关注</div>
+                  <div class="brand-follow" v-else @click="cancelFollow(Data.BrandStore.Id)">已关注</div>
+                </div>
+            </div>
+            <a
+              :href="'/pages/search/results/main?shopId='+Data.GoodsBase.ShopId + '&keywords=' + Data.GoodsBase.BrandName"
+              class="link"
+            >
+              <div class="brand-btn">
+                  <div class="btn_all">全部商品</div>
+                  <div class="btn_store">进店逛逛</div>
+              </div>
+            </a>
+        </div >
+        <!-- 同价位 同类别 同周期 -->
+        <div v-if="Data.GoodsBase.ShopId==2">
+          <div class="guessLike">
+            <div class="goodsTypeTag">
+              <div
+                :class="'tjw '+(QueryGoodsType=='price'?'selected':'')"
+                @click="_getSameTypeData('price')"
+              >同价位</div>
+              <div
+                :class="'tlb '+(QueryGoodsType=='goodsType'?'selected':'')"
+                @click="_getSameTypeData('goodsType')"
+              >同类别</div>
+              <div
+                :class="'tzq '+(QueryGoodsType=='period'?'selected':'')"
+                @click="_getSameTypeData('period')"
+              >同周期</div>
+            </div>
+            <div class="goodsTypeBox" v-if="QueryGoodsData!=null">
+              <swiper display-multiple-items="3.2">
+                <block v-for="item in QueryGoodsData" :key="item.index">
+                  <swiper-item>
+                    <a :href="'/pages/product/index/main?seocode='+item.SeoCode">
+                      <img :src="item.Img" mode="widthFix" />
+                      <div class="goodsName">{{item.GoodsName}}</div>
+                      <div class="goodsPrice">￥{{item.Price}}</div>
+                    </a>
+                  </swiper-item>
+                </block>
+              </swiper>
+            </div>
           </div>
         </div>
-      </div>
-      <!-- 品牌推荐 猜你喜欢 热销排行 -->
-      <div class="promotionBox" v-else>
-        <div class="guessLike">
-          <div class="goodsTypeTag">
-            <div
-              :class="'tjw '+(QueryGoodsType2=='PPTJ'?'selected':'')"
-              @click="_getSameTypeData2('PPTJ')"
-              v-if="!isComp"
-            >品牌推荐</div>
-            <div
-              :class="'tlb '+(QueryGoodsType2=='CNXH'?'selected':'')"
-              @click="_getSameTypeData2('CNXH')"
-            >猜你喜欢</div>
-            <div
-              :class="'tzq '+(QueryGoodsType2=='RXPH'?'selected':'')"
-              @click="_getSameTypeData2('RXPH')"
-            >热销排行</div>
-          </div>
-          <div class="goodsTypeBox">
-            <swiper display-multiple-items="3.2">
-              <block v-for="item in QueryGoodsData2" :key="item.index">
-                <swiper-item>
-                  <a :href="'/pages/product/index/main?seocode='+item.SeoCode">
-                    <img :src="item.GoodsImg" mode="widthFix" />
-                    <div class="goodsName">{{item.GoodsName}}</div>
-                    <div class="goodsPrice">￥{{item.Price}}</div>
-                  </a>
-                </swiper-item>
-              </block>
-            </swiper>
+        <!-- 品牌推荐 猜你喜欢 热销排行 -->
+        <div v-else>
+          <div class="guessLike">
+            <div class="goodsTypeTag">
+              <div
+                :class="'tjw '+(QueryGoodsType2=='PPTJ'?'selected':'')"
+                @click="_getSameTypeData2('PPTJ')"
+                v-if="!isComp"
+              >品牌推荐</div>
+              <div
+                :class="'tlb '+(QueryGoodsType2=='CNXH'?'selected':'')"
+                @click="_getSameTypeData2('CNXH')"
+              >猜你喜欢</div>
+              <div
+                :class="'tzq '+(QueryGoodsType2=='RXPH'?'selected':'')"
+                @click="_getSameTypeData2('RXPH')"
+              >热销排行</div>
+            </div>
+            <div class="goodsTypeBox">
+              <swiper display-multiple-items="3.2">
+                <block v-for="item in QueryGoodsData2" :key="item.index">
+                  <swiper-item>
+                    <a :href="'/pages/product/index/main?seocode='+item.SeoCode">
+                      <img :src="item.GoodsImg" mode="widthFix" />
+                      <div class="goodsName">{{item.GoodsName}}</div>
+                      <div class="goodsPrice">￥{{item.Price}}</div>
+                    </a>
+                  </swiper-item>
+                </block>
+              </swiper>
+            </div>
           </div>
         </div>
       </div>
@@ -1289,7 +1310,8 @@ export default {
       cartNum: 0,
       MinPrice: 0,//当前可以享受到的最低价格
       NowCompData:null,
-      imageProp:{mode:'widthFix'}//详情关于 配置
+      imageProp:{mode:'widthFix'},//详情关于 配置
+      IsFollow:false,
     };
   },
   computed: {},
@@ -1325,9 +1347,6 @@ export default {
           this.isComp = false;
           this._getPageData(seocode);
         });
-    },
-    error(z,b,c){
-      console.log(z,b,c)
     },
     _getCartNum() {
       cartapi.getCartCount().then(({ Data }) => {
@@ -1422,6 +1441,7 @@ export default {
         }
 
         this.setData(Data.Remark);
+        this.IsFollow = Data.BrandStore.IsFollow;
         this.Data = Data;
         this._getGoodsAbout();
         this._getHotCommentList(Data.GoodsBase.GoodsId)
@@ -1603,6 +1623,10 @@ export default {
     //满减满赠赠品配件弹出框
     _showActive(type) {
       this.isShowActive = true;
+      this.isShowMZ = false;
+      this.isShowMJ = false;
+      this.isShowPJ = false;
+      this.isShowZP = false;
       switch (type) {
         case "MJ":
           this.isShowMJ = true;
@@ -1624,6 +1648,8 @@ export default {
     //满换、换购弹出框
     _showActive2(type) {
       this.isShowActive2 = true;
+      this.isShowMH = false;
+      this.isShowHG = false;
       switch (type) {
         case "MH":
           this.isShowMH = true;
@@ -2170,6 +2196,24 @@ export default {
         }
       });
     },
+    //取消关注店铺
+    cancelFollow(id){
+      api.CancelFollow(id).then((Data ) => {
+        if(Data.State){
+            this.IsFollow=false
+          }
+          
+        });
+    },
+    //关注店铺
+    follow(id){
+        api.Follow(id).then(( Data ) => {
+          if(Data.State){
+            this.IsFollow=true
+          }
+          
+        });
+    }
   },
         /**
    * 用户点击右上角分享

@@ -109,7 +109,7 @@
                 <scroll-view class="scroll-view" scroll-x enable-flex>
                     <a
                     class="sc-item"
-                    v-for="(item, idx) in model.HotSell"
+                    v-for="item in model.HotSell"
                     :key="item.Id"
                     :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'"
                     >
@@ -119,7 +119,7 @@
                         <span class="btn">立即抢</span>
                     </p>
                     <!-- <span class="tag">{{item.DailyRankingName}}</span> -->
-                    <img v-if="idx < 4" :src="'/static/images/ranking_0'+(idx+1)+'.png'" class="ranking" />
+                    <!-- <img v-if="idx < 4" :src="'/static/images/ranking_0'+(idx+1)+'.png'" class="ranking" /> -->
                     </a>
                 </scroll-view>
             </section>
@@ -845,13 +845,10 @@ export default {
         text-align: center;
         .img {
           display: block;
-          width: 85.5px;
-          height: 85.5px;
-          border-top-left-radius: 11px;
-          border-bottom-left-radius: 10px;
-          position: absolute;
-          left: 0;
-          bottom: 22px;
+          width: 100%;
+          height: 100%;
+          border-radius: 10px;
+          overflow: hidden;
         }
         .pirce {
           display: flex;
@@ -859,7 +856,7 @@ export default {
           justify-content: space-between;
            position: absolute;
           left: 5px;
-          bottom: 23px;
+          bottom: 16px;
           padding: 0 3px;
           b {
             font-size: 13px;

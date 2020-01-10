@@ -61,10 +61,18 @@ const api = {
     &ShopId=${ShopId}
     &IsFreeCarriage=${IsFreeCarriage}`);
   },
-    //获取关于商品社区文章
-    getHotCommentList(GoodsId, PageSize) {
-      return http.post(`/Community/GetHotCommentListByGoodsId?goodsId=${GoodsId}&pageSize=${PageSize}`);
-    },
+  //获取关于商品社区文章
+  getHotCommentList(GoodsId, PageSize) {
+    return http.post(`/Community/GetHotCommentListByGoodsId?goodsId=${GoodsId}&pageSize=${PageSize}`);
+  },
+  //关注店铺
+  Follow(BrandStoreId) {
+    return http.post(`/BrandStore/Follow?brandStoreId=${BrandStoreId}`);
+  },
+  //取消关注店铺
+  CancelFollow(BrandStoreId) {
+    return http.post(`/BrandStore/CancelFollow?brandStoreId=${BrandStoreId}`);
+  },
 };
 
 export default api;
