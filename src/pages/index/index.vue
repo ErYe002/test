@@ -162,10 +162,11 @@ export default {
 .nav-len6{
   width: 100%;
   white-space: nowrap;
+  display: flex;
     .n-item {
       padding: 0 9px;
       height: 100%;
-      display: inline-block;
+      // display: inline-block;
    }
 }
 </style>

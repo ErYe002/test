@@ -1441,7 +1441,7 @@ export default {
         }
 
         this.setData(Data.Remark);
-        this.IsFollow = Data.BrandStore.IsFollow;
+        this.IsFollow = Data.BrandStore!=null&&Data.BrandStore.IsFollow;
         this.Data = Data;
         this._getGoodsAbout();
         this._getHotCommentList(Data.GoodsBase.GoodsId)
