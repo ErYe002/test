@@ -118,7 +118,9 @@
 
     <div class="bottom-layou">
       <img src="/static/images/icon_sph_conversion.png" class="gd-huansuan" @click="_showDSHS()"/>
+      <button open-type="contact" bindcontact="contactService" >
       <img src="/static/images/icon_contact_service_new.png" class="contact-service"/>
+      </button>
     </div>
 
     <div class="btm-buy-btn-layout">
@@ -750,6 +752,22 @@
     .contact-service {
       width: 104px;
       height: 24px;
+    }
+    ._button{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border: 2rpx solid #F4F4F4;
+      background: transparent;
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      font-size: inherit;
+      border-radius: 0;
+      line-height: initial;
+      color: inherit;
+      border: 0;
     }
   }
 
