@@ -1949,6 +1949,7 @@
   //优惠排版样式
   .discountsFull{
     display: flex;
+    justify-content: flex-start;
     padding: 20rpx 30rpx;
     position: relative;
     font-size: 24rpx;
@@ -1960,12 +1961,9 @@
       height: 40rpx;
       line-height: 40rpx;
       padding: 0 10rpx;
-      padding-right: 20rpx;
-
+      padding-right: 10px;
     }
     .discountsFull-item{
-      display: flex;
-      flex-direction: column;
       flex: auto;
       .actLine{
         padding: 10px 0px;
@@ -1973,6 +1971,9 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        .act-con{
+          width: 200px;
+        }
       }
       .actLine:last-child {
         border-bottom: 0;
