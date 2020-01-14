@@ -65,11 +65,11 @@
                         <!-- <img src="/static/images/meitong_right.png" alt="" class="ar_left" @click="changeAction(1)"> -->
                         <!-- <img src="/static/images/meitong_right.png" alt="" class="ar_right" @click="changeAction(2)"> -->
                     </div>
-                    <swiper class="imageContainer" @change="handleChange" previous-margin="100px" next-margin="90px" circular autoplay>
+                    <swiper class="imageContainer" @change="handleChange" display-multiple-items="3" previous-margin="6.15px" circular autoplay>
                       <block v-for="(item, index) in model.GirlGoodsList" :key="index">
                         <swiper-item class="item" @click="currentIndex==index?$navigateTo(item.TargetUrl):''">
                           <div class="img_box">
-                          <image :class="{imgg:true,active:currentIndex==index}" :src="item.ImageUrl"></image>
+                          <image :class="{imgg:true,active:currentIndex==index-1}" :src="item.ImageUrl"></image>
                           <span class="img_title">{{item.Title}}</span>  
                           </div>
                         </swiper-item>
@@ -597,6 +597,8 @@ export default {
         // border-radius: 10px;
         // overflow: hidden;
         position: relative;
+        display: flex;
+        justify-content: center;
         .bg{
             width: 100%;
             border-radius: 10px;
@@ -656,15 +658,17 @@ export default {
           width: 81.5px;
             height: 41px;
             position: relative;
-          box-sizing: border-box;
+          // box-sizing: border-box;
           border-bottom: 0.5px solid #e9e9e9;
           border-right: 0.5px solid #e9e9e9;
           img {
             display: block;
-            width: 81.5px;
-            height: 41px;
+            width: 78.5px;
+            height: 38px;
             transition: all 1s;
             position: absolute;
+            left: 1.5px;
+            top: 1.5px;
           }
            .show{
             z-index: 1;
@@ -1002,12 +1006,12 @@ export default {
 }
 
 .imageContainer{
- width: 80%;
- height: 160px;
- position: absolute;
-//  top:-13%;
- left: 50%;
- margin-left: -40%;
+  width: 78%;
+  height: 160px;
+  position: absolute;
+  //  top:-13%;
+  // left: 50%;
+  // margin-left: -40%;
   .item{
   height: 160px;
   overflow: visible;

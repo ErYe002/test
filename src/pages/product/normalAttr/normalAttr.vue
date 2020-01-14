@@ -5,25 +5,28 @@
       <div class="goods-name">
         {{mainGoods.GoodsName}}
       </div>
+      <block v-if="SeriesItems!=null&&SeriesItems.length>0">
 
-      <img src="/static/images/imaginary_line.png" class="line"/>
+    
+        <img src="/static/images/imaginary_line.png" class="line"/>
 
-      <div class="series-title">
-        款式花色
-      </div>
+        <div class="series-title">
+          款式花色
+        </div>
 
-      <scroll-view class="scroll-view_H" scroll-x="true" style="width: 100%">
-        <div class="item-series-layout">
-          <div class="item-single" v-for="(item,index) in SeriesItems" :key="index" @click="changeSeries(index)">
-            <div class="series-img" :class="seriesPosition===index?'select ':''">
-              <img :src="item.SeriesImg" :class="seriesPosition===index?'series-image':'series-image'"/>
-            </div>
-            <div class="item-text-color">
-              {{item.AnotherName}}
+        <scroll-view class="scroll-view_H" scroll-x="true" style="width: 100%">
+          <div class="item-series-layout">
+            <div class="item-single" v-for="(item,index) in SeriesItems" :key="index" @click="changeSeries(index)">
+              <div class="series-img" :class="seriesPosition===index?'select ':''">
+                <img :src="item.SeriesImg" :class="seriesPosition===index?'series-image':'series-image'"/>
+              </div>
+              <div class="item-text-color">
+                {{item.AnotherName}}
+              </div>
             </div>
           </div>
-        </div>
-      </scroll-view>
+        </scroll-view>
+      </block>
     </div>
 
     <div class="normal-box">
@@ -606,7 +609,7 @@
   .goods-name {
     color: #7e7e7e;
     font-size: 13px;
-    margin: 10px 15px 0 15px;
+    margin: 10px 15px 10px 15px;
   }
 
   .series-title {

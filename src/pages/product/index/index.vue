@@ -437,32 +437,64 @@
         </div>
         <div class="xuanGou" v-if="Data.GoodsBase.IsSpecificationGoods">
           <span class="xuanGou-name">选购</span>
-          <a
-            :href="Data.GoodsBase.GoodsType==4?frameAttrHref+'&IsBuyNow=false':normalAttrHref+'&IsBuyNow=false'"
-          >
-            <div class="eyeBox">
-              <div class="eyeMsg">
-                <div class="eyeType">右眼R</div>
-                <div class="eyeNote">点击选择参数</div>
-              </div>
-              <div class="eyeImg">
-                <img src="/static/images/icon-pro-eye.png" />
-              </div>
-            </div>
-          </a>
-          <a
-            :href="Data.GoodsBase.GoodsType==4?frameAttrHref+'&IsBuyNow=false':normalAttrHref+'&IsBuyNow=false'"
-          >
-            <div class="eyeBox">
-              <div class="eyeMsg">
-                <div class="eyeType">左眼L</div>
-                <div class="eyeNote">点击选择参数</div>
-              </div>
-              <div class="eyeImg">
-                <img src="/static/images/icon-pro-eye.png" />
-              </div>
-            </div>
-          </a>
+          <block v-if="isLogin">
+              <a
+                :href="Data.GoodsBase.GoodsType==4?frameAttrHref+'&IsBuyNow=false':normalAttrHref+'&IsBuyNow=false'"
+              >
+                <div class="eyeBox">
+                  <div class="eyeMsg">
+                    <div class="eyeType">右眼R</div>
+                    <div class="eyeNote">点击选择参数</div>
+                  </div>
+                  <div class="eyeImg">
+                    <img src="/static/images/icon-pro-eye.png" />
+                  </div>
+                </div>
+              </a>
+              <a
+                :href="Data.GoodsBase.GoodsType==4?frameAttrHref+'&IsBuyNow=false':normalAttrHref+'&IsBuyNow=false'"
+              >
+                <div class="eyeBox">
+                  <div class="eyeMsg">
+                    <div class="eyeType">左眼L</div>
+                    <div class="eyeNote">点击选择参数</div>
+                  </div>
+                  <div class="eyeImg">
+                    <img src="/static/images/icon-pro-eye.png" />
+                  </div>
+                </div>
+              </a>
+          </block>
+          <block v-else>
+              <button
+                open-type="getUserInfo"
+                @getuserinfo="loginEvent"
+              >
+                <div class="eyeBox">
+                  <div class="eyeMsg">
+                    <div class="eyeType">右眼R</div>
+                    <div class="eyeNote">点击选择参数</div>
+                  </div>
+                  <div class="eyeImg">
+                    <img src="/static/images/icon-pro-eye.png" />
+                  </div>
+                </div>
+              </button>
+              <button
+                open-type="getUserInfo"
+                @getuserinfo="loginEvent"
+              >
+                <div class="eyeBox">
+                  <div class="eyeMsg">
+                    <div class="eyeType">左眼L</div>
+                    <div class="eyeNote">点击选择参数</div>
+                  </div>
+                  <div class="eyeImg">
+                    <img src="/static/images/icon-pro-eye.png" />
+                  </div>
+                </div>
+              </button>
+          </block>
           <div class="dshsBox" @click="_showDSHS()">
             <img src="/static/images/icon-pro-eye.png" />
             <div>度数换算</div>
@@ -673,9 +705,9 @@
                         </swiper-item>
                       </block>
                     </swiper>
-                  </div>
+                </div>
               </div>
-          </div>
+            </div>
       </div>
       <div class="promotionBox">
         <div class="brand-store" v-if="Data.BrandStore != null && Data.BrandStore.Name !=null&& Data.BrandStore.ImageUrl !=null">
@@ -1035,9 +1067,9 @@
                   :key="erpItem.index"
                 >
                   <a :href="'/'+erpItem.SeoCode">
-                    <div class="imgbox">
+                    <!-- <div class="imgbox"> -->
                       <img :src="erpItem.Img" />
-                    </div>
+                    <!-- </div> -->
                     <span>{{erpItem.GoodsName}}{{(erpItem.MaxTimes > 0 ? "（限赠" + erpItem.MaxTimes + "）" : "")}}</span>
                   </a>
                 </li>
@@ -1464,6 +1496,7 @@ export default {
     _getHotCommentList(GoodsId){
         api.getHotCommentList(GoodsId,10).then(({ Data }) => {
           console.log(Data)
+          wx.setStorageSync('HotCommentList', Data)
           this.HotCommentList = Data;
         });
     },

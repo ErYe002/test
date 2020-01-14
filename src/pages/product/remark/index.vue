@@ -32,6 +32,31 @@
     </div>
     <div :class="'showTagBtn '+(isShowMoreTag?'showMoreIcon':'')" @click="_showMoreTag()">∨</div>
     <block>
+      <div class="communtiyBox" v-if="HotCommentList != null &&  HotCommentList.length>0">
+          <swiper  class="communtiy-swiper">
+            <block v-for="item in HotCommentList" :key="item.index">
+              <swiper-item class="communtiy-swiperItem"  >
+                  <div class="com-content">
+                      <div class="com-text">
+                          <img :src="item.UserInfo.HeadUrl?item.UserInfo.HeadUrl:'/static/images/default_img.gif'" alt="" class="heder-img">
+                          <div>
+                            <span class="com-name">{{item.UserInfo.UserName}}</span><br/>
+                          </div>
+                      </div>
+                      <div class="com-tips">{{item.Content}}</div>
+                  </div>
+                  <div class="scroll-img" v-if="item.ArticleImgDtos != null && item.ArticleImgDtos.length> 0">
+                      <block v-for="(imgitem,imgindex) in item.ArticleImgDtos" :key="imgindex">
+                        <li class="comment-pic-li">
+                          <img :src="imgitem.ImgAddress" mode="aspectFit"  />
+                        </li>
+                      </block>
+                  </div>
+                  <div class="com-from">来自社区心得</div>
+              </swiper-item>
+            </block>
+          </swiper>
+      </div>
       <div class="remarkCon" v-if="Data != null ">
         <div class="remarkBox" v-for="item in Data" :key="item.index">
           <div class="comment-header">
@@ -103,10 +128,13 @@ export default {
       LableName: "",
       Page: 1,
       totalPage: 3,
-      noData: false
+      noData: false,
+      HotCommentList:""
     };
   },
   onLoad(options) {
+    let HotCommentList = wx.getStorageSync("HotCommentList");
+    this.HotCommentList = HotCommentList
     this.selecLabel = options.label;
     if (this.selecLabel == "有图") {
       this.RemarkType = 4;
@@ -326,4 +354,64 @@ export default {
     background: #ececec;
   }
 }
+.communtiyBox{
+      margin: 10px;
+      overflow: hidden;
+      padding: 10px 15px;
+      // height: 120px;
+      background: #fff;
+      border-radius: 20px;
+      .communtiy-swiper{
+          height: 200px;
+          .com-text{
+            display: flex;
+            align-items: center;
+            .heder-img{
+              width: 30px;
+              height: 30px;
+              border-radius: 50%;
+              overflow: hidden;
+              margin-right: 10px;
+            }
+          }
+          .com-tips{
+            text-overflow: ellipsis;         //超出部分用省略号 ...  来代替
+              display: -webkit-box;
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 2;           //限制要出现的行数
+              overflow: hidden;
+              font-size: 24rpx;
+              color: #010101;
+              word-wrap: break-word;
+              margin-top: 5px;
+          }
+          .scroll-img{
+            display: flex;
+            justify-content: flex-start;
+            margin-top: 10px;
+            ._img{
+              margin-right: 5px;
+              width: 100px;
+              height: 100px;
+              border-radius: 5px;
+              overflow: hidden;
+              background: #ececec;
+            }
+          }
+      }
+      .com-from{
+        color: #E31436;
+        border: 1px solid #E31436;
+        vertical-align: middle;
+        font-size: 10px;
+        border-radius: 5px;
+        width: 80px;
+        text-align: center;
+        position: absolute;
+        left: 0px;
+        bottom: 0px;;
+
+
+      }
+    }
 </style>

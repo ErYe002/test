@@ -692,15 +692,17 @@ export default {
           width: 81.5px;
             height: 41px;
             position: relative;
-          box-sizing: border-box;
+          // box-sizing: border-box;
           border-bottom: 0.5px solid #e9e9e9;
           border-right: 0.5px solid #e9e9e9;
           img {
             display: block;
-            width: 81.5px;
-            height: 41px;
+            width: 78.5px;
+            height: 38px;
             transition: all 1s;
             position: absolute;
+            left: 1.5px;
+            top: 1.5px;
           }
            .show{
             z-index: 1;

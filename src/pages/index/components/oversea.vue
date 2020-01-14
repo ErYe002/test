@@ -480,15 +480,18 @@ export default {
         // flex: 0 0 10%;
         width: 160rpx;
         height: 90rpx;
-        box-sizing: border-box;
+        // box-sizing: border-box;
         border-bottom: 0.5px solid #e9e9e9;
         border-right: 0.5px solid #e9e9e9;
+        position: relative;
         img {
           display: block;
-          width: 160rpx;
-          height: 90rpx;
+          width: 157rpx;
+          height: 87rpx;
           transition: all 1s;
-				position: absolute;
+          position: absolute;
+          left: 1.5rpx;
+          top: 1.5rpx;
         }
          .show{
             z-index: 1;
