@@ -27,7 +27,7 @@
             <li class="record_item" v-for="(item,index) in balanceDetailList" :key="index">
               <div class="record_detail_item_one">
                 <p>{{item.Title}}</p>
-                <p>{{item.OccurTime}}</p>
+                <p>{{item.OccurTimeStr}}</p>
               </div>
               <div class="record_detail_item_two">
                 <p>余额: <span>¥{{item.ChangedBalance}}</span></p>
