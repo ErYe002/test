@@ -480,7 +480,7 @@ export default {
         // flex: 0 0 10%;
         width: 160rpx;
         height: 90rpx;
-        // box-sizing: border-box;
+        box-sizing: border-box;
         border-bottom: 0.5px solid #e9e9e9;
         border-right: 0.5px solid #e9e9e9;
         position: relative;

@@ -656,9 +656,9 @@ export default {
         .item {
           // flex: 0 0 25%;
           width: 81.5px;
-            height: 41px;
-            position: relative;
-          // box-sizing: border-box;
+          height: 41px;
+          position: relative;
+          box-sizing: border-box;
           border-bottom: 0.5px solid #e9e9e9;
           border-right: 0.5px solid #e9e9e9;
           img {

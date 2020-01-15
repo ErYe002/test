@@ -55,7 +55,7 @@
               v-for="item in Data.Series"
               :key="item.index"
             >
-              <a :href="'/pages/product/index/main?seocode='+item.SeoCode">
+              <a  disabled @click="changeSeries(item.SeoCode)">
                 <img :src="item.SeriesImg" />
                 <span v-if="Data.GoodsBase.SeoCode==item.SeoCode">{{item.AnotherName}}</span>
               </a>
@@ -1345,7 +1345,7 @@ export default {
       cartNum: 0,
       MinPrice: 0,//当前可以享受到的最低价格
       NowCompData:null,
-      imageProp:{mode:'widthFix'},//详情关于 配置
+      imageProp:{mode:'widthFix'},//详情关于 wxParse配置
       IsFollow:false,
     };
   },
@@ -1387,6 +1387,10 @@ export default {
       cartapi.getCartCount().then(({ Data }) => {
         this.cartNum = Data;
       });
+    },
+    //切换系列
+    changeSeries(seocode){
+        this.getisComp(seocode);
     },
     _getPageData(seocode) {
       //判断是否登录
