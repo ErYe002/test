@@ -514,6 +514,7 @@ page {
       }
       .waitDivSecond {
         position: relative;
+        flex: 1;
         .waitCommentGoodsName {
           font-size: 12px;
         }

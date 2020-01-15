@@ -30,7 +30,7 @@
         </block>
       </ul>
     </div>
-    <div :class="'showTagBtn '+(isShowMoreTag?'showMoreIcon':'')" @click="_showMoreTag()">∨</div>
+    <div :class="'showTagBtn'" @click="_showMoreTag()"><span :class="(isShowMoreTag?'showMoreIcon':'icon')">{{isShowMoreTag?'∧':'∨'}}</span></div>
     <block>
       <div class="communtiyBox" v-if="HotCommentList != null &&  HotCommentList.length>0">
           <swiper  class="communtiy-swiper">
@@ -263,17 +263,18 @@ export default {
 }
 .showTagBtn {
   background: #fff;
-  width: 120%;
+  width: 100%;
   margin: 0 auto;
-  margin-left: -10%;
+  // margin-left: -10%;
   text-align: center;
   line-height: 30px;
-  transform: scale(2, 1);
-  color: #ccc;
-  &.showMoreIcon {
-    transform: scale(2, 1) rotate(180deg);
-    border-top: 1px solid #ececec;
-    border-bottom: 0;
+  .icon{
+    transform: scale(2, 1);
+    color: #ccc;
+  }
+  .showMoreIcon {
+      transform: scale(2, 1);
+      border-bottom: 0;
   }
 }
 .remarkCon {
