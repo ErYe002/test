@@ -80,7 +80,7 @@ export default {
         title: options.title
       });
       this.title = options.title
-      this.tag = options.tag
+      this.tag = options.tag?options.tag:""
       this._getPageData();
     }
   },
