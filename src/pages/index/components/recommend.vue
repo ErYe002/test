@@ -320,37 +320,41 @@ export default {
     },
     _getPageData() {
       api.getHomeRecommendData().then(({ Data }) => {
-        if (Data != null && Data.BrandList != null) {
+        if (Data != null ) {
           //处理秒杀数据
-          Data.SeckillList.forEach((item, idx) => {
-            let startTime = new Date(item.StartTime);
-            let endTime = new Date(item.EndTime);
-            let nowTime = new Date();
-            if (startTime > nowTime) {
-              //秒杀未开始
-              item.status = "稍等抢";
-            } else if (startTime < nowTime && endTime > nowTime) {
-              //秒杀中
-              item.status = "抢购中";
-            } else if (endTime < nowTime) {
-              //秒杀结束
-              item.status = "已结束";
-            }
-            if (item.GoodsList.length > 2) {
-              item.currentSeckillLeftList = [...item.GoodsList.slice(0, 2)];
-              item.currentSeckillRightList = [
-                ...item.GoodsList.slice(2, item.GoodsList.length)
-              ];
-            } else {
-              item.currentSeckillLeftList = [...item.GoodsList];
-            }
-            item.shortTime = tools.formatDate("hh:mm", startTime);
-          });
-          this.reversalBrand(Data.BrandList)
-          this.brandList =
-            Data.BrandList.length > 12
-              ? Data.BrandList.slice(0, 12)
-              : Data.BrandList;
+          if(Data.SeckillList!=null){
+            Data.SeckillList.forEach((item, idx) => {
+              let startTime = new Date(item.StartTime);
+              let endTime = new Date(item.EndTime);
+              let nowTime = new Date();
+              if (startTime > nowTime) {
+                //秒杀未开始
+                item.status = "稍等抢";
+              } else if (startTime < nowTime && endTime > nowTime) {
+                //秒杀中
+                item.status = "抢购中";
+              } else if (endTime < nowTime) {
+                //秒杀结束
+                item.status = "已结束";
+              }
+              if (item.GoodsList.length > 2) {
+                item.currentSeckillLeftList = [...item.GoodsList.slice(0, 2)];
+                item.currentSeckillRightList = [
+                  ...item.GoodsList.slice(2, item.GoodsList.length)
+                ];
+              } else {
+                item.currentSeckillLeftList = [...item.GoodsList];
+              }
+              item.shortTime = tools.formatDate("hh:mm", startTime);
+            });
+          }
+          if(Data.BrandList != null){
+                      this.reversalBrand(Data.BrandList)
+            this.brandList =
+              Data.BrandList.length > 12
+                ? Data.BrandList.slice(0, 12)
+                : Data.BrandList;
+          }
         }
         this.model = Data;
       });

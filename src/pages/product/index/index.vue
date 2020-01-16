@@ -1346,8 +1346,7 @@ export default {
       MinPrice: 0,//当前可以享受到的最低价格
       NowCompData:null,
       imageProp:{mode:'widthFix'},//详情关于 wxParse配置
-      IsFollow:false,
-    };
+      IsFollow:false,      HasGifts:true    };
   },
   computed: {},
   onLoad(options) {
@@ -1406,6 +1405,9 @@ export default {
         Data.GoodsBase.ScoreDeductionPrice = Data.GoodsBase.ScoreDeductionPrice.toFixed(
           2
         );
+        if(Data.GoodsPagePromotion.Gift == null||Data.GoodsPagePromotion.Gift.Length==0){
+          this.HasGifts==false;
+        }
         if (
           Data.GoodsBase.SellPrice > Data.GoodsBase.RolePrice &&
           Data.GoodsBase.RolePrice != 0
@@ -1870,7 +1872,7 @@ export default {
       // 判断是否是无属性商品
 
       var that = this;
-      if (!this.Data.GoodsBase.IsSpecificationGoods && !this.isComp) {
+      if (!this.Data.GoodsBase.IsSpecificationGoods && !this.isComp&&!this.HasGifts) {
         //无属性商品且非打包
         var GoodsId = this.Data.GoodsBase.GoodsId;
         var IsBuyByScore = false;
@@ -2031,7 +2033,7 @@ export default {
     buyNow(IsConfirmedBuy) {
       var that = this;
       // 判断是否是无属性商品
-      if (!this.Data.GoodsBase.IsSpecificationGoods && !this.isComp) {
+      if (!this.Data.GoodsBase.IsSpecificationGoods && !this.isComp&&!this.HasGifts) {
         //无属性商品且非打包
         var GoodsId = this.Data.GoodsBase.GoodsId;
         var IsBuyByScore = false;
