@@ -67,7 +67,7 @@
                     </div>
                     <swiper class="imageContainer" @change="handleChange" display-multiple-items="3" previous-margin="6.15px" circular autoplay>
                       <block v-for="(item, index) in model.GirlGoodsList" :key="index">
-                        <swiper-item class="item" @click="currentIndex==index?$navigateTo(item.TargetUrl):''">
+                        <swiper-item class="item" @click="currentIndex==index-1?$navigateTo(item.TargetUrl):''">
                           <div class="img_box">
                           <image :class="{imgg:true,active:currentIndex==index-1}" :src="item.ImageUrl"></image>
                           <span class="img_title">{{item.Title}}</span>  
@@ -113,7 +113,7 @@
                     :key="item.Id"
                     :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'"
                     >
-                    <img :src="item.ImageUrl" class="img" />
+                    <img :src="item.ImageUrl" class="img" mode="widthFix"/>
                     <p class="pirce">
                         <b>¥{{item.SalePrice}}</b>
                         <span class="btn">立即抢</span>
@@ -845,7 +845,7 @@ export default {
         position: relative;
         margin: 0 2.5px;
         border-radius: 10px;
-        // overflow: hidden;
+        overflow: hidden;
         text-align: center;
         .img {
           display: block;
@@ -860,7 +860,7 @@ export default {
           justify-content: space-between;
            position: absolute;
           left: 5px;
-          bottom: 16px;
+          bottom: 10px;
           padding: 0 3px;
           b {
             font-size: 13px;

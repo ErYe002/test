@@ -85,7 +85,7 @@
                     :key="item.Id"
                     :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'"
                     >
-                    <img :src="item.ImageUrl" class="img" />
+                    <img :src="item.ImageUrl" class="img" mode="widthFix"/>
                     <p class="pirce">
                         <b>¥{{item.SalePrice}}</b>
                         <span class="btn">立即抢</span>
@@ -879,7 +879,7 @@ export default {
         position: relative;
         margin: 0 2.5px;
         border-radius: 10px;
-        // overflow: hidden;
+        overflow: hidden;
         text-align: center;
         .img {
           display: block;
