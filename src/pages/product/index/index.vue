@@ -1346,7 +1346,9 @@ export default {
       MinPrice: 0,//当前可以享受到的最低价格
       NowCompData:null,
       imageProp:{mode:'widthFix'},//详情关于 wxParse配置
-      IsFollow:false,      HasGifts:true    };
+      IsFollow:false,
+      HasGifts:true    
+      };
   },
   computed: {},
   onLoad(options) {

@@ -906,14 +906,14 @@ export default {
 }
 
 .like-goods-wrap {
-    background: #fff;
-  padding: 0 10.5px;
+    background: #f5f5f5;
+  padding: 10.5px 10.5px 0 10.5px;
   .list {
     display: flex;
     flex-wrap: wrap;
     .item {
       width: 173px;
-        background: #f5f5f5;
+        background: #fff;
       border-radius: 15px;
       overflow: hidden;
       margin-bottom: 8px;
