@@ -894,7 +894,7 @@ export default {
           justify-content: space-between;
            position: absolute;
           left: 5px;
-          bottom: 16px;
+          bottom: 10px;
           padding: 0 3px;
           b {
             font-size: 13px;
