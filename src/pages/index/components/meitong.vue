@@ -299,7 +299,13 @@ export default {
     },
      /* 这里实现控制中间凸显图片的样式 */
     handleChange(e) {
-      this.currentIndex = e.target.current
+      let length = this.model.GirlGoodsList.length
+      if(e.target.current == length-1){
+            this.currentIndex = -1
+      }else{
+        this.currentIndex = e.target.current
+      }
+      
     }
   }
 };
