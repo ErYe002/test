@@ -269,6 +269,9 @@ export default {
               ? Data.BrandList.slice(0, 12)
               : Data.BrandList;
         }
+        if(Data != null&& Data.GirlGoodsList.length<=3){
+            Data.GirlGoodsList = Data.GirlGoodsList.concat(Data.GirlGoodsList)
+        }
         this.model = Data;
       });
     },
