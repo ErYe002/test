@@ -26,7 +26,19 @@ export default {
     succ(e){
       console.log('网页加载成功',e)
     }
-  }
+  },
+  /**
+   * 用户点击右上角分享
+   */
+    onShareAppMessage() {
+      // return {
+      //   title: '¥' +
+      //     this.Data.GoodsBase.SellPrice +
+      //     ' ' +
+      //     this.Data.GoodsBase.GoodsName,
+      //   imageUrl: this.Data.GoodsBase.MainImageUrl || ''
+      // };
+    },
 };
 </script>
 
