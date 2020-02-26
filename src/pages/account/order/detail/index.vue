@@ -101,8 +101,9 @@
           <li class="b-item" v-if="orderInfo.IsCancel">
             <button class="kd-btn btn-default btn-small" @click="cancelOrderEvent(orderInfo.OrderId)">取消订单</button>
           </li>
-          <li class="b-item" v-if="orderInfo.IsContactAirlines">
-            <button class="kd-btn btn-default btn-small" open-type="contact">联系客服</button>
+          <li class="b-item Qybox" v-if="orderInfo.IsContactAirlines">
+            <cell class="Qy" plugid='063467867a2e0190ac0de65471932c8a'   styleType="2" buttonText="4" blockStyle="button" bubbleColor="ffffff"/>
+            <!-- <button class="kd-btn btn-default btn-small" open-type="contact">联系客服</button> -->
           </li>
           <li class="b-item" v-if="orderInfo.IsLogistics">
             <a :href="'/pages/account/logistics/main?shopId='+orderInfo.ShopId+'&orderId='+orderInfo.OrderId" class="kd-btn btn-default btn-small">查看物流</a>
@@ -387,5 +388,16 @@ export default {
       width: 90px;
     }
   }
+}
+
+</style>
+<style lang="less">
+.Qybox{
+  .cell--button_primary {
+    background: #fff !important;
+    border: 1rpx solid #ccc !important;
+    color: #888 !important;
+}
+
 }
 </style>
