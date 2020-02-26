@@ -73,6 +73,14 @@ const api = {
   CancelFollow(BrandStoreId) {
     return http.post(`/BrandStore/CancelFollow?brandStoreId=${BrandStoreId}`);
   },
+  //获取小程序二维码
+  getShareQrcode({ accessToken, page, width = 200 } = {}) {
+    return http.post('Groupon/GetGrouponShareQrCodeAsync', {
+      accessToken, page, width
+    }, {
+        'content-type': 'application/x-www-form-urlencoded'
+      })
+  }
 };
 
 export default api;

@@ -98,7 +98,7 @@ goodsId=${mapParms.get('goodsId')}
   //购买单属性商品
   buySingleProperty(mapParms) {
     let selfUrl = `&GD=${mapParms.get('GD')}&Quantity=${mapParms.get('Quantity')}&GDPropertyGifts=&SelectedSpecifications=&NoPropertyGifts=&RealGoodsId=${mapParms.get('RealGoodsId')}`;
-    return this.getMapParams('/cart/BuySingleProperty', mapParms);
+    return this.getMapParams('/cart/BuySingleProperty', mapParms,selfUrl);
   },
   getMapParams(url, mapPrams, otherUrl) {
     return http.postByNoErrorTips(url + `?goodsId=${mapPrams.get('goodsId')}

@@ -1,0 +1,8 @@
+<view class="canvas-wrap" style='display:{{isShow?"block":"none"}}'>
+    <view class="bg" bindtap='hide' catchtouchmove="touchHandler"></view>
+    <canvas disable-scroll="true" bindtouchstart="touchstart" canvas-id='shareCanvas' style='width:{{canvasW}}px;height:{{canvasH}}px;' class='share-canvas' binderror='canvasError'></canvas>
+    <button class='btn' bindtap='save' style='width:{{canvasW}}px;margin:0 auto;'>
+        <image src="../../images/icon_download.png" class="icon" />
+        <text>保存</text>
+    </button>
+</view>

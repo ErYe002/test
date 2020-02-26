@@ -138,6 +138,9 @@
     
     <div class="sectionLine"></div>
     <view class='buy-vip-box' v-if="!orderInfo.IsVip && orderInfo.ShopId != 2">
+      <view class="order_vip_box">
+        <img src="/static/images/order_svip.png" class="order_vip_img">
+      </view>
       <view class='b-left'>
         <view class='title'>{{orderInfo.BuySvipDiscountContent}}</view>
         <view class='subtitle'>{{orderInfo.BuySvipAmountConent}}</view>
@@ -1066,5 +1069,11 @@ page {
     font-size: 12px;
     font-weight: 300;
   }
+}
+.order_vip_img{
+  width: 30px;
+  height: 16px;
+  margin-right: 6px;
+  vertical-align:sub;
 }
 </style>

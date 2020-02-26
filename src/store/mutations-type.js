@@ -33,3 +33,6 @@ export const DATA_CLEAR = 'DATA_CLEAR';
 //评论-添加已经评论id
 export const COMMENT_ADD_COMMENTEDID='COMMENT_ADD_COMMENTEDID';
 export const COMMENT_CLEAR_COMMENTEDID = 'COMMENT_CLEAR_COMMENTEDID';
+
+//用户信息-头像，昵称
+export const SET_USERINFO = 'SET_USERINFO';

@@ -120,6 +120,10 @@
               <span>已售: {{Data.GoodsBase.SaleQuantity}}件</span>
             </div>
             <div class="prolabel">
+              <img v-if="hasUserInfo" :src="'/static/images/detail_share.png'" class="shareImg" @click="shareCurtGoods">
+              <button v-else class="shareBtn" open-type="getUserInfo" @getuserinfo="getUserInfo">
+                <img :src="'/static/images/detail_share.png'" class="shareImg">
+              </button>
               <span class="proloveNum">
                 <i>♡</i>
                 {{Data.GoodsBase.CollectionCount}}
@@ -816,9 +820,16 @@
           <a @click="goindex">
             <img src="/static/images/icon-pro-index.png" alt />首页
           </a>
-          <button open-type="contact" bindcontact="contactService">
+          <div class="QyBox">
+              <button class="btn_1">
+                  <img src="/static/images/icon-pro-sev.png" alt /><span>客服</span>
+              </button>
+              <cell class="Qy" plugid='063467867a2e0190ac0de65471932c8a'   styleType="2" bubbleColor="transparent">
+          </cell>
+          </div>
+          <!-- <button open-type="contact" bindcontact="contactService">
             <img src="/static/images/icon-pro-sev.png" alt />客服
-          </button>
+          </button> -->
           <a @click="gocart">
             <img src="/static/images/icon-pro-cart.png" alt />购物车
             <i class="cartNum">{{cartNum}}</i>
@@ -1291,7 +1302,23 @@
       </div>
       <div class="KnowBtn" @click="selectAttr()">确定</div>
     </bottomFlip>
+        <!-- 分享弹框 -->
+    <bottomFlip :isShow.sync="isShowTK">
+        <div class="type-list">
+          <share-button :product="product" btn-class="share-btn" type="3" @error="_haowuError">
+              <view class="share-box">
+                  <img :src="'/static/images/icon_recommend.png'" class="icon" />
+                  <view class="text">推荐好物</view>
+              </view>
+          </share-button>
+          <button open-type="share" class="item" @click="shareToFriend">发送给朋友</button>
+          <button class="item" @click="_setSharePosterDataAndShow">生成二维码图片保存分享</button>
+        </div>
+      <view class="cancel" @click='_close'>取消</view>
+    </bottomFlip>
+    <share-poster id='sharepost'></share-poster>
   </div>
+
 </template>
 
 <script>
@@ -1301,11 +1328,16 @@ import cartapi from "@/api/cart";
 import { mapActions, mapState } from "vuex";
 import bottomFlip from "@/components/bottomFlip";
 import wxParse from "mpvue-wxparse";
-import authorization from "@/utils/authorization";
+import authorization from "@/utils/authorization"; 
+import store from '@/store'
 
 export default {
   data() {
     return {
+      hasUserInfo:false,
+      isShowTK:false,
+      product:{
+      },
       GoodsAbout: "",
       HotCommentList:[],
       Data: "",
@@ -1351,6 +1383,9 @@ export default {
       };
   },
   computed: {},
+  onReady(){
+      this.Poster = this.$mp.page.selectComponent('#sharepost')
+  },
   onLoad(options) {
     this.glassSelectPosiition =
       options.glassSelectPosiition != undefined
@@ -1365,6 +1400,11 @@ export default {
     this.isComp = options.isComp;
     this.getisComp(options.seocode);
     this._getCartNum();
+    //用户是否有授权过用户信息
+    if (store.state.userInfo.userInfo != null) {
+      this.hasUserInfo = true
+    }
+    
   },
   components: {
     bottomFlip,
@@ -1372,6 +1412,7 @@ export default {
   },
   methods: {
     ...mapActions("remark", ["setData"]),
+    ...mapActions("userInfo", ["setUserInfo"]),
     getisComp(seocode) {
       api
         .IsCompGoods(seocode)
@@ -1720,6 +1761,7 @@ export default {
       this.isShowMZ = false;
       this.isShowHG = false;
       this.isShowDSHS = false;
+      this.isShowTK = false;
     },
     //优惠券信息显示
     _showYHQmsg() {
@@ -2257,7 +2299,75 @@ export default {
           }
           
         });
-    }
+    },
+         //点击分享时：如果用户没有授权过用户信息，则页面上的分享按钮替换成授权按钮，此方法为授权按钮事件回调。授权完毕再展示分享弹窗
+    getUserInfo(e) {
+      let that = this;
+      const {
+        userInfo
+      } = e.mp.detail;
+      if (userInfo) {
+        that.setUserInfo(userInfo)
+        that.hasUserInfo = true
+        that.showChooseShareType()
+      }
+    },
+    //点击分享时：已经获取过用户信息，直接展示分享弹窗
+    shareCurtGoods() {
+      this.showChooseShareType()
+    },
+    showChooseShareType() {
+      let shareUrl = '/pages/product/index/main?seocode='+this.Data.GoodsBase.SeoCode+'&isComp=false';
+       this.product={
+          'item_code': this.Data.GoodsBase.SeoCode+"",
+          'title': this.Data.GoodsBase.GoodsName,
+          'desc': this.Data.GoodsBase.GoodsName + ' ' + this.Data.GoodsBase.PriceLable,
+          'category_list': ['眼镜'],
+          'image_list': this.Data.GoodsBase.AppendImgs,
+          'src_mini_program_path': shareUrl,
+          'brand_info': {
+            'name': '可得眼镜'
+          }
+        }
+      this.isShowTK = true;
+    },
+    shareToFriend(){
+      this.isShowTK = false;
+    },
+    _setSharePosterDataAndShow() {
+      this.isShowTK = false;
+      const userInfo = store.state.userInfo.userInfo;
+      //先获取最新的accesstoken
+      userapi.getAccessToken().then(({
+        Data
+      }) => {
+        api
+          .getShareQrcode({
+            accessToken: Data,
+            page: '/pages/product/index/main?seocode='+this.Data.GoodsBase.SeoCode+'&isComp=false'
+          })
+          .then(({
+            Data
+          }) => {
+            //设置分享的信息
+            this.Poster.setData({
+              nickName: userInfo.nickName,
+              title: '¥' +
+                this.Data.GoodsBase.SalePrice +
+                '' +
+                this.Data.GoodsBase.GoodsName,
+              salePrice: this.Data.GoodsBase.SalePrice,
+              oldPrice: this.Data.GoodsBase.MarketPrice,
+              productImg: this.Data.GoodsBase.AppendImgs[0],
+              userHeadImg: userInfo.avatarUrl,
+              qrcode: Data
+              // qrcode: 'https://pic.keede.com//User/Head/50fc23a8-7d6e-482f-a356-a3923ee6651f.jpeg'
+            });
+            this.Poster.show();
+          });
+      });
+
+    },
   },
         /**
    * 用户点击右上角分享
@@ -2276,4 +2386,81 @@ export default {
 
 <style lang="less">
 @import "./main.less";
+.type-list{
+    border-bottom: 20rpx solid #d7d7d7;
+}
+.type-list .item, .share-btn{
+    background: #fff;
+    border-radius: 0;
+    font-size: 36rpx;
+    height: 100rpx;
+    line-height: 100rpx;
+    border-bottom: 1rpx solid #eee;
+    text-align: center;
+}
+.cancel{
+    font-size: 36rpx;
+    text-align: center;
+    height: 100rpx;
+    line-height: 100rpx;
+}
+
+.share-btn .share-box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.share-btn .icon {
+    width: 37rpx;
+    height: 37rpx;
+    margin-right: 16rpx;
+}
+.QyBox{
+  width: 33.3%;
+  position: relative;
+  .btn_1{
+    position: absolute;
+    top:0;
+    left: 0;
+    z-index: 2;
+    width: 100% !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2rpx solid #F4F4F4;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-size: inherit;
+    border-radius: 0;
+    line-height: initial;
+    color: inherit;
+    height: 100%;
+  }
+    .Qy{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 3;
+    }
+    functional-page-navigator{
+      width: 100% !important;
+    }
+    .cell--bubble {
+      width: 100%;
+      height: 45px;
+      text-align: center;
+      display: inline-block;
+      background-color: transparent !important;
+      .cell--light_without_border{
+        display: none;
+      }
+
+  }
+
+}
+
 </style>
