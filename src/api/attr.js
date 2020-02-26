@@ -37,22 +37,23 @@ goodsId=${mapPrams.get('goodsId')}
   },
   //购买框架和镜片（框架配镜）
   buyFrameAndGlass(mapParms) {
-    return http.postByNoErrorTips(`/Cart/BuyFrameAndGlass?
-goodsId=${mapParms.get('goodsId')}
-&IsConfirmedBuy=${mapParms.get('IsConfirmedBuy')}
-&ShopId=${mapParms.get('ShopId')}
-&IsBuyByScore=${mapParms.get('IsBuyByScore')}
-&LeftQuantity=${mapParms.get('LeftQuantity')}
-&RightQuantity=${mapParms.get('RightQuantity')}
-&GlassGroupId=${mapParms.get('GlassGroupId')}
-&GlassGoodsId=${mapParms.get('GlassGoodsId')}
-&LeftGD=${mapParms.get('LeftGD')}
-&RightGD=${mapParms.get('RightGD')}
-&LeftSG=${mapParms.get('LeftSG')}
-&RightSG=${mapParms.get('RightSG')}
-&LeftZW=${mapParms.get('LeftZW')}
-&RightZW=${mapParms.get('RightZW')}
-&TongJu=${mapParms.get('TongJu')}`);
+    let href = `/Cart/BuyFrameAndGlass?goodsId=${mapParms.get('goodsId')}
+    &IsConfirmedBuy=${mapParms.get('IsConfirmedBuy')}
+    &ShopId=${mapParms.get('ShopId')}
+    &IsBuyByScore=${mapParms.get('IsBuyByScore')}
+    &LeftQuantity=${mapParms.get('LeftQuantity')}
+    &RightQuantity=${mapParms.get('RightQuantity')}
+    &GlassGroupId=${mapParms.get('GlassGroupId')}
+    &GlassGoodsId=${mapParms.get('GlassGoodsId')}
+    &LeftGD=${mapParms.get('LeftGD')}
+    &RightGD=${mapParms.get('RightGD')}
+    &LeftSG=${mapParms.get('LeftSG')}
+    &RightSG=${mapParms.get('RightSG')}
+    &LeftZW=${mapParms.get('LeftZW')}
+    &RightZW=${mapParms.get('RightZW')}
+    &TongJu=${mapParms.get('TongJu')}`.replace(" ","");
+
+    return http.postByNoErrorTips(href);
   },
   //加入购物车(非框架购买属性选择)
   postGoodsJoinCartNormal(GId, isAllSaleScore, GrouponActivityId, isPresale, IsAllStock) {

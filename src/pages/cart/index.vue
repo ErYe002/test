@@ -1058,7 +1058,10 @@ export default {
         confirmColor: '#5BB53C',
         success: function(res) {
           if (res.confirm) {
-            that.delGoodsEvent();
+            api.deleteCartGoods([uniqueId]).then(() => {
+              that._getPageData();
+              that._getCartItemsCount();
+            });
           }
           if (res.cancel) {
             that.unSelectGoodsEvent(uniqueId);
