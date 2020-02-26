@@ -40,7 +40,7 @@
       </section>
     </article>
     <!-- 购物车不为空 -->
-    <article v-else class="cart-box">
+    <article v-else :class="{'cart_box': isIphone}">
       <p class="reduction-tips" v-if="model.PriceReminder">
         <img src="/static/images/icon_cart_bell.png" class="icon-bell" />
         <span class="text">{{model.PriceReminder}}</span>
@@ -765,6 +765,7 @@ import tariff from "./components/tariff";
 export default {
   data() {
     return {
+      isIphone:false,
       shopId: 1,
       model: null,
       domesticShop: 0,
@@ -805,7 +806,16 @@ export default {
     tariff
   },
   onShow() {
+    let that = this;
     //如果已经登录，则获取购物车信息
+    wx.getSystemInfo({
+      success (res) {
+        console.log(res)
+        if(res.brand.indexOf("iPhone")!=-1){
+            that.isIphone=true
+          }
+        }
+    })
     if (this.token) {
       this._getPageData();
       this._getCartItemsCount();
