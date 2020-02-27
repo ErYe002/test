@@ -538,9 +538,8 @@ export default {
                 .catch(() => {
                 });
                 _this.$getCartCount();
-                console.log(orderId + '订单号')//
                 wx.redirectTo({
-                  url: '/pages/order/submitResult/main?resultMsg='+this.submitResultMsg+'&shopId='+this.formModel.selectShopId+'&orderNo='+this.submitResultInfo.OrderNo+'&OrderAmount='+this.submitResultInfo.OrderAmount+'&OrderId='+orderId,
+                  url: '/pages/order/submitResult/main?resultMsg='+_this.submitResultMsg+'&shopId='+_this.formModel.selectShopId+'&orderNo='+_this.submitResultInfo.OrderNo+'&OrderAmount='+_this.submitResultInfo.OrderAmount+'&OrderId='+orderId,
                 })
             },
             fail: function() {
