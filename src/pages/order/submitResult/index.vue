@@ -15,8 +15,8 @@
       </section>
       <a href="/pages/index/main" open-type="switchTab" class="kd-btn">继续购物</a>
       <a :href="'/pages/account/order/detail/main?orderId=' + OrderId" class="kd-btn">查看订单</a>
-        <div class="PaySuccessImg_box">
-          <img :src="PaySuccessImg" alt="" class="PaySuccessImg">
+        <div class="PaySuccessImg_box" v-if="PaySuccessImg">
+          <img :src="PaySuccessImg" alt="" class="PaySuccessImg" @click="clickErCode">
         </div>
       <section class="may-like-box" v-if="likeGoodsList.length > 0">
         <p class="title">猜你喜欢</p>
@@ -72,6 +72,11 @@ export default {
       api.paySuccessBanner().then(({ Data }) => {
         this.PaySuccessImg = Data.BannerImageUrl
       });
+    },
+    clickErCode(){
+      wx.previewImage({
+        urls: [this.PaySuccessImg] // 需要预览的图片http链接列表
+      })
     }
   }
 
