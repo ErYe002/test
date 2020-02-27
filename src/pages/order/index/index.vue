@@ -491,14 +491,14 @@ export default {
         this.submitResultInfo = Data;
         this.submitResultMsg = Msg
         if (State){
-          console.log(Data.OrderId + '订单号')
+          console.log(Data.OrderId + '订单号')//
           if (Data.IsToPay) { 
             //订单创建成功，唤起微信支付
             this._wechatPay(Data.OrderId)
           }else{
             // 完全使用余额支付 wx.redirectTo
             wx.redirectTo({
-              url: '/pages/order/submitResult/main?resultMsg='+Msg+'&shopId='+this.formModel.selectShopId+'&orderNo='+Data.OrderNo+'&OrderAmount='+Data.OrderAmount,
+              url: '/pages/order/submitResult/main?resultMsg='+Msg+'&shopId='+this.formModel.selectShopId+'&orderNo='+Data.OrderNo+'&OrderAmount='+Data.OrderAmount+'&OrderId='+Data.OrderId,
             })
           }
         }else{
@@ -538,8 +538,9 @@ export default {
                 .catch(() => {
                 });
                 _this.$getCartCount();
+                console.log(orderId + '订单号')//
                 wx.redirectTo({
-                  url: '/pages/order/submitResult/main?resultMsg='+this.submitResultMsg+'&shopId='+this.formModel.selectShopId+'&orderNo='+this.submitResultInfo.OrderNo+'&OrderAmount='+this.submitResultInfo.OrderAmount,
+                  url: '/pages/order/submitResult/main?resultMsg='+this.submitResultMsg+'&shopId='+this.formModel.selectShopId+'&orderNo='+this.submitResultInfo.OrderNo+'&OrderAmount='+this.submitResultInfo.OrderAmount+'&OrderId='+orderId,
                 })
             },
             fail: function() {

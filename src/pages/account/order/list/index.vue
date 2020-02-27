@@ -91,8 +91,8 @@
               <!-- <li class="b-item" v-if="item.IsAppraise">
                 <button class="kd-btn btn-default btn-small">评价</button>
               </li>-->
-              <li class="b-item Qybox" v-if="item.IsContactAirlines">
-                <cell class="Qy" plugid='063467867a2e0190ac0de65471932c8a'   styleType="2" buttonText="4" blockStyle="button" bubbleColor="ffffff"/>
+              <li class="b-item" v-if="item.IsContactAirlines">
+                <button class="kd-btn btn-default btn-small" open-type="contact">联系客服</button>
               </li>
               <li class="b-item" v-if="item.IsPayment" @click="_wechatPay(item.OrderId)">
                 <button class="kd-btn btn-small">付款</button>
@@ -573,13 +573,5 @@ page {
   padding: 2px 4px;
   margin-right: 3px;
   font-weight: 300;
-}
-.Qybox{
-  .cell--button_primary {
-    background: #fff !important;
-    border: 1rpx solid #ccc !important;
-    color: #888 !important;
-}
-
 }
 </style>

@@ -82,7 +82,7 @@ export default {
     }
   },
 
-  created() {
+  onShow() {
     this._getMenuData();
   },
     onShareAppMessage(res) {

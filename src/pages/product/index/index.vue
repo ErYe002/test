@@ -820,16 +820,9 @@
           <a @click="goindex">
             <img src="/static/images/icon-pro-index.png" alt />首页
           </a>
-          <div class="QyBox">
-              <button class="btn_1">
-                  <img src="/static/images/icon-pro-sev.png" alt /><span>客服</span>
-              </button>
-              <cell class="Qy" plugid='063467867a2e0190ac0de65471932c8a'   styleType="2" bubbleColor="transparent">
-          </cell>
-          </div>
-          <!-- <button open-type="contact" bindcontact="contactService">
+          <button open-type="contact" bindcontact="contactService">
             <img src="/static/images/icon-pro-sev.png" alt />客服
-          </button> -->
+          </button>
           <a @click="gocart">
             <img src="/static/images/icon-pro-cart.png" alt />购物车
             <i class="cartNum">{{cartNum}}</i>

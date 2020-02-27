@@ -230,12 +230,11 @@
     <section class="function-box">
       <p class="title">更多功能</p>
       <ul class="list">
-        <li class="item QyBox">
-          <button  class="link btn_1">
+        <li class="item">
+          <button open-type="contact" class="link">
             <img src="/static/images/home_customeonline.png" class="icon" />
             <p class="text">在线客服</p>
           </button>
-          <cell class="Qy" plugid='063467867a2e0190ac0de65471932c8a'   styleType="2" bubbleColor="transparent"/>
         </li>
         <li class="item">
           <a @click="contactServiceByPhone" class="link">
@@ -640,55 +639,5 @@ export default {
 .function-box:extend(.service-box all) {
   overflow: hidden;
   border-bottom: none;
-}
-
-
-</style>
-<style lang="less" >
-.QyBox{
-  position: relative;
-  .btn_1{
-    position: absolute;
-    top:0;
-    left: 0;
-    z-index: 2;
-    width: 100% !important;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: transparent;
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-size: inherit;
-    border-radius: 0;
-    line-height: initial;
-    color: inherit;
-    height: 100%;
-  }
-    .Qy{
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      z-index: 3;
-      left: 0;
-      top:0;
-    }
-    functional-page-navigator{
-      width: 100% !important;
-    }
-    .cell--bubble {
-      width: 100%;
-      height: 50px;
-      text-align: center;
-      display: inline-block;
-      background-color: transparent !important;
-      .cell--light_without_border{
-        display: none !important;
-      }
-
-  }
-
 }
 </style>
