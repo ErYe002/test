@@ -19,7 +19,7 @@ Component({
     // canvasH: 530,
     isShow: false,
     canvasW: 318,
-    canvasH: 380,
+    canvasH: 450,
     isDrawSucc: false,
     nickName: '', //用户昵称
     groupMemberCount: 0,  //几人成团
@@ -95,7 +95,7 @@ Component({
       //商品主图
       function drawProductImg() {
         _this.setData({
-          productImgH: _this.data.canvasW*3/4
+          productImgH: _this.data.canvasW
         })
         ctx.drawImage(_this.data.localProductImg, 0, 0, _this.data.canvasW, _this.data.productImgH)
       }

@@ -15,8 +15,14 @@
       </section>
       <a href="/pages/index/main" open-type="switchTab" class="kd-btn">继续购物</a>
       <a :href="'/pages/account/order/detail/main?orderId=' + OrderId" class="kd-btn">查看订单</a>
+      <div class="Code_box"  v-if="CodeUrl">
+        <div class="tips">{{Tips}}</div>
+        <div class="CodeUrl_box">
+          <img :src="CodeUrl" alt="" class="CodeUrl" @click="clickErCode">
+        </div>
+      </div>
         <div class="PaySuccessImg_box" v-if="PaySuccessImg">
-          <img :src="PaySuccessImg" alt="" class="PaySuccessImg" @click="clickErCode">
+          <img :src="PaySuccessImg" alt="" class="PaySuccessImg">
         </div>
       <section class="may-like-box" v-if="likeGoodsList.length > 0">
         <p class="title">猜你喜欢</p>
@@ -38,6 +44,7 @@ import api from "@/api/cart";
 
 export default {
   data(){
+
     return { 
       likeGoodsList: [], //猜你喜欢商品列表
       resultMsg:'',
@@ -45,7 +52,9 @@ export default {
       orderNo:'',
       shopId: '1',
       OrderId:"",
-      PaySuccessImg:""
+      PaySuccessImg:"",
+      Tips:"",
+      CodeUrl:""
     }
   },
   onLoad: function (options) {
@@ -70,12 +79,14 @@ export default {
     },
     _getPaySuccessBanner(){
       api.paySuccessBanner().then(({ Data }) => {
+        this.CodeUrl = Data.WeChatQrCodeUrl
+        this.Tips = Data.Tips
         this.PaySuccessImg = Data.BannerImageUrl
       });
     },
     clickErCode(){
       wx.previewImage({
-        urls: [this.PaySuccessImg] // 需要预览的图片http链接列表
+        urls: [this.CodeUrl] // 需要预览的图片http链接列表
       })
     }
   }
@@ -176,6 +187,22 @@ page {
       .PaySuccessImg{
         width: 100%;
       }
+  }
+  .Code_box{
+    padding: 0 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    .tips{
+      font-size: 14px;
+      color: #000;
+    }
+    .CodeUrl{
+      width: 131px;
+      height: 131px;
+      margin: 10px 0;
+    }
   }
 
 }
