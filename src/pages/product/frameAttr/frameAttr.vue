@@ -1,7 +1,7 @@
 <template>
   <article>
     <!--最顶部选择-->
-    <section>
+    <section class="out-box">
       <div class="black_line">
         Step1 请确认购买需求
       </div>
@@ -15,11 +15,11 @@
         <img v-else="buyType===1" src='/static/images/b_frame_unselect.png' class="frame_bug_frame_and_glass"
              @click="changeTypeEvent(2)"/>
       </div>
-      <div class="line"/>
+      <!-- <div class="line"/> -->
     </section>
 
     <!--仅框架购买的数量选择-->
-    <div style="padding: 10px 15px" v-if="buyType===2">
+    <div style="padding: 10px 15px" v-if="buyType===2" class="out-box">
       <span>
         数量
       </span>
@@ -30,50 +30,53 @@
         <img src="/static/images/cart_add_icon.png" class="change-num-btn" @click="onlyBuyFrameChangeNumEvent(1)"/>
       </div>
     </div>
+
+    <section class="out-box" v-if="buyType===1">
     <!--验光单选择-->
     <div class="black_line" v-if="buyType===1">
       Step2 请选择光度
     </div>
 
-    <section class="not_choose_gd_layout" v-if="buyType===1">
+      <section class="not_choose_gd_layout" v-if="buyType===1">
 
-      <!--<div class="frame_old_buy_gd_net_select_layout">
-        <span class="text_title_choose_gdinfo">
-          直接选用验光单
-        </span>
-        <img src='/static/images/frame_frequenter_suggest.png' class="frame_old_customer_suggest_text"/>
-      </div>
+        <!--<div class="frame_old_buy_gd_net_select_layout">
+          <span class="text_title_choose_gdinfo">
+            直接选用验光单
+          </span>
+          <img src='/static/images/frame_frequenter_suggest.png' class="frame_old_customer_suggest_text"/>
+        </div>
 
-      <a class="btn_chose_glass">
-        选择验光单
-      </a>
+        <a class="btn_chose_glass">
+          选择验光单
+        </a>
 
-      <div style="height: 20px"></div>-->
-      <div class="frame_old_buy_gd_net_select_layout">
-        <span class="text_title_choose_gdinfo">
-          选择光度
-        </span>
-        <img src='/static/images/frame_new_customer_suggest.png' class="frame_old_customer_suggest_text"/>
-      </div>
+        <div style="height: 20px"></div>-->
+        <div class="frame_old_buy_gd_net_select_layout">
+          <span class="text_title_choose_gdinfo">
+            选择光度
+          </span>
+          <img src='/static/images/frame_new_customer_suggest.png' class="frame_old_customer_suggest_text"/>
+        </div>
 
-      <a class="gd_choose_click" @click="openGdpop('R')" v-if="postInfoBean.sphR===''">
-        右眼(R)
-      </a>
-      <a class="gd_choose_click" @click="openGdpop('R')" v-if="postInfoBean.sphR!==''">
-        {{'右眼 光度:'+postInfoBean.sphR+' 散光:'+postInfoBean.cylR+' 轴位:'+postInfoBean.axisR}}
-      </a>
-      <a class="gd_choose_click" @click="openGdpop('L')" v-if="postInfoBean.sphL===''">
-        左眼(L)
-      </a>
-      <a class="gd_choose_click" @click="openGdpop('L')" v-if="postInfoBean.sphL!==''">
-        {{'右眼 光度:'+postInfoBean.sphL+' 散光:'+postInfoBean.cylL+' 轴位:'+postInfoBean.axisL}}
-      </a>
-      <a class="gd_choose_click black" @click="openGdpop('P')">
-        {{'瞳距：'+postInfoBean.pd}}
-      </a>
+        <a class="gd_choose_click" @click="openGdpop('R')" v-if="postInfoBean.sphR===''">
+          右眼(R)
+        </a>
+        <a class="gd_choose_click" @click="openGdpop('R')" v-if="postInfoBean.sphR!==''">
+          {{'右眼 光度:'+postInfoBean.sphR+' 散光:'+postInfoBean.cylR+' 轴位:'+postInfoBean.axisR}}
+        </a>
+        <a class="gd_choose_click" @click="openGdpop('L')" v-if="postInfoBean.sphL===''">
+          左眼(L)
+        </a>
+        <a class="gd_choose_click" @click="openGdpop('L')" v-if="postInfoBean.sphL!==''">
+          {{'右眼 光度:'+postInfoBean.sphL+' 散光:'+postInfoBean.cylL+' 轴位:'+postInfoBean.axisL}}
+        </a>
+        <a class="gd_choose_click black" @click="openGdpop('P')">
+          {{'瞳距：'+postInfoBean.pd}}
+        </a>
+      </section>
     </section>
     <!--精品选择-->
-    <section v-if="buyType===1&& groupGlassData.length>0">
+    <section v-if="buyType===1&& groupGlassData.length>0" class="out-box">
       <div class="black_line">
         Step3 请选择镜片
       </div>
@@ -494,13 +497,21 @@
 </script>
 
 <style lang="less">
+.out-box{
+      border: 1px solid #B9B9B9;
+    margin: 10px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
   .black_line {
     width: 100%;
-    height: 23px;
+    height: 26px;
+    line-height: 26px;
     color: #ffffff;
     font-size: 13px;
-    background: #000000;
-    margin-top: 20px;
+    background: #CAB894;
+    // margin-top: 20px;
     text-indent: 1em;
   }
 
@@ -508,6 +519,7 @@
     width: 100%;
     height: 86px;
     display: flex;
+
     align-items: center;
 
     .frame_bug_frame_and_glass {
@@ -561,7 +573,7 @@
 
   .not_choose_gd_layout {
 
-    padding: 0 15px;
+    padding: 0 15px 10px 15px;
 
     .frame_old_buy_gd_net_select_layout {
       display: flex;
@@ -614,10 +626,10 @@
       align-items: center;
       justify-content: center;
       &.black {
-        background-color: black;
+        background-color: #CAB894;
       }
       &.gold {
-        background-color: #cab894;
+        background-color: #A74C2D;
       }
 
     }

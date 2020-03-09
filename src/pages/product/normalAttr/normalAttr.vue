@@ -1,119 +1,130 @@
 <template>
 
   <div>
-    <div class="goods-name">
-      {{mainGoods.GoodsName}}
+    <div class="normal-box">
+      <div class="goods-name">
+        {{mainGoods.GoodsName}}
+      </div>
+      <block v-if="SeriesItems!=null&&SeriesItems.length>0">
+
+    
+        <img src="/static/images/imaginary_line.png" class="line"/>
+
+        <div class="series-title">
+          款式花色
+        </div>
+
+        <scroll-view class="scroll-view_H" scroll-x="true" style="width: 100%">
+          <div class="item-series-layout">
+            <div class="item-single" v-for="(item,index) in SeriesItems" :key="index" @click="changeSeries(index)">
+              <div class="series-img" :class="seriesPosition===index?'select ':''">
+                <img :src="item.SeriesImg" :class="seriesPosition===index?'series-image':'series-image'"/>
+              </div>
+              <div class="item-text-color">
+                {{item.AnotherName}}
+              </div>
+            </div>
+          </div>
+        </scroll-view>
+      </block>
     </div>
 
-    <div class="series-title">
-      款式花色
-    </div>
+    <div class="normal-box">
+      <div class="yinx-gd-layout" v-if="currentGoodsType!==0">
+        <div class="gd-num-title">
+          光度及数量
+        </div>
 
-    <scroll-view class="scroll-view_H" scroll-x="true" style="width: 100%">
-      <div class="item-series-layout">
-        <div class="item-single" v-for="(item,index) in SeriesItems" :key="index" @click="changeSeries(index)">
-          <img :src="item.SeriesImg" :class="seriesPosition===index?'series-image select':'series-image'"/>
-          <div class="item-text-color">
-            {{item.AnotherName}}
+        <div class="gd-choose-layout" v-if="currentGoodsType===2">
+          <div class="text-eye">
+            右眼R
+          </div>
+
+          <div class="choose-gd-click-layout" @click="openGdSelectPop('R')">
+            <div class="text-gd-show" v-if="GoodsFields.length===1">
+              {{postShowDouble.sphR===''?'请选择光度':'光度: '+postShowDouble.sphR}}
+            </div>
+            <div class="text-gd-show" v-if="GoodsFields.length>1">
+              {{postShowDouble.sphR===''?'请选择光度':('光度: '+postShowDouble.sphR+' 散光: '+postShowDouble.cylR + ' 轴位: ' +
+              postShowDouble.axisR)}}
+            </div>
+            <img src="/static/images/icon_attr_down.png" class="icon-arr-down"/>
+          </div>
+          <div style="display: flex;">
+            <img src="/static/images/cart_sub_icon.png" class="change-num-btn" @click="numchangeEvent('R',-1)"/>
+            <input type="tel" :value="rightNum" v-model="rightNum" autocomplete="off"
+                  class="input-only-buy-num"/>
+            <img src="/static/images/cart_add_icon.png" class="change-num-btn" @click="numchangeEvent('R',1)"/>
+          </div>
+        </div>
+
+        <div class="gd-choose-layout" v-if="currentGoodsType===2">
+          <div class="text-eye">
+            左眼L
+          </div>
+
+          <div class="choose-gd-click-layout" @click="openGdSelectPop('L')">
+            <div class="text-gd-show" v-if="GoodsFields.length===1">
+              {{postShowDouble.sphL===''?'请选择光度':'光度: '+postShowDouble.sphL}}
+            </div>
+            <div class="text-gd-show" v-if="GoodsFields.length>1">
+              {{postShowDouble.sphL===''?'请选择光度':('光度: '+postShowDouble.sphL+' 散光: '+postShowDouble.cylL + ' 轴位: ' +
+              postShowDouble.axisL)}}
+            </div>
+            <img src="/static/images/icon_attr_down.png" class="icon-arr-down"/>
+          </div>
+          <div style="display: flex;">
+            <img src="/static/images/cart_sub_icon.png" class="change-num-btn" @click="numchangeEvent('L',-1)"/>
+            <input type="tel" :value="leftNum" v-model="leftNum" autocomplete="off"
+                  class="input-only-buy-num"/>
+            <img src="/static/images/cart_add_icon.png" class="change-num-btn" @click="numchangeEvent('L',1)"/>
+          </div>
+        </div>
+
+        <div class="gd-choose-layout" v-if="currentGoodsType===1">
+          <div class="text-eye">
+            光度
+          </div>
+
+          <div class="choose-gd-click-layout" @click="openGdSelectPop('S')">
+            <div class="text-gd-show" v-if="GoodsFields.length===1">
+              {{postShowSingle.sph===''?'请选择光度':postShowSingle.sph}}
+            </div>
+            <div class="text-gd-show" v-if="GoodsFields.length>1">
+              {{postShowSingle.sph===''?'请选择光度':('光度 '+postShowSingle.sph+' 散光 '+postShowSingle.cyl + ' 轴位 ' +
+              postShowSingle.axis)}}
+            </div>
+            <img src="/static/images/icon_attr_down.png" class="icon-arr-down"/>
+          </div>
+          <div style="display: flex;">
+            <img src="/static/images/cart_sub_icon.png" class="change-num-btn" @click="numchangeEvent('S',-1)"/>
+            <input type="tel" :value="singleNum" v-model="singleNum" autocomplete="off"
+                  class="input-only-buy-num"/>
+            <img src="/static/images/cart_add_icon.png" class="change-num-btn" @click="numchangeEvent('S',1)"/>
           </div>
         </div>
       </div>
-    </scroll-view>
 
-    <img src="/static/images/imaginary_line.png" class="line"/>
+      <div class="no-property-layout" v-if="currentGoodsType===0">
+        <div style="display: flex;flex: 1">
 
-    <div class="yinx-gd-layout" v-if="currentGoodsType!==0">
-      <div class="gd-num-title">
-        光度及数量
-      </div>
-
-      <div class="gd-choose-layout" v-if="currentGoodsType===2">
-        <div class="text-eye">
-          右眼R
-        </div>
-
-        <div class="choose-gd-click-layout" @click="openGdSelectPop('R')">
-          <div class="text-gd-show" v-if="GoodsFields.length===1">
-            {{postShowDouble.sphR===''?'请选择光度':'光度: '+postShowDouble.sphR}}
-          </div>
-          <div class="text-gd-show" v-if="GoodsFields.length>1">
-            {{postShowDouble.sphR===''?'请选择光度':('光度: '+postShowDouble.sphR+' 散光: '+postShowDouble.cylR + ' 轴位: ' +
-            postShowDouble.axisR)}}
-          </div>
-          <img src="/static/images/icon_attr_down.png" class="icon-arr-down"/>
         </div>
         <div style="display: flex;">
-          <img src="/static/images/cart_sub_icon.png" class="change-num-btn" @click="numchangeEvent('R',-1)"/>
-          <input type="tel" :value="rightNum" v-model="rightNum" autocomplete="off"
-                 class="input-only-buy-num"/>
-          <img src="/static/images/cart_add_icon.png" class="change-num-btn" @click="numchangeEvent('R',1)"/>
-        </div>
-      </div>
-
-      <div class="gd-choose-layout" v-if="currentGoodsType===2">
-        <div class="text-eye">
-          左眼L
-        </div>
-
-        <div class="choose-gd-click-layout" @click="openGdSelectPop('L')">
-          <div class="text-gd-show" v-if="GoodsFields.length===1">
-            {{postShowDouble.sphL===''?'请选择光度':'光度: '+postShowDouble.sphL}}
-          </div>
-          <div class="text-gd-show" v-if="GoodsFields.length>1">
-            {{postShowDouble.sphL===''?'请选择光度':('光度: '+postShowDouble.sphL+' 散光: '+postShowDouble.cylL + ' 轴位: ' +
-            postShowDouble.axisL)}}
-          </div>
-          <img src="/static/images/icon_attr_down.png" class="icon-arr-down"/>
-        </div>
-        <div style="display: flex;">
-          <img src="/static/images/cart_sub_icon.png" class="change-num-btn" @click="numchangeEvent('L',-1)"/>
-          <input type="tel" :value="leftNum" v-model="leftNum" autocomplete="off"
-                 class="input-only-buy-num"/>
-          <img src="/static/images/cart_add_icon.png" class="change-num-btn" @click="numchangeEvent('L',1)"/>
-        </div>
-      </div>
-
-      <div class="gd-choose-layout" v-if="currentGoodsType===1">
-        <div class="text-eye">
-          光度
-        </div>
-
-        <div class="choose-gd-click-layout" @click="openGdSelectPop('S')">
-          <div class="text-gd-show" v-if="GoodsFields.length===1">
-            {{postShowSingle.sph===''?'请选择光度':postShowSingle.sph}}
-          </div>
-          <div class="text-gd-show" v-if="GoodsFields.length>1">
-            {{postShowSingle.sph===''?'请选择光度':('光度 '+postShowSingle.sph+' 散光 '+postShowSingle.cyl + ' 轴位 ' +
-            postShowSingle.axis)}}
-          </div>
-          <img src="/static/images/icon_attr_down.png" class="icon-arr-down"/>
-        </div>
-        <div style="display: flex;">
-          <img src="/static/images/cart_sub_icon.png" class="change-num-btn" @click="numchangeEvent('S',-1)"/>
-          <input type="tel" :value="singleNum" v-model="singleNum" autocomplete="off"
-                 class="input-only-buy-num"/>
-          <img src="/static/images/cart_add_icon.png" class="change-num-btn" @click="numchangeEvent('S',1)"/>
+          <img src="/static/images/cart_sub_icon.png" class="change-num-btn" @click="numchangeEvent('N',-1)"/>
+          <input type="tel" :value="noPropertyQuantity" v-model="noPropertyQuantity" autocomplete="off"
+                class="input-only-buy-num"/>
+          <img src="/static/images/cart_add_icon.png" class="change-num-btn" @click="numchangeEvent('N',1)"/>
         </div>
       </div>
     </div>
 
-    <div class="no-property-layout" v-if="currentGoodsType===0">
-      <div style="display: flex;flex: 1">
-
-      </div>
-      <div style="display: flex;">
-        <img src="/static/images/cart_sub_icon.png" class="change-num-btn" @click="numchangeEvent('N',-1)"/>
-        <input type="tel" :value="noPropertyQuantity" v-model="noPropertyQuantity" autocomplete="off"
-               class="input-only-buy-num"/>
-        <img src="/static/images/cart_add_icon.png" class="change-num-btn" @click="numchangeEvent('N',1)"/>
-      </div>
-    </div>
 
     <div class="bottom-layou">
-      <img src="/static/images/icon_sph_conversion.png" class="gd-huansuan"/>
+      <img src="/static/images/icon_sph_conversion.png" class="gd-huansuan" @click="_showDSHS()"/>
+      <button open-type="contact" bindcontact="contactService" >
       <img src="/static/images/icon_contact_service_new.png" class="contact-service"/>
+      </button>
     </div>
-
 
     <div class="btm-buy-btn-layout">
       <div class="put-into-cart" @click="buyGoods(false)">
@@ -572,7 +583,15 @@
             }
           }
         });
-      }
+      },
+       //度数换算跳转
+    _showDSHS() {
+      wx.navigateTo({
+        url:
+          "/pages/htmlPreview/main?path=" +
+          encodeURIComponent("/TemplateForNewApp/degreeConversion")
+      });
+    },
     }
 
   }
@@ -580,11 +599,17 @@
 </script>
 
 <style lang="less" scoped>
-
+.normal-box{
+   border: 1px solid #B9B9B9;
+    margin: 10px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
   .goods-name {
     color: #7e7e7e;
     font-size: 13px;
-    margin: 15px;
+    margin: 10px 15px 10px 15px;
   }
 
   .series-title {
@@ -600,6 +625,7 @@
     .item-series-layout {
       display: flex;
       margin: 0 10px;
+
       .item-single {
         display: flex;
         width: 68px;
@@ -607,13 +633,34 @@
         margin: 5px;
 
         flex-direction: column;
-        .series-image {
+        .series-img{
           width: 68px;
           height: 68px;
-          border: #eeeeee solid 1px;
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
           &.select {
             border: #cab894 solid 1px;
           }
+        }
+        .series-image {
+          width: 58px;
+          height: 58px;
+          // padding: 5px;
+          border-radius: 50%;
+          overflow: hidden;
+          // border: #eeeeee solid 1px;
+          // &.select::after {
+          //   content:'';
+          //   width: 68px;
+          //   height: 68px;
+          //   box-sizing: border-box;
+          //   border: #cab894 solid 1px;
+          //   position: absolute;
+          //   left: 0;
+          //   top: 0;
+          // }
         }
 
         .item-text-color {
@@ -630,13 +677,14 @@
           line-clamp: 1;
           -webkit-box-orient: vertical;
           height: 16px;
+          text-align: center;
         }
       }
     }
   }
 
   .yinx-gd-layout {
-    margin: 0 15px;
+    margin: 10px 15px;
 
     .gd-num-title {
       margin-bottom: 12px;
@@ -708,6 +756,22 @@
       width: 104px;
       height: 24px;
     }
+    ._button{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border: 2rpx solid #F4F4F4;
+      background: transparent;
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      font-size: inherit;
+      border-radius: 0;
+      line-height: initial;
+      color: inherit;
+      border: 0;
+    }
   }
 
   .btm-buy-btn-layout {
@@ -719,7 +783,7 @@
 
     .put-into-cart {
       color: white;
-      background-color: black;
+      background-color: #A74C2D;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -729,7 +793,7 @@
 
     .buy-it-now {
       color: white;
-      background-color: #cab894;
+      background-color: #CAB894;
       display: flex;
       justify-content: center;
       align-items: center;

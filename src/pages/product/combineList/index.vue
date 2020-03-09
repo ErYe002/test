@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page">
     <div>
       <div class="combine_content" v-if="Data != null && Data.length > 0">
         <div class="ui_listview" v-for="item in Data" :key="item.index">
@@ -90,13 +90,32 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.combine_content {
+.page{
+    background: #f5f5f5;
   font-size: 12px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+}
+.combine_content {
+  // background: #f5f5f5;
+  // font-size: 12px;
+  // position: absolute;
+  // top: 0;
+  // bottom: 0;
+  // height: 100%;
+  // width: 100%;
   .ui_listview {
-    border-bottom: solid 10px #eee;
+    background-color: #fff;;
+    margin: 10px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-sizing: border-box;
     .uil_titlecon {
       overflow: hidden;
-      border-bottom: solid 1px #dcdcdc;
+      border-bottom: dashed 1px #dcdcdc;
       padding-left: 1em;
       padding-right: 1em;
       .ui_listtitle {
@@ -129,14 +148,16 @@ export default {
               margin-left: 2%;
             }
             ._i {
-              border: 1px solid #000;
-              color: #000;
+              background: #EB5255;
+              padding: 2px 6px;
+              color: #fff;
               margin-left: 2%;
-              font-size: 12px;
+              font-size: 11px;
               white-space: nowrap;
-              height: 20px;
+              height: 17px;
               display: flex;
               align-items: center;
+              border-radius: 8px;
             }
           }
         }
@@ -156,17 +177,21 @@ export default {
     padding: 0 10px;
     .cg_link {
       display: block;
-      border-bottom: solid 1px #dcdcdc;
+      // border-bottom: solid 1px #dcdcdc;
       padding: 10px 0;
       position: relative;
       .cgs_img {
         display: table-cell;
         vertical-align: middle;
+        border-radius: 5px;
+        overflow: hidden;
         ._img {
           width: 90px;
           border: solid 1px #f1f1f1;
           display: block;
           height: 90px;
+          border-radius: 5px;
+          overflow: hidden;
         }
       }
       .cgs_info {
@@ -187,15 +212,15 @@ export default {
         .cgs_prs {
           line-height: 34px;
           font-size: 16px;
-          color: #000;
+          color: #EB5255;;
           font-weight: 400;
         }
       }
       .cgs_count {
         position: absolute;
         right: 1em;
-        top: 40px;
-        font-size: 16px;
+        top: 65px;
+        font-size: 12px;
         color: #888;
       }
     }
@@ -203,9 +228,13 @@ export default {
   .ui-btn {
     background: #cab894;
     border: solid 1px #cab894;
-    min-height: 50px;
+    min-height: 32px;
     margin-bottom: 1em;
     margin-top: 1em;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     .bnt_link {
       background: 0;
       border: 0;
@@ -213,7 +242,7 @@ export default {
       cursor: pointer;
       display: block;
       font-size: 16px;
-      line-height: 55px;
+      
       text-align: center;
       width: 100%;
     }

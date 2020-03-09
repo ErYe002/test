@@ -51,6 +51,7 @@ export default {
   data() {
     return {
       title: "",
+      tag:"",//仅用于商量页跳转显示 可凑单
       dataList: [],
       totalPage: 0,
       isLoading: false,
@@ -69,7 +70,7 @@ export default {
   },
   computed:{
     isMJ(){
-      return this.title.indexOf('满减') != -1
+      return this.title.indexOf('满减') != -1 || this.tag.indexOf('满减') != -1
     }
   },
   onLoad(options) {
@@ -79,6 +80,7 @@ export default {
         title: options.title
       });
       this.title = options.title
+      this.tag = options.tag?options.tag:""
       this._getPageData();
     }
   },

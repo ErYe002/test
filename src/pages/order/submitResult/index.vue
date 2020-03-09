@@ -7,12 +7,23 @@
         <div class="tips">
           <b class="title">温馨提示：</b>
           <p>{{resultMsg}}</p>
-          <p class="emptyLine"></p>
-          <p>订单金额：￥{{OrderAmount}}</p>
-          <p>订单编号：{{orderNo}}</p>
         </div>
       </section>
+      <section class="order-box">
+          <p>订单金额：￥{{OrderAmount}}</p>
+          <p>订单编号：{{orderNo}}</p>
+      </section>
       <a href="/pages/index/main" open-type="switchTab" class="kd-btn">继续购物</a>
+      <a :href="'/pages/account/order/detail/main?orderId=' + OrderId" class="kd-btn">查看订单</a>
+      <div class="Code_box"  v-if="CodeUrl">
+        <div class="tips">{{Tips}}</div>
+        <div class="CodeUrl_box">
+          <img :src="CodeUrl" alt="" class="CodeUrl" @click="clickErCode">
+        </div>
+      </div>
+        <div class="PaySuccessImg_box" v-if="PaySuccessImg">
+          <img :src="PaySuccessImg" alt="" class="PaySuccessImg">
+        </div>
       <section class="may-like-box" v-if="likeGoodsList.length > 0">
         <p class="title">猜你喜欢</p>
         <scroll-view class="may-like-list" scroll-x="true" enable-flex="true" @scroll="scroll">
@@ -33,12 +44,17 @@ import api from "@/api/cart";
 
 export default {
   data(){
+
     return { 
       likeGoodsList: [], //猜你喜欢商品列表
       resultMsg:'',
       OrderAmount:'',
       orderNo:'',
       shopId: '1',
+      OrderId:"",
+      PaySuccessImg:"",
+      Tips:"",
+      CodeUrl:""
     }
   },
   onLoad: function (options) {
@@ -48,7 +64,9 @@ export default {
       this.resultMsg = options.resultMsg
       this.OrderAmount = options.OrderAmount
       this.orderNo = options.orderNo
+      this.OrderId = options.OrderId
       this._getLikeGoods();
+      this._getPaySuccessBanner();
     }
   },
   methods: {
@@ -59,6 +77,18 @@ export default {
         this.likeGoodsList = [...Data];
       });
     },
+    _getPaySuccessBanner(){
+      api.paySuccessBanner().then(({ Data }) => {
+        this.CodeUrl = Data.WeChatQrCodeUrl
+        this.Tips = Data.Tips
+        this.PaySuccessImg = Data.BannerImageUrl
+      });
+    },
+    clickErCode(){
+      wx.previewImage({
+        urls: [this.CodeUrl] // 需要预览的图片http链接列表
+      })
+    }
   }
 
 };
@@ -71,7 +101,7 @@ page {
 }
 .no-data-box {
   .tips-box {
-    margin: 30px 0 40px;
+    margin: 30px 0 20px;
     display: flex;
     justify-content: center;
     .icon {
@@ -94,11 +124,21 @@ page {
       }
     }
   }
+  .order-box{
+    margin: 15px;
+    display: flex;
+    color: #888;
+    font-size: 13px;
+    justify-content: center;
+  }
   .kd-btn {
     width: calc(100% - 60px);
     margin: 0 auto;
-    border-bottom: 1px solid #CAB894;
-    color: #ffffff;
+    border-bottom: 1px solid #C6B798;
+    color: #C6B798;
+    background: #fff;
+    margin-bottom: 11px;
+    border-radius: 10px;
   }
   .may-like-box {
     .title {
@@ -140,6 +180,31 @@ page {
       }
     }
   }
+  .PaySuccessImg_box{
+      padding: 0 15px;
+      display: flex;
+      justify-content: center;
+      .PaySuccessImg{
+        width: 100%;
+      }
+  }
+  .Code_box{
+    padding: 0 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    .tips{
+      font-size: 14px;
+      color: #000;
+    }
+    .CodeUrl{
+      width: 131px;
+      height: 131px;
+      margin: 10px 0;
+    }
+  }
+
 }
 
 </style>

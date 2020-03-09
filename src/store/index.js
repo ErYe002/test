@@ -9,6 +9,7 @@ import attGlassList from './modules/attrGlassList'
 import order from './modules/order'
 import remark from './modules/remark'
 import comment from './modules/comment'
+import userInfo from './modules/userInfo'
 
 Vue.use(Vuex);
 
@@ -45,6 +46,10 @@ const store = new Vuex.Store({
     comment:{
       namespaced:true,
       ...comment
+    },
+    userInfo:{
+      namespaced:true,
+      ...userInfo
     }
   }
 });

@@ -59,11 +59,8 @@ export default {
     _getMenuData() {
       api.getHomeMenuData().then(({ Data }) => {
         let list = Data.filter((ele) => {
-          // if(ele.SeoCode == 'code150'){
-          //   ele.ChName = "隐形护理"
-          // }
-          return ele.SeoCode == 'code000' || ele.SeoCode == 'code350' || ele.SeoCode == 'code200' || ele.SeoCode == 'code050' 
-          // return ele.SeoCode == 'code000' || ele.SeoCode == 'code350' || ele.SeoCode == 'code200' || ele.SeoCode == 'code050' || ele.SeoCode == 'code150' || ele.SeoCode == 'code100'
+          // return ele.SeoCode == 'code000' || ele.SeoCode == 'code350' || ele.SeoCode == 'code200' || ele.SeoCode == 'code050' 
+          return ele.SeoCode == 'code000' || ele.SeoCode == 'code350' || ele.SeoCode == 'code200' || ele.SeoCode == 'code050' || ele.SeoCode == 'code150' || ele.SeoCode == 'code100'
         });
         list.push({
           Id: 0,
@@ -85,7 +82,7 @@ export default {
     }
   },
 
-  created() {
+  onShow() {
     this._getMenuData();
   },
     onShareAppMessage(res) {
@@ -165,10 +162,11 @@ export default {
 .nav-len6{
   width: 100%;
   white-space: nowrap;
+  display: flex;
     .n-item {
       padding: 0 9px;
       height: 100%;
-      display: inline-block;
+      // display: inline-block;
    }
 }
 </style>

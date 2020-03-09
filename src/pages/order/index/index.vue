@@ -138,6 +138,9 @@
     
     <div class="sectionLine"></div>
     <view class='buy-vip-box' v-if="!orderInfo.IsVip && orderInfo.ShopId != 2">
+      <view class="order_vip_box">
+        <img src="/static/images/order_svip.png" class="order_vip_img">
+      </view>
       <view class='b-left'>
         <view class='title'>{{orderInfo.BuySvipDiscountContent}}</view>
         <view class='subtitle'>{{orderInfo.BuySvipAmountConent}}</view>
@@ -488,14 +491,14 @@ export default {
         this.submitResultInfo = Data;
         this.submitResultMsg = Msg
         if (State){
-          console.log(Data.OrderId + '订单号')
+          console.log(Data.OrderId + '订单号')//
           if (Data.IsToPay) { 
             //订单创建成功，唤起微信支付
             this._wechatPay(Data.OrderId)
           }else{
             // 完全使用余额支付 wx.redirectTo
             wx.redirectTo({
-              url: '/pages/order/submitResult/main?resultMsg='+Msg+'&shopId='+this.formModel.selectShopId+'&orderNo='+Data.OrderNo+'&OrderAmount='+Data.OrderAmount,
+              url: '/pages/order/submitResult/main?resultMsg='+Msg+'&shopId='+this.formModel.selectShopId+'&orderNo='+Data.OrderNo+'&OrderAmount='+Data.OrderAmount+'&OrderId='+Data.OrderId,
             })
           }
         }else{
@@ -536,7 +539,7 @@ export default {
                 });
                 _this.$getCartCount();
                 wx.redirectTo({
-                  url: '/pages/order/submitResult/main?resultMsg='+this.submitResultMsg+'&shopId='+this.formModel.selectShopId+'&orderNo='+this.submitResultInfo.OrderNo+'&OrderAmount='+this.submitResultInfo.OrderAmount,
+                  url: '/pages/order/submitResult/main?resultMsg='+_this.submitResultMsg+'&shopId='+_this.formModel.selectShopId+'&orderNo='+_this.submitResultInfo.OrderNo+'&OrderAmount='+_this.submitResultInfo.OrderAmount+'&OrderId='+orderId,
                 })
             },
             fail: function() {
@@ -1066,5 +1069,11 @@ page {
     font-size: 12px;
     font-weight: 300;
   }
+}
+.order_vip_img{
+  width: 30px;
+  height: 16px;
+  margin-right: 6px;
+  vertical-align:sub;
 }
 </style>

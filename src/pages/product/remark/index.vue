@@ -1,9 +1,9 @@
 <template>
   <!-- 评论 -->
-  <div>
+  <div class="page">
     <div class="actCon remarkBox">
       <div class="act-remark actLine">
-        <img src="/static/images/smile.jpg" class="smile" alt />
+        <img src="/static/images/smile.png" class="smile" alt />
         <span>{{ramarkData.PraiseRatio}}%</span>
         好评
       </div>
@@ -30,8 +30,33 @@
         </block>
       </ul>
     </div>
-    <div :class="'showTagBtn '+(isShowMoreTag?'showMoreIcon':'')" @click="_showMoreTag()">∨</div>
+    <div :class="'showTagBtn'" @click="_showMoreTag()"><span :class="(isShowMoreTag?'showMoreIcon':'icon')">{{isShowMoreTag?'∧':'∨'}}</span></div>
     <block>
+      <div class="communtiyBox" v-if="HotCommentList != null &&  HotCommentList.length>0">
+          <swiper  class="communtiy-swiper">
+            <block v-for="item in HotCommentList" :key="item.index">
+              <swiper-item class="communtiy-swiperItem"  >
+                  <div class="com-content">
+                      <div class="com-text">
+                          <img :src="item.UserInfo.HeadUrl?item.UserInfo.HeadUrl:'/static/images/default_img.gif'" alt="" class="heder-img">
+                          <div>
+                            <span class="com-name">{{item.UserInfo.UserName}}</span><br/>
+                          </div>
+                      </div>
+                      <div class="com-tips">{{item.Content}}</div>
+                  </div>
+                  <div class="scroll-img" v-if="item.ArticleImgDtos != null && item.ArticleImgDtos.length> 0">
+                      <block v-for="(imgitem,imgindex) in item.ArticleImgDtos" :key="imgindex">
+                        <li class="comment-pic-li">
+                          <img :src="imgitem.ImgAddress" mode="aspectFit"  />
+                        </li>
+                      </block>
+                  </div>
+                  <div class="com-from">来自社区心得</div>
+              </swiper-item>
+            </block>
+          </swiper>
+      </div>
       <div class="remarkCon" v-if="Data != null ">
         <div class="remarkBox" v-for="item in Data" :key="item.index">
           <div class="comment-header">
@@ -103,10 +128,13 @@ export default {
       LableName: "",
       Page: 1,
       totalPage: 3,
-      noData: false
+      noData: false,
+      HotCommentList:""
     };
   },
   onLoad(options) {
+    let HotCommentList = wx.getStorageSync("HotCommentList");
+    this.HotCommentList = HotCommentList
     this.selecLabel = options.label;
     if (this.selecLabel == "有图") {
       this.RemarkType = 4;
@@ -178,7 +206,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.page{
+  background: #f5f5f5;
+}
 .remarkBox {
+  background: #fff;
   .act-remark {
     padding: 10px 15px;
     display: flex;
@@ -203,6 +235,7 @@ export default {
   }
 }
 .remarkTag {
+  background: #fff;
   padding: 0 15px;
   max-height: 52px;
   overflow: hidden;
@@ -218,6 +251,7 @@ export default {
     margin-bottom: 8px;
     margin-right: 8px;
     padding: 2px 6px;
+    border-radius: 5px;
     &.badlabel {
       background: #f3f3f3;
     }
@@ -228,27 +262,33 @@ export default {
   }
 }
 .showTagBtn {
-  width: 120%;
-  border-bottom: 1px solid #ececec;
+  background: #fff;
+  width: 100%;
   margin: 0 auto;
-  margin-left: -10%;
+  // margin-left: -10%;
   text-align: center;
   line-height: 30px;
-  transform: scale(2, 1);
-  color: #ccc;
-  &.showMoreIcon {
-    transform: scale(2, 1) rotate(180deg);
-    border-top: 1px solid #ececec;
-    border-bottom: 0;
+  .icon{
+    transform: scale(2, 1);
+    color: #ccc;
+  }
+  .showMoreIcon {
+      transform: scale(2, 1);
+      border-bottom: 0;
   }
 }
 .remarkCon {
   .remarkBox {
+    margin: 10px;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #fff;
+
     padding: 10px 15px;
     position: relative;
-    padding-bottom: 20px;
-    font-size: 12px;
-    border-bottom: 5px solid #f5f5f5;
+    // padding-bottom: 20px;
+    // font-size: 12px;
+    // border-bottom: 5px solid #f5f5f5;
   }
   .comment-header {
     display: flex;
@@ -304,11 +344,75 @@ export default {
   .comment-pic-li {
     display: inline-block;
     margin-right: 10px;
+    border-radius: 5px;
+    overflow: hidden;
   }
   .comment-pic ._img {
     width: 100px;
     height: 100px;
+    border-radius: 5px;
+    overflow: hidden;
     background: #ececec;
   }
 }
+.communtiyBox{
+      margin: 10px;
+      overflow: hidden;
+      padding: 10px 15px;
+      // height: 120px;
+      background: #fff;
+      border-radius: 20px;
+      .communtiy-swiper{
+          height: 200px;
+          .com-text{
+            display: flex;
+            align-items: center;
+            .heder-img{
+              width: 30px;
+              height: 30px;
+              border-radius: 50%;
+              overflow: hidden;
+              margin-right: 10px;
+            }
+          }
+          .com-tips{
+            text-overflow: ellipsis;         //超出部分用省略号 ...  来代替
+              display: -webkit-box;
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 2;           //限制要出现的行数
+              overflow: hidden;
+              font-size: 24rpx;
+              color: #010101;
+              word-wrap: break-word;
+              margin-top: 5px;
+          }
+          .scroll-img{
+            display: flex;
+            justify-content: flex-start;
+            margin-top: 10px;
+            ._img{
+              margin-right: 5px;
+              width: 100px;
+              height: 100px;
+              border-radius: 5px;
+              overflow: hidden;
+              background: #ececec;
+            }
+          }
+      }
+      .com-from{
+        color: #E31436;
+        border: 1px solid #E31436;
+        vertical-align: middle;
+        font-size: 10px;
+        border-radius: 5px;
+        width: 80px;
+        text-align: center;
+        position: absolute;
+        left: 0px;
+        bottom: 0px;;
+
+
+      }
+    }
 </style>

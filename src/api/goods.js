@@ -61,6 +61,26 @@ const api = {
     &ShopId=${ShopId}
     &IsFreeCarriage=${IsFreeCarriage}`);
   },
+  //获取关于商品社区文章
+  getHotCommentList(GoodsId, PageSize) {
+    return http.post(`/Community/GetHotCommentListByGoodsId?goodsId=${GoodsId}&pageSize=${PageSize}`);
+  },
+  //关注店铺
+  Follow(BrandStoreId) {
+    return http.post(`/BrandStore/Follow?brandStoreId=${BrandStoreId}`);
+  },
+  //取消关注店铺
+  CancelFollow(BrandStoreId) {
+    return http.post(`/BrandStore/CancelFollow?brandStoreId=${BrandStoreId}`);
+  },
+  //获取小程序二维码
+  getShareQrcode({ accessToken, page, width = 200 } = {}) {
+    return http.post('Groupon/GetGrouponShareQrCodeAsync', {
+      accessToken, page, width
+    }, {
+        'content-type': 'application/x-www-form-urlencoded'
+      })
+  }
 };
 
 export default api;
