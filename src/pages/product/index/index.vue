@@ -169,9 +169,10 @@
               <span class="icon">></span>
             </span>
           </div>
-          <div class="act-jifen actLine" v-if="Data.GoodsBase.GiftScore > 0">
+          <div class="act-jifen actLine" v-if="Data.GoodsBase.GiftScore > 0||Data.GoodsBase.ScoreDeductionPrice > 0">
             <span class="act-name">积分</span>
-            <span class="act-con">{{Data.GoodsBase.ScoreDeductionPrice > 0?"积分至多抵扣￥"+Data.GoodsBase.ScoreDeductionPrice+",":''}}{{Data.GoodsBase.GiftScore>0?"下单预计可得"+Data.GoodsBase.GiftScore+"积分":""}}</span>
+            <span class="act-con">{{Data.GoodsBase.ScoreDeductionPrice > 0?"积分至多抵扣￥"+Data.GoodsBase.ScoreDeductionPrice+(Data.GoodsBase.GiftScore > 0?",":""):''}}
+              {{Data.GoodsBase.GiftScore>0?"下单预计可得"+Data.GoodsBase.GiftScore+"积分":""}}</span>
             <span class="act-info">
               <span class="icon"></span>
             </span>
