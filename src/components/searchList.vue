@@ -52,8 +52,8 @@ export default {
         }
         .tag-img {
           position: absolute;
-          left: 10px;
-          top: 10px;
+          left: 0px;
+          top: 0px;
           display: block;
           width: 45px;
           height: 45px;

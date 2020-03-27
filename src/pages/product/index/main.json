@@ -2,8 +2,7 @@
     "navigationBarTitleText": "商品详情",
     "usingComponents": {
       "share-button": "plugin://goodsSharePlugin/share-button",
-      "share-poster": "/static/iview/sharePoster/sharePoster",
-      "cell": "plugin://contactPlugin/cell"
+      "share-poster": "/static/iview/sharePoster/sharePoster"
     }
   }
   

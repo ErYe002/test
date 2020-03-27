@@ -109,6 +109,20 @@ const api = {
       return http.post(url);
     }
     return http.postByNoLoading(url);
+  },
+  //svip确认订单页
+  getSvipPageData() {
+    return http.post('Cart/ConfirmSvipOrder');
+  },
+  //svip提交订单
+  submitSvipOrder(PromotionId) {
+    return http.post('Cart/SubmitSvipOrder',{
+      PromotionId:PromotionId
+    });
+  },
+   //微信支付
+   payOrder(orderId, openId) {
+    return http.post(`/Payment/WechatPayForMinprogram?orderId=${orderId}&ip=&wechatOpenId=${openId}`)
   }
 };
 export default api;

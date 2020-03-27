@@ -171,15 +171,15 @@
           </div>
           <div class="act-jifen actLine" v-if="Data.GoodsBase.GiftScore > 0">
             <span class="act-name">积分</span>
-            <span class="act-con">购买送{{Data.GoodsBase.GiftScore}}积分</span>
+            <span class="act-con">{{Data.GoodsBase.ScoreDeductionPrice > 0?"积分至多抵扣￥"+Data.GoodsBase.ScoreDeductionPrice+",":''}}{{Data.GoodsBase.GiftScore>0?"下单预计可得"+Data.GoodsBase.GiftScore+"积分":""}}</span>
             <span class="act-info">
               <span class="icon"></span>
             </span>
           </div>
-          <div class="act-dikou actLine" v-if="Data.GoodsBase.ScoreDeductionPrice > 0">
+          <!-- <div class="act-dikou actLine" v-if="Data.GoodsBase.ScoreDeductionPrice > 0">
             <span class="act-name">抵扣</span>
             <span class="act-con">积分至多抵扣￥{{Data.GoodsBase.ScoreDeductionPrice}}</span>
-          </div>
+          </div> -->
           <div class="discountsFull" 
               v-if="(Data.GoodsBase.FirstBuyContent!=null&&Data.GoodsBase.FirstBuyContent>0)||(Data.GoodsPagePromotion.BuyReduceContent!=null&&Data.GoodsPagePromotion.BuyReduceContent!='')||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.Gift != null && Data.GoodsPagePromotion.Gift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FullGift != null && Data.GoodsPagePromotion.FullGift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FreeCollocation != null && Data.GoodsPagePromotion.FreeCollocation.length>0)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.FullReducePromotion != null)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.ChangeBuy != null && Data.GoodsPagePromotion.ChangeBuy.length>0)||(Data.ErpGifts != null && Data.ErpGifts.length>0)"  
             >
