@@ -112,7 +112,7 @@ export default {
     },
        //提交订单 去支付
     submitOrder() {
-      api.submitSvipOrder(this.Data.PromotionId).then(({Data,Msg,State}) => {
+      api.submitSvipOrder(this.Data.CouponNo).then(({Data,Msg,State}) => {
         console.log(Data)
         this.submitResultInfo = Data;
         if (State){

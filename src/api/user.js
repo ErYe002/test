@@ -115,9 +115,9 @@ const api = {
     return http.post('Cart/ConfirmSvipOrder');
   },
   //svip提交订单
-  submitSvipOrder(PromotionId) {
+  submitSvipOrder(CouponNo) {
     return http.post('Cart/SubmitSvipOrder',{
-      PromotionId:PromotionId
+      CouponNo:CouponNo
     });
   },
    //微信支付
