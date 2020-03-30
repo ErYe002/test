@@ -323,14 +323,14 @@
       <!-- 微信客服 -->
     <centerFlip :isShow.sync="isShowWxCodeUrl" @hide="_close">
       <div class="contact_wx" @click="_loadCode(CodeUrl)">
-        <img src="/static/images/tk_wx.jpg" alt="" mode='widthFix' class="action_btn">
+        <img :src="CodeImgUrl" alt="" mode='widthFix' class="action_btn">
         <img :src="CodeUrl" alt="" class="codeurl">
       </div>
     </centerFlip>
       <!-- 我要告状 -->
     <centerFlip :isShow.sync="isShowGzCodeUrl" @hide="_closeGz">
       <div class="contact_wx" @click="_loadCode(GzCodeUrl)">
-        <img src="/static/images/tk_wx.jpg" alt="" mode='widthFix' class="action_btn">
+        <img :src="GzImgUrl" alt="" mode='widthFix' class="action_btn">
         <img :src="GzCodeUrl" alt="" class="codeurl">
       </div>
     </centerFlip>
@@ -340,7 +340,6 @@
 
 <script>
 import api from "@/api/user";
-import codeapi from "@/api/cart";
 import authorization from "@/utils/authorization";
 import centerFlip from "@/components/centerFlip";
 import { mapState } from "vuex";
@@ -375,7 +374,9 @@ export default {
       isShowWxCodeUrl:false,
       isShowGzCodeUrl:false,
       CodeUrl:"",
-      GzCodeUrl:""
+      CodeImgUrl:"",
+      GzCodeUrl:"",
+      GzImgUrl:""
     };
   },
    components: {
@@ -513,8 +514,9 @@ export default {
     },
     _alertWx(){ 
       if(!this.CodeUrl){
-        codeapi.paySuccessBanner().then(({ Data }) => {
+        api.getCustomerService().then(({ Data }) => {
           this.CodeUrl = Data.WeChatQrCodeUrl;
+          this.CodeImgUrl = Data.IllustrationUrl;
           this.isShowWxCodeUrl = !this.isShowWxCodeUrl
         });
       }else{
@@ -523,8 +525,9 @@ export default {
     },
     _alertGz(){
         if(!this.GzCodeUrl){
-          codeapi.paySuccessBanner().then(({ Data }) => {
+          api.getFeedBack().then(({ Data }) => {
             this.GzCodeUrl = Data.WeChatQrCodeUrl;
+            this.GzImgUrl = Data.IllustrationUrl;
             this.isShowGzCodeUrl = !this.isShowGzCodeUrl
           });
         }else{

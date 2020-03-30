@@ -110,6 +110,14 @@ const api = {
     }
     return http.postByNoLoading(url);
   },
+   //获取客服二维码
+   getCustomerService() {
+    return http.post('Account/CustomerService');
+    },
+    //获取告状二维码
+    getFeedBack() {
+      return http.post('Account/Feedback');
+    },
   //svip确认订单页
   getSvipPageData() {
     return http.post('Cart/ConfirmSvipOrder');
