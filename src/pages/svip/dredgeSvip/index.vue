@@ -120,6 +120,11 @@ export default {
           if (Data.IsToPay) { 
             //订单创建成功，唤起微信支付
             this._wechatPay(Data.OrderId)
+          }else{
+            wx.setStorageSync('isSvipRedirect',true)
+            wx.switchTab({
+              url: '/pages/home/main'
+            })
           }
         }else{
           let tempMsg = "";
