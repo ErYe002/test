@@ -80,11 +80,14 @@ export default {
     return {
       //填充userInfoModel和walletModel的默认字段，以免控制台报错
       Data:{},
-      chekedTcp:false
+      chekedTcp:false,
+       submitResultInfo:{},
+      submitResultMsg:""
     };
   },
   computed: {
-    ...mapState("user", ["token"])
+    ...mapState("user", ["token"]),
+    ...mapState("wxinfo", ["openId"])
   },
  
   onLoad(){
@@ -114,16 +117,20 @@ export default {
     submitOrder() {
       api.submitSvipOrder(this.Data.CouponNo).then(({Data,Msg,State}) => {
         console.log(Data)
-        this.submitResultInfo = Data;
+         this.submitResultInfo = Data;
+        this.submitResultMsg = Msg
         if (State){
           console.log(Data.OrderId + '订单号')//
           if (Data.IsToPay) { 
             //订单创建成功，唤起微信支付
             this._wechatPay(Data.OrderId)
           }else{
-            wx.setStorageSync('isSvipRedirect',true)
-            wx.switchTab({
-              url: '/pages/home/main'
+            // wx.setStorageSync('isSvipRedirect',true)
+            // wx.switchTab({
+            //   url: '/pages/home/main'
+            // })
+            wx.redirectTo({
+              url: '/pages/order/submitResult/main?resultMsg='+Msg+'&shopId=1&orderNo='+Data.OrderNo+'&OrderAmount='+Data.OrderAmount+'&OrderId='+Data.OrderId+"&svip=true",
             })
           }
         }else{
@@ -156,10 +163,13 @@ export default {
             signType: signType,
             paySign: paySign,
             success: function(res) {
-                wx.setStorageSync('isSvipRedirect',true)
-                wx.switchTab({
-                  url: '/pages/home/main'
-                })
+                // wx.setStorageSync('isSvipRedirect',true)
+                // wx.switchTab({
+                //   url: '/pages/home/main'
+                // })
+              wx.redirectTo({
+                url: '/pages/order/submitResult/main?resultMsg='+_this.submitResultMsg+'&shopId=1&orderNo='+_this.submitResultInfo.OrderNo+'&OrderAmount='+_this.submitResultInfo.OrderAmount+'&OrderId='+orderId+"&svip=true",
+              })
             },
             fail: function() {
               // wx.reportMonitor("3", 1);

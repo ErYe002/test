@@ -5,7 +5,7 @@
         <span class="order-no">订单编号：{{orderInfo.OrderNo}}</span>
         <span class="order-status">{{orderInfo.OrderState}}</span>
       </section>
-      <section class="address-box">
+      <section class="address-box" v-if="!svip">
         <p class="top-bg"></p>
         <div class="address-info">
           <p class="name">{{orderInfo.Consignee}}</p>
@@ -126,6 +126,7 @@ export default {
   data() {
     return {
       orderId: "",
+      svip:false,
       orderInfo: null
     };
   },
@@ -135,6 +136,9 @@ export default {
   onLoad(options) {
     if (options && options.orderId) {
       this.orderId = options.orderId;
+    }
+     if (options && options.svip) {
+      this.svip = options.svip;
     }
     this._getPageData();
   },
