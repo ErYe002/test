@@ -14,7 +14,7 @@
           <p>订单编号：{{orderNo}}</p>
       </section>
       <a href="/pages/index/main" open-type="switchTab" class="kd-btn">继续购物</a>
-      <a :href="'/pages/account/order/detail/main?orderId=' + OrderId" class="kd-btn">查看订单</a>
+      <a :href="'/pages/account/order/detail/main?orderId=' + OrderId+'&svip='+svip" class="kd-btn">查看订单</a>
       <div class="Code_box"  v-if="CodeUrl">
         <div class="tips">{{Tips}}</div>
         <div class="CodeUrl_box">
@@ -53,6 +53,7 @@ export default {
       shopId: '1',
       OrderId:"",
       PaySuccessImg:"",
+      svip:false,
       Tips:"",
       CodeUrl:""
     }
@@ -65,6 +66,7 @@ export default {
       this.OrderAmount = options.OrderAmount
       this.orderNo = options.orderNo
       this.OrderId = options.OrderId
+      this.svip = options.svip
       this._getLikeGoods();
       this._getPaySuccessBanner();
     }

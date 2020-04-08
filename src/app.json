@@ -60,6 +60,13 @@
         "useCoupon/main",
         "submitResult/main"
       ]
+    },
+    {
+      "root": "pages/svip",
+      "pages": [
+        "index/main",
+        "dredgeSvip/main"
+      ]
     }
   ],
   "preloadRule": {
@@ -117,10 +124,6 @@
 		"goodsSharePlugin": {
 			"version": "3.2.1",
 			"provider": "wx56c8f077de74b07c"
-    },
-    "contactPlugin": {
-      "version": "1.3.0",
-      "provider": "wx104a1a20c3f81ec2"
     }
 	},
   "navigateToMiniProgramAppIdList":[

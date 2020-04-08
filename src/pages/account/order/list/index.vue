@@ -363,6 +363,7 @@ page {
   left: 0;
   right: 0;
   margin: 0 auto;
+  z-index: 1;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
 }
 

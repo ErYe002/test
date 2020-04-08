@@ -120,10 +120,10 @@
       </view>
     </view>
     <view class='useCouponScore' v-if="orderInfo.IsCanUseScore">
-    <!-- <view class='useCouponScore'> -->
+      <!-- <view class='useCouponScore'> -->
       <view class='counponContent'>
-        <view class='couponTitle'>积分</view>
-        <view class='couponSubtitle'>{{orderInfo.TotalScoreContent+ '  ' + orderInfo.UseScoreContent}}</view>
+        <view class='couponTitle'>{{orderInfo.UseScoreContent}}<span class='couponSubtitle'>({{orderInfo.TotalScoreContent}})</span></view>
+        <!-- <view class='couponSubtitle'>当前{{orderInfo.TotalScoreContent}}</view> -->
       </view>
       <switch class="swiper" checked="" @change="changeUseScore" color="#cab894"/>
     </view>

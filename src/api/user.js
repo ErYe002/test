@@ -109,6 +109,28 @@ const api = {
       return http.post(url);
     }
     return http.postByNoLoading(url);
+  },
+   //获取客服二维码
+   getCustomerService() {
+    return http.post('Account/CustomerService');
+    },
+    //获取告状二维码
+    getFeedBack() {
+      return http.post('Account/Feedback');
+    },
+  //svip确认订单页
+  getSvipPageData() {
+    return http.post('Cart/ConfirmSvipOrder');
+  },
+  //svip提交订单
+  submitSvipOrder(CouponNo) {
+    return http.post('Cart/SubmitSvipOrder',{
+      CouponNo:CouponNo
+    });
+  },
+   //微信支付
+   payOrder(orderId, openId) {
+    return http.post(`/Payment/WechatPayForMinprogram?orderId=${orderId}&ip=&wechatOpenId=${openId}`)
   }
 };
 export default api;
