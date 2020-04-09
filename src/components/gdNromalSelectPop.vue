@@ -11,9 +11,9 @@
         光度 SPH
         </span>
 
-        <div class="item-layout">
+        <div class="item-layout" v-if="sphList.length>0">
           <div v-for="(item,index) in sphList" v-bind:key="index" style="padding:5px;box-sizing:border-box;width: 20%"
-               v-if="sphList.length>0">
+               >
             <div :class="{'item-gd':true,'select':sphSelectPosition===index}" @click="selectEvent('S',index)">
               {{item.Value}}
             </div>

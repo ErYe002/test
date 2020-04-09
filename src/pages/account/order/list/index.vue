@@ -270,7 +270,7 @@ export default {
             signType: signType,
             paySign: paySign,
             success: function(res) {
-              this.listQuery.page = 1;
+              _this.listQuery.page = 1;
               cartApi
                 .paySuccess(orderId)
                 .then(() => {
