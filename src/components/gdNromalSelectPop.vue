@@ -217,7 +217,8 @@
           confirmColor: '#CAB894',
           showCancel: false
         });
-      }
+      },
+      changeTypeEvent(){}
     }
   };
 </script>
