@@ -290,10 +290,12 @@ export default {
                             title:"评价成功!",
                             icon:"none"
                         });
+                        wx.setStorageSync('isCommentReturn',true)
                         this.setCommentedId(currentTemp.goodsId);
                         wx.navigateBack({
                             delta:1
                         })
+                    }).catch((err)=>{
                     })
                 }
             }
@@ -307,6 +309,7 @@ export default {
                         icon:"none"
                     });
                 this.setCommentedId(currentTemp.goodsId);
+                wx.setStorageSync('isCommentReturn',true)
                 wx.navigateBack({
                   delta:1
                 })

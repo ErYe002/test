@@ -175,6 +175,13 @@ export default {
     }
     this._getListEvent();
   },
+  onShow(){
+    var flag = wx.getStorageSync('isCommentReturn');
+    if(flag){
+      wx.setStorageSync('isCommentReturn',false)
+      this.switchTypeEvent(6)
+    }
+  },
   /**
    * 上拉加载
    */
