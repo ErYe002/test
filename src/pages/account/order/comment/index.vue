@@ -291,7 +291,7 @@ export default {
                             icon:"none"
                         });
                         wx.setStorageSync('isCommentReturn',true)
-                        this.setCommentedId(currentTemp.goodsId);
+                        currentTemp.setCommentedId(currentTemp.goodsId);
                         wx.navigateBack({
                             delta:1
                         })
@@ -302,13 +302,14 @@ export default {
         })
     },
     submit(){
+        var that = this;
         if(this.images.length == 0){
             api.addGoodsComment(this.orderId,this.goodsId,this.goodsgrade,this.commentContent,null,this.serviceGrade,this.expressGrade).then(({Data}) => {
                 wx.showToast({
                         title:"评价成功!",
                         icon:"none"
                     });
-                this.setCommentedId(currentTemp.goodsId);
+                that.setCommentedId(currentTemp.goodsId);
                 wx.setStorageSync('isCommentReturn',true)
                 wx.navigateBack({
                   delta:1
