@@ -63,6 +63,7 @@ export default {
     saveConsigneeId(e) {
       if (e.currentTarget.dataset.valid) {
         this.setSelectAddressId(e.currentTarget.dataset.id)
+        wx.setStorageSync('isRefreshOrder',true)//返回确认订单页onshow开关
         wx.navigateBack({
             delta: 1
           })

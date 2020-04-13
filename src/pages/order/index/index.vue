@@ -314,13 +314,20 @@ export default {
       }
       this.RoleId = options.RoleId
       console.log(options)
+      this.getConfirmOrderDetail();
     }
     
   },
   onShow(){
     console.log("------onshow-----")
+    var flag = wx.getStorageSync('isRefreshOrder');//增加开关 以防微信支付成功后会触发onshow，出现无用弹框 
     //监测地址，快递变化, 每次返回到页面都刷新数据，（修改地址，地址id不变的情况下 回到页面也要刷新数据）
-    this.getConfirmOrderDetail();
+    if(flag){
+      wx.setStorageSync('isRefreshOrder',false)
+      this.getConfirmOrderDetail();
+      console.log("------onshow-----")
+    }
+    
   },
   onPageScroll({ scrollTop }) {
     //控制是否展示底部收货地址tip
@@ -538,6 +545,7 @@ export default {
                 .catch(() => {
                 });
                 _this.$getCartCount();
+                wx.setStorageSync('isRefreshOrder',false)
                 wx.redirectTo({
                   url: '/pages/order/submitResult/main?resultMsg='+_this.submitResultMsg+'&shopId='+_this.formModel.selectShopId+'&orderNo='+_this.submitResultInfo.OrderNo+'&OrderAmount='+_this.submitResultInfo.OrderAmount+'&OrderId='+orderId,
                 })
