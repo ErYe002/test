@@ -275,7 +275,7 @@ export default {
             name:'file',
             header:{
                 SalePlatformId:config.salePlatformId,
-                token:this.token
+                token:currentTemp.token
             },
             success(res){
                 index++;
@@ -309,7 +309,7 @@ export default {
                         title:"评价成功!",
                         icon:"none"
                     });
-                that.setCommentedId(currentTemp.goodsId);
+                that.setCommentedId(that.goodsId);
                 wx.setStorageSync('isCommentReturn',true)
                 wx.navigateBack({
                   delta:1
