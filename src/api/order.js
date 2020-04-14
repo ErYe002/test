@@ -62,7 +62,13 @@ const api = {
     return http.post(
       `/comment/GetGoodsComment?commentId=${commentId}`
     )
-  }
+  },
+   //记录日志
+   logging(title, message) {
+    return http.post('/Home/LogCallback', {Message: JSON.stringify(message), Level: 8, Title: title}, {
+      'content-type': 'application/x-www-form-urlencoded'
+    }, false, false)
+   }
 };
 
 export default api;

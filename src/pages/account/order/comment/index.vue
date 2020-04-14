@@ -269,6 +269,8 @@ export default {
     },
     uploadFile(index,total){
         var currentTemp = this;
+        api.logging(`第${index+1}次上传图片到服务器`)
+        wx.showLoading();
         wx.uploadFile({
             url:config.apiurl + '/api/comment/AddGoodsCommentPicture',
             filePath:currentTemp.images[index],
@@ -278,12 +280,14 @@ export default {
                 token:currentTemp.token
             },
             success(res){
+                api.logging(`第${index+1}次上传图片到服务器成功`,JSON.parse(res.data).Data);
                 index++;
                 currentTemp.uploadedImgPath = currentTemp.uploadedImgPath.concat(JSON.parse(res.data).Data);
                 if(index < currentTemp.images.length){
                     currentTemp.uploadFile(index,total);
                 }
                 else{
+                    api.logging(`触发评价接口评价成功图片数据集合`,currentTemp.uploadedImgPath);
                     api.addGoodsComment(currentTemp.orderId,currentTemp.goodsId,currentTemp.goodsgrade,currentTemp.commentContent,currentTemp.uploadedImgPath,currentTemp.serviceGrade,currentTemp.expressGrade)
                     .then(({Data})=>{
                         wx.showToast({
@@ -298,6 +302,16 @@ export default {
                     }).catch((err)=>{
                     })
                 }
+            },
+            fail(err){
+                api.logging(`第${index+1}次上传图片到服务器失败`,err)
+                wx.showToast({
+                    title:"图片上传失败!",
+                    icon:"none"
+                });
+            },
+            complete(){
+                wx.hideLoading();
             }
         })
     },
