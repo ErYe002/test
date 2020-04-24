@@ -156,8 +156,8 @@ const api = {
     return http.post(`/Payment/WechatPayQueryOrderIsSuccessPay?orderId=${orderId}`)
   },
   //获取订单支付成功后显示的图片
-  paySuccessBanner(orderId) {
-    return http.post(`/order/OrderPaySuccessBanner`)
+  paySuccessBanner(shopId) {
+    return http.post(`/order/OrderPaySuccessBanner?shopId=${shopId}`)
   },
 };
 

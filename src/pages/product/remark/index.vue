@@ -32,77 +32,93 @@
     </div>
     <div :class="'showTagBtn'" @click="_showMoreTag()"><span :class="(isShowMoreTag?'showMoreIcon':'icon')">{{isShowMoreTag?'∧':'∨'}}</span></div>
     <block>
-      <div class="communtiyBox" v-if="HotCommentList != null &&  HotCommentList.length>0">
-          <swiper  class="communtiy-swiper">
-            <block v-for="item in HotCommentList" :key="item.index">
-              <swiper-item class="communtiy-swiperItem"  >
-                  <div class="com-content">
-                      <div class="com-text">
-                          <img :src="item.UserInfo.HeadUrl?item.UserInfo.HeadUrl:'/static/images/default_img.gif'" alt="" class="heder-img">
-                          <div>
-                            <span class="com-name">{{item.UserInfo.UserName}}</span><br/>
-                          </div>
-                      </div>
-                      <div class="com-tips">{{item.Content}}</div>
-                  </div>
-                  <div class="scroll-img" v-if="item.ArticleImgDtos != null && item.ArticleImgDtos.length> 0">
-                      <block v-for="(imgitem,imgindex) in item.ArticleImgDtos" :key="imgindex">
-                        <li class="comment-pic-li">
-                          <img :src="imgitem.ImgAddress" mode="aspectFit"  />
-                        </li>
-                      </block>
-                  </div>
-                  <div class="com-from">来自社区心得</div>
-              </swiper-item>
-            </block>
-          </swiper>
-      </div>
       <div class="remarkCon" v-if="Data != null ">
-        <div class="remarkBox" v-for="item in Data" :key="item.index">
-          <div class="comment-header">
-            <div class="userInfo">
-              <img
-                class="header-icon"
-                :src="item.HeadImg?item.HeadImg:'/static/images/default_img.gif'"
-              />
-              {{item.UserName!=null?item.UserName:''}}
-            </div>
-            <div class="comment-header-right">
-              <div class="kd-level" :data-id="item.Rate">
+        <div v-for="(item,index) in Data" :key="index">
+          <div class="remarkBox" v-if="item.NoteId==defaultId">
+            <div class="comment-header">
+              <div class="userInfo">
                 <img
-                  class="comment-star"
-                  :src="item.Rate>0?'/static/images/full-start.png':'/static/images/empty-start.png'"
+                  class="header-icon"
+                  :src="item.HeadImg?item.HeadImg:'/static/images/default_img.gif'"
                 />
-                <img
-                  class="comment-star"
-                  :src="item.Rate>1?'/static/images/full-start.png':'/static/images/empty-start.png'"
-                />
-                <img
-                  class="comment-star"
-                  :src="item.Rate>2?'/static/images/full-start.png':'/static/images/empty-start.png'"
-                />
-                <img
-                  class="comment-star"
-                  :src="item.Rate>3?'/static/images/full-start.png':'/static/images/empty-start.png'"
-                />
-                <img
-                  class="comment-star"
-                  :src="item.Rate>4?'/static/images/full-start.png':'/static/images/empty-start.png'"
-                />
+                {{item.Nick!=null?item.Nick:''}}
               </div>
-              <text class="comment-time">{{item.PubTime}}</text>
+              <div class="comment-header-right">
+                <div class="kd-level" :data-id="item.Rate">
+                  <img
+                    class="comment-star"
+                    :src="item.Rate>0?'/static/images/full-start.png':'/static/images/empty-start.png'"
+                  />
+                  <img
+                    class="comment-star"
+                    :src="item.Rate>1?'/static/images/full-start.png':'/static/images/empty-start.png'"
+                  />
+                  <img
+                    class="comment-star"
+                    :src="item.Rate>2?'/static/images/full-start.png':'/static/images/empty-start.png'"
+                  />
+                  <img
+                    class="comment-star"
+                    :src="item.Rate>3?'/static/images/full-start.png':'/static/images/empty-start.png'"
+                  />
+                  <img
+                    class="comment-star"
+                    :src="item.Rate>4?'/static/images/full-start.png':'/static/images/empty-start.png'"
+                  />
+                </div>
+                <text class="comment-time">{{item.PubTime}}</text>
+              </div>
+            </div>
+            <div class="comment-text-style" v-if="item.AnotherName!=null">{{item.AnotherName}}</div>
+            <div class="comment-text">{{item.Content}}</div>
+            <div class="comment-pic" v-if="item.Imgs != null && item.Imgs.length> 0">
+              <scroll-view scroll-x scroll-with-animation="true">
+                <block v-for="(imgitem,imgindex) in item.Imgs" :key="imgindex">
+                  <li class="comment-pic-li">
+                    <img :src="imgitem" mode="aspectFit" @click="_previewImage(imgitem,item.Imgs)" />
+                  </li>
+                </block>
+              </scroll-view>
             </div>
           </div>
-          <div class="comment-text-style" v-if="item.AnotherName!=null">{{item.AnotherName}}</div>
-          <div class="comment-text">{{item.Content}}</div>
-          <div class="comment-pic" v-if="item.Imgs != null && item.Imgs.length> 0">
-            <scroll-view scroll-x scroll-with-animation="true">
-              <block v-for="(imgitem,imgindex) in item.Imgs" :key="imgindex">
-                <li class="comment-pic-li">
-                  <img :src="imgitem" mode="aspectFit" @click="_previewImage(imgitem,item.Imgs)" />
-                </li>
+          <div v-else class="communtiyBox">
+            <div  class="communtiy-swiper">
+              <block>
+                <div class="communtiy-swiperItem">
+                    <div class="com-content">
+                        <div class="com-text">
+                            <img :src="item.HeadImg?item.HeadImg:'/static/images/default_img.gif'" alt="" class="heder-img">
+                            <div>
+                              <span class="com-name">{{item.Nick}}</span><br/>
+                            </div>
+                        </div>
+                        <div class="com-title">{{item.NoteTitle}}</div>
+                        <div class="com-tips">{{item.Content}}</div>
+                    </div>
+                    <div class="scroll-img" v-if="item.Imgs != null && item.Imgs.length> 0">
+                      <scroll-view scroll-x scroll-with-animation="true">
+                        <block v-for="(imgitem,imgindex) in item.Imgs" :key="imgindex">
+                          <li class="comment-pic-li">
+                            <img :src="imgitem" mode="aspectFit"  />
+                          </li>
+                        </block>
+                      </scroll-view>
+                    </div>
+                    <div class="com-box">
+                      <div class="com-from">来自社区心得</div>
+                      <div class="count">
+                        <div class="comment-count">
+                          <img src='/static/images/like.png' alt="" class="img">{{item.NoteThumbsUpCount}}
+                        </div>
+                        <div class="thums-count">
+                          <img src='/static/images/news.png' alt="" class="img">{{item.NoteCommentCount}}
+                        </div>
+                      </div>
+                    </div>
+                    
+                </div>
               </block>
-            </scroll-view>
+            </div>
           </div>
         </div>
       </div>
@@ -129,12 +145,13 @@ export default {
       Page: 1,
       totalPage: 3,
       noData: false,
-      HotCommentList:""
+      HotCommentList:"",
+      defaultId:"00000000-0000-0000-0000-000000000000"//true 不是社区贴
     };
   },
   onLoad(options) {
-    let HotCommentList = wx.getStorageSync("HotCommentList");
-    this.HotCommentList = HotCommentList
+    // let HotCommentList = wx.getStorageSync("HotCommentList");
+    // this.HotCommentList = HotCommentList
     this.selecLabel = options.label;
     if (this.selecLabel == "有图") {
       this.RemarkType = 4;
@@ -169,7 +186,7 @@ export default {
           if (Data.length < 10) {
             this.noData = true;
           }
-          console.log(Data);
+          // console.log(Data);
         });
     },
     _showMoreTag() {
@@ -363,7 +380,7 @@ export default {
       background: #fff;
       border-radius: 20px;
       .communtiy-swiper{
-          height: 200px;
+          // height: 200px;
           .com-text{
             display: flex;
             align-items: center;
@@ -386,33 +403,72 @@ export default {
               word-wrap: break-word;
               margin-top: 5px;
           }
-          .scroll-img{
-            display: flex;
-            justify-content: flex-start;
-            margin-top: 10px;
-            ._img{
-              margin-right: 5px;
-              width: 100px;
-              height: 100px;
-              border-radius: 5px;
-              overflow: hidden;
-              background: #ececec;
-            }
+          .com-title{
+              font-size: 13px;
+              margin-top: 10px;
+              font-weight: bold;
+              color: #010101;
           }
-      }
-      .com-from{
-        color: #E31436;
-        border: 1px solid #E31436;
-        vertical-align: middle;
-        font-size: 10px;
-        border-radius: 5px;
-        width: 80px;
-        text-align: center;
-        position: absolute;
-        left: 0px;
-        bottom: 0px;;
+        .scroll-img {
+          display: flex;
+          margin-top: 10px;
+          margin-bottom: 10px;
+          ._scroll-view {
+            white-space: nowrap;
+            height: 100px;
+          }
+          .comment-pic-li {
+            display: inline-block;
+            margin-right: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+          }
+           ._img {
+            width: 100px;
+            height: 100px;
+            border-radius: 5px;
+            overflow: hidden;
+            background: #ececec;
+          }
+        }
 
-
       }
+      .com-box{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        .com-from{
+          color: #E31436;
+          border: 1px solid #E31436;
+          vertical-align: middle;
+          font-size: 10px;
+          border-radius: 5px;
+          width: 80px;
+          text-align: center;
+        }
+        .count{
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          .comment-count,.thums-count{
+            border: 1px solid #ABABAB;
+            border-radius: 10px;
+            padding: 2px 10px;
+            color: #8F8F8F;
+            font-size: 11px;
+            margin-left: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .img{
+            width: 12px;
+            height: 12px;
+            margin-right: 2px;
+          }
+        }
+      }
+
     }
 </style>

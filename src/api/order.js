@@ -40,7 +40,7 @@ const api = {
     );
   },
   //添加商品评论
-  addGoodsComment(OrderId, GoodsId, GoodsScore, Remark,ImageUrl,Srate,Erate) {
+  addGoodsComment(OrderId, GoodsId, GoodsScore, Remark,ImageUrl,Srate,Erate,ThemeTagList) {
     return http.post(
       `/comment/AddGoodsComment`,
       {
@@ -50,7 +50,8 @@ const api = {
         Remark:Remark,
         ImageUrl:JSON.stringify(ImageUrl),
         Srate:Srate,
-        Erate:Erate
+        Erate:Erate,
+        ThemeTagList:JSON.stringify(ThemeTagList)
       },
       {
         'content-type':'application/x-www-form-urlencoded'
@@ -62,7 +63,25 @@ const api = {
     return http.post(
       `/comment/GetGoodsComment?commentId=${commentId}`
     )
-  }
+  },
+  //获取话题标签
+  getGoodsTag(){
+    return http.post(
+      `/KedeCommunity/GetRecommendTagListByPage?pageIndex=1&pageSize=10`
+    )
+  },
+  //搜索话题标签
+  searchGoodsTag(keyword){
+    return http.post(
+      `/KedeCommunity/GetThemeTagListByPage?pageIndex=1&pageSize=10&keyword=${decodeURIComponent(keyword)}`
+    )
+  },
+  //新增话题标签
+  insertGoodsTag(value){
+    return http.post(
+      `/KedeCommunity/InsertThemeTag?value=${decodeURIComponent(value)}`
+    )
+  },
 };
 
 export default api;

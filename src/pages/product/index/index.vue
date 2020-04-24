@@ -141,7 +141,8 @@
           </div>
           <div class="proNameBox">
             <div class="proName">{{Data.GoodsBase.GoodsName}}</div>
-            <div class="proDes">{{Data.GoodsBase.ShortDescription}}</div>
+            <a :href="'/pages/product/index/main?seocode='+Data.GoodsBase.ShopDescriptionSeoCode+'&isComp='+'false'" v-if="Data.GoodsBase.ShopDescriptionSeoCode" class="proDesA">{{Data.GoodsBase.ShortDescription}} 戳跳转</a>
+            <div v-else class="proDes">{{Data.GoodsBase.ShortDescription}}</div>
             <div class="proAdd" v-if="Data.GoodsBase.ShopId==2">{{Data.GoodsBase.National}}</div>
           </div>
         </div>
@@ -1542,7 +1543,7 @@ export default {
     _getHotCommentList(GoodsId){
         api.getHotCommentList(GoodsId,10).then(({ Data }) => {
           console.log(Data)
-          wx.setStorageSync('HotCommentList', Data)
+          // wx.setStorageSync('HotCommentList', Data)
           this.HotCommentList = Data;
         });
     },

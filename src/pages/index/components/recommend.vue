@@ -222,9 +222,34 @@
           </scroll-view>
         </section>
       </article>
-      <article class="like-goods-wrap" v-if="goodsList.length > 0">
+      <article class="like-goods-wrap" v-if="goodsList.length > 0||BackGoodsList.length > 0">
         <p class="title">GUESS YOU LIKE IT | 猜你喜欢</p>
         <ul class="list">
+          <block v-if="BackGoodsList.length > 0">
+            <a
+              :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'"
+              class="item"
+              v-for="item in BackGoodsList"
+              :key="item.SeoCode"
+            >
+              <img :src="item.BrandImageUrl" class="brand-img" />
+              <img :src="item.ImageUrl" class="img" />
+              <p class="name">{{item.GoodsName}}</p>
+              <p class="desc">{{item.ShortDescription}}</p>
+              <p class="info">
+                <span class="rate">{{item.PraiseProportion != '' && item.PraiseProportion != '0.0%' && item.PraiseProportion != '%' ? (item.PraiseProportion+'好评') : ''}}</span>
+                <span class="price-info">
+                  <em class="price">¥{{item.SalePrice}}</em>
+                  <em
+                    class="tag"
+                    v-if="item.PriceLabel != null && item.PriceLabel != ''"
+                  >{{item.PriceLabel}}</em>
+                  <img src="/static/images/icon_small_cart.png" class="icon" />
+                </span>
+              </p>
+            </a>
+          </block>
+          <block v-if="goodsList.length > 0">
           <a
             :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'"
             class="item"
@@ -247,6 +272,7 @@
               </span>
             </p>
           </a>
+          </block>
         </ul>
         <p class="no-more-tips" v-if="page == totalPage">已经到底了哦~</p>
       </article>
@@ -269,6 +295,7 @@ const defaultData = {
   totalPage: 0,
   isLoding: false,
   goodsList: [],
+  BackGoodsList:[],
   currentSeckillIdx: 1
 }
 
@@ -355,7 +382,9 @@ export default {
                 ? Data.BrandList.slice(0, 12)
                 : Data.BrandList;
           }
+          this.backGoodsList(Data.RecommendLikeGoodsList)
         }
+        
         this.model = Data;
       });
     },
@@ -409,6 +438,19 @@ export default {
           .finally(() => {
             this.isLoding = false;
           });
+      }
+    },
+    //后台推荐猜你喜欢商品
+    backGoodsList(data){
+      if(data!=null&&data.length>0){
+          let list = data.map(ele => {
+            //当PriceLabel中的价格含有“.00”时，进行去除
+            if (/\d+.\d+/.test(ele.PriceLabel)) {
+              ele.PriceLabel = ele.PriceLabel.replace(/(\d+).00/g, "$1");
+            }
+            return ele;
+          });
+          this.BackGoodsList = list
       }
     }
   }

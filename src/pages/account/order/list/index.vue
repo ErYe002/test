@@ -113,7 +113,7 @@
               >查看订单</a>
               <a
                 class="gotoComment"
-                :href="'/pages/account/order/comment/main?orderId=' + item.OrderId +'&goodsId=' + item.GoodsId + '&goodsImageUrl=' + item.GoodsImageUrl"
+                :href="'/pages/account/order/comment/main?orderId=' + item.OrderId +'&goodsId=' + item.GoodsId + '&goodsImageUrl=' + item.GoodsImageUrl+'&goodsName='+item.GoodsName"
               >评价晒单</a>
             </div>
           </li>
