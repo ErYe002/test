@@ -141,7 +141,7 @@
           </div>
           <div class="proNameBox">
             <div class="proName">{{Data.GoodsBase.GoodsName}}</div>
-            <a :href="'/pages/product/index/main?seocode='+Data.GoodsBase.ShopDescriptionSeoCode+'&isComp='+'false'" v-if="Data.GoodsBase.ShopDescriptionSeoCode" class="proDesA">{{Data.GoodsBase.ShortDescription}} 戳跳转</a>
+            <a :href="'/pages/product/index/main?seocode='+Data.GoodsBase.ShopDescriptionSeoCode+'&isComp='+'false'" v-if="Data.GoodsBase.ShopDescriptionSeoCode" class="proDesA">{{Data.GoodsBase.ShortDescription}}</a>
             <div v-else class="proDes">{{Data.GoodsBase.ShortDescription}}</div>
             <div class="proAdd" v-if="Data.GoodsBase.ShopId==2">{{Data.GoodsBase.National}}</div>
           </div>
