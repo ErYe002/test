@@ -275,7 +275,7 @@ export default {
             name:'file',
             header:{
                 SalePlatformId:config.salePlatformId,
-                token:this.token
+                token:currentTemp.token
             },
             success(res){
                 index++;
@@ -290,23 +290,27 @@ export default {
                             title:"评价成功!",
                             icon:"none"
                         });
-                        this.setCommentedId(currentTemp.goodsId);
+                        wx.setStorageSync('isCommentReturn',true)
+                        currentTemp.setCommentedId(currentTemp.goodsId);
                         wx.navigateBack({
                             delta:1
                         })
+                    }).catch((err)=>{
                     })
                 }
             }
         })
     },
     submit(){
+        var that = this;
         if(this.images.length == 0){
             api.addGoodsComment(this.orderId,this.goodsId,this.goodsgrade,this.commentContent,null,this.serviceGrade,this.expressGrade).then(({Data}) => {
                 wx.showToast({
                         title:"评价成功!",
                         icon:"none"
                     });
-                this.setCommentedId(currentTemp.goodsId);
+                that.setCommentedId(that.goodsId);
+                wx.setStorageSync('isCommentReturn',true)
                 wx.navigateBack({
                   delta:1
                 })

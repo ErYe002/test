@@ -1434,6 +1434,18 @@ export default {
         this.isLogin = State;
       });
       api.getGoodsDetail(seocode, this.isComp).then(({ Data }) => {
+        if(Data.GoodsBase.ShopId=='2'){
+          wx.showModal({
+            title:"提示",
+            showCancel:false,
+            content:"购买海淘商品，请下载可得App",
+            success (res) {
+                wx.switchTab({
+                  url: '/pages/index/main'
+                })
+              }
+          })
+        };
         Data.GoodsBase.SellPrice = Data.GoodsBase.SellPrice.toFixed(2);
         Data.GoodsBase.RolePrice = Data.GoodsBase.RolePrice.toFixed(2);
         Data.GoodsBase.SvipPrice = Data.GoodsBase.SvipPrice.toFixed(2);

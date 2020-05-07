@@ -66,6 +66,7 @@ export default {
     saveChange() {
       api.editPaymentAndDelivery(this.SelectConsigneeId, this.freight).then(() => {
         this.setSelectedExpressId(this.SelectedExpressId)
+        wx.setStorageSync('isRefreshOrder',true)//返回确认订单页onshow开关
         wx.navigateBack({
           delta: 1
         })

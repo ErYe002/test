@@ -60,7 +60,7 @@ export default {
       api.getHomeMenuData().then(({ Data }) => {
         let list = Data.filter((ele) => {
           // return ele.SeoCode == 'code000' || ele.SeoCode == 'code350' || ele.SeoCode == 'code200' || ele.SeoCode == 'code050' 
-          return ele.SeoCode == 'code000' || ele.SeoCode == 'code350' || ele.SeoCode == 'code200' || ele.SeoCode == 'code050' || ele.SeoCode == 'code150' || ele.SeoCode == 'code100'
+          return ele.SeoCode == 'code000' || ele.SeoCode == 'code350' || ele.SeoCode == 'code200' || ele.SeoCode == 'code150' || ele.SeoCode == 'code100'
         });
         // list.push({
         //   Id: 0,
