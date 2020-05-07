@@ -141,7 +141,7 @@
           </div>
           <div class="proNameBox">
             <div class="proName">{{Data.GoodsBase.GoodsName}}</div>
-            <a :href="'/pages/product/index/main?seocode='+Data.GoodsBase.ShopDescriptionSeoCode+'&isComp='+'false'" v-if="Data.GoodsBase.ShopDescriptionSeoCode" class="proDesA">{{Data.GoodsBase.ShortDescription}}</a>
+            <a :href="'/pages/product/index/main?seocode='+Data.GoodsBase.ShopDescriptionSeoCode+'&isComp='+'false'" v-if="Data.GoodsBase.ShopDescriptionSeoCode" ><span class="proDesA">{{Data.GoodsBase.ShortDescription}}</span></a>
             <div v-else class="proDes">{{Data.GoodsBase.ShortDescription}}</div>
             <div class="proAdd" v-if="Data.GoodsBase.ShopId==2">{{Data.GoodsBase.National}}</div>
           </div>
@@ -170,9 +170,9 @@
               <span class="icon">></span>
             </span>
           </div>
-          <div class="act-jifen actLine" v-if="Data.GoodsBase.GiftScore > 0||Data.GoodsBase.ScoreDeductionPrice > 0">
+          <div class="act-jifen actLine" v-if="Data.GoodsBase.GiftScore > 0||Data.GoodsBase.MaxScoreDeductionMoney > 0">
             <span class="act-name">积分</span>
-            <span class="act-con">{{Data.GoodsBase.ScoreDeductionPrice > 0?"积分至多抵扣￥"+Data.GoodsBase.ScoreDeductionPrice+(Data.GoodsBase.GiftScore > 0?",":""):''}}
+            <span class="act-con">{{Data.GoodsBase.MaxScoreDeductionMoney > 0?"积分至多抵扣￥"+Data.GoodsBase.MaxScoreDeductionMoney+(Data.GoodsBase.GiftScore > 0?",":""):''}}
               {{Data.GoodsBase.GiftScore>0?"下单预计可得"+Data.GoodsBase.GiftScore+"积分":""}}</span>
             <span class="act-info">
               <span class="icon"></span>
@@ -1441,6 +1441,9 @@ export default {
         Data.GoodsBase.MarketPrice = Data.GoodsBase.MarketPrice.toFixed(2);
         Data.GoodsBase.ReducePrice = Data.GoodsBase.ReducePrice.toFixed(2);
         Data.GoodsBase.ScoreDeductionPrice = Data.GoodsBase.ScoreDeductionPrice.toFixed(
+          2
+        );
+        Data.GoodsBase.MaxScoreDeductionMoney = Data.GoodsBase.MaxScoreDeductionMoney.toFixed(
           2
         );
         if(Data.GoodsPagePromotion.Gift == null||Data.GoodsPagePromotion.Gift.Length==0){
