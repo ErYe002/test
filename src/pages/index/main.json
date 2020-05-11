@@ -1,5 +1,6 @@
 {
     "navigationBarTitleText": "可得眼镜",
-    "enablePullDownRefresh": true
+    "enablePullDownRefresh": true,
+    "navigationBarBackgroundColor":"#FF668E"
   }
   

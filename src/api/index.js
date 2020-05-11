@@ -5,6 +5,18 @@ const api = {
   getHomeMenuData(){
     return http.postByNoLoading(`/Home/AppHomeMenuList`)
   },
+  //获取首页-新首页-v7.8-数据
+  getHomePageData(){
+    return http.postByNoLoading(`/Home/AppHomePage202005?versionNo=4.5.8`)
+  },
+   //获取首页-新首页-v7.8-数据
+  getHomePageGoods(pageIndex, pageSize,goodsType){
+    let url = `/Home/AppHomeRecommendGoodsByPage?PageSize=${pageSize}&PageIndex=${pageIndex}&GoodsType=${goodsType}`
+    if(pageIndex == 1){
+      return http.postByNoLoading(url)
+    }
+    return http.post(url)
+  },
   //获取首页-推荐页数据
   getHomeRecommendData(){
     return http.postByNoLoading(`/Home/AppHomeRecommendPage?versionNo=4.5.4`)

@@ -6,7 +6,9 @@
     "pages/cart/addBuy/main",
     "pages/home/main",
     "pages/bindMobile/main",
-    "pages/htmlPreview/main"
+    "pages/htmlPreview/main",
+    "pages/svip/index/main",
+    "pages/svip/dredgeSvip/main"
   ],
   "subpackages": [
     {
@@ -37,7 +39,8 @@
         "results/main",
         "screen/main",
         "screen/filterRules/main",
-        "pieceTogether/main"
+        "pieceTogether/main",
+        "goodsList/main"
       ]
     },
     {
@@ -59,13 +62,6 @@
         "chooseAddress/main",
         "useCoupon/main",
         "submitResult/main"
-      ]
-    },
-    {
-      "root": "pages/svip",
-      "pages": [
-        "index/main",
-        "dredgeSvip/main"
       ]
     }
   ],
@@ -100,10 +96,10 @@
         "selectedIconPath": "static/tabs/index-active.png"
       },
       {
-        "text": "分类",
-        "pagePath": "pages/classmenu/main",
-        "iconPath": "static/tabs/classmenu.png",
-        "selectedIconPath": "static/tabs/classmenu-active.png"
+        "text": "会员中心",
+        "pagePath": "pages/svip/index/main",
+        "iconPath": "static/tabs/tab_center.png",
+        "selectedIconPath": "static/tabs/tab_center.png"
       },
       {
         "text": "购物车",

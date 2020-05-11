@@ -4,7 +4,7 @@
       <section :class="{'user-box': true}">
         <img class="bg" src="/static/images/member_bg.jpg" mode="scaleToFill"/>
         <img class="head" :src="userInfoModel.HeadUrl || '/static/images/default_img.gif'" />
-        <div class="info-box">
+        <div class="info-box" v-if="token">
           <p class="name">
             <span>{{userInfoModel.Nick}}</span>
           </p>
@@ -22,18 +22,23 @@
             <span class="text">会员</span>
           </div>
         </div>
-        <div :class="{'svip_box': true}">
-              <div class="svip_content" v-if="userInfoModel.IsSvip">
-                  <div class="left">
-                    <div class="title">SVIP累计已省（元）</div>
-                    <div class="amount">{{userInfoModel.SvipDeductionTotalAmount}}</div>
-                  </div>
-                  <!-- <div class="right">
-                    <div class="title">返可得积分（元）</div>
-                    <div class="amount">500</div>
-                  </div> -->
+        <div :class="{'svip_box': true}" v-if="!token">
+              <button class="userInFo_btn"
+                      open-type="getUserInfo"
+                      @getuserinfo="getUserInfo">立即登录</button>
+        </div>
+        <div :class="{'svip_box': true}" v-else>
+          <div class="svip_content" v-if="userInfoModel.IsSvip">
+              <div class="left">
+                <div class="title">SVIP累计已省（元）</div>
+                <div class="amount">{{userInfoModel.SvipDeductionTotalAmount}}</div>
               </div>
-              <div class="svip_btn" v-else @click="goDredgeSvip">立即开通</div>
+              <!-- <div class="right">
+                <div class="title">返可得积分（元）</div>
+                <div class="amount">500</div>
+              </div> -->
+          </div>
+          <div class="svip_btn" v-else @click="goDredgeSvip">立即开通</div>
         </div>
       </section>
       <section class="assets-box">
@@ -71,6 +76,7 @@
 <script>
 import api from "@/api/user";
 import { mapState } from "vuex";
+import authorization from "@/utils/authorization";
 
 const userInfoModelTemp = {
   GradeName: "普通会员",
@@ -104,7 +110,34 @@ export default {
   onLoad(){
     this._getPageData()
   },
+  computed: {
+    ...mapState("user", ["token"])
+  },
+  watch: {
+    token: {
+      handler: function(val, oldVal) {
+        console.log("token==", val);
+        if (oldVal == "" && val != "") {
+          //登录成功
+          this._getPageData();
+          this.$getCartCount()
+        } else if (oldVal != '' && val == ''){
+          //退出登录
+          this.userInfoModel = Object.assign({}, userInfoModelTemp)
+          this.walletModel = Object.assign({}, walletModelTemp)
+        }
+      },
+      immediate: true
+    }
+  },
   methods: {
+    getUserInfo(e) {
+      authorization.doLogin(e.mp.detail.encryptedData, e.mp.detail.iv, () => {
+            wx.switchTab({
+              url: "/pages/svip/index/main"
+            });
+      });
+    },
     toAppTips(content) {
       wx.showModal({
         title: "提示",
@@ -246,6 +279,13 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+  .userInFo_btn{
+    background: transparent;
+    color: #FFF497;
+    font-size: 15px;
+    height: 46px;
+    line-height: 46px;
   }
 }
 .user-box {

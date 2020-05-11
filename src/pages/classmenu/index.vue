@@ -8,7 +8,7 @@
     </section>
     <section class="classmenu-box">
       <div class="left-list">
-        <scroll-view class="scroll-list" scroll-y :style="{height: 'calc(100vh - 47px)'}">
+        <scroll-view class="scroll-list" scroll-y ="{height: 'calc(100vh - 47px)'}">
           <div v-for="leftItem in leftList" :class="(leftItem.ClassID == selectedParentID ? 'active ':'') + 'scroll-item'" :key="leftItem.ClassID" @click="leftItemClickEvent(leftItem.ClassID)">{{leftItem.ClassName}}</div>
         </scroll-view>
       </div>
