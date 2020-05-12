@@ -1611,7 +1611,7 @@ export default {
         this.IsFollow = Data.BrandStore!=null&&Data.BrandStore.IsFollow;
         this.Data = Data;
         this._getGoodsAbout();
-
+        this.followGoodsState();
         // this._getHotCommentList(Data.GoodsBase.GoodsId)
         if (this.Data.GoodsBase.ShopId == 2) {
           this._getSameTypeData("price");
@@ -1621,7 +1621,7 @@ export default {
             : this._getSameTypeData2("PPTJ");
         }
         this._AttrHref();
-        this.FollowGoodsState();
+        
       });
     },
     _getGoodsAbout() {
@@ -2397,16 +2397,16 @@ export default {
      //取消收藏商品
     cancelFollowGoods(){
       api.CancelFollowGoods(this.Data.GoodsBase.GoodsId).then(({Data} ) => {
-      this.FollowGoodsState = Data
-        });
+        this.FollowGoodsState = false
+      });
     },
     //收藏商品
     followGoods(){
         api.FollowGoods(this.Data.GoodsBase.GoodsId,this.Data.GoodsBase.ShopId).then(( {Data} ) => {
-           this.FollowGoodsState = Data
+           this.FollowGoodsState = true
         });
     },
-    FollowGoodsState(){
+    followGoodsState(){
       api.FollowGoodsState(this.Data.GoodsBase.GoodsId).then(( {Data} ) => {
           this.FollowGoodsState = Data
         });
