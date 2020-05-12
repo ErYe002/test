@@ -169,9 +169,15 @@
               <!-- <span>再享10项特权</span> -->
             </div>
           </div>
-          <button class="right" v-if="!Data.UserInfo.IsSvip">
-            立即开通 <span class="tral"></span>
-          </button>
+          <block v-if="!Data.UserInfo.IsSvip">
+            <button v-if="isLogin" @click="goSvip" class="right" >
+              立即开通 <span class="tral"></span>
+            </button>
+            <button v-else class="right"  open-type="getUserInfo"
+                  @getuserinfo="loginEventCoupon">
+              立即开通 <span class="tral"></span>
+            </button>
+          </block>
         </div>
         <div class="goods-te">
           <span>品牌授权</span>
@@ -2448,6 +2454,12 @@ export default {
       });
 
     },
+    goSvip(){
+      wx.navigateTo({
+          url:
+            "/pages/svip/dredgeSvip/main"
+        });
+    }
   },
         /**
    * 用户点击右上角分享
