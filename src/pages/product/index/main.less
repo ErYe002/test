@@ -65,6 +65,8 @@
       }
       .text-two{
         font-size: 13.5px;
+        letter-spacing: 5px;
+        font-weight: bold;
       }
     }
   }
@@ -313,8 +315,21 @@
               font-size: 12px;
               font-weight: normal;
               margin-top: 3px;
+              white-space: initial;
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 2;
+              display: -webkit-box;
+              overflow: hidden;
+              text-overflow: ellipsis;
             }
             .proDesA{
+              white-space: initial;
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 2;
+              display: -webkit-box;
+              overflow: hidden;
+              text-overflow: ellipsis;
+
               color: #c9b68e;
               font-size: 12px;
               font-weight: normal;
@@ -392,6 +407,7 @@
           flex-direction: column;
           color: #FAE5AA;
           font-size: 11px;
+          width: 70%;
         }
       }
       .right{
@@ -401,7 +417,7 @@
         background: #fae5aa;
         margin: 0;
         padding: 0;
-        width: 72px;
+        width: 80px;
         height: 24px;
         line-height: 24px;
         text-align: center;
@@ -501,6 +517,13 @@
       .act-name-icon{
         width: 16px;
         height: 16px;
+      }
+      .coupon_icon{
+        color: #FE2828;
+        font-size: 10px;
+        border: 1px solid #FE2828;
+        border-radius: 5px;
+        padding: 0 2px;
       }
       .coupon{
         background: #fff;
@@ -796,73 +819,9 @@
         color: #EB5255;
       }
     }
-    .communtiyBox{
-      margin-top: 10px;
-      width: 100%;
-      height: 120px;
-      .communtiy-swiper{
-          height: 100%;
-        .com-content{
-          margin-right: 10px;
-          background: #F5F5F5;
-          height: 100%;
-          border-radius: 10px;
-          display: flex;
-          align-items: center;
-          .com-text{
-            flex: 1;
-            padding:  0 10px;
-            height: 100%;
-            .com-text-top{
-              display: flex;
-              justify-content: flex-start;
-              align-items: center;
-              margin-bottom: 5px;
-              margin-top: 10px;
-              .heder-img{
-                width: 27px;
-                height: 27px;
-                border-radius: 50%;
-                margin-right: 10px;
-              }
-              .com-name{
-                font-size: 10px;
-                color: #010101;
-              }
-              .com-label{
-                height: 12px;
-                font-size: 9px;
-                border: 1px solid #EB5255;
-                border-radius: 6px;
-                padding: 2px;
-                color:  #EB5255;
-              }
-            }
-            .com-bottom{
-              text-overflow: ellipsis;         //超出部分用省略号 ...  来代替
-              display: -webkit-box;
-              -webkit-box-orient: vertical;
-              -webkit-line-clamp: 4;           //限制要出现的行数
-              overflow: hidden;
-            }
-          }
-          .com-img{
-           
-            border-radius: 10px;
-            padding:  0 10px;
-            width: 100px;
-            height: 100px !important;
-            overflow: hidden;
-            ._img{
-              border-radius: 10px;
-              width: 100px;
-              height: 100px !important;
-            }
-          }
-        }
-      }
-    }
+
   }
+
   .noremark{
     padding:0 20px;
   }
@@ -885,70 +844,113 @@
     }
   }
   .remarkCon{
+    .remarkBox{
+      border-bottom: 1px solid #EBEBEB;
+    }
     .comment-header{
       display: flex;
       margin: 10rpx 20rpx 0;
       justify-content: space-between;
-      }
-      .userInfo{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+    }
+    .userInfo{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     .header-icon{
       width: 30px;
       height: 30px;
       margin-right: 10rpx;
       border-radius: 100%;
       border: 1rpx solid #f0f0f0;
-      }
-      .comment-header-right {
+    }
+    .comment-header-right {
+      display: flex;
+      flex-direction: column;
+      .kd-level{
         display: flex;
-        flex-direction: column;
-        .kd-level{
-          display: flex;
-          justify-content: space-between;
-        }
+        justify-content: space-between;
       }
-      .comment-star{
+    }
+    .comment-star{
+      display: inline-block;
+      height: 24rpx;
+      margin-right: 10rpx;
+      width: 24rpx;
+    }
+    .comment-text {
+      font-size: 12px;
+      color: #010101;
+      word-wrap: break-word;
+      margin: 10rpx 20rpx 20rpx;
+    }
+    .comment-text-style {
+      font-size: 24rpx;
+      color: #888;
+      margin-top: 10rpx;
+      word-wrap: break-word;
+      margin: 5rpx 20rpx;
+    }
+    .comment-pic {
+      margin: 10rpx 20rpx 20rpx;
+      display: flex;
+      ._scroll-view {
+        white-space: nowrap;
+        height: 100px;
+      }
+    }
+    .comment-pic-li {
+      display: inline-block;
+      margin-right: 10px;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .comment-pic ._img {
+      width: 100px;
+      height: 100px;
+      border-radius: 5px;
+      overflow: hidden;
+      background: #ececec;
+    } 
+    .comment-community{
+      margin: 10rpx 20rpx 20rpx;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      font-size: 9px;
+      .tag-title{
+        padding: 4px;
+        border-radius: 15px;
+        margin-right: 20px;
+        color: #EB5255;
+        border: 1px solid #EB5255; 
+      }
+      .tag-box{
+        overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          line-clamp: 1;
+          -webkit-box-orient: vertical;
+      }
+      .tag{
+        padding: 4px 6px;
+        border-radius: 15px;
+        margin-right: 5px;
+        background: #CAB894;
+        color:#fff;
         display: inline-block;
-        height: 24rpx;
-        margin-right: 10rpx;
-        width: 24rpx;
       }
-      .comment-text {
-        font-size: 12px;
-        color: #010101;
-        word-wrap: break-word;
-        margin: 10rpx 20rpx 20rpx;
-        }
-        .comment-text-style {
-          font-size: 24rpx;
-          color: #888;
-          margin-top: 10rpx;
-          word-wrap: break-word;
-          margin: 5rpx 20rpx;
-        }
-        .comment-pic {
-          display: flex;
-          ._scroll-view {
-            white-space: nowrap;
-            height: 100px;
-          }
-        }
-        .comment-pic-li {
-          display: inline-block;
-          margin-right: 10px;
-          border-radius: 5px;
-          overflow: hidden;
-        }
-        .comment-pic ._img {
-          width: 100px;
-          height: 100px;
-          border-radius: 5px;
-          overflow: hidden;
-          background: #ececec;
-        }  
+      .tag1{
+        background: #a54c24;
+    }
+     .tag2{
+        background: #3aafb8;
+    }
+     .tag3{
+        background: #9c8374;
+    }
+    } 
   }
   .guessLike{
     .goodsTypeTag{

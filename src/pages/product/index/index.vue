@@ -164,8 +164,8 @@
           <div class="left">
             <span class="icon">SVIP</span>
             <div class="content">
-              <span>SVIP 开通会员，此商品立省20.00</span>
-              <span>再享10项特权</span>
+              <span>{{Data.SvipPrivilegeText}}</span>
+              <!-- <span>再享10项特权</span> -->
             </div>
           </div>
           <button class="right" v-if="!Data.UserInfo.IsSvip">
@@ -190,6 +190,7 @@
             v-on:click="_showCoupon()"
           >
             <span class="act-name">优惠</span>
+            <span class="coupon_icon">领券</span>
             <block v-for="item in Data.GoodsPagePromotion.Coupons" :key="item.index">
               <span class="coupon" v-if="index<3">满{{item.MeetAmount}}-{{item.DeductionAmount}}</span>
             </block>
@@ -218,6 +219,7 @@
                   v-if="Data.GoodsBase.FirstBuyContent!=null&&Data.GoodsBase.FirstBuyContent>0"
                 >
                   <!-- <span class="act-name">优惠</span> -->
+                  <span class="act-name-icon"><img src="/static/images/icon_newuser@2x.png" class="act-name-icon" alt=""></span>
                   <span class="act-con">新人专享价:￥{{Data.GoodsBase.FirstBuyContent}}</span>
                 </div>
                 <div
@@ -225,6 +227,7 @@
                   v-if="Data.GoodsPagePromotion.BuyReduceContent!=null&&Data.GoodsPagePromotion.BuyReduceContent!=''"
                 >
                   <!-- <span class="act-name">量贩</span> -->
+                  <span class="act-name-icon"><img src="/static/images/icon_liangfan@2x.png" class="act-name-icon" alt=""></span>
                   <span class="act-con">{{Data.GoodsPagePromotion.BuyReduceContent}}</span>
                 </div>
                 <div
@@ -315,10 +318,15 @@
                   @click=" _showActive('PJ')"
                 >
                   <!-- <span class="act-name">配件</span> -->
-                  <span class="act-con">{{Data.ErpGifts[0].GoodsName}}</span>
-                  <span class="act-info">
-                    <span class="icon">></span>
-                  </span>
+                  <span>
+                  <span class="act-name-icon"><img src="/static/images/icon_zengpin@2x.png" class="act-name-icon" alt=""></span>
+                  
+                    <span class="act-con">{{Data.ErpGifts[0].GoodsName}}</span>
+                    </span>
+                    <span class="act-info">
+                      <span class="icon">></span>
+                    </span>
+                  
                 </div>
               </div>
           </div>
@@ -686,7 +694,7 @@
               v-if="Data.Remark != null && Data.Remark.Remarks != null && Data.Remark.Remarks.length>0"
             >
             <div v-for="(item,index) in Data.Remark.Remarks" :key="index">
-              <div class="remarkBox" v-if="item.NoteId==defaultId">
+              <div class="remarkBox">
                 <div class="comment-header">
                   <div class="userInfo">
                     <img
@@ -732,44 +740,13 @@
                     </block>
                   </scroll-view>
                 </div>
-              </div>
-              <div v-else class="communtiyBox">
-                <div  class="communtiy-swiper">
-                  <block>
-                    <div class="communtiy-swiperItem">
-                        <div class="com-content">
-                            <div class="com-text">
-                                <img :src="item.HeadImg?item.HeadImg:'/static/images/default_img.gif'" alt="" class="heder-img">
-                                <div>
-                                  <span class="com-name">{{item.Nick}}</span><br/>
-                                </div>
-                            </div>
-                            <div class="com-title">{{item.NoteTitle}}</div>
-                            <div class="com-tips">{{item.Content}}</div>
-                        </div>
-                        <div class="scroll-img" v-if="item.Imgs != null && item.Imgs.length> 0">
-                          <scroll-view scroll-x scroll-with-animation="true">
-                            <block v-for="(imgitem,imgindex) in item.Imgs" :key="imgindex">
-                              <li class="comment-pic-li">
-                                <img :src="imgitem" mode="aspectFit"  />
-                              </li>
-                            </block>
-                          </scroll-view>
-                        </div>
-                        <div class="com-box">
-                          <div class="com-from">来自社区心得</div>
-                          <div class="count">
-                            <div class="comment-count">
-                              <img src='/static/images/like.png' alt="" class="img">{{item.NoteThumbsUpCount}}
-                            </div>
-                            <div class="thums-count">
-                              <img src='/static/images/news.png' alt="" class="img">{{item.NoteCommentCount}}
-                            </div>
-                          </div>
-                        </div>
-                        
+                <div v-if="item.TagNameList!=null&&item.TagNameList.length>0" class="comment-community">
+                  <div class="tag-title">来自社区笔记</div>
+                  <div class="tag-box">
+                    <div v-for="(item_,index_) in item.TagNameList" :key="index_" :class="{tag:true,'tag0':index==0,'tag1':index==1,'tag2':index==2,'tag3':index==3}">
+                      + {{item_}}
                     </div>
-                  </block>
+                  </div>
                 </div>
               </div>
             </div>

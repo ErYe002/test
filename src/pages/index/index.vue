@@ -82,10 +82,11 @@ export default {
       if(code == 'code000'||code == 'code050'||code == 'code200'||code == 'code100'||code == 'code150'||code == 'code-1'){
         this.currentMenuCode = code
       }else{
+        this.$navigateTo(code)
         console.log("跳转到活动页", code);
-        //跳转还需把/event/替换为/templatefornewapp/，目的是为了去除网页顶部的返回栏
-        code = code.replace(/^\/event\//, "/templatefornewapp/");
-        wx.navigateTo({ url: "/pages/htmlPreview/main?path=" + code });
+        // //跳转还需把/event/替换为/templatefornewapp/，目的是为了去除网页顶部的返回栏
+        // code = code.replace(/^\/event\//, "/templatefornewapp/");
+        // wx.navigateTo({ url: "/pages/htmlPreview/main?path=" + code });
       }
     },
     openMiniFail(e){
