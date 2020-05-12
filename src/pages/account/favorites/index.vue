@@ -1,8 +1,8 @@
 <template>
   <article class="wrap">
     <ul class="list" v-if="list.length > 0">
-      <li class="item" v-for="item in list" :key="item.GoodsId">
-        <div class="info-box">
+      <li class="item" v-for="item in list" :key="item.GoodsId" >
+        <div class="info-box" @click="gotoDetail(item)">
           <img class="g-img" :src="item.ImageUrl" />
           <div class="info">
             <div class="g-name">{{item.GoodsName}}</div>
@@ -86,6 +86,12 @@ export default {
           }
         }
       });
+    },
+    gotoDetail(item){
+       wx.navigateTo({
+          url:
+            "/pages/product/index/main?seocode="+item.SeoCode
+        });
     }
   }
 };
