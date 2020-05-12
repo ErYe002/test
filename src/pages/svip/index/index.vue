@@ -67,7 +67,7 @@
     <section class="top-view">
       <section class="banner_box">
         <!-- 图片 -->
-        <img :src="userInfoModel.PrivilegeUrl" mode="aspectFit" class="banner">
+        <img :src="img" mode="aspectFit" class="banner">
       </section>
     </section>
   </article>
@@ -104,11 +104,17 @@ export default {
       },
       walletModel: {
         ...walletModelTemp
-      }
+      },
+      img:""
     };
   },
   onLoad(){
-    this._getPageData()
+    console.log(this.token)
+    if(this.token){
+      this._getPageData();
+    }else{
+      this._getImg();
+    }
   },
   computed: {
     ...mapState("user", ["token"])
@@ -164,6 +170,11 @@ export default {
       });
       api.getWalletOfPersonnel().then(({ Data }) => {
         this.walletModel = Object.assign({}, Data);
+      });
+    },
+    _getImg(){
+      api.SvipOrderImg().then(({ Data }) => {
+        this.img = Data;
       });
     },
     _getLevelNum(gradeName) {

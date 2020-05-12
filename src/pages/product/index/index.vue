@@ -41,7 +41,7 @@
           v-if="bannerType=='Img'"
           class="pic-indecator"
         >{{bannerIndicator}}/{{Data.GoodsBase.AppendImgs.length}}</cover-view>
-        <div class="swiper-tag">
+        <div class="swiper-tag" v-if="Data.GoodsBase.ShopId == 1">
             <div>
               <img src='/static/images/V.png' alt="" class="img">
             </div>
@@ -233,9 +233,9 @@
                 </span>
             </button>
           </block>
-          <div class="act-jifen actLine" v-if="Data.GoodsBase.ScoreDeductionPrice > 0">
+          <div class="act-jifen actLine" v-if="Data.GoodsBase.MaxScoreDeductionMoney > 0">
             <span class="act-name-icon"><img src="/static/images/de_jifen.png" class="act-name-icon" alt=""></span>
-            <span class="act-con">{{Data.GoodsBase.ScoreDeductionPrice > 0?"积分至多抵扣￥"+Data.GoodsBase.ScoreDeductionPrice:''}}
+            <span class="act-con">{{Data.GoodsBase.MaxScoreDeductionMoney > 0?"积分至多抵扣￥"+Data.GoodsBase.MaxScoreDeductionMoney:''}}
               </span>
             <span class="act-info">
               <span class="icon"></span>
