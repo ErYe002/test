@@ -80,7 +80,19 @@ const api = {
     }, {
         'content-type': 'application/x-www-form-urlencoded'
       })
-  }
+  },
+  //收藏商品
+  FollowGoods(goodsId,shopId) {
+    return http.post(`/Account/AddFavoriteGoods?goodsId=${goodsId}&shopId=${shopId}`);
+  },
+  //取消收藏商品
+  CancelFollowGoods(goodsId) {
+    return http.post(`/Account/CancelFavoriteByGoodsId?goodsId=${goodsId}`);
+  },
+  //收藏商品状态
+  FollowGoodsState(goodsId) {
+    return http.post(`/Goods/GetIsFavoritesByUserAndGoodsId?goodsId=${goodsId}`);
+  },
 };
 
 export default api;

@@ -134,12 +134,12 @@
                     <div class="price">
                     <div class="price-left">
                         <div class="old">原价￥{{item.SalePrice}}</div>
-                        <div class="svip" v-if="item.SvipPrice-0>0">
+                        <div class="svip" v-if="item.SvipPrice-0>0&&item.SvipPrice-0<item.SalePrice-0">
                             <span class="svip-price">￥{{item.SvipPrice}}</span>
                             <span class="svip-icon">SVIP价</span>
                         </div>
                     </div>
-                    <div class="price-right">
+                    <div class="price-right" v-if="item.SvipPrice-0>0&&item.SvipPrice-0<item.SalePrice-0">
                         <img src="/static/images/bg_car.png" alt="" class="bg-price">
                         <span class="mar-price">￥{{item.SaveMoney}}</span>
                         <span class="triangle"></span>
@@ -150,7 +150,7 @@
             </block>
           </block>
         </div>
-        <div class="goods_more" v-if="tempData != null && tempData.length >= 4">
+        <div class="goods_more" v-if="tempData != null && tempData.length > 4">
           <a :href="'/pages/search/goodsList/main?data='+encodeURIComponent(tempData)" class="goods_more_text">
             查看更多商品 >
           </a>

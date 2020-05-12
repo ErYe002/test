@@ -149,9 +149,10 @@
                     <span>分享</span>
                     </div>
                   <div class="down">
-                    <img :src="'/static/images/detail_heart.png'" alt="" class="down-img">
+                    <img v-if="FollowGoodsState"  @click="cancelFollowGoods" :src="'/static/images/detail_heart_active.png'" alt="" class="down-img">
+                    <img v-if="!FollowGoodsState"  @click="followGoods" src="/static/images/detail_heart_gray.png" alt="" class="down-img">
                     <span class="proloveNum">
-                      <i>{{Data.GoodsBase.CollectionCount}}</i>
+                      <i>收藏</i>
                     </span>
                   </div>
                 </div>
@@ -184,20 +185,39 @@
           v-if="Data.GoodsPagePromotion != null&& ( Data.GoodsBase.ScoreDeductionPrice > 0|| Data.GoodsPagePromotion.isHave||Data.GoodsPagePromotion.FullReducePromotion != null|| Data.ErpGifts != null)"
         > 
         <div class="actCon">
-          <div
-            class="act-lingquan actLine"
-            v-if="Data.GoodsPagePromotion != null&&Data.GoodsPagePromotion.Coupons != null && Data.GoodsPagePromotion.Coupons.length>0"
-            v-on:click="_showCoupon()"
-          >
-            <span class="act-name">优惠</span>
-            <span class="coupon_icon">领券</span>
-            <block v-for="item in Data.GoodsPagePromotion.Coupons" :key="item.index">
-              <span class="coupon" v-if="index<3">满{{item.MeetAmount}}-{{item.DeductionAmount}}</span>
-            </block>
-            <span class="act-info">
-              <span class="icon">></span>
-            </span>
-          </div>
+          <block v-if="isLogin">
+            <div
+              class="act-lingquan actLine"
+              v-if="Data.GoodsPagePromotion != null&&Data.GoodsPagePromotion.Coupons != null && Data.GoodsPagePromotion.Coupons.length>0"
+              v-on:click="_showCoupon()"
+            >
+              <span class="act-name">优惠</span>
+              <span class="coupon_icon">领券</span>
+              <block v-for="item in Data.GoodsPagePromotion.Coupons" :key="item.index">
+                <span class="coupon" v-if="index<3">满{{item.MeetAmount}}-{{item.DeductionAmount}}</span>
+              </block>
+              <span class="act-info">
+                <span class="icon">></span>
+              </span>
+            </div>
+          </block>
+          <block v-else>
+            <button
+                class="act-lingquan actLine coupon-btn"
+                v-if="Data.GoodsPagePromotion != null&&Data.GoodsPagePromotion.Coupons != null && Data.GoodsPagePromotion.Coupons.length>0"
+                 open-type="getUserInfo"
+                @getuserinfo="loginEventCoupon"
+            >
+              <span class="act-name">优惠</span>
+                <span class="coupon_icon">领券</span>
+                <block v-for="item in Data.GoodsPagePromotion.Coupons" :key="item.index">
+                  <span class="coupon" v-if="index<3">满{{item.MeetAmount}}-{{item.DeductionAmount}}</span>
+                </block>
+                <span class="act-info">
+                  <span class="icon">></span>
+                </span>
+            </button>
+          </block>
           <div class="act-jifen actLine" v-if="Data.GoodsBase.ScoreDeductionPrice > 0">
             <span class="act-name-icon"><img src="/static/images/de_jifen.png" class="act-name-icon" alt=""></span>
             <span class="act-con">{{Data.GoodsBase.ScoreDeductionPrice > 0?"积分至多抵扣￥"+Data.GoodsBase.ScoreDeductionPrice:''}}
@@ -227,7 +247,7 @@
                   v-if="Data.GoodsPagePromotion.BuyReduceContent!=null&&Data.GoodsPagePromotion.BuyReduceContent!=''"
                 >
                   <!-- <span class="act-name">量贩</span> -->
-                  <span class="act-name-icon"><img src="/static/images/icon_liangfan@2x.png" class="act-name-icon" alt=""></span>
+                  <span class="act-name-icon"><img src="/static/images/de_liangfan@2x.png" class="act-name-icon" alt=""></span>
                   <span class="act-con">{{Data.GoodsPagePromotion.BuyReduceContent}}</span>
                 </div>
                 <div
@@ -319,7 +339,7 @@
                 >
                   <!-- <span class="act-name">配件</span> -->
                   <span>
-                  <span class="act-name-icon"><img src="/static/images/icon_zengpin@2x.png" class="act-name-icon" alt=""></span>
+                  <span class="act-name-icon"><img src="/static/images/de_maizeng.png" class="act-name-icon" alt=""></span>
                   
                     <span class="act-con">{{Data.ErpGifts[0].GoodsName}}</span>
                     </span>
@@ -1411,7 +1431,9 @@ export default {
       NowCompData:null,
       imageProp:{mode:'widthFix'},//详情关于 wxParse配置
       IsFollow:false,
-      HasGifts:true    
+      HasGifts:true,
+      seocode:"",
+      FollowGoodsState:false    
       };
   },
   computed: {},
@@ -1430,6 +1452,7 @@ export default {
     this.isFromAttr =
       options.isFromAttr != undefined ? options.isFromAttr : false;
     this.isComp = options.isComp;
+    this.seocode = options.seocode;
     this.getisComp(options.seocode);
     this._getCartNum();
     //用户是否有授权过用户信息
@@ -1557,6 +1580,7 @@ export default {
         this.IsFollow = Data.BrandStore!=null&&Data.BrandStore.IsFollow;
         this.Data = Data;
         this._getGoodsAbout();
+
         // this._getHotCommentList(Data.GoodsBase.GoodsId)
         if (this.Data.GoodsBase.ShopId == 2) {
           this._getSameTypeData("price");
@@ -1566,6 +1590,7 @@ export default {
             : this._getSameTypeData2("PPTJ");
         }
         this._AttrHref();
+        this.FollowGoodsState();
       });
     },
     _getGoodsAbout() {
@@ -2311,6 +2336,14 @@ export default {
         }
       });
     },
+    loginEventCoupon(e) {
+      const seocode = this.seocode;
+      authorization.doLogin(e.mp.detail.encryptedData, e.mp.detail.iv, () => {
+        this.isLogin = true;
+        this.getisComp(seocode);
+        this._getCartNum();
+      });
+    },
     //取消关注店铺
     cancelFollow(id){
       api.CancelFollow(id).then((Data ) => {
@@ -2327,6 +2360,24 @@ export default {
             this.IsFollow=true
           }
           
+        });
+    },
+
+     //取消收藏商品
+    cancelFollowGoods(){
+      api.CancelFollowGoods(this.Data.GoodsBase.GoodsId).then(({Data} ) => {
+      this.FollowGoodsState = Data
+        });
+    },
+    //收藏商品
+    followGoods(){
+        api.FollowGoods(this.Data.GoodsBase.GoodsId,this.Data.GoodsBase.ShopId).then(( {Data} ) => {
+           this.FollowGoodsState = Data
+        });
+    },
+    FollowGoodsState(){
+      api.FollowGoodsState(this.Data.GoodsBase.GoodsId).then(( {Data} ) => {
+          this.FollowGoodsState = Data
         });
     },
          //点击分享时：如果用户没有授权过用户信息，则页面上的分享按钮替换成授权按钮，此方法为授权按钮事件回调。授权完毕再展示分享弹窗
