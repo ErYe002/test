@@ -245,16 +245,20 @@
                   v-if="Data.GoodsBase.FirstBuyContent!=null&&Data.GoodsBase.FirstBuyContent>0"
                 >
                   <!-- <span class="act-name">优惠</span> -->
-                  <span class="act-name-icon"><img src="/static/images/icon_newuser@2x.png" class="act-name-icon" alt=""></span>
-                  <span class="act-con">新人专享价:￥{{Data.GoodsBase.FirstBuyContent}}</span>
+                  <span>
+                    <span class="act-name-icon"><img src="/static/images/icon_newuser@2x.png" class="act-name-icon" alt=""></span>
+                    <span class="act-con">新人专享价:￥{{Data.GoodsBase.FirstBuyContent}}</span>
+                  </span>
                 </div>
                 <div
                   class="act-dikou actLine"
                   v-if="Data.GoodsPagePromotion.BuyReduceContent!=null&&Data.GoodsPagePromotion.BuyReduceContent!=''"
                 >
                   <!-- <span class="act-name">量贩</span> -->
-                  <span class="act-name-icon"><img src="/static/images/de_liangfan@2x.png" class="act-name-icon" alt=""></span>
-                  <span class="act-con">{{Data.GoodsPagePromotion.BuyReduceContent}}</span>
+                  <span>
+                    <span class="act-name-icon"><img src="/static/images/de_liangfan@2x.png" class="act-name-icon" alt=""></span>
+                    <span class="act-con">{{Data.GoodsPagePromotion.BuyReduceContent}}</span>
+                  </span>
                 </div>
                 <div
                   class="act-zengpin actLine"
@@ -345,10 +349,10 @@
                 >
                   <!-- <span class="act-name">配件</span> -->
                   <span>
-                  <span class="act-name-icon"><img src="/static/images/de_maizeng.png" class="act-name-icon" alt=""></span>
+                    <span class="act-name-icon"><img src="/static/images/de_maizeng.png" class="act-name-icon" alt=""></span>
                   
                     <span class="act-con">{{Data.ErpGifts[0].GoodsName}}</span>
-                    </span>
+                  </span>
                     <span class="act-info">
                       <span class="icon">></span>
                     </span>
