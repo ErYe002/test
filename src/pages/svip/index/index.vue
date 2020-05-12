@@ -67,7 +67,7 @@
     <section class="top-view">
       <section class="banner_box">
         <!-- 图片 -->
-        <img :src="img" mode="aspectFit" class="banner">
+        <img :src="PrivilegeUrl" mode="aspectFit" class="banner">
       </section>
     </section>
   </article>
@@ -105,11 +105,10 @@ export default {
       walletModel: {
         ...walletModelTemp
       },
-      img:""
+      PrivilegeUrl:""
     };
   },
   onLoad(){
-    console.log(this.token)
     if(this.token){
       this._getPageData();
     }else{
@@ -167,6 +166,7 @@ export default {
         );
         Data.levelNum = this._getLevelNum(Data.GradeName);
         this.userInfoModel = Object.assign({}, Data);
+        this.PrivilegeUrl = Data.PrivilegeUrl
       });
       api.getWalletOfPersonnel().then(({ Data }) => {
         this.walletModel = Object.assign({}, Data);
@@ -174,7 +174,7 @@ export default {
     },
     _getImg(){
       api.SvipOrderImg().then(({ Data }) => {
-        this.img = Data;
+        this.PrivilegeUrl = Data;
       });
     },
     _getLevelNum(gradeName) {
