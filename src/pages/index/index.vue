@@ -68,12 +68,9 @@ export default {
         let list = Data.ChannelList
         // .filter((ele) => {
           // return ele.SeoCode == 'code000' || ele.SeoCode == 'code350' || ele.SeoCode == 'code200' || ele.SeoCode == 'code050' 
-          // return ele.SeoCode == 'code000' || ele.SeoCode == 'code350' || ele.SeoCode == 'code200' || ele.SeoCode == 'code050' || ele.SeoCode == 'code150' || ele.SeoCode == 'code100'
-        // });
-        list.unshift({
+			list.unshift({
           Name: "首页",
-          TargetUrl: 'code-1'
-        });
+          TargetUrl: 'code-1'        });
         this.menu = list;
         // this.currentMenuCode = this.menu[0]["SeoCode"];
       });

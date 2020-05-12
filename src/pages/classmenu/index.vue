@@ -60,11 +60,13 @@ export default {
       api.getGoodsClass().then(({ Data }) => {
         //重新整理数据
         sourceData = [...Data]
-        this.leftList = sourceData.map(ele => {
-            return {
+        this.leftList = sourceData.filter(ele => {
+            if(ele.SEOCode!="yxht"){
+              return {
                ClassName: ele.ClassName,
                 SEOCode: ele.SEOCode,
                 ClassID: ele.ClassID
+              }
             }
         })
         this.selectedParentID = this.leftList[0].ClassID
