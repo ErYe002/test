@@ -161,7 +161,7 @@
           </div>
 
         </div>
-        <div class="svip-box">
+        <div class="svip-box" v-if="Data.GoodsBase.ShopId == 1">
           <div class="left">
             <span class="icon">SVIP</span>
             <div class="content">
@@ -180,10 +180,19 @@
           </block>
         </div>
         <div class="goods-te">
-          <span>品牌授权</span>
-          <span>24H发货</span>
-          <span>SVIP会员只卖成本价</span>
-          <span>支持7天无理由退货</span>
+          <block v-if="Data.GoodsBase.ShopId == 1">
+            <span>品牌授权</span>
+            <span>24H发货</span>
+            <span>SVIP会员只卖成本价</span>
+            <span>支持7天无理由退货</span>
+          </block>
+          <block v-else>
+            <span><img src="/static/images/product_duihao.png">&nbsp;快递:{{Data.GoodsBase.AmoyFreight}}元</span>
+            <span><img src="/static/images/product_duihao.png">&nbsp;贴心客服</span>
+            <span><img src="/static/images/product_duihao.png">&nbsp;正品保障</span>
+            <span><img src="/static/images/product_duihao.png">&nbsp;急速物流</span>
+          </block>
+
         </div>
       </div>
       <!-- 优惠活动一览 -->

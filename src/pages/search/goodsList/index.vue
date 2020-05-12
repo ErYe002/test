@@ -18,12 +18,12 @@
               <div class="price">
               <div class="price-left">
                   <div class="old">原价￥{{item.SalePrice}}</div>
-                  <div class="svip">
+                  <div class="svip" v-if="item.SvipPrice-0>0&&item.SvipPrice-0<item.SalePrice-0">
                   <span class="svip-price">￥{{item.SvipPrice}}</span>
                   <span class="svip-icon">SVIP价</span>
                   </div>
               </div>
-              <div class="price-right">
+              <div class="price-right" v-if="item.SvipPrice-0>0&&item.SvipPrice-0<item.SalePrice-0">
                   <img src="/static/images/bg_car.png" alt="" class="bg-price">
                   <span class="mar-price">￥{{item.SaveMoney}}</span>
                   <span class="triangle"></span>
