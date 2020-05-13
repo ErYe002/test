@@ -150,7 +150,7 @@
           </block>
         </div>
         <div class="goods_more" v-if="HasMore">
-          <a :href="'/pages/search/goodsList/main?channelId='+id" class="goods_more_text">
+          <a :href="'/pages/search/goodsList/main?channelId='+id+'&channelTitle='+channelTitle" class="goods_more_text">
             查看更多商品 >
           </a>
         </div>
@@ -247,7 +247,8 @@ const defaultData = {
   id:"",
   select_recommendChannel:0,
   goodsType:"",
-  HasMore:false
+  HasMore:false,
+  channelTitle:""
 }
 
 export default {
@@ -341,6 +342,7 @@ export default {
               this.id = Data.EssentialGoodsList[0]['Id'];
               this.tempData = Data.EssentialGoodsList[0]['GoodsList']
               this.HasMore =  Data.EssentialGoodsList[0]['HasMore']
+              this.channelTitle =  Data.EssentialGoodsList[0]['Name']
           }
         //   this.backGoodsList(Data.RecommendLikeGoodsList)
         }
@@ -428,6 +430,7 @@ export default {
         this.id= item.Id;
         this.tempData =item.GoodsList;
         this.HasMore = item.HasMore;
+        this.channelTitle = item.Name;
     },
     changeRecommendNavGoods(item,index){
         wx.showLoading();

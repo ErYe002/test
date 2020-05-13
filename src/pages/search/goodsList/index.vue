@@ -57,6 +57,11 @@ export default {
   onLoad(options) {
     if(options){
       this.channelId = options.channelId;
+      let title =options.channelTitle;
+      wx.setNavigationBarTitle({
+        title: title
+      })
+
       this.getGoods();
     }
 
