@@ -29,7 +29,7 @@
         </div>
       </scroll-view>
     </section>
-    <defaultIndex v-if="currentMenuCode == 'code-1'"/>
+    <defaultIndex v-if="currentMenuCode == 'code001'"/>
     <recommend v-if="currentMenuCode == 'code000'"/>
     <oversea v-if="currentMenuCode == 'code050'"/>
     <frames v-if="currentMenuCode == 'code200'"/>
@@ -51,7 +51,7 @@ export default {
   data() {
     return {
       menu: [],
-      currentMenuCode: 'code-1'
+      currentMenuCode: 'code001'
     };
   },
   components: {
@@ -68,15 +68,16 @@ export default {
         let list = Data.ChannelList
         // .filter((ele) => {
           // return ele.SeoCode == 'code000' || ele.SeoCode == 'code350' || ele.SeoCode == 'code200' || ele.SeoCode == 'code050' 
-			list.unshift({
-          Name: "首页",
-          TargetUrl: 'code-1'        });
+			    // list.unshift({
+          //   Name: "首页",
+          //   TargetUrl: 'code-1'        
+          // });
         this.menu = list;
-        // this.currentMenuCode = this.menu[0]["SeoCode"];
+        this.currentMenuCode = this.menu[0]["TargetUrl"];
       });
     },
     changeIndexEvent(code){
-      if(code == 'code000'||code == 'code050'||code == 'code200'||code == 'code100'||code == 'code150'||code == 'code-1'){
+      if(code == 'code000'||code == 'code050'||code == 'code200'||code == 'code100'||code == 'code150'||code == 'code001'){
         this.currentMenuCode = code
       }else{
         this.$navigateTo(code)
