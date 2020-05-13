@@ -790,7 +790,7 @@
                 <div v-if="item.TagNameList!=null&&item.TagNameList.length>0" class="comment-community">
                   <div class="tag-title">来自社区笔记</div>
                   <div class="tag-box">
-                    <div v-for="(item_,index_) in item.TagNameList" :key="index_" :class="{tag:true,'tag0':index==0,'tag1':index==1,'tag2':index==2,'tag3':index==3}">
+                    <div v-for="(item_,index_) in item.TagNameList" :key="index_" :class="{tag:true,'tag0':index_==0,'tag1':index_==1,'tag2':index_==2,'tag3':index_==3}">
                       + {{item_}}
                     </div>
                   </div>
@@ -1596,6 +1596,14 @@ export default {
         }
         if (Data.Remark!=null&&Data.Remark.Remarks != null) {
           Data.Remark.Remarks = Data.Remark.Remarks.map(function(value, index) {
+            if(value.TagNameList!=null&&value.TagNameList.length>0){
+               value.TagNameList = value.TagNameList.map((obj)=>{
+                  if(obj.length>4){
+                    obj= obj.substr(0,4)+"..."
+                  }
+                  return obj
+              })
+            }
             value.PubTime = value.PubTime.replace("T", " ");
             return value;
           });

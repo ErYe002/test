@@ -197,7 +197,7 @@
             v-for="item in goodsList"
             :key="item.SeoCode"
           >
-            <div class="save_money" v-if="item.SaveMoney-0>0">立省{{item.SaveMoney}}元</div>
+            <div class="save_money" v-if="item.SvipPrice-0>0&&item.SvipPrice-0<item.SalePrice-0">立省{{item.SaveMoney}}元</div>
             <img :src="item.ImageUrl" class="img" />
             <p class="name">{{item.GoodsName}}</p>
             <div class="info">
@@ -208,7 +208,7 @@
               <div class="floor_two">
                 <span class="price-old">原价 ￥{{item.SalePrice}}</span>
               </div>
-              <div class="floor_three" v-if="item.SvipPrice-0>0">
+              <div class="floor_three" v-if="item.SvipPrice-0>0&&item.SvipPrice-0<item.SalePrice-0">
                 <img src="/static/images/goods_vip.png" alt="" class="img">
                 <em class="price-icon">￥</em>
                 <span class="price">{{item.SvipPrice}}</span>
