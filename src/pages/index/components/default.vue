@@ -108,7 +108,7 @@
             @click="changeNavGoods(item,index)"
           >
             <div class="link">
-              <b>{{item.Key.Name}}</b>
+              <b>{{item.Name}}</b>
             </div>
           </div>
         </scroll-view>
@@ -122,7 +122,6 @@
                 <a
                 :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'"
                 class="item"
-                v-if="index<=3"
                 >
                 <div>
                     <img :src="item.ImageUrl" class="img" />
@@ -150,8 +149,8 @@
             </block>
           </block>
         </div>
-        <div class="goods_more" v-if="tempData != null && tempData.length > 4">
-          <a :href="'/pages/search/goodsList/main?data='+encodeURIComponent(tempData)" class="goods_more_text">
+        <div class="goods_more" v-if="HasMore">
+          <a :href="'/pages/search/goodsList/main?channelId='+id" class="goods_more_text">
             查看更多商品 >
           </a>
         </div>
@@ -247,7 +246,8 @@ const defaultData = {
   select_index:0,
   id:"",
   select_recommendChannel:0,
-  goodsType:""
+  goodsType:"",
+  HasMore:false
 }
 
 export default {
@@ -297,7 +297,6 @@ export default {
       this.currentSeckillIdx = idx;
     },
     _getPageData() {
-        wx.setStorageSync("EssentialGoodsList",null)
       api.getHomePageData().then(({ Data }) => {
         if (Data != null ) {
           //处理秒杀数据
@@ -339,11 +338,9 @@ export default {
               this._getGoodsListData();
           }
           if(Data.EssentialGoodsList!=null){
-              this.id = Data.EssentialGoodsList[0]['Key']['Id'];
-              this.tempData = Data.EssentialGoodsList[0]['Value']
-              if(this.tempData.length!=null&&this.tempData.length>4){
-                  wx.setStorageSync("EssentialGoodsList",this.tempData)
-              }
+              this.id = Data.EssentialGoodsList[0]['Id'];
+              this.tempData = Data.EssentialGoodsList[0]['GoodsList']
+              this.HasMore =  Data.EssentialGoodsList[0]['HasMore']
           }
         //   this.backGoodsList(Data.RecommendLikeGoodsList)
         }
@@ -427,13 +424,10 @@ export default {
       // this.xxx = e.mp.detail.scrollLeft;//scrollWidth
     },
     changeNavGoods(item,index){
-        wx.setStorageSync("EssentialGoodsList",null)
         this.select_index = index;
-        this.id= item.Key.Id;
-        this.tempData =item.Value;
-        if(this.tempData.length!=null&&this.tempData.length>4){
-            wx.setStorageSync("EssentialGoodsList",this.tempData)
-        }
+        this.id= item.Id;
+        this.tempData =item.GoodsList;
+        this.HasMore = item.HasMore;
     },
     changeRecommendNavGoods(item,index){
         wx.showLoading();

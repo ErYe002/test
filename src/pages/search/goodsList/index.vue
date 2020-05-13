@@ -32,6 +32,8 @@
           </div>
           </a>
       </block>
+      <p class="no-more-tips" v-if="page == totalPage">没有更多了</p>
+      <p class="no-data-box" v-else-if="isNoData">抱歉，没有找到你想要的商品哦</p>
     </block>
   </article>
 </template>
@@ -43,18 +45,50 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
-      tempData:""
+      tempData:[],
+      page: 1,
+      size:10,
+      channelId:"",
+      totalPage: 0,
+      isNoData: false,
+      isLoading: false
     };
   },
   onLoad(options) {
-    let EssentialGoodsList = wx.getStorageSync("EssentialGoodsList",this.tempData);
-    console.log(EssentialGoodsList)
-    if(EssentialGoodsList){
-      this.tempData = EssentialGoodsList
+    if(options){
+      this.channelId = options.channelId;
+      this.getGoods();
+    }
+
+  },
+    /**
+   * 上拉加载
+   */
+  onReachBottom() {
+    if (this.page < this.totalPage) {
+      this.page++;
+      this.getGoods();
     }
   },
   methods: {
- 
+    getGoods(){
+      if (!this.isLoading && this.channelId) {
+        this.isLoading = true;
+        api
+          .HomeEssentialGoods(this.channelId,this.size,this.page)
+          .then(({ Data, TotalPage }) => {
+            this.tempData = this.page > 1 ? this.tempData.concat(Data) : Data;
+            this.totalPage = TotalPage;
+            //没有搜索到任何数据
+            if (!Data || Data.length <= 0) {
+              this.isNoData = true;
+            }
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
+      }
+    }
   }
 };
 </script>
@@ -159,5 +193,17 @@ export default {
         }
       }
     }
+  }
+  .no-more-tips{
+    padding: 5px;
+    color: #000;
+    font-size: 12px;
+    text-align: center;
+  }
+  .no-data-box{
+    padding: 5px;
+    color: #000;
+    font-size: 15px;
+    text-align: center;
   }
 </style>
