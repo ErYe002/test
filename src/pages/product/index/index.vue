@@ -205,7 +205,7 @@
       </div>
       <!-- 优惠活动一览 -->
       <div class="promotionBox"
-          v-if="Data.GoodsPagePromotion != null&& ( Data.GoodsBase.ScoreDeductionPrice > 0|| Data.GoodsPagePromotion.isHave||Data.GoodsPagePromotion.FullReducePromotion != null|| Data.ErpGifts != null)"
+          v-if="Data.GoodsPagePromotion != null&& ( Data.GoodsBase.MaxScoreDeductionMoney > 0|| Data.GoodsPagePromotion.isHave||Data.GoodsPagePromotion.FullReducePromotion != null||Data.ErpGifts != null||(Data.GoodsPagePromotion.Coupons != null && Data.GoodsPagePromotion.Coupons.length>0)||(Data.GoodsBase.FirstBuyContent!=null&&Data.GoodsBase.FirstBuyContent.length>0)||(Data.GoodsPagePromotion.BuyReduceContent!=null&&Data.GoodsPagePromotion.BuyReduceContent!='')||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.Gift != null && Data.GoodsPagePromotion.Gift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FullGift != null && Data.GoodsPagePromotion.FullGift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FreeCollocation != null && Data.GoodsPagePromotion.FreeCollocation.length>0)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.FullReducePromotion != null)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.ChangeBuy != null && Data.GoodsPagePromotion.ChangeBuy.length>0)||(Data.ErpGifts != null && Data.ErpGifts.length>0))"
         > 
         <div class="actCon">
           <block v-if="isLogin">
@@ -254,7 +254,7 @@
             <span class="act-con">积分至多抵扣￥{{Data.GoodsBase.ScoreDeductionPrice}}</span>
           </div> -->
           <div class="discountsFull" 
-              v-if="(Data.GoodsBase.FirstBuyContent!=null&&Data.GoodsBase.FirstBuyContent>0)||(Data.GoodsPagePromotion.BuyReduceContent!=null&&Data.GoodsPagePromotion.BuyReduceContent!='')||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.Gift != null && Data.GoodsPagePromotion.Gift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FullGift != null && Data.GoodsPagePromotion.FullGift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FreeCollocation != null && Data.GoodsPagePromotion.FreeCollocation.length>0)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.FullReducePromotion != null)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.ChangeBuy != null && Data.GoodsPagePromotion.ChangeBuy.length>0)||(Data.ErpGifts != null && Data.ErpGifts.length>0)"  
+              v-if="(Data.GoodsBase.FirstBuyContent!=null&&Data.GoodsBase.FirstBuyContent.length>0)||(Data.GoodsPagePromotion.BuyReduceContent!=null&&Data.GoodsPagePromotion.BuyReduceContent!='')||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.Gift != null && Data.GoodsPagePromotion.Gift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FullGift != null && Data.GoodsPagePromotion.FullGift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FreeCollocation != null && Data.GoodsPagePromotion.FreeCollocation.length>0)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.FullReducePromotion != null)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.ChangeBuy != null && Data.GoodsPagePromotion.ChangeBuy.length>0)||(Data.ErpGifts != null && Data.ErpGifts.length>0)"  
             >
               <div class="discountsFull-item">
                 <div
