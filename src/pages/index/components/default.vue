@@ -545,6 +545,8 @@ export default {
       width: 150%;
       display: flex;
       flex-wrap: wrap;
+      flex-direction: column;
+      height: 150px;
     }
     .nav-contain{
       height: 100%;
