@@ -48,9 +48,9 @@ const api = {
   HomeEssentialGoods(ChannelId,PageSize = 10,PageIndex = 1){
     let url = `/Home/HomeEssentialGoods202005ByPage?VersionNo=4.5.8&ChannelId=${ChannelId}&PageSize=${PageSize}&PageIndex=${PageIndex}`
     if(PageIndex > 1){
-      return http.post(url);
+      return http.get(url);
     }
-    return http.postByNoLoading(url);
+    return http.getByNoLoading(url);
   },
 };
 

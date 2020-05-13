@@ -7,15 +7,15 @@ const api = {
   },
   //获取首页-新首页-v7.8-数据
   getHomePageData(){
-    return http.postByNoLoading(`/Home/AppHomePage202005?versionNo=4.5.8`)
+    return http.get(`/Home/AppHomePage202005?versionNo=4.5.8`)
   },
    //获取首页-新首页-v7.8-数据
   getHomePageGoods(pageIndex, pageSize,goodsType){
     let url = `/Home/AppHomeRecommendGoodsByPage?PageSize=${pageSize}&PageIndex=${pageIndex}&GoodsType=${goodsType}`
     if(pageIndex == 1){
-      return http.postByNoLoading(url)
+      return http.getByNoLoading(url)
     }
-    return http.post(url)
+    return http.get(url)
   },
   //获取首页-推荐页数据
   getHomeRecommendData(){
