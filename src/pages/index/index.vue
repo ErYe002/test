@@ -74,7 +74,7 @@ export default {
           //   TargetUrl: 'code-1'        
           // });
         this.menu = list;
-        this.SearchKeyword = Data.SearchKeyword
+        this.SearchKeyword = Data.SearchKeyword?Data.SearchKeyword:"改变从选一副眼镜开始"
         this.currentMenuCode = this.menu[0]["TargetUrl"];
       });
     },
