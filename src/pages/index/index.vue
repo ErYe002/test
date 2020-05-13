@@ -3,7 +3,7 @@
     <section class="search-box">
       <a href="/pages/search/index/main" class="flex-wrap">
         <img src="/static/images/icon_search_black.png" class="icon" />
-        <span class="text">"改变从选一副眼镜开始"</span>
+        <span class="text">{{SearchKeyword}}</span>
       </a>
       <a href="/pages/classmenu/main" class="class">
         <img src="/static/images/class_icon.png" alt="" class="class_icon">
@@ -51,7 +51,8 @@ export default {
   data() {
     return {
       menu: [],
-      currentMenuCode: 'code001'
+      currentMenuCode: 'code001',
+      SearchKeyword:"改变从选一副眼镜开始"
     };
   },
   components: {
@@ -73,6 +74,7 @@ export default {
           //   TargetUrl: 'code-1'        
           // });
         this.menu = list;
+        this.SearchKeyword = Data.SearchKeyword
         this.currentMenuCode = this.menu[0]["TargetUrl"];
       });
     },
