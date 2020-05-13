@@ -91,7 +91,7 @@ const api = {
   },
   //收藏商品状态
   FollowGoodsState(goodsId) {
-    return http.post(`/Goods/GetIsFavoritesByUserAndGoodsId?goodsId=${goodsId}`);
+    return http.postByNoErrorTips(`/Goods/GetIsFavoritesByUserAndGoodsId?goodsId=${goodsId}`);
   },
 };
 

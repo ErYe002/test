@@ -149,8 +149,16 @@
                     <span>分享</span>
                     </div>
                   <div class="down">
-                    <img v-if="FollowGoodsState"  @click="cancelFollowGoods" :src="'/static/images/detail_heart_active.png'" alt="" class="down-img">
-                    <img v-if="!FollowGoodsState"  @click="followGoods" src="/static/images/detail_heart_gray.png" alt="" class="down-img">
+                    <block v-if="isLogin">
+                      <img v-if="FollowGoodsState"  @click="cancelFollowGoods" :src="'/static/images/detail_heart_active.png'" alt="" class="down-img">
+                      <img v-if="!FollowGoodsState"  @click="followGoods" src="/static/images/detail_heart_gray.png" alt="" class="down-img">
+                    </block>
+                    <block v-else>
+                      <button open-type="getUserInfo" @getuserinfo="loginEventCoupon" class="btn">
+                            <img  :src="'/static/images/detail_heart_gray.png'" alt="" class="down-img">
+                      </button>
+                    </block>
+
                     <span class="proloveNum">
                       <i>收藏</i>
                     </span>
@@ -2407,9 +2415,11 @@ export default {
         });
     },
     followGoodsState(){
-      api.FollowGoodsState(this.Data.GoodsBase.GoodsId).then(( {Data} ) => {
+      if(this.isLogin){
+          api.FollowGoodsState(this.Data.GoodsBase.GoodsId).then(( {Data} ) => {
           this.FollowGoodsState = Data
         });
+      }
     },
          //点击分享时：如果用户没有授权过用户信息，则页面上的分享按钮替换成授权按钮，此方法为授权按钮事件回调。授权完毕再展示分享弹窗
     getUserInfo(e) {
