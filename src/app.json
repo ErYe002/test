@@ -8,7 +8,8 @@
     "pages/bindMobile/main",
     "pages/htmlPreview/main",
     "pages/svip/index/main",
-    "pages/svip/dredgeSvip/main"
+    "pages/svip/dredgeSvip/main",
+    "pages/template/main"
   ],
   "subpackages": [
     {

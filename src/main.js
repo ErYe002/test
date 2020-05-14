@@ -73,7 +73,14 @@ let MIXIN = {
                   "/pages/search/results/main?shopId="+shopid+"&keywords=" + keywords
               });
             }
-          } else {
+          }else if(path.indexOf("channelcode?code=") != -1 ){
+            path = JSON.parse("{\"" +path.split("?")[1].replace(new RegExp(/(&)/g),'\",\"').replace(new RegExp(/(=)/g),'\":\"')+ "\"}");
+           
+            wx.navigateTo({
+              url:
+                "/pages/template/main?code="+path.code+"&name="+path.name
+            });
+          }else {
             console.log("此路径禁止跳转", path);
           }
         }

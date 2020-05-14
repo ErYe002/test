@@ -422,7 +422,7 @@ export default {
           that.xxx  = (e.mp.detail.scrollLeft*10/(e.mp.detail.scrollWidth-res.screenWidth))
           }
       })
-      // console.log(e.mp.detail)
+      console.log(e.mp.detail)
       // this.xxx = e.mp.detail.scrollLeft;//scrollWidth
     },
     changeNavGoods(item,index){
