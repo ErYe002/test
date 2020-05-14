@@ -47,7 +47,7 @@
             </div>
             <div>
               <div class="text-one">只卖成本价的隐形眼镜</div>
-              <div class="text-two">会员商城</div>
+              <div class="text-two">会员电商</div>
             </div>
         </div>
       </div>
