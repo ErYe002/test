@@ -1,6 +1,10 @@
 <template>
   <article class="wrap">
     <section class="search-box">
+      <div class="jifen-box">
+        <img src="/static/images/index_jifen.png"  alt="" class="jifen">
+        <span v-if="token" class="jifen-text">{{jifentext}}</span>
+      </div>
       <a href="/pages/search/index/main" class="flex-wrap">
         <img src="/static/images/icon_search_black.png" class="icon" />
         <span class="text">{{SearchKeyword}}</span>
@@ -18,7 +22,7 @@
           :key="item.Id"
           @click="changeIndexEvent(item.TargetUrl)"
         >
-          <navigator open-type="navigate" target="miniProgram" app-id="wxbb2e8b1089947444" version="release" @fail="openMiniFail" class="link" v-if="item.SeoCode == 'code350'">
+          <navigator open-type="navigate" target="miniProgram" app-id="wxbb2e8b1089947444" version="release" @fail="openMiniFail" class="link" v-if="item.SeoCode == 'pt_type'">
             <b>{{item.Name}}</b>
             <!-- <em>{{item.EnName}}</em> -->
           </navigator>
@@ -45,15 +49,21 @@ import frames from "./components/frames";
 import meitong from "./components/meitong";
 import nurse from "./components/nurse";
 import defaultIndex from "./components/default";
+import { mapState } from "vuex";
 import api from "@/api";
+import userapi from "@/api/user";
 
 export default {
   data() {
     return {
       menu: [],
       currentMenuCode: 'code001',
-      SearchKeyword:"改变从选一副眼镜开始"
+      SearchKeyword:"改变从选一副眼镜开始",
+      jifentext:"0"
     };
+  },
+   computed: {
+    ...mapState("user", ["token"])
   },
   components: {
     recommend,
@@ -67,9 +77,12 @@ export default {
     _getMenuData() {
       api.getHomePageData().then(({ Data }) => {
         let list = Data.ChannelList
-        // .filter((ele) => {
-          // return ele.SeoCode == 'code000' || ele.SeoCode == 'code350' || ele.SeoCode == 'code200' || ele.SeoCode == 'code050' 
-        //})
+        .map((ele) => {
+          if(ele.TargetUrl.indexOf("wechatgroupindex")!=-1){
+            ele.SeoCode = "pt_type"
+          }
+          return ele
+        })
         this.menu = list;
         this.SearchKeyword = Data.SearchKeyword?Data.SearchKeyword:"改变从选一副眼镜开始"
         this.currentMenuCode = this.menu[0]["TargetUrl"];
@@ -96,11 +109,23 @@ export default {
     },
     openMiniFail(e){
       console.log('失败', e)
+    },
+    getWalletOfPersonnel(){
+      userapi.getWalletOfPersonnel().then(({Data})=>{
+        if(Data&&Data.Score>0){
+          let score = Math.floor(Data.Score).toString();
+          if(score.length>3){
+            score = score.substr(0,score.length-3)+"k+"
+          }
+          this.jifentext = score
+        }
+      })
     }
   },
 
   onShow() {
     this._getMenuData();
+    this.getWalletOfPersonnel()
   },
     onShareAppMessage(res) {
 
@@ -150,6 +175,26 @@ export default {
       font-size: 8.5px;
       color: #fff;
     }
+  }
+  .jifen-box{
+    position: relative;
+    .jifen-text{
+      position: absolute;
+      left: -2px;
+      top: -2px;
+      background: #FEE002;
+      font-size: 8px;
+      width: 30px;
+      height: 10px;
+      border-radius: 5px;
+      text-align: center;
+      line-height: 10px;
+    }
+  }
+  .jifen{
+    width: 26px;
+    height: 26px;
+    margin-right: 5px;
   }
 }
 

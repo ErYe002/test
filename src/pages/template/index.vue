@@ -28,7 +28,7 @@ export default {
     if(option){
       this.currentMenuCode = option.code
       wx.setNavigationBarTitle({
-        title: option.name
+        title: decodeURIComponent(option.name)
       })
     }
   },

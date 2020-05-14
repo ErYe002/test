@@ -85,7 +85,7 @@ let MIXIN = {
            }
             wx.navigateTo({
               url:
-                "/pages/template/main?code="+path.code+"&name="+path.name
+                "/pages/template/main?code="+path.code+"&name="+encodeURIComponent(path.name)
             });
           }else {
             console.log("此路径禁止跳转", path);

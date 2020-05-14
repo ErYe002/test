@@ -25,7 +25,10 @@
           <scroll-view class="nav-contain" scroll-x @scroll="scroll">
             <div class="out-box">
               <div v-for="(item,index) in model.IconList" :key="index" class="children-box">
-                <img :src="item.ImageUrl"  class="nav-img" @click="$navigateTo(item.TargetUrl)">
+                <navigator open-type="navigate" target="miniProgram" app-id="wxbb2e8b1089947444" version="release" @fail="openMiniFail"  v-if="item.SeoCode == 'pt_type'">
+                  <img :src="item.ImageUrl"  class="nav-img">
+                </navigator>
+                <img :src="item.ImageUrl" v-else class="nav-img" @click="$navigateTo(item.TargetUrl)">
                 <span class="nav-text">{{item.Name}}</span>
               </div>
               </div>
@@ -47,31 +50,40 @@
         </section>
         <section :class="{'hot-box': true, 'new-user': model.IsNewUser || !token}"><!--新人或者未登录模块-->
           <div class="new-user-box" v-if="model.IsNewUser || !token">
-            <button class="coupon" open-type="getUserInfo" @getuserinfo="getUserInfo">
+            <button class="coupon" open-type="getUserInfo" @getuserinfo="getUserInfo" v-if="!token">
                 <img :src="model.UserAdvertList[0]['ImageUrl']" mode="widthFix"/>
             </button>
+            <div class="coupon" v-else>
+            <img  :src="model.UserAdvertList[0]['ImageUrl']" mode="widthFix" @click="$navigateTo(model.UserAdvertList[0]['TargetUrl'])"/>
+            </div>
           </div>
           <block v-else>
-            <article
-                class="three-floor-wrap"
-                v-if="model.UserAdvertList != null && model.UserAdvertList.length > 0"
-            >
-                <img
-                :src="model.UserAdvertList[1]['ImageUrl']"
-                class="big-img"
-                @click="$navigateTo(model.UserAdvertList[1]['TargetUrl'])"
-                />
-                <img
-                :src="model.UserAdvertList[2]['ImageUrl']"
-                class="img"
-                @click="$navigateTo(model.UserAdvertList[2]['TargetUrl'])"
-                />
-                <img
-                :src="model.UserAdvertList[3]['ImageUrl']"
-                class="img"
-                @click="$navigateTo(model.UserAdvertList[3]['TargetUrl'])"
-                />
-            </article>
+            <div class="coupon" v-if="model.IsNewUser">
+              <img  :src="model.UserAdvertList[0]['ImageUrl']" mode="widthFix" @click="$navigateTo(model.UserAdvertList[0]['TargetUrl'])"/>
+            </div>
+            <block v-else>
+              <article
+                  class="three-floor-wrap"
+                  v-if="model.UserAdvertList != null && model.UserAdvertList.length > 0"
+              >
+                  <img
+                  :src="model.UserAdvertList[1]['ImageUrl']"
+                  class="big-img"
+                  @click="$navigateTo(model.UserAdvertList[1]['TargetUrl'])"
+                  />
+                  <img
+                  :src="model.UserAdvertList[2]['ImageUrl']"
+                  class="img"
+                  @click="$navigateTo(model.UserAdvertList[2]['TargetUrl'])"
+                  />
+                  <img
+                  :src="model.UserAdvertList[3]['ImageUrl']"
+                  class="img"
+                  @click="$navigateTo(model.UserAdvertList[3]['TargetUrl'])"
+                  />
+              </article>
+            </block>
+
           </block>
         </section>
       </article>
@@ -277,10 +289,9 @@ export default {
   },
   methods: {
     getUserInfo(e) {
+      let that = this;
       authorization.doLogin(e.mp.detail.encryptedData, e.mp.detail.iv, () => {
-        wx.navigateTo({
-          url: '/pages/account/coupon/main'
-        })
+        that.$navigateTo(that.model.UserAdvertList[0]['TargetUrl'])
       });
     },
     //同步swiper page
@@ -300,33 +311,6 @@ export default {
     _getPageData() {
       api.getHomePageData().then(({ Data }) => {
         if (Data != null ) {
-          //处理秒杀数据
-          if(Data.SeckillList!=null){
-            Data.SeckillList.forEach((item, idx) => {
-              let startTime = new Date(item.StartTime);
-              let endTime = new Date(item.EndTime);
-              let nowTime = new Date();
-              if (startTime > nowTime) {
-                //秒杀未开始
-                item.status = "稍等抢";
-              } else if (startTime < nowTime && endTime > nowTime) {
-                //秒杀中
-                item.status = "抢购中";
-              } else if (endTime < nowTime) {
-                //秒杀结束
-                item.status = "已结束";
-              }
-              if (item.GoodsList.length > 2) {
-                item.currentSeckillLeftList = [...item.GoodsList.slice(0, 2)];
-                item.currentSeckillRightList = [
-                  ...item.GoodsList.slice(2, item.GoodsList.length)
-                ];
-              } else {
-                item.currentSeckillLeftList = [...item.GoodsList];
-              }
-              item.shortTime = tools.formatDate("hh:mm", startTime);
-            });
-          }
           if(Data.BrandList != null){
                       this.reversalBrand(Data.BrandList)
             this.brandList =
@@ -343,6 +327,14 @@ export default {
               this.tempData = Data.EssentialGoodsList[0]['GoodsList']
               this.HasMore =  Data.EssentialGoodsList[0]['HasMore']
               this.channelTitle =  Data.EssentialGoodsList[0]['Name']
+          }
+          if(Data.IconList!=null){
+              Data.IconList.map((item)=>{
+                if(item.TargetUrl.indexOf("wechatgroupindex")!=-1){
+                  item.SeoCode = "pt_type"
+                }
+                return item
+              })
           }
         //   this.backGoodsList(Data.RecommendLikeGoodsList)
         }
@@ -560,7 +552,6 @@ export default {
           height: 45px;
           border-radius: 50%;
           overflow: hidden;
-          background: pink;
         }
         .nav-text{
           font-size: 12px;
@@ -1149,7 +1140,7 @@ export default {
               justify-content:space-between;
               align-items: center;
             .bg-price{
-              width: 75px;
+              width: 65px;
               height: 27px;
               position: absolute;
               right: 0;
@@ -1159,7 +1150,7 @@ export default {
             .mar-price{
               color: #fff;
               font-size: 12px;
-              margin-left: 22px;
+              margin-left: 30px;
             }
             .triangle{
               margin-left: 2px;
