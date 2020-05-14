@@ -69,10 +69,7 @@ export default {
         let list = Data.ChannelList
         // .filter((ele) => {
           // return ele.SeoCode == 'code000' || ele.SeoCode == 'code350' || ele.SeoCode == 'code200' || ele.SeoCode == 'code050' 
-			    // list.unshift({
-          //   Name: "首页",
-          //   TargetUrl: 'code-1'        
-          // });
+        //})
         this.menu = list;
         this.SearchKeyword = Data.SearchKeyword?Data.SearchKeyword:"改变从选一副眼镜开始"
         this.currentMenuCode = this.menu[0]["TargetUrl"];
@@ -81,7 +78,15 @@ export default {
     changeIndexEvent(code){
       if(code == 'code000'||code == 'code050'||code == 'code200'||code == 'code100'||code == 'code150'||code == 'code001'){
         this.currentMenuCode = code
-      }else{
+      }else if(code == 'code210'){
+         wx.showModal({
+          title:"提示",
+          showCancel:false,
+          content:"请下载可得APP体验，谢谢"
+        })
+        return false
+      }
+      else{
         this.$navigateTo(code)
         console.log("跳转到活动页", code);
         // //跳转还需把/event/替换为/templatefornewapp/，目的是为了去除网页顶部的返回栏

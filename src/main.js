@@ -75,7 +75,14 @@ let MIXIN = {
             }
           }else if(path.indexOf("channelcode?code=") != -1 ){
             path = JSON.parse("{\"" +path.split("?")[1].replace(new RegExp(/(&)/g),'\",\"').replace(new RegExp(/(=)/g),'\":\"')+ "\"}");
-           
+           if(path.code=='code210'){
+              wx.showModal({
+                title:"提示",
+                showCancel:false,
+                content:"请下载可得APP体验，谢谢"
+              })
+              return false;
+           }
             wx.navigateTo({
               url:
                 "/pages/template/main?code="+path.code+"&name="+path.name
