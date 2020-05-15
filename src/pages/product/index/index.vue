@@ -41,14 +41,9 @@
           v-if="bannerType=='Img'"
           class="pic-indecator"
         >{{bannerIndicator}}/{{Data.GoodsBase.AppendImgs.length}}</cover-view>
-        <div class="swiper-tag" v-if="Data.GoodsBase.ShopId == 1">
-            <div>
-              <img src='/static/images/V.png' alt="" class="img">
-            </div>
-            <div>
-              <div class="text-one">只卖成本价的隐形眼镜</div>
-              <div class="text-two">会员电商</div>
-            </div>
+        <div class="swiper-tag" v-if="Data.GoodsBase.ShopId == 1" @click="stateTag">
+            <img src='/static/images/v1.png' v-if="isShowTag"  alt="" class="img">
+            <img src='/static/images/v2.png' alt="" v-else  class="img">
         </div>
       </div>
       <!-- 品类切换 -->
@@ -1460,7 +1455,8 @@ export default {
       IsFollow:false,
       HasGifts:true,
       seocode:"",
-      FollowGoodsState:false    
+      FollowGoodsState:false,
+      isShowTag:true
       };
   },
   computed: {},
@@ -1486,7 +1482,9 @@ export default {
     if (store.state.userInfo.userInfo != null) {
       this.hasUserInfo = true
     }
-    
+    setTimeout(()=>{
+      this.isShowTag = false;
+    },6000)
   },
   components: {
     bottomFlip,
@@ -1511,6 +1509,14 @@ export default {
       cartapi.getCartCount().then(({ Data }) => {
         this.cartNum = Data;
       });
+    },
+    stateTag(){
+      if(!this.isShowTag){
+        this.isShowTag = true;
+        setTimeout(()=>{
+          this.isShowTag = false;
+        },6000)
+      }
     },
     //切换系列
     changeSeries(seocode){

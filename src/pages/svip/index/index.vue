@@ -25,7 +25,7 @@
         <div :class="{'svip_box': true}" v-if="!token">
               <button class="userInFo_btn"
                       open-type="getUserInfo"
-                      @getuserinfo="getUserInfo">立即登录</button>
+                      @getuserinfo="getUserInfo">立即开通</button>
         </div>
         <div :class="{'svip_box': true}" v-else>
           <div class="svip_content" v-if="userInfoModel.IsSvip">
@@ -67,7 +67,7 @@
     <section class="top-view">
       <section class="banner_box">
         <!-- 图片 -->
-        <img :src="PrivilegeUrl" mode="aspectFit" class="banner">
+        <img :src="PrivilegeUrl" mode="widthFix" class="banner">
       </section>
     </section>
   </article>
@@ -174,7 +174,7 @@ export default {
     },
     _getImg(){
       api.SvipOrderImg().then(({ Data }) => {
-        this.PrivilegeUrl = Data;
+        this.PrivilegeUrl = Data.PrivilegeUrl;
       });
     },
     _getLevelNum(gradeName) {
@@ -247,7 +247,7 @@ export default {
 }
 .top-view{
   border-radius: 10px;
-  border: 1px solid #CECECE;
+  // border: 1px solid #CECECE;
   box-sizing: border-box;
   overflow: hidden;
   margin-bottom: 20px;
@@ -491,7 +491,7 @@ export default {
 }
 
 .banner_box{
-  height: 250px;
+  // height: 250px;
   .banner{
     width: 100%;
     height: 100%;

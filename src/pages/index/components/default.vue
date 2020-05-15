@@ -714,7 +714,7 @@ export default {
         height: 1px;
         width: 100%;
         z-index: 5;
-        background: #fff;
+        // background: #fff;
         left: 0;
         right: 0;
         margin: 0 auto;
