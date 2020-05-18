@@ -58,7 +58,7 @@ export default {
     return {
       menu: [],
       currentMenuCode: 'code001',
-      SearchKeyword:"改变从选一副眼镜开始",
+      SearchKeyword:"",
       jifentext:"0"
     };
   },
@@ -84,7 +84,7 @@ export default {
           return ele
         })
         this.menu = list;
-        this.SearchKeyword = Data.SearchKeyword?Data.SearchKeyword:"改变从选一副眼镜开始"
+        this.SearchKeyword = Data.SearchKeyword?Data.SearchKeyword:""
         this.currentMenuCode = this.menu[0]["TargetUrl"];
       });
     },
