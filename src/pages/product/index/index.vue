@@ -184,10 +184,10 @@
         </div>
         <div class="goods-te">
           <block v-if="Data.GoodsBase.ShopId == 1">
-            <span>品牌授权</span>
-            <span>24H发货</span>
-            <span>SVIP会员只卖成本价</span>
-            <span>支持7天无理由退货</span>
+            <span>• 品牌授权</span>
+            <span>• 24H发货</span>
+            <span>• 会员只卖成本价</span>
+            <span>• 7天退换</span>
           </block>
           <block v-else>
             <span><img src="/static/images/product_duihao.png">&nbsp;快递:{{Data.GoodsBase.AmoyFreight}}元</span>
