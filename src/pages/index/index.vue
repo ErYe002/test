@@ -20,13 +20,22 @@
           :class="{'n-item': true, active: item.TargetUrl == currentMenuCode}"
           v-for="item in menu"
           :key="item.Id"
-          @click="changeIndexEvent(item.TargetUrl)"
+          
         >
           <navigator open-type="navigate" target="miniProgram" app-id="wxbb2e8b1089947444" version="release" @fail="openMiniFail" class="link" v-if="item.SeoCode == 'pt_type'">
             <b>{{item.Name}}</b>
             <!-- <em>{{item.EnName}}</em> -->
           </navigator>
-          <div class="link" v-else>
+          <block v-else-if="item.SeoCode=='svip_type'">
+            <button v-if="!token" open-type="getUserInfo" @getuserinfo="getUserInfo" class="link button_s">
+              <b>{{item.Name}}</b>
+            </button>
+            <div v-else class="link" @click="changeIndexEvent(item.TargetUrl)">
+                <b>{{item.Name}}</b>
+            </div>
+          </block>
+
+          <div class="link" v-else @click="changeIndexEvent(item.TargetUrl)">
             <b>{{item.Name}}</b>
             <!-- <em>{{item.EnName}}</em> -->
           </div>
@@ -52,6 +61,7 @@ import defaultIndex from "./components/default";
 import { mapState } from "vuex";
 import api from "@/api";
 import userapi from "@/api/user";
+import authorization from "@/utils/authorization";
 
 export default {
   data() {
@@ -74,12 +84,24 @@ export default {
     defaultIndex
   },
   methods: {
+    getUserInfo(e) {
+      let that = this;
+      authorization.doLogin(e.mp.detail.encryptedData, e.mp.detail.iv, () => {
+        wx.navigateTo({
+          url:
+            "/pages/svip/dredgeSvip/main"
+        });
+      });
+    },
     _getMenuData() {
       api.getHomePageData().then(({ Data }) => {
         let list = Data.ChannelList
         .map((ele) => {
           if(ele.TargetUrl.indexOf("wechatgroupindex")!=-1){
             ele.SeoCode = "pt_type"
+          }
+          if(ele.TargetUrl.indexOf("BuySvip")!=-1){
+            ele.SeoCode = "svip_type"
           }
           return ele
         })
@@ -257,5 +279,11 @@ export default {
       height: 100%;
       // display: inline-block;
    }
+}
+
+.button_s{
+  margin: 0;
+  padding: 0;
+  background: transparent;
 }
 </style>

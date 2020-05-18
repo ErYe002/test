@@ -67,6 +67,13 @@
       </div>
       <div class="btn-pay" @click="pay">立即支付：￥<span class="total_pay">{{Data.RealSellPrice}}</span></div>
     </section>
+    <div class="login-box" v-if="!token">
+        <div class="content">
+            <div class="tips">提示</div>
+            <div class="text">尚未登录，请先登录</div>
+            <button class="btn" open-type="getUserInfo" @getuserinfo="getUserInfo">立即登录</button>
+        </div>
+    </div>
   </article>
 </template>
 
@@ -90,10 +97,16 @@ export default {
     ...mapState("wxinfo", ["openId"])
   },
  
-  onLoad(){
+  onShow(){
     this._getPageData()
   },
   methods: {
+     getUserInfo(e) {
+      let that = this;
+      authorization.doLogin(e.mp.detail.encryptedData, e.mp.detail.iv, () => {
+          that._getPageData()
+      });
+    },
     _getPageData() {
       api.getSvipPageData().then(({Data})=>{
         this.Data = {...Data}
@@ -443,5 +456,34 @@ export default {
     }
   }
   
+}
+.login-box{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .content{
+    width: 200px;
+    background: #fff;
+    border-radius: 8px;
+    .tips{
+      padding: 5px;
+      text-align: center;
+      font-size: 15px;
+    }
+    .text{
+      padding: 20px 5px;
+      text-align: center;
+      font-size: 13px;
+    }
+    .btn{
+      background: transparent;
+    }
+  }
 }
 </style>

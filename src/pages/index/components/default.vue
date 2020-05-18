@@ -10,7 +10,13 @@
             v-if="model.BannerList != null && model.BannerList.length > 0"
           >
             <swiper-item v-for="item in model.BannerList" :key="item.Id">
-              <img :src="item.ImageUrl" @click="$navigateTo(item.TargetUrl)" />
+              <block v-if="item.SeoCode=='svip_type'"><!-- svip处理-->
+                  <button v-if="!token" open-type="getUserInfo" @getuserinfo="getUserInfo_svip" class="button_b">
+                    <img :src="item.ImageUrl" >
+                  </button>
+                  <img :src="item.ImageUrl" v-else  @click="$navigateTo(item.TargetUrl)">
+                </block>
+              <img v-else :src="item.ImageUrl" @click="$navigateTo(item.TargetUrl)" />
             </swiper-item>
           </swiper>
           <ul class="pages">
@@ -28,6 +34,12 @@
                 <navigator open-type="navigate" target="miniProgram" app-id="wxbb2e8b1089947444" version="release" @fail="openMiniFail"  v-if="item.SeoCode == 'pt_type'">
                   <img :src="item.ImageUrl"  class="nav-img">
                 </navigator>
+                <block v-else-if="item.SeoCode=='svip_type'"><!-- svip处理-->
+                  <button v-if="!token" open-type="getUserInfo" @getuserinfo="getUserInfo_svip" class="button_s">
+                    <img :src="item.ImageUrl"  class="nav-img">
+                  </button>
+                  <img :src="item.ImageUrl" v-else class="nav-img" @click="$navigateTo(item.TargetUrl)">
+                </block>
                 <img :src="item.ImageUrl" v-else class="nav-img" @click="$navigateTo(item.TargetUrl)">
                 <span class="nav-text">{{item.Name}}</span>
               </div>
@@ -288,6 +300,14 @@ export default {
     // await this._getGoodsListData();
   },
   methods: {
+    getUserInfo_svip(e){
+      authorization.doLogin(e.mp.detail.encryptedData, e.mp.detail.iv, () => {
+        wx.navigateTo({
+          url:
+            "/pages/svip/dredgeSvip/main"
+        });
+      });
+    },
     getUserInfo(e) {
       let that = this;
       authorization.doLogin(e.mp.detail.encryptedData, e.mp.detail.iv, () => {
@@ -332,6 +352,20 @@ export default {
               Data.IconList.map((item)=>{
                 if(item.TargetUrl.indexOf("wechatgroupindex")!=-1){
                   item.SeoCode = "pt_type"
+                }
+                if(item.TargetUrl.indexOf("BuySvip")!=-1){
+                  item.SeoCode = "svip_type"
+                }
+                return item
+              })
+          }
+          if(Data.BannerList!=null){
+              Data.BannerList.map((item)=>{
+                if(item.TargetUrl.indexOf("wechatgroupindex")!=-1){
+                  item.SeoCode = "pt_type"
+                }
+                if(item.TargetUrl.indexOf("BuySvip")!=-1){
+                  item.SeoCode = "svip_type"
                 }
                 return item
               })
@@ -1225,5 +1259,17 @@ export default {
     }
   }
 
+}
+.button_s{
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  width: 45px;
+  height: 45px;
+}
+.button_b{
+  margin: 0;
+  padding: 0;
+  background: transparent;
 }
 </style>

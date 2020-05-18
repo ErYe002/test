@@ -87,6 +87,11 @@ let MIXIN = {
               url:
                 "/pages/template/main?code="+path.code+"&name="+encodeURIComponent(path.name)
             });
+          }else if(path.indexOf("buysvip") != -1 ){
+            wx.navigateTo({
+              url:
+                "/pages/svip/dredgeSvip/main"
+            });
           }else {
             console.log("此路径禁止跳转", path);
           }

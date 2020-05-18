@@ -1404,7 +1404,7 @@ import bottomFlip from "@/components/bottomFlip";
 import wxParse from "mpvue-wxparse";
 import authorization from "@/utils/authorization"; 
 import store from '@/store'
-
+let timeId;
 export default {
   data() {
     return {
@@ -1464,6 +1464,9 @@ export default {
       this.Poster = this.$mp.page.selectComponent('#sharepost')
   },
   onLoad(options) {
+   
+      clearTimeout(timeId)
+    
     this.glassSelectPosiition =
       options.glassSelectPosiition != undefined
         ? options.glassSelectPosiition
@@ -1482,7 +1485,7 @@ export default {
     if (store.state.userInfo.userInfo != null) {
       this.hasUserInfo = true
     }
-    setTimeout(()=>{
+    timeId = setTimeout(()=>{
       this.isShowTag = false;
     },6000)
   },
@@ -1513,7 +1516,7 @@ export default {
     stateTag(){
       if(!this.isShowTag){
         this.isShowTag = true;
-        setTimeout(()=>{
+        timeId = setTimeout(()=>{
           this.isShowTag = false;
         },6000)
       }
