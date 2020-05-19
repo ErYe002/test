@@ -14,7 +14,7 @@
         <div class="top-box">
           <div class="module-first">
             <div class="module-first-title">
-              <span>尊享八大特权</span>
+              <span>尊享十大特权</span>
               <!-- <span class="title-r">查看权益<img  src="/static/images/icon_right_grey.png" /></span> -->
             </div>
             <div class="banner_box">
