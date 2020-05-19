@@ -1,7 +1,7 @@
 <template>
   <article class="contain">
     <img src="/static/images/svip_big_bg.png" class="big_bg">
-    <section>
+    <!-- <section>
       <div class="page_title">
         <div class="page_title"></div>
         <div class="point"></div>
@@ -9,7 +9,7 @@
         <div class="point"></div>
         <div class="page_title"></div>
       </div>
-    </section>
+    </section> -->
     <section class="top-view">
         <div class="top-box">
           <div class="module-first">
