@@ -835,7 +835,7 @@
               <swiper display-multiple-items="3.2">
                 <block v-for="item in QueryGoodsData" :key="item.index">
                   <swiper-item>
-                    <a :href="'/pages/product/index/main?seocode='+item.SeoCode">
+                    <a  disabled @click="changeSeries(item.SeoCode)">
                       <img :src="item.Img" mode="widthFix" />
                       <div class="goodsName">{{item.GoodsName}}</div>
                       <div class="goodsPrice">￥{{item.Price}}</div>
@@ -868,7 +868,7 @@
               <swiper display-multiple-items="3.2">
                 <block v-for="item in QueryGoodsData2" :key="item.index">
                   <swiper-item style="marginRight:5px">
-                    <a :href="'/pages/product/index/main?seocode='+item.SeoCode">
+                    <a disabled @click="changeSeries(item.SeoCode)">
                       <img :src="item.GoodsImg" mode="widthFix" />
                       <div class="goodsName">{{item.GoodsName}}</div>
                       <div class="goodsPrice">￥{{item.Price}}</div>
@@ -1464,7 +1464,6 @@ export default {
       this.Poster = this.$mp.page.selectComponent('#sharepost')
   },
   onLoad(options) {
-   
       clearTimeout(timeId)
     
     this.glassSelectPosiition =
@@ -1523,6 +1522,10 @@ export default {
     },
     //切换系列
     changeSeries(seocode){
+        wx.pageScrollTo({
+          scrollTop: 0,
+          duration: 0
+        })
         this.getisComp(seocode);
     },
     _getPageData(seocode) {
