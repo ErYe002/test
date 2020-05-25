@@ -44,6 +44,14 @@ const api = {
     }
     return http.postByNoLoading(url);
   },
+  //首页频道精选商品分页查询
+  HomeEssentialGoods(ChannelId,PageSize = 10,PageIndex = 1){
+    let url = `/Home/HomeEssentialGoods202005ByPage?VersionNo=4.6.0&ChannelId=${ChannelId}&PageSize=${PageSize}&PageIndex=${PageIndex}`
+    if(PageIndex > 1){
+      return http.get(url);
+    }
+    return http.getByNoLoading(url);
+  },
 };
 
 export default api;

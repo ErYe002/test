@@ -46,6 +46,7 @@ export default {
     }
   },
   onShow(){
+     wx.setStorageSync('isRefreshOrder',true)//返回确认订单页onshow开关
     this.getListData();
   },
   methods: {

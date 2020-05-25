@@ -80,7 +80,7 @@ export default {
       });
     },
     _getPaySuccessBanner(){
-      api.paySuccessBanner().then(({ Data }) => {
+      api.paySuccessBanner(this.shopId).then(({ Data }) => {
         this.CodeUrl = Data.WeChatQrCodeUrl
         this.Tips = Data.Tips
         this.PaySuccessImg = Data.BannerImageUrl

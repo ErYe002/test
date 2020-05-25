@@ -128,6 +128,10 @@ const api = {
       CouponNo:CouponNo
     });
   },
+  //svip获取权益照片
+  SvipOrderImg() {
+    return http.post('Account/PrivilegeUrl');
+  },
    //微信支付
    payOrder(orderId, openId) {
     return http.post(`/Payment/WechatPayForMinprogram?orderId=${orderId}&ip=&wechatOpenId=${openId}`)

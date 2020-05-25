@@ -73,7 +73,26 @@ let MIXIN = {
                   "/pages/search/results/main?shopId="+shopid+"&keywords=" + keywords
               });
             }
-          } else {
+          }else if(path.indexOf("channelcode?code=") != -1 ){
+            path = JSON.parse("{\"" +path.split("?")[1].replace(new RegExp(/(&)/g),'\",\"').replace(new RegExp(/(=)/g),'\":\"')+ "\"}");
+           if(path.code=='code210'){
+              wx.showModal({
+                title:"提示",
+                showCancel:false,
+                content:"请下载可得APP体验，谢谢"
+              })
+              return false;
+           }
+            wx.navigateTo({
+              url:
+                "/pages/template/main?code="+path.code+"&name="+encodeURIComponent(path.name)
+            });
+          }else if(path.indexOf("buysvip") != -1 ){
+            wx.navigateTo({
+              url:
+                "/pages/svip/dredgeSvip/main"
+            });
+          }else {
             console.log("此路径禁止跳转", path);
           }
         }

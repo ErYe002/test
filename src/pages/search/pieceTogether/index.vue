@@ -62,7 +62,7 @@ export default {
         promotionId: "",
         settingId: 0,
         keyWord: "",
-        sort: 0,  //排序方式：0综合  6销量  3价格由低到高   4价格由高到底
+        sort: 6,  //排序方式：0综合  6销量  3价格由低到高   4价格由高到底
         page: 1,
         size: 10
       }

@@ -4,7 +4,7 @@
       <section :class="{'user-box': true}">
         <img class="bg" src="/static/images/member_bg.jpg" mode="scaleToFill"/>
         <img class="head" :src="userInfoModel.HeadUrl || '/static/images/default_img.gif'" />
-        <div class="info-box">
+        <div class="info-box" v-if="token">
           <p class="name">
             <span>{{userInfoModel.Nick}}</span>
           </p>
@@ -22,18 +22,23 @@
             <span class="text">会员</span>
           </div>
         </div>
-        <div :class="{'svip_box': true}">
-              <div class="svip_content" v-if="userInfoModel.IsSvip">
-                  <div class="left">
-                    <div class="title">SVIP累计已省（元）</div>
-                    <div class="amount">{{userInfoModel.SvipDeductionTotalAmount}}</div>
-                  </div>
-                  <!-- <div class="right">
-                    <div class="title">返可得积分（元）</div>
-                    <div class="amount">500</div>
-                  </div> -->
+        <div :class="{'svip_box': true}" v-if="!token">
+              <button class="userInFo_btn"
+                      open-type="getUserInfo"
+                      @getuserinfo="getUserInfo">立即开通</button>
+        </div>
+        <div :class="{'svip_box': true}" v-else>
+          <div class="svip_content" v-if="userInfoModel.IsSvip">
+              <div class="left">
+                <div class="title">SVIP累计已省（元）</div>
+                <div class="amount">{{userInfoModel.SvipDeductionTotalAmount}}</div>
               </div>
-              <div class="svip_btn" v-else @click="goDredgeSvip">立即开通</div>
+              <!-- <div class="right">
+                <div class="title">返可得积分（元）</div>
+                <div class="amount">500</div>
+              </div> -->
+          </div>
+          <div class="svip_btn" v-else @click="goDredgeSvip">立即开通</div>
         </div>
       </section>
       <section class="assets-box">
@@ -62,7 +67,7 @@
     <section class="top-view">
       <section class="banner_box">
         <!-- 图片 -->
-        <img :src="userInfoModel.PrivilegeUrl" mode="aspectFit" class="banner">
+        <img :src="PrivilegeUrl" mode="widthFix" class="banner">
       </section>
     </section>
   </article>
@@ -71,6 +76,7 @@
 <script>
 import api from "@/api/user";
 import { mapState } from "vuex";
+import authorization from "@/utils/authorization";
 
 const userInfoModelTemp = {
   GradeName: "普通会员",
@@ -98,13 +104,45 @@ export default {
       },
       walletModel: {
         ...walletModelTemp
-      }
+      },
+      PrivilegeUrl:""
     };
   },
   onLoad(){
-    this._getPageData()
+    if(this.token){
+      this._getPageData();
+    }else{
+      this._getImg();
+    }
+  },
+  computed: {
+    ...mapState("user", ["token"])
+  },
+  watch: {
+    token: {
+      handler: function(val, oldVal) {
+        console.log("token==", val);
+        if (oldVal == "" && val != "") {
+          //登录成功
+          this._getPageData();
+          this.$getCartCount()
+        } else if (oldVal != '' && val == ''){
+          //退出登录
+          this.userInfoModel = Object.assign({}, userInfoModelTemp)
+          this.walletModel = Object.assign({}, walletModelTemp)
+        }
+      },
+      immediate: true
+    }
   },
   methods: {
+    getUserInfo(e) {
+      authorization.doLogin(e.mp.detail.encryptedData, e.mp.detail.iv, () => {
+            wx.switchTab({
+              url: "/pages/svip/index/main"
+            });
+      });
+    },
     toAppTips(content) {
       wx.showModal({
         title: "提示",
@@ -128,9 +166,15 @@ export default {
         );
         Data.levelNum = this._getLevelNum(Data.GradeName);
         this.userInfoModel = Object.assign({}, Data);
+        this.PrivilegeUrl = Data.PrivilegeUrl
       });
       api.getWalletOfPersonnel().then(({ Data }) => {
         this.walletModel = Object.assign({}, Data);
+      });
+    },
+    _getImg(){
+      api.SvipOrderImg().then(({ Data }) => {
+        this.PrivilegeUrl = Data.PrivilegeUrl;
       });
     },
     _getLevelNum(gradeName) {
@@ -203,7 +247,7 @@ export default {
 }
 .top-view{
   border-radius: 10px;
-  border: 1px solid #CECECE;
+  // border: 1px solid #CECECE;
   box-sizing: border-box;
   overflow: hidden;
   margin-bottom: 20px;
@@ -246,6 +290,13 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+  .userInFo_btn{
+    background: transparent;
+    color: #FFF497;
+    font-size: 15px;
+    height: 46px;
+    line-height: 46px;
   }
 }
 .user-box {
@@ -440,7 +491,7 @@ export default {
 }
 
 .banner_box{
-  height: 250px;
+  // height: 250px;
   .banner{
     width: 100%;
     height: 100%;

@@ -41,6 +41,10 @@
           v-if="bannerType=='Img'"
           class="pic-indecator"
         >{{bannerIndicator}}/{{Data.GoodsBase.AppendImgs.length}}</cover-view>
+        <div class="swiper-tag" v-if="Data.GoodsBase.ShopId == 1" @click="stateTag">
+            <img src='/static/images/v1.png' v-if="isShowTag"  alt="" class="img">
+            <img src='/static/images/v2.png' alt="" v-else  class="img">
+        </div>
       </div>
       <!-- 品类切换 -->
       <div class="proType" v-if="Data.Series!=null&&Data.Series.length>0">
@@ -82,11 +86,9 @@
                 class="price"
                 v-if="Data.GoodsBase.PriceLable!=null&&Data.GoodsBase.PriceLable == '限时直降'"
               >
-                <em
-                  class="oldPrice"
-                  v-if="Data.GoodsBase.PlatformPrice>0"
-                >￥{{Data.GoodsBase.PlatformPrice}}</em>
-                <span v-if="Data.GoodsBase.ReducePrice>0">限时直降↓</span>
+                <span v-if="Data.GoodsBase.ReducePrice>0">
+                  <img src="/static/images/reduce_icon.png" alt="" class="img">
+                </span>
               </i>
               <block>
                 <block v-if="isComp">
@@ -94,40 +96,22 @@
                 </block>
                 <block v-else>
                   <span
-                    class="priceTag rolepriceTag"
-                    v-if="Data.GoodsBase.RolePrice!=0&&Data.GoodsBase.RolePrice-0<Data.GoodsBase.SellPrice-0"
+                    class="SVIP"
+                    v-if="(Data.GoodsBase.SvipPrice!=0&&Data.GoodsBase.SvipPrice-0<Data.GoodsBase.SellPrice-0)&&(Data.GoodsBase.RolePrice!=0&&Data.GoodsBase.RolePrice-0>Data.GoodsBase.SvipPrice-0)"
                   >
-                    <img
-                      class="tagImg"
-                      :src="'/static/images/level_0'+(Data.UserInfo.RoleId?Data.UserInfo.RoleId:'0')+'.jpg'"
-                    />
-                    价:￥{{Data.GoodsBase.RolePrice}}
+                  <span class="svip-price"><em>￥</em>{{Data.GoodsBase.SvipPrice}}</span>
+                  <span class="svip-tag">SVIP价</span>
                   </span>
                   <span
-                    class="priceTag SVIP"
-                    v-if="(Data.GoodsBase.SvipPrice!=0&&Data.GoodsBase.SvipPrice-0<Data.GoodsBase.SellPrice-0)&&(Data.GoodsBase.RolePrice!=0&&Data.GoodsBase.RolePrice-0>Data.GoodsBase.SvipPrice-0)"
-                  >SVIP价:￥{{Data.GoodsBase.SvipPrice}}</span>
-                  <span
-                    class="priceTag SVIP"
+                    class="SVIP"
                     v-if="(Data.GoodsBase.SvipPrice!=0&&Data.GoodsBase.SvipPrice-0<Data.GoodsBase.SellPrice-0)&&(Data.GoodsBase.RolePrice==0)"
-                  >SVIP价:￥{{Data.GoodsBase.SvipPrice}}</span>
+                  >
+                    <span class="svip-price"><em>￥</em>{{Data.GoodsBase.SvipPrice}}</span>
+                    <span class="svip-tag">SVIP价</span>
+                  </span>
                 </block>
+                <span class="jifen" v-if="Data.GoodsBase.GiftScore > 0">返{{Data.GoodsBase.GiftScore}}积分</span>
               </block>
-            </div>
-          </div>
-          <div class="prolabelBox">
-            <div class="prolabel">
-              <span>已售: {{Data.GoodsBase.SaleQuantity}}件</span>
-            </div>
-            <div class="prolabel">
-              <img v-if="hasUserInfo" :src="'/static/images/detail_share.png'" class="shareImg" @click="shareCurtGoods">
-              <button v-else class="shareBtn" open-type="getUserInfo" @getuserinfo="getUserInfo">
-                <img :src="'/static/images/detail_share.png'" class="shareImg">
-              </button>
-              <span class="proloveNum">
-                <i>♡</i>
-                {{Data.GoodsBase.CollectionCount}}
-              </span>
             </div>
           </div>
         </div>
@@ -139,40 +123,123 @@
             </div>
             <div class="selfShop" v-if="Data.GoodsBase.ShopId!=2">自营</div>
           </div>
-          <div class="proNameBox">
-            <div class="proName">{{Data.GoodsBase.GoodsName}}</div>
-            <div class="proDes">{{Data.GoodsBase.ShortDescription}}</div>
-            <div class="proAdd" v-if="Data.GoodsBase.ShopId==2">{{Data.GoodsBase.National}}</div>
+          <div class="proName-contain">
+            <div class="proNameBox">
+              <div class="proName">{{Data.GoodsBase.GoodsName}}</div>
+              <a :href="'/pages/product/index/main?seocode='+Data.GoodsBase.ShopDescriptionSeoCode+'&isComp='+'false'" v-if="Data.GoodsBase.ShopDescriptionSeoCode" class="proDesA">{{Data.GoodsBase.ShortDescription}}</a>
+              <div v-else class="proDes">{{Data.GoodsBase.ShortDescription}}</div>
+              <div class="proAdd" v-if="Data.GoodsBase.ShopId==2">{{Data.GoodsBase.National}}</div>
+            </div>
+            <div class="proNameBox-right">
+              <div class="box">
+                <div class="prolabel">
+                  <span>已售{{Data.GoodsBase.SaleQuantity}}件</span>
+                </div>
+                <div class="prolabel-btn">
+                  <div class="top">
+                    <img v-if="hasUserInfo" :src="'/static/images/detail_share.png'" class="shareImg" @click="shareCurtGoods">
+                    <button v-else class="shareBtn" open-type="getUserInfo" @getuserinfo="getUserInfo">
+                      <img :src="'/static/images/detail_share.png'" class="shareImg">
+                    </button>
+                    <span>分享</span>
+                    </div>
+                  <div class="down">
+                    <block v-if="isLogin">
+                      <img v-if="FollowGoodsState"  @click="cancelFollowGoods" :src="'/static/images/detail_heart_active.png'" alt="" class="down-img">
+                      <img v-if="!FollowGoodsState"  @click="followGoods" src="/static/images/detail_heart_gray.png" alt="" class="down-img">
+                    </block>
+                    <block v-else>
+                      <button open-type="getUserInfo" @getuserinfo="loginEventCoupon" class="btn">
+                            <img  :src="'/static/images/detail_heart_gray.png'" alt="" class="down-img">
+                      </button>
+                    </block>
+
+                    <span class="proloveNum">
+                      <i>收藏</i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+
+        </div>
+        <div class="svip-box" v-if="Data.GoodsBase.ShopId == 1">
+          <div class="left">
+            <span class="icon">SVIP</span>
+            <div class="content">
+              <span>{{Data.SvipPrivilegeText}}</span>
+              <!-- <span>再享10项特权</span> -->
+            </div>
+          </div>
+          <block v-if="!Data.UserInfo.IsSvip">
+            <button v-if="isLogin" @click="goSvip" class="right" >
+              立即开通 <span class="tral"></span>
+            </button>
+            <button v-else class="right"  open-type="getUserInfo"
+                  @getuserinfo="loginEventCoupon">
+              立即开通 <span class="tral"></span>
+            </button>
+          </block>
+        </div>
+        <div class="goods-te">
+          <block v-if="Data.GoodsBase.ShopId == 1">
+            <span>• 品牌授权</span>
+            <span>• 24H发货</span>
+            <span>• 会员只卖成本价</span>
+            <span>• 7天退换</span>
+          </block>
+          <block v-else>
+            <span><img src="/static/images/product_duihao.png">&nbsp;快递:{{Data.GoodsBase.AmoyFreight}}元</span>
+            <span><img src="/static/images/product_duihao.png">&nbsp;贴心客服</span>
+            <span><img src="/static/images/product_duihao.png">&nbsp;正品保障</span>
+            <span><img src="/static/images/product_duihao.png">&nbsp;急速物流</span>
+          </block>
+
         </div>
       </div>
       <!-- 优惠活动一览 -->
       <div class="promotionBox"
-          v-if="Data.GoodsPagePromotion != null&& (Data.GoodsBase.GiftScore > 0|| Data.GoodsBase.ScoreDeductionPrice > 0|| Data.GoodsPagePromotion.isHave||Data.GoodsPagePromotion.FullReducePromotion != null|| Data.ErpGifts != null)"
+          v-if="Data.GoodsPagePromotion != null&& ( Data.GoodsBase.MaxScoreDeductionMoney > 0|| Data.GoodsPagePromotion.isHave||Data.GoodsPagePromotion.FullReducePromotion != null||Data.ErpGifts != null||(Data.GoodsPagePromotion.Coupons != null && Data.GoodsPagePromotion.Coupons.length>0)||(Data.GoodsBase.FirstBuyContent!=null&&Data.GoodsBase.FirstBuyContent.length>0)||(Data.GoodsPagePromotion.BuyReduceContent!=null&&Data.GoodsPagePromotion.BuyReduceContent!='')||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.Gift != null && Data.GoodsPagePromotion.Gift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FullGift != null && Data.GoodsPagePromotion.FullGift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FreeCollocation != null && Data.GoodsPagePromotion.FreeCollocation.length>0)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.FullReducePromotion != null)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.ChangeBuy != null && Data.GoodsPagePromotion.ChangeBuy.length>0)||(Data.ErpGifts != null && Data.ErpGifts.length>0))"
         > 
-        <div
-          class="blackLine"
-          v-if="Data.GoodsPagePromotion != null&& (Data.GoodsBase.GiftScore > 0|| Data.GoodsBase.ScoreDeductionPrice > 0|| Data.GoodsPagePromotion.isHave||Data.GoodsPagePromotion.FullReducePromotion != null|| Data.ErpGifts != null)"
-        >FULL OFFER | 优惠满满</div>
         <div class="actCon">
-          <div
-            class="act-lingquan actLine"
-            v-if="Data.GoodsPagePromotion != null&&Data.GoodsPagePromotion.Coupons != null && Data.GoodsPagePromotion.Coupons.length>0"
-            v-on:click="_showCoupon()"
-          >
-            <span class="act-name">领券</span>
-            <block v-for="item in Data.GoodsPagePromotion.Coupons" :key="item.index">
-              <span class="coupon" v-if="index<3">满{{item.MeetAmount}}-{{item.DeductionAmount}}</span>
-            </block>
-            <span class="act-info">
-              领券
-              <span class="icon">></span>
-            </span>
-          </div>
-          <div class="act-jifen actLine" v-if="Data.GoodsBase.GiftScore > 0||Data.GoodsBase.ScoreDeductionPrice > 0">
-            <span class="act-name">积分</span>
-            <span class="act-con">{{Data.GoodsBase.ScoreDeductionPrice > 0?"积分至多抵扣￥"+Data.GoodsBase.ScoreDeductionPrice+(Data.GoodsBase.GiftScore > 0?",":""):''}}
-              {{Data.GoodsBase.GiftScore>0?"下单预计可得"+Data.GoodsBase.GiftScore+"积分":""}}</span>
+          <block v-if="isLogin">
+            <div
+              class="act-lingquan actLine"
+              v-if="Data.GoodsPagePromotion != null&&Data.GoodsPagePromotion.Coupons != null && Data.GoodsPagePromotion.Coupons.length>0"
+              v-on:click="_showCoupon()"
+            >
+              <span class="act-name">优惠</span>
+              <span class="coupon_icon">领券</span>
+              <block v-for="item in Data.GoodsPagePromotion.Coupons" :key="item.index">
+                <span class="coupon" v-if="index<3">满{{item.MeetAmount}}-{{item.DeductionAmount}}</span>
+              </block>
+              <span class="act-info">
+                <span class="icon">></span>
+              </span>
+            </div>
+          </block>
+          <block v-else>
+            <button
+                class="act-lingquan actLine coupon-btn"
+                v-if="Data.GoodsPagePromotion != null&&Data.GoodsPagePromotion.Coupons != null && Data.GoodsPagePromotion.Coupons.length>0"
+                 open-type="getUserInfo"
+                @getuserinfo="loginEventCoupon"
+            >
+              <span class="act-name">优惠</span>
+                <span class="coupon_icon">领券</span>
+                <block v-for="item in Data.GoodsPagePromotion.Coupons" :key="item.index">
+                  <span class="coupon" v-if="index<3">满{{item.MeetAmount}}-{{item.DeductionAmount}}</span>
+                </block>
+                <span class="act-info">
+                  <span class="icon">></span>
+                </span>
+            </button>
+          </block>
+          <div class="act-jifen actLine" v-if="Data.GoodsBase.MaxScoreDeductionMoney > 0">
+            <span class="act-name-icon"><img src="/static/images/de_jifen.png" class="act-name-icon" alt=""></span>
+            <span class="act-con">{{Data.GoodsBase.MaxScoreDeductionMoney > 0?"积分至多抵扣￥"+Data.GoodsBase.MaxScoreDeductionMoney:''}}
+              </span>
             <span class="act-info">
               <span class="icon"></span>
             </span>
@@ -182,23 +249,28 @@
             <span class="act-con">积分至多抵扣￥{{Data.GoodsBase.ScoreDeductionPrice}}</span>
           </div> -->
           <div class="discountsFull" 
-              v-if="(Data.GoodsBase.FirstBuyContent!=null&&Data.GoodsBase.FirstBuyContent>0)||(Data.GoodsPagePromotion.BuyReduceContent!=null&&Data.GoodsPagePromotion.BuyReduceContent!='')||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.Gift != null && Data.GoodsPagePromotion.Gift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FullGift != null && Data.GoodsPagePromotion.FullGift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FreeCollocation != null && Data.GoodsPagePromotion.FreeCollocation.length>0)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.FullReducePromotion != null)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.ChangeBuy != null && Data.GoodsPagePromotion.ChangeBuy.length>0)||(Data.ErpGifts != null && Data.ErpGifts.length>0)"  
+              v-if="(Data.GoodsBase.FirstBuyContent!=null&&Data.GoodsBase.FirstBuyContent.length>0)||(Data.GoodsPagePromotion.BuyReduceContent!=null&&Data.GoodsPagePromotion.BuyReduceContent!='')||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.Gift != null && Data.GoodsPagePromotion.Gift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FullGift != null && Data.GoodsPagePromotion.FullGift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FreeCollocation != null && Data.GoodsPagePromotion.FreeCollocation.length>0)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.FullReducePromotion != null)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.ChangeBuy != null && Data.GoodsPagePromotion.ChangeBuy.length>0)||(Data.ErpGifts != null && Data.ErpGifts.length>0)"  
             >
-              <span class="act-name">优惠</span>
               <div class="discountsFull-item">
                 <div
                   class="act-dikou actLine"
                   v-if="Data.GoodsBase.FirstBuyContent!=null&&Data.GoodsBase.FirstBuyContent>0"
                 >
                   <!-- <span class="act-name">优惠</span> -->
-                  <span class="act-con">新人专享价:￥{{Data.GoodsBase.FirstBuyContent}}</span>
+                  <span>
+                    <span class="act-name-icon"><img src="/static/images/icon_newuser@2x.png" class="act-name-icon" alt=""></span>
+                    <span class="act-con">新人专享价:￥{{Data.GoodsBase.FirstBuyContent}}</span>
+                  </span>
                 </div>
                 <div
                   class="act-dikou actLine"
                   v-if="Data.GoodsPagePromotion.BuyReduceContent!=null&&Data.GoodsPagePromotion.BuyReduceContent!=''"
                 >
                   <!-- <span class="act-name">量贩</span> -->
-                  <span class="act-con">{{Data.GoodsPagePromotion.BuyReduceContent}}</span>
+                  <span>
+                    <span class="act-name-icon"><img src="/static/images/de_liangfan@2x.png" class="act-name-icon" alt=""></span>
+                    <span class="act-con">{{Data.GoodsPagePromotion.BuyReduceContent}}</span>
+                  </span>
                 </div>
                 <div
                   class="act-zengpin actLine"
@@ -206,9 +278,12 @@
                   @click=" _showActive('ZP')"
                 >
                   <!-- <span class="act-name">赠品</span> -->
-                  <span
-                    class="act-con"
-                  >{{Data.GoodsPagePromotion.Gift[0].GoodsName}}{{Data.GoodsPagePromotion.Gift.length>1?"等":""}}</span>
+                  <span>
+                    <span class="act-name-icon"><img src="/static/images/de_manzeng.png" class="act-name-icon" alt=""></span>
+                    <span
+                      class="act-con"
+                    >{{Data.GoodsPagePromotion.Gift[0].GoodsName}}{{Data.GoodsPagePromotion.Gift.length>1?"等":""}}</span>
+                  </span>
                   <span class="act-info">
                     <span class="icon">></span>
                   </span>
@@ -223,7 +298,10 @@
                     @click=" _showActive('MZ')"
                   >
                     <!-- <span class="act-name">满赠</span> -->
-                    <span class="act-con">{{item.PromotionTheme}}</span>
+                    <span>
+                      <span class="act-name-icon"><img src="/static/images/de_manzeng.png" class="act-name-icon" alt=""></span>
+                      <span class="act-con">{{item.PromotionTheme}}</span>
+                    </span>
                     <span class="act-info">
                       <span class="icon">></span>
                     </span>
@@ -235,7 +313,10 @@
                   @click=" _showActive2('HG')"
                 >
                   <!-- <span class="act-name">换购</span> -->
-                  <span class="act-con">{{Data.GoodsPagePromotion.FreeCollocation[0].PromotionTheme}}</span>
+                  <span>
+                    <span class="act-name-icon"><img src="/static/images/de_manhuan.png" class="act-name-icon" alt=""></span>
+                    <span class="act-con">{{Data.GoodsPagePromotion.FreeCollocation[0].PromotionTheme}}</span>
+                  </span>
                   <span class="act-info">
                     <span class="icon">></span>
                   </span>
@@ -246,7 +327,10 @@
                   @click=" _showActive('MJ')"
                 >
                   <!-- <span class="act-name">满减</span> -->
-                  <span class="act-con">{{Data.GoodsPagePromotion.FullReducePromotion.PromotionTheme}}</span>
+                  <span>
+                    <span class="act-name-icon"><img src="/static/images/de_manjian.png" class="act-name-icon" alt=""></span>
+                    <span class="act-con">{{Data.GoodsPagePromotion.FullReducePromotion.PromotionTheme}}</span>
+                  </span>
                   <span class="act-info">
                     <span class="icon">></span>
                   </span>
@@ -261,7 +345,10 @@
                     @click=" _showActive2('MH')"
                   >
                     <!-- <span class="act-name">满换</span> -->
-                    <span class="act-con">{{item.PromotionTheme}}</span>
+                    <span>
+                      <span class="act-name-icon"><img src="/static/images/de_manhuan.png" class="act-name-icon" alt=""></span>
+                      <span class="act-con">{{item.PromotionTheme}}</span>
+                    </span>
                     <span class="act-info">
                       <span class="icon">></span>
                     </span>
@@ -273,10 +360,15 @@
                   @click=" _showActive('PJ')"
                 >
                   <!-- <span class="act-name">配件</span> -->
-                  <span class="act-con">{{Data.ErpGifts[0].GoodsName}}</span>
-                  <span class="act-info">
-                    <span class="icon">></span>
+                  <span>
+                    <span class="act-name-icon"><img src="/static/images/de_maizeng.png" class="act-name-icon" alt=""></span>
+                  
+                    <span class="act-con">{{Data.ErpGifts[0].GoodsName}}</span>
                   </span>
+                    <span class="act-info">
+                      <span class="icon">></span>
+                    </span>
+                  
                 </div>
               </div>
           </div>
@@ -312,19 +404,20 @@
       <block
         v-if="!Data.isComp&&Data.CompGoods!=null&&Data.CompGoods.CompCount!=null&&Data.CompGoods.CompCount>0"
       >
-        <div class="promotionBox">
+        <div class="promotionBox compgroup">
           <div class="actCon">
-            <div class="blackLine">PACKAGE COMBINATION | 套餐组合</div>
-            <div class="act-taocan actLine">
-              <span class="act-name">套餐组合</span>
-              <a
+            <div class="blackLine-group">
+              <span>
+                PACKAGE COMBINATION | 套餐组合
+              </span>
+                <a
                 class="act-info"
                 :href="'/pages/product/combineList/main?goodsid='+Data.GoodsBase.GoodsId"
               >
                 更多套餐
                 <span class="icon">></span>
               </a>
-            </div>
+              </div>
           </div>
           <div class="compBox">
             <block v-if="CompList">
@@ -388,10 +481,11 @@
           </div>
         </div>
       </block> -->
-      <div class="promotionBox" v-if="Data.Attributes!=null && Data.Attributes.length> 0">
-        <div class="blackLine" v-if="Data.GoodsBase.ShopId==1">FUNCTION PARAMETER | 功能参数</div>
-        <div class="blackLine" v-if="Data.GoodsBase.ShopId==2">SEA SCOURING | 海淘明细</div>
-        <div class="actCon" v-if="Data.GoodsBase.ShopId==2">
+      <div :class="{'promotionBox':true,'TOP':true,'haitaobox':Data.GoodsBase.ShopId==2}" v-if="Data.Attributes!=null && Data.Attributes.length> 0">
+        <div class="blackLine" v-if="Data.GoodsBase.ShopId==1" @click="Data.isComp&&Data.Items!=null&&Data.Items[0]!=null&&Data.Items[0].IsSpecificationGoods?_showCanShu():_showCanShu2()">
+         <span>FUNCTION PARAMETER | 功能参数</span><span class="icon">></span></div>
+        <div class="blackLine haitao" v-if="Data.GoodsBase.ShopId==2">SEA SCOURING | 海淘明细</div>
+        <div class="actCon haitao" v-if="Data.GoodsBase.ShopId==2">
           <div class="act-wuliu actLine">
             <span class="act-name">物流</span>
             <span class="act-con">
@@ -411,33 +505,34 @@
               <span class="icon">></span>
             </span>
           </div>
-        </div>
-        <!-- 打包功能参数 -->
-        <block
-          v-if="Data.isComp&&Data.Items!=null&&Data.Items[0]!=null&&Data.Items[0].IsSpecificationGoods"
-        >
-          <div class="actCon">
-            <div class="act-canshu actLine" @click="_showCanShu()">
+        
+          <!-- 打包功能参数 -->
+          <block
+            v-if="Data.isComp&&Data.Items!=null&&Data.Items[0]!=null&&Data.Items[0].IsSpecificationGoods"
+          >
+            <div class="actCon">
+              <div class="act-canshu actLine" @click="_showCanShu()">
+                <span class="act-name">参数</span>
+                <span class="act-con">含水量 直径 基弧...</span>
+                <span class="act-info">
+                  <span class="icon">></span>
+                </span>
+              </div>
+            </div>
+          </block>
+          <!-- 普通功能参数 -->
+          <div class="actCon" v-else>
+            <div class="act-canshu actLine" @click="_showCanShu2()">
               <span class="act-name">参数</span>
-              <span class="act-con">含水量 直径 基弧...</span>
+              <span class="act-con">
+                <block v-for="(item,index) in Data.Attributes" :key="item.index">
+                  <span v-if="index<3">{{item.Name}}&nbsp;</span>
+                </block>...
+              </span>
               <span class="act-info">
                 <span class="icon">></span>
               </span>
             </div>
-          </div>
-        </block>
-        <!-- 普通功能参数 -->
-        <div class="actCon" v-else>
-          <div class="act-canshu actLine" @click="_showCanShu2()">
-            <span class="act-name">参数</span>
-            <span class="act-con">
-              <block v-for="(item,index) in Data.Attributes" :key="item.index">
-                <span v-if="index<3">{{item.Name}}&nbsp;</span>
-              </block>...
-            </span>
-            <span class="act-info">
-              <span class="icon">></span>
-            </span>
           </div>
         </div>
         <div class="xuanGou" v-if="Data.GoodsBase.IsSpecificationGoods">
@@ -591,15 +686,14 @@
         </div>
       </div>
       <!-- 评论 -->
-      <div class="prolabelLine">
+      <!-- <div class="prolabelLine">
         <span><img src="/static/images/product_duihao.png">&nbsp;快递:{{Data.GoodsBase.ShopId == 2 ? (Data.GoodsBase.AmoyFreight + "元") : " 满80包邮"}}</span>
         <span v-if="Data.GoodsBase.ShopId == 2"><img src="/static/images/product_duihao.png">&nbsp;贴心客服</span>
         <span v-else><img src="/static/images/product_duihao.png">&nbsp;7天退换</span>
         <span><img src="/static/images/product_duihao.png">&nbsp;正品保障</span>
         <span><img src="/static/images/product_duihao.png">&nbsp;急速物流</span>
-      </div>
+      </div> -->
       <div class="promotionBox" >
-          <div class="blackLine">REVIEWS AND COMMUNITIES | 评论与社区</div>
           <div class="actCon remarkBox">
             <div class="act-remark actLine">
               <span class="act-name">瞳学评论({{Data.Remark==null?"0":Data.Remark.TotalCount}})</span>
@@ -641,7 +735,8 @@
               class="remarkCon"
               v-if="Data.Remark != null && Data.Remark.Remarks != null && Data.Remark.Remarks.length>0"
             >
-              <div class="remarkBox" v-for="item in Data.Remark.Remarks" :key="item.index">
+            <div v-for="(item,index) in Data.Remark.Remarks" :key="index">
+              <div class="remarkBox">
                 <div class="comment-header">
                   <div class="userInfo">
                     <img
@@ -678,50 +773,36 @@
                 </div>
                 <div class="comment-text-style" v-if="item.AnotherName!=null">{{item.AnotherName}}</div>
                 <div class="comment-text">{{item.Content}}</div>
-              </div>
-            </div>
-            <div class="noremark" v-else>暂无评论</div>
-          </block>
-            <div class="actCon remarkBox" v-if="HotCommentList != null && HotCommentList.length > 0">
-              <div class="act-remark actLine">
-                <span class="act-name">社区笔记</span>
-                <div class="communtiyBox">
-                    <swiper  class="communtiy-swiper" :display-multiple-items="HotCommentList.length>1?1.2:1">
-                      <block v-for="item in HotCommentList" :key="item.index">
-                        <swiper-item class="communtiy-swiperItem"  >
-                            <div class="com-content">
-                                <div class="com-text">
-                                    <div class="com-text-top">
-                                      <!-- <image :src="item.UserInfo.HeadUrl"/> -->
-                                      <img :src="item.UserInfo.HeadUrl?item.UserInfo.HeadUrl:'/static/images/default_img.gif'" alt="" class="heder-img">
-                                      <div>
-                                        <span class="com-name">{{item.UserInfo.UserName}}</span><br/>
-                                        <span class="com-label">社区心得</span>
-                                      </div>
-                                    </div>
-                                    <div class="com-bottom">
-                                      {{item.Content}}
-                                    </div>
-                                </div>
-                                <div class="com-img">
-                                    <img :src="item.CoverImg" mode="widthFix" >
-                                </div>
-                            </div>
-                        </swiper-item>
-                      </block>
-                    </swiper>
+                <div class="comment-pic" v-if="item.Imgs != null && item.Imgs.length> 0">
+                  <scroll-view scroll-x scroll-with-animation="true">
+                    <block v-for="(imgitem,imgindex) in item.Imgs" :key="imgindex">
+                      <li class="comment-pic-li">
+                        <img :src="imgitem" mode="aspectFit"/>
+                      </li>
+                    </block>
+                  </scroll-view>
+                </div>
+                <div v-if="item.TagNameList!=null&&item.TagNameList.length>0" class="comment-community">
+                  <div class="tag-title">来自社区笔记</div>
+                  <div class="tag-box">
+                    <div v-for="(item_,index_) in item.TagNameList" :key="index_" :class="{tag:true,'tag0':index_==0,'tag1':index_==1,'tag2':index_==2,'tag3':index_==3}">
+                      + {{item_}}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+            </div>
+            <div class="noremark" v-else>暂无评论</div>
+          </block>
+            
       </div>
-      <div class="promotionBox">
+      <div class="promotionBox recomn">
         <div class="brand-store" v-if="Data.BrandStore != null && Data.BrandStore.Name !=null&& Data.BrandStore.ImageUrl !=null">
             <div class="brand-tips">
-                <img :src="Data.BrandStore.ImageUrl?Data.BrandStore.ImageUrl:'/static/images/default_img.gif'" alt="" class="brand-img">
+                <img :src="Data.BrandStore.ImageUrl?Data.BrandStore.ImageUrl:'/static/images/default_img.gif'" mode="heightFix" class="brand-img">
                 <div>
                   <div class="brand-name">{{Data.BrandStore.Name}}</div>
-                  <div class="brand-follow" v-if="!IsFollow" @click="follow(Data.BrandStore.Id)">+关注</div>
-                  <div class="brand-follow" v-else @click="cancelFollow(Data.BrandStore.Id)">已关注</div>
                 </div>
             </div>
             <a
@@ -729,8 +810,7 @@
               class="link"
             >
               <div class="brand-btn">
-                  <div class="btn_all">全部商品</div>
-                  <div class="btn_store">进店逛逛</div>
+                  <div class="btn_all">进入品牌</div>
               </div>
             </a>
         </div >
@@ -755,7 +835,7 @@
               <swiper display-multiple-items="3.2">
                 <block v-for="item in QueryGoodsData" :key="item.index">
                   <swiper-item>
-                    <a :href="'/pages/product/index/main?seocode='+item.SeoCode">
+                    <a  disabled @click="changeSeries(item.SeoCode)">
                       <img :src="item.Img" mode="widthFix" />
                       <div class="goodsName">{{item.GoodsName}}</div>
                       <div class="goodsPrice">￥{{item.Price}}</div>
@@ -787,8 +867,8 @@
             <div class="goodsTypeBox">
               <swiper display-multiple-items="3.2">
                 <block v-for="item in QueryGoodsData2" :key="item.index">
-                  <swiper-item>
-                    <a :href="'/pages/product/index/main?seocode='+item.SeoCode">
+                  <swiper-item style="marginRight:5px">
+                    <a disabled @click="changeSeries(item.SeoCode)">
                       <img :src="item.GoodsImg" mode="widthFix" />
                       <div class="goodsName">{{item.GoodsName}}</div>
                       <div class="goodsPrice">￥{{item.Price}}</div>
@@ -800,10 +880,10 @@
           </div>
         </div>
       </div>
-      <div class="detailNote" name="detail" id="detail">
+      <!-- <div class="detailNote" name="detail" id="detail">
         ——— &nbsp;
         <img src="/static/images/detail.jpg" /> 详情 ———
-      </div>
+      </div> -->
       <!-- 详情 -->
       <div class="detailBox">
         <div class="attention">
@@ -1324,7 +1404,7 @@ import bottomFlip from "@/components/bottomFlip";
 import wxParse from "mpvue-wxparse";
 import authorization from "@/utils/authorization"; 
 import store from '@/store'
-
+let timeId;
 export default {
   data() {
     return {
@@ -1373,7 +1453,10 @@ export default {
       NowCompData:null,
       imageProp:{mode:'widthFix'},//详情关于 wxParse配置
       IsFollow:false,
-      HasGifts:true    
+      HasGifts:true,
+      seocode:"",
+      FollowGoodsState:false,
+      isShowTag:true
       };
   },
   computed: {},
@@ -1381,6 +1464,8 @@ export default {
       this.Poster = this.$mp.page.selectComponent('#sharepost')
   },
   onLoad(options) {
+      clearTimeout(timeId)
+    
     this.glassSelectPosiition =
       options.glassSelectPosiition != undefined
         ? options.glassSelectPosiition
@@ -1392,13 +1477,16 @@ export default {
     this.isFromAttr =
       options.isFromAttr != undefined ? options.isFromAttr : false;
     this.isComp = options.isComp;
+    this.seocode = options.seocode;
     this.getisComp(options.seocode);
     this._getCartNum();
     //用户是否有授权过用户信息
     if (store.state.userInfo.userInfo != null) {
       this.hasUserInfo = true
     }
-    
+    timeId = setTimeout(()=>{
+      this.isShowTag = false;
+    },6000)
   },
   components: {
     bottomFlip,
@@ -1424,8 +1512,20 @@ export default {
         this.cartNum = Data;
       });
     },
+    stateTag(){
+      if(!this.isShowTag){
+        this.isShowTag = true;
+        timeId = setTimeout(()=>{
+          this.isShowTag = false;
+        },6000)
+      }
+    },
     //切换系列
     changeSeries(seocode){
+        wx.pageScrollTo({
+          scrollTop: 0,
+          duration: 0
+        })
         this.getisComp(seocode);
     },
     _getPageData(seocode) {
@@ -1506,14 +1606,20 @@ export default {
             return value;
           });
         }
-
-        if (Data.Remark.Remarks != null) {
+        if (Data.Remark!=null&&Data.Remark.Remarks != null) {
           Data.Remark.Remarks = Data.Remark.Remarks.map(function(value, index) {
+            if(value.TagNameList!=null&&value.TagNameList.length>0){
+               value.TagNameList = value.TagNameList.map((obj)=>{
+                  if(obj.length>4){
+                    obj= obj.substr(0,4)+"..."
+                  }
+                  return obj
+              })
+            }
             value.PubTime = value.PubTime.replace("T", " ");
             return value;
           });
         }
-
         if (Data.GoodsPagePromotion.Coupons != null) {
           Data.GoodsPagePromotion.Coupons = Data.GoodsPagePromotion.Coupons.map(
             function(value, index) {
@@ -1529,12 +1635,12 @@ export default {
             }
           );
         }
-
         this.setData(Data.Remark);
         this.IsFollow = Data.BrandStore!=null&&Data.BrandStore.IsFollow;
         this.Data = Data;
         this._getGoodsAbout();
-        this._getHotCommentList(Data.GoodsBase.GoodsId)
+        this.followGoodsState();
+        // this._getHotCommentList(Data.GoodsBase.GoodsId)
         if (this.Data.GoodsBase.ShopId == 2) {
           this._getSameTypeData("price");
         } else {
@@ -1543,6 +1649,7 @@ export default {
             : this._getSameTypeData2("PPTJ");
         }
         this._AttrHref();
+        
       });
     },
     _getGoodsAbout() {
@@ -1554,7 +1661,7 @@ export default {
     _getHotCommentList(GoodsId){
         api.getHotCommentList(GoodsId,10).then(({ Data }) => {
           console.log(Data)
-          wx.setStorageSync('HotCommentList', Data)
+          // wx.setStorageSync('HotCommentList', Data)
           this.HotCommentList = Data;
         });
     },
@@ -2288,6 +2395,14 @@ export default {
         }
       });
     },
+    loginEventCoupon(e) {
+      const seocode = this.seocode;
+      authorization.doLogin(e.mp.detail.encryptedData, e.mp.detail.iv, () => {
+        this.isLogin = true;
+        this.getisComp(seocode);
+        this._getCartNum();
+      });
+    },
     //取消关注店铺
     cancelFollow(id){
       api.CancelFollow(id).then((Data ) => {
@@ -2305,6 +2420,26 @@ export default {
           }
           
         });
+    },
+
+     //取消收藏商品
+    cancelFollowGoods(){
+      api.CancelFollowGoods(this.Data.GoodsBase.GoodsId).then(({Data} ) => {
+        this.FollowGoodsState = false
+      });
+    },
+    //收藏商品
+    followGoods(){
+        api.FollowGoods(this.Data.GoodsBase.GoodsId,this.Data.GoodsBase.ShopId).then(( {Data} ) => {
+           this.FollowGoodsState = true
+        });
+    },
+    followGoodsState(){
+      if(this.isLogin){
+          api.FollowGoodsState(this.Data.GoodsBase.GoodsId).then(( {Data} ) => {
+          this.FollowGoodsState = Data
+        });
+      }
     },
          //点击分享时：如果用户没有授权过用户信息，则页面上的分享按钮替换成授权按钮，此方法为授权按钮事件回调。授权完毕再展示分享弹窗
     getUserInfo(e) {
@@ -2374,6 +2509,12 @@ export default {
       });
 
     },
+    goSvip(){
+      wx.navigateTo({
+          url:
+            "/pages/svip/dredgeSvip/main"
+        });
+    }
   },
         /**
    * 用户点击右上角分享

@@ -507,7 +507,7 @@ export default {
       return num > 99 ? "99+" : num;
     },
     goSvipDetail(){
-       wx.navigateTo({
+       wx.switchTab({
           url:
             "/pages/svip/index/main"
         });

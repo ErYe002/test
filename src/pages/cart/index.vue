@@ -129,7 +129,9 @@
                             >
                               <div class="goods-box">
                                 <div class="g-info">
-                                  <img class="g-img" :src="goodItem.ImageUrl" />
+                                  <a :href="'/pages/product/index/main?seocode='+goodItem.SeoCode+'&isComp=true'">
+                                    <img class="g-img" :src="goodItem.ImageUrl" />
+                                  </a>
                                   <div class="info">
                                     <a
                                       :href="'/pages/product/index/main?seocode='+goodItem.SeoCode+'&isComp=true'"
@@ -193,7 +195,9 @@
                                   />
                                 </span>
                                 <div class="g-info">
-                                  <img class="g-img" :src="gItem.ImageUrl" />
+                                  <a :href="'/pages/product/index/main?seocode='+gItem.SeoCode+'&isComp=false'">
+                                    <img class="g-img" :src="gItem.ImageUrl" />
+                                  </a>
                                   <div class="info">
                                     <a
                                       :href="'/pages/product/index/main?seocode='+gItem.SeoCode+'&isComp=false'"
@@ -402,7 +406,9 @@
                           />
                         </span>
                         <div class="g-info">
-                          <img class="g-img" :src="nItem.ImageUrl" />
+                          <a :href="'/pages/product/index/main?seocode='+nItem.SeoCode+'&isComp=false'">
+                            <img class="g-img" :src="nItem.ImageUrl" />
+                          </a>
                           <div class="info">
                             <a
                               :href="'/pages/product/index/main?seocode='+nItem.SeoCode+'&isComp=false'"

@@ -163,6 +163,12 @@ const http = {
   get(url = '', data = null) {
     return request(url, 'get', data, {});
   },
+    /**
+   * http get请求：不展示加载框
+   */
+  getByNoLoading(url = '', data = null, header = {}) {
+    return request(url, 'get', data, header, false);
+  },
   getByNoErrorTips(url = '', data = null, header = {}) {
     return request(url, 'get', data, header, true, false);
   },
