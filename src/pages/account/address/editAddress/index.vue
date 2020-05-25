@@ -38,6 +38,7 @@
 
 <script>
 import api from "@/api/address";
+import {mapActions} from "vuex"
 
 export default {
   data() {
@@ -102,6 +103,7 @@ export default {
   },
 
   methods: {
+    ...mapActions("order",["setSelectAddressId","setSelectedExpressId"]),
     //编辑收货地址
     getAddressDetailEvent() {
       api.getAddressDetail(this.consigneeId).then(({ Data }) => {
@@ -251,11 +253,13 @@ export default {
 
     },
     //编辑保存
-    saveEditAddress(){      
+    saveEditAddress(){ 
+      let that = this;     
       api.editAddresss(this.consigneeId,this.addressInfo.ConsigneeName,this.addressInfo.ContactMobile,this.addressInfo.ProvinceId,this.addressInfo.ProvinceName,this.addressInfo.CityId,this.addressInfo.CityName,this.addressInfo.DistrictId,this.addressInfo.DistrictName,this.addressInfo.Address,this.addressInfo.PostalCode,this.IsDefault).then(({ Data, State, Msg }) => {
         if (State){
+          that.setSelectAddressId(Data)
           wx.navigateBack({
-            delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+            delta: 2 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
           });
         }else{
           let tempMsg = "";
@@ -273,11 +277,13 @@ export default {
     },
     //新增保存
     saveNewAddress(){
+      let that = this;
       api.addNewAddress(this.addressInfo.ConsigneeName,this.addressInfo.ContactMobile,this.addressInfo.ProvinceId,this.addressInfo.ProvinceName,this.addressInfo.CityId,this.addressInfo.CityName,this.addressInfo.DistrictId,this.addressInfo.DistrictName,this.addressInfo.Address,this.addressInfo.PostalCode,this.IsDefault).then(({ Data, State, Msg }) => {
         console.log(State);
         if (State){
+          that.setSelectAddressId(Data)
           wx.navigateBack({
-            delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+            delta: 2 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
           });
         }else{
           let tempMsg = "";
