@@ -106,8 +106,12 @@ export default {
           return ele
         })
         this.menu = list;
-        this.SearchKeyword = Data.SearchKeyword?Data.SearchKeyword:""
-        this.currentMenuCode = this.menu[0]["TargetUrl"];
+        this.SearchKeyword = Data.SearchKeyword?Data.SearchKeyword:"";
+        this.currentMenuCode = "";
+        setTimeout(()=>{
+            this.currentMenuCode = this.menu[0]["TargetUrl"];
+        },100)
+        
       });
     },
     changeIndexEvent(code){
