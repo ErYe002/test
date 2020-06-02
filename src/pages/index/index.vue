@@ -107,10 +107,7 @@ export default {
         })
         this.menu = list;
         this.SearchKeyword = Data.SearchKeyword?Data.SearchKeyword:"";
-        this.currentMenuCode = "";
-        setTimeout(()=>{
-            this.currentMenuCode = this.menu[0]["TargetUrl"];
-        },100)
+        this.currentMenuCode = this.menu[0]["TargetUrl"];
         
       });
     },
@@ -148,7 +145,9 @@ export default {
       })
     }
   },
-
+  onHide(){
+    this.currentMenuCode = "";
+  },
   onShow() {
     this._getMenuData();
     this.getWalletOfPersonnel()

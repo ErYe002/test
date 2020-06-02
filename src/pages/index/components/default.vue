@@ -31,7 +31,7 @@
           <scroll-view class="nav-contain" scroll-x @scroll="scroll">
             <div class="out-box">
               <div v-for="(item,index) in model.IconList" :key="index" class="children-box">
-                <navigator open-type="navigate" target="miniProgram" app-id="wxbb2e8b1089947444" version="release" @fail="openMiniFail"  v-if="item.SeoCode == 'pt_type'">
+                <navigator class="button_s" open-type="navigate" target="miniProgram" app-id="wxbb2e8b1089947444" version="release" @fail="openMiniFail"  v-if="item.SeoCode == 'pt_type'">
                   <img :src="item.ImageUrl"  class="nav-img">
                 </navigator>
                 <block v-else-if="item.SeoCode=='svip_type'"><!-- svip处理-->
@@ -350,9 +350,10 @@ export default {
           }
           if(Data.IconList!=null){
               Data.IconList.map((item)=>{
-                if(item.TargetUrl.indexOf("wechatgroupindex")!=-1){
+                if(item.TargetUrl.indexOf("wechatgroupindex")!=-1||item.TargetUrl.indexOf("group2019")!=-1){
                   item.SeoCode = "pt_type"
                 }
+                
                 if(item.TargetUrl.indexOf("BuySvip")!=-1){
                   item.SeoCode = "svip_type"
                 }

@@ -126,6 +126,7 @@ export default {
   data() {
     return {
       orderId: "",
+      dataSource:"",
       svip:false,
       orderInfo: null
     };
@@ -137,6 +138,9 @@ export default {
     if (options && options.orderId) {
       this.orderId = options.orderId;
     }
+    if (options && options.dataSource!=null&&options.dataSource!="") {
+      this.dataSource = options.dataSource;
+    }
      if (options && options.svip) {
       this.svip = options.svip;
     }
@@ -144,7 +148,7 @@ export default {
   },
   methods: {
     _getPageData() {
-      api.getOrderDetail(this.orderId).then(({ Data }) => {
+      api.getOrderDetail(this.orderId,this.dataSource).then(({ Data }) => {
         Data.OrderTime = tools.formatDate('yyyy/MM/dd hh:mm', new Date(Data.OrderTime))
         this.orderInfo = Object.assign({}, Data);
       });
