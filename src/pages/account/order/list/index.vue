@@ -195,7 +195,7 @@ export default {
       this.listQuery.page++;
       this._getListEvent();
     }else{
-      if(!this.flag){
+      if(!this.flag&&this.listQuery.queryState==0){
         this.flag=true
         this._queryOrderHistory()
       }
@@ -209,6 +209,8 @@ export default {
     switchTypeEvent(state) {
       this.listQuery.queryState = state;
       this.listQuery.page = 1;
+      this.listHis.page = 1;
+      this.flag = false;
       this.isNoData = false;
       this.orderList = [];
       this._getListEvent();
@@ -216,6 +218,8 @@ export default {
     searchEvent() {
       this.listQuery.queryState = 0;
       this.listQuery.page = 1;
+      this.listHis.page = 1;
+      this.flag = false;
       this.isNoData = false;
       this.orderList = [];
       this._getListEvent();
@@ -224,6 +228,8 @@ export default {
       this.listQuery.queryString = "";
       this.listQuery.queryState = 0;
       this.listQuery.page = 1;
+      this.listHis.page = 1;
+      this.flag = false;
       this.isNoData = false;
       this._getListEvent();
     },
@@ -284,7 +290,9 @@ export default {
           this.his_totalPage = TotalPage;
           //没有搜索到任何数据
           if (!Data || Data.length <= 0) {
-            this.isNoData = true;
+            if(this.orderList.length<=0){
+              this.isNoData = true;
+            }
           }
         }).finally(() => {
             this.isLoading = false;
