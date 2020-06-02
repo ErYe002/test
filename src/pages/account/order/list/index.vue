@@ -125,7 +125,7 @@
         src="/static/images/mu_loading.gif"
       />
       <p class="no-data-box" v-else-if="isNoData">抱歉，没有此类订单哦</p>
-      <p class="no-more-tips" v-if="listHis.page == his_totalPage">没有更多了</p>
+      <p class="no-more-tips" v-if="listHis.page == his_totalPage||((listQuery.page == totalPage)&&listQuery.queryState!=0)">没有更多了</p>
     </section>
   </article>
 </template>
@@ -211,6 +211,7 @@ export default {
       this.listQuery.page = 1;
       this.listHis.page = 1;
       this.flag = false;
+      this.his_totalPage=0
       this.isNoData = false;
       this.orderList = [];
       this._getListEvent();
@@ -220,6 +221,7 @@ export default {
       this.listQuery.page = 1;
       this.listHis.page = 1;
       this.flag = false;
+      this.his_totalPage=0
       this.isNoData = false;
       this.orderList = [];
       this._getListEvent();
@@ -229,6 +231,7 @@ export default {
       this.listQuery.queryState = 0;
       this.listQuery.page = 1;
       this.listHis.page = 1;
+      this.his_totalPage=0
       this.flag = false;
       this.isNoData = false;
       this._getListEvent();
