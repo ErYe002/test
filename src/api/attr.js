@@ -15,8 +15,7 @@ const api = {
   },
   //购买无属性框架商品
   buyNoPropertyFrame(mapPrams) {
-    return http.postByNoErrorTips(`/cart/BuyNoPropertyFrame?
-goodsId=${mapPrams.get('goodsId')}
+    return http.postByNoErrorTips(`/cart/BuyNoPropertyFrame?goodsId=${mapPrams.get('goodsId')}
 &IsConfirmedBuy=${mapPrams.get('IsConfirmedBuy')}
 &ShopId=${mapPrams.get('ShopId')}
 &Quantity=${mapPrams.get('Quantity')}

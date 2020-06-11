@@ -42,7 +42,7 @@
       <ul class="order-list">
         <template v-if="listQuery.queryState != 6">
           <li class="o-item" v-for="(item, idx) in orderList" :key="idx">
-            <a :href="'/pages/account/order/detail/main?orderId=' + item.OrderId" class="link">
+            <a :href="'/pages/account/order/detail/main?orderId=' + item.OrderId+'&dataSource='+item.DataSource" class="link">
               <div class="title">
                 <span class="order-no" @click.stop="copyOrderNo(item.OrderNo)">
                   <text class="ht-tag" v-if="item.ShopId == 2">海淘</text>
@@ -109,7 +109,7 @@
               <p class="waitCommentGoodsName">{{item.GoodsName}}</p>
               <a
                 class="gotoOrder"
-                :href="'/pages/account/order/detail/main?orderId='+item.OrderId"
+                :href="'/pages/account/order/detail/main?orderId='+item.OrderId+'&dataSource='+item.DataSource"
               >查看订单</a>
               <a
                 class="gotoComment"
@@ -125,7 +125,7 @@
         src="/static/images/mu_loading.gif"
       />
       <p class="no-data-box" v-else-if="isNoData">抱歉，没有此类订单哦</p>
-      <p class="no-more-tips" v-if="listQuery.page == totalPage">没有更多了</p>
+      <p class="no-more-tips" v-if="listHis.page == his_totalPage||((listQuery.page == totalPage)&&listQuery.queryState!=0)">没有更多了</p>
     </section>
   </article>
 </template>
@@ -148,7 +148,12 @@ export default {
         isFreshCache: false,
         page: 1,
         queryString: ""
-      }
+      },
+      listHis:{
+        page:1
+      },
+      his_totalPage:0,
+      flag:false//过渡开关 拿取历史订单页数
     };
   },
   computed: {
@@ -189,12 +194,24 @@ export default {
     if (this.listQuery.page < this.totalPage) {
       this.listQuery.page++;
       this._getListEvent();
+    }else{
+      if(!this.flag&&this.listQuery.queryState==0){
+        this.flag=true
+        this._queryOrderHistory()
+      }
+      if(this.listHis.page<this.his_totalPage&&this.listQuery.queryState==0){
+        this.listHis.page++;
+        this._queryOrderHistory()
+      }
     }
   },
   methods: {
     switchTypeEvent(state) {
       this.listQuery.queryState = state;
       this.listQuery.page = 1;
+      this.listHis.page = 1;
+      this.flag = false;
+      this.his_totalPage=0
       this.isNoData = false;
       this.orderList = [];
       this._getListEvent();
@@ -202,6 +219,9 @@ export default {
     searchEvent() {
       this.listQuery.queryState = 0;
       this.listQuery.page = 1;
+      this.listHis.page = 1;
+      this.flag = false;
+      this.his_totalPage=0
       this.isNoData = false;
       this.orderList = [];
       this._getListEvent();
@@ -210,6 +230,9 @@ export default {
       this.listQuery.queryString = "";
       this.listQuery.queryState = 0;
       this.listQuery.page = 1;
+      this.listHis.page = 1;
+      this.his_totalPage=0
+      this.flag = false;
       this.isNoData = false;
       this._getListEvent();
     },
@@ -257,10 +280,27 @@ export default {
           this.listQuery.page > 1 ? this.orderList.concat(Data) : Data;
         this.totalPage = TotalPage;
         //没有搜索到任何数据
-        if (!Data || Data.length <= 0) {
+        if ((!Data || Data.length <= 0)&&this.listQuery.queryState!=0) {
           this.isNoData = true;
         }
       });
+    },
+    _queryOrderHistory() {
+      if(!this.isLoading){
+        this.isLoading = true;
+        api.queryOrderHistory({ ...this.listHis }).then(({ Data, TotalPage }) => {
+          this.orderList = this.orderList.concat(Data) ;
+          this.his_totalPage = TotalPage;
+          //没有搜索到任何数据
+          if (!Data || Data.length <= 0) {
+            if(this.orderList.length<=0){
+              this.isNoData = true;
+            }
+          }
+        }).finally(() => {
+            this.isLoading = false;
+          });;
+      }
     },
     _wechatPay(orderId) {
       const _this = this;

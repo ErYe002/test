@@ -17,9 +17,16 @@ const api = {
     }
     return http.postByNoLoading(url);
   },
+  //查询历史订单
+  queryOrderHistory({  page = 1, size = 10 } = {}) {
+    let url = `/Order/QueryOrderHistoryByPage?Size=${size}&Page=${page}`;
+    
+    return http.post(url);
+    
+  },
   //查询订单详情
-  getOrderDetail(orderId) {
-    return http.post(`/order/GetOrderDetail?orderId=${orderId}`);
+  getOrderDetail(orderId,dataSource) {
+    return http.post(`/order/GetOrderDetail?orderId=${orderId}&dataSource=${dataSource}`);
   },
   //取消订单
   cancelOrder(orderId) {

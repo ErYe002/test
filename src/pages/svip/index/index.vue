@@ -1,5 +1,5 @@
 <template>
-  <article class="contain">
+  <!-- <article class="contain">
     <section class="top-view">
       <section :class="{'user-box': true}">
         <img class="bg" src="/static/images/member_bg.jpg" mode="scaleToFill"/>
@@ -8,17 +8,8 @@
           <p class="name">
             <span>{{userInfoModel.Nick}}</span>
           </p>
-          <!-- <p class="svip-level" v-if="userInfoModel.IsSvip">
-            <span> · </span>
-            <i>SVIP</i>
-            <span> | </span>
-            <em>{{userInfoModel.SvipBeginDate + '-' +  userInfoModel.SvipEndDate}}</em>
-            <span> · </span>
-          </p> -->
           <div class="level">
-            <img :class="{'icon':true,'icon_1':userInfoModel.levelNum==1,'icon_2':userInfoModel.levelNum==2,
-            'icon_3':userInfoModel.levelNum==3,'icon_4':userInfoModel.levelNum==4,
-            'icon_5':userInfoModel.levelNum==5,'icon_6':userInfoModel.levelNum==6}" :src="'/static/images/level_0'+userInfoModel.levelNum+'.jpg'" />
+            <img :class="{'icon':true,'icon_1':userInfoModel.levelNum==1,'icon_2':userInfoModel.levelNum==2,'icon_3':userInfoModel.levelNum==3,'icon_4':userInfoModel.levelNum==4,'icon_5':userInfoModel.levelNum==5,'icon_6':userInfoModel.levelNum==6}" :src="'/static/images/level_0'+userInfoModel.levelNum+'.jpg'" />
             <span class="text">会员</span>
           </div>
         </div>
@@ -33,10 +24,6 @@
                 <div class="title">SVIP累计已省（元）</div>
                 <div class="amount">{{userInfoModel.SvipDeductionTotalAmount}}</div>
               </div>
-              <!-- <div class="right">
-                <div class="title">返可得积分（元）</div>
-                <div class="amount">500</div>
-              </div> -->
           </div>
           <div class="svip_btn" v-else @click="goDredgeSvip">立即开通</div>
         </div>
@@ -66,13 +53,12 @@
     </section>
     <section class="top-view">
       <section class="banner_box">
-        <!-- 图片 -->
         <img :src="PrivilegeUrl" mode="widthFix" class="banner">
       </section>
     </section>
-  </article>
+  </article> -->
+     <web-view src="https://m.kede.com/templatefornewapp/hyds2020" @error="error" @load="succ"></web-view>
 </template>
-
 <script>
 import api from "@/api/user";
 import { mapState } from "vuex";
@@ -109,6 +95,9 @@ export default {
     };
   },
   onLoad(){
+    wx.setNavigationBarTitle({
+      title: '会员中心'
+    })
     if(this.token){
       this._getPageData();
     }else{

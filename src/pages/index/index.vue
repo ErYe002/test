@@ -106,8 +106,9 @@ export default {
           return ele
         })
         this.menu = list;
-        this.SearchKeyword = Data.SearchKeyword?Data.SearchKeyword:""
+        this.SearchKeyword = Data.SearchKeyword?Data.SearchKeyword:"";
         this.currentMenuCode = this.menu[0]["TargetUrl"];
+        
       });
     },
     changeIndexEvent(code){
@@ -144,7 +145,9 @@ export default {
       })
     }
   },
-
+  onHide(){
+    this.currentMenuCode = "";
+  },
   onShow() {
     this._getMenuData();
     this.getWalletOfPersonnel()

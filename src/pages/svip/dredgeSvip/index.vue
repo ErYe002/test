@@ -87,7 +87,7 @@ export default {
     return {
       //填充userInfoModel和walletModel的默认字段，以免控制台报错
       Data:{},
-      chekedTcp:false,
+      chekedTcp:true,
        submitResultInfo:{},
       submitResultMsg:""
     };

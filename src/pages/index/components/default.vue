@@ -31,7 +31,7 @@
           <scroll-view class="nav-contain" scroll-x @scroll="scroll">
             <div class="out-box">
               <div v-for="(item,index) in model.IconList" :key="index" class="children-box">
-                <navigator open-type="navigate" target="miniProgram" app-id="wxbb2e8b1089947444" version="release" @fail="openMiniFail"  v-if="item.SeoCode == 'pt_type'">
+                <navigator class="button_s" open-type="navigate" target="miniProgram" app-id="wxbb2e8b1089947444" version="release" @fail="openMiniFail"  v-if="item.SeoCode == 'pt_type'">
                   <img :src="item.ImageUrl"  class="nav-img">
                 </navigator>
                 <block v-else-if="item.SeoCode=='svip_type'"><!-- svip处理-->
@@ -103,7 +103,7 @@
         <section class="brand-box" v-if="brandList.length > 0">
           <p class="title">BRAND SELECTED | 品牌精选</p>
           <div class="list-box">
-            <ul class="list">
+            <ul class="list" :style='{height:hight}'>
               <li class="item" v-for="item in brandList" :key="item.Id">
                 <a @click="$navigateTo(item.TargetUrl)">
                   <img :class="{normal:true,show:item.show,hide:!item.show}" :src="item.ColorImageUrl" />
@@ -114,7 +114,7 @@
             </ul>
             <p class="dorpdown-icon" v-if="model.BrandList.length > 12">
               <img
-                :class="{up: brandList.length > 12}"
+                :class="{up: hight=='auto'}"
                 src="/static/images/icon_dropdown.png"
                 v-if="model.BrandList.length > 12"
                 @click="toggleBrandEvent"
@@ -272,7 +272,8 @@ const defaultData = {
   select_recommendChannel:0,
   goodsType:"",
   HasMore:false,
-  channelTitle:""
+  channelTitle:"",
+  hight:"123px"
 }
 
 export default {
@@ -320,10 +321,22 @@ export default {
     },
     //显示所有品牌
     toggleBrandEvent() {
-      this.brandList =
-        this.brandList.length == this.model.BrandList.length
-          ? this.model.BrandList.slice(0, 12)
-          : this.model.BrandList;
+      
+      switch(this.hight){
+        
+        case '123px':{
+          this.hight = 'auto'
+          break
+        }
+        case "auto":{
+            this.hight = '123px'
+            break
+        }
+      }
+      // this.brandList =
+      //   this.brandList.length == this.model.BrandList.length
+      //     ? this.model.BrandList.slice(0, 12)
+      //     : this.model.BrandList;
     },
     changeSeckillIdx(idx) {
       this.currentSeckillIdx = idx;
@@ -333,10 +346,10 @@ export default {
         if (Data != null ) {
           if(Data.BrandList != null){
                       this.reversalBrand(Data.BrandList)
-            this.brandList =
-              Data.BrandList.length > 12
-                ? Data.BrandList.slice(0, 12)
-                : Data.BrandList;
+            this.brandList = Data.BrandList
+              // Data.BrandList.length > 12
+              //   ? Data.BrandList.slice(0, 12)
+              //   : Data.BrandList;
           }
           if(Data.RecommendChannelList!=null){
               this.goodsType = Data.RecommendChannelList[0]['GoodsType'];
@@ -350,9 +363,10 @@ export default {
           }
           if(Data.IconList!=null){
               Data.IconList.map((item)=>{
-                if(item.TargetUrl.indexOf("wechatgroupindex")!=-1){
+                if(item.TargetUrl.indexOf("wechatgroupindex")!=-1||item.TargetUrl.indexOf("group2019")!=-1){
                   item.SeoCode = "pt_type"
                 }
+                
                 if(item.TargetUrl.indexOf("BuySvip")!=-1){
                   item.SeoCode = "svip_type"
                 }
@@ -392,10 +406,8 @@ export default {
 
         // arr.sort(() => Math.random() - 0.5);
         list[arr[0]].show = true;
-        this.brandList =
-            list.length > 12
-              ? list.slice(0, 12)
-              : list;
+        this.brandList = list
+            
         arr.shift()
         if(arr.length==0){
           clearInterval(timerID)
@@ -703,12 +715,14 @@ export default {
   .brand-box {
     background: #FFC2DB;
     border-radius: 10px;
+    padding-bottom: 6px;
     .list-box {
       position: relative;
       .list {
+        overflow: hidden;
         display: flex;
         flex-wrap: wrap;
-        padding: 0 14px 5px;
+        padding: 0 14px;
         .item {
           // flex: 0 0 25%;
           width: 81.5px;
@@ -744,7 +758,7 @@ export default {
       }
       .dorpdown-icon {
         position: absolute;
-        bottom: 5px;
+        bottom: 2px;
         height: 1px;
         width: 100%;
         z-index: 5;
