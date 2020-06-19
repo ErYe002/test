@@ -120,18 +120,30 @@ const api = {
     },
   //svip确认订单页
   getSvipPageData() {
-    return http.post('Cart/ConfirmSvipOrder');
+    return http.post('SvipBuy/ConfirmSvipOrder?versionNo=4.6.4');
   },
   //svip提交订单
-  submitSvipOrder(CouponNo) {
-    return http.post('Cart/SubmitSvipOrder',{
-      CouponNo:CouponNo
-    });
+  submitSvipOrder(CouponNo,ConsigneeId,GoodsList) {
+    return http.post(
+      `SvipBuy/SubmitSvipOrder`,
+      {
+        CouponNo:CouponNo,
+        ConsigneeId:ConsigneeId,
+        GoodsList:JSON.stringify(GoodsList)
+      },
+      {
+        'content-type':'application/x-www-form-urlencoded'
+      }
+    );
   },
   //svip获取权益照片
   SvipOrderImg() {
     return http.post('Account/PrivilegeUrl');
   },
+  //svip优惠券使用
+  UseSvipCoupon(couponNo) {
+      return http.post(`SvipBuy/UseSvipCoupon?couponNo=${couponNo}`);
+    },
    //微信支付
    payOrder(orderId, openId) {
     return http.post(`/Payment/WechatPayForMinprogram?orderId=${orderId}&ip=&wechatOpenId=${openId}`)

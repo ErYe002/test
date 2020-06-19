@@ -120,7 +120,10 @@ const api = {
 &RealGoodsId=${mapPrams.get('RealGoodsId')}
     ` + otherUrl);
   },
-
+  //获取商品属性
+  getGoodsField(GId){
+    return http.post(`/Goods/GoodsField?goodsId=${GId}`);
+  }
 };
 
 export default api;

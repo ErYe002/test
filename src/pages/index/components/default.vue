@@ -32,15 +32,15 @@
             <div class="out-box">
               <div v-for="(item,index) in model.IconList" :key="index" class="children-box">
                 <navigator class="button_s" open-type="navigate" target="miniProgram" app-id="wxbb2e8b1089947444" version="release" @fail="openMiniFail"  v-if="item.SeoCode == 'pt_type'">
-                  <img :src="item.ImageUrl"  class="nav-img">
+                  <img :src="item.ImageUrl"  class="nav-img" @click="trace(item,0)">
                 </navigator>
                 <block v-else-if="item.SeoCode=='svip_type'"><!-- svip处理-->
                   <button v-if="!token" open-type="getUserInfo" @getuserinfo="getUserInfo_svip" class="button_s">
-                    <img :src="item.ImageUrl"  class="nav-img">
+                    <img :src="item.ImageUrl"  class="nav-img" @click="trace(item,0)">
                   </button>
-                  <img :src="item.ImageUrl" v-else class="nav-img" @click="$navigateTo(item.TargetUrl)">
+                  <img :src="item.ImageUrl" v-else class="nav-img" @click="trace(item,1)">
                 </block>
-                <img :src="item.ImageUrl" v-else class="nav-img" @click="$navigateTo(item.TargetUrl)">
+                <img :src="item.ImageUrl" v-else class="nav-img" @click="trace(item,1)">
                 <span class="nav-text">{{item.Name}}</span>
               </div>
               </div>
@@ -253,6 +253,7 @@ import api from "@/api";
 import { mapState } from "vuex";
 import authorization from "@/utils/authorization";
 import tools from "@/utils";
+const TDSDK = require('../../../../static/tdsdk/tdweapp'); 
 
 const defaultData = {
   swiperIndex: 0,
@@ -301,6 +302,13 @@ export default {
     // await this._getGoodsListData();
   },
   methods: {
+    trace(item,type){
+      TDSDK.Event.event({id: 'icon_'+item.Name})
+      if(type==1){
+          this.$navigateTo(item.TargetUrl)
+      }
+ 
+    },
     getUserInfo_svip(e){
       authorization.doLogin(e.mp.detail.encryptedData, e.mp.detail.iv, () => {
         wx.navigateTo({
