@@ -1404,6 +1404,7 @@ import bottomFlip from "@/components/bottomFlip";
 import wxParse from "mpvue-wxparse";
 import authorization from "@/utils/authorization"; 
 import store from '@/store'
+const TDSDK = require('../../../../static/tdsdk/tdweapp'); 
 let timeId;
 export default {
   data() {
@@ -1464,6 +1465,7 @@ export default {
       this.Poster = this.$mp.page.selectComponent('#sharepost')
   },
   onLoad(options) {
+      TDSDK.Event.event({id: '商详页'})
       clearTimeout(timeId)
     
     this.glassSelectPosiition =

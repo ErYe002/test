@@ -129,7 +129,7 @@ const api = {
       {
         CouponNo:CouponNo,
         ConsigneeId:ConsigneeId,
-        GoodsList:JSON.stringify(GoodsList)
+        Goods:JSON.stringify(GoodsList)
       },
       {
         'content-type':'application/x-www-form-urlencoded'

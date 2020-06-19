@@ -259,6 +259,7 @@ import cartApi from "@/api/cart";
 import {mapState} from "vuex"
 import {mapActions} from "vuex"
 import goodsList from "@/pages/order/components/goodsList";
+const TDSDK = require('../../../../static/tdsdk/tdweapp'); 
 
 export default {
   data(){
@@ -303,6 +304,7 @@ export default {
     goodsList,
   },
   onLoad(options) {
+    TDSDK.Event.event({id: '结算页'})
     if(options){
       this.formModel.selectShopId = options.shopId;
       if (this.formModel.selectShopId == 2) {
@@ -493,6 +495,7 @@ export default {
         return 
       }
       console.log(this.formModel)
+      TDSDK.Event.event({id: '点击提交订单'})
       api.submitOrder({...this.formModel}).then(({Data,Msg,State}) => {
         console.log(Data)
         this.submitResultInfo = Data;

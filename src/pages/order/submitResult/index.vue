@@ -41,6 +41,7 @@
 
 <script>
 import api from "@/api/cart";
+const TDSDK = require('../../../../static/tdsdk/tdweapp'); 
 
 export default {
   data(){
@@ -59,6 +60,7 @@ export default {
     }
   },
   onLoad: function (options) {
+    TDSDK.Event.event({id: '购买成功页'})
     if (options) {
       console.log(options)
       this.shopId = options.shopId

@@ -767,6 +767,7 @@ import { mapState } from "vuex";
 import coupon from "./components/coupon";
 import attrs from "./components/attrs";
 import tariff from "./components/tariff";
+const TDSDK = require('../../../static/tdsdk/tdweapp'); 
 
 export default {
   data() {
@@ -810,6 +811,9 @@ export default {
     coupon,
     attrs,
     tariff
+  },
+  onLoad(){
+    TDSDK.Event.event({id: '购物车'})
   },
   onShow() {
     let that = this;
