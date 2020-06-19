@@ -12,7 +12,7 @@
       </div>
     </section> -->
     <section class="top-view">
-        <div class="top-box">
+        <div class="top-box" :style="Data.SvipBuyInfo!=null&&Data.SvipBuyInfo.PrivilegeBackground?'background-image:url('+Data.SvipBuyInfo.PrivilegeBackground+')':'background:#1C1C1C'">
           <div class="module-first">
             <div class="module-first-title">
               <span>SVIP会员专享10大特权</span>
@@ -619,7 +619,8 @@ export default {
    
   padding: 10px 15px 0 15px;
   //  background: -webkit-linear-gradient(top,#fff,#f7f5f5);
-   background: #1C1C1C;
+  //  background: red;
+  background-size: cover;
   .module-first-title{
     height: 20px;
     display: flex;
