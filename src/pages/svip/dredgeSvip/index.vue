@@ -51,7 +51,7 @@
                   <div class="quan-tip">已经为您自动使用最优惠优惠券，或者您可以手动输入券码</div>
               </div>
             </div>
-            <div class="item">优惠后金额：<span class="to-price">￥{{Data.RealSellPrice-SvipDeductionCouponAmount}}</span></div>
+            <div class="item">优惠后金额：<span class="to-price">￥{{allmoney}}</span></div>
           </div>
         </div>  
     </section>
@@ -197,7 +197,7 @@
           </div>
           <div class="tcp-tip" @click="showUserysxy">《可得SVIP会员用户协议》</div>
       </div>
-      <div class="btn-pay" @click="pay">立即支付：￥<span class="total_pay">{{Data.RealSellPrice-SvipDeductionCouponAmount}}</span></div>
+      <div class="btn-pay" @click="pay">立即支付：￥<span class="total_pay">{{allmoney}}</span></div>
     </section>
     <div class="login-box" v-if="!token">
         <div class="content">
@@ -244,9 +244,8 @@ export default {
       sphList: [],
       checkSelectStatus:true,
       goodsArr:[],
-      SvipDeductionCouponAmount:0,
       couponCode:"",
-      couponFirst:true
+      allmoney:0
     };
   },
   computed: {
@@ -304,6 +303,7 @@ export default {
           that.allGiftMoney = temp
         }
         this.Data = {...Data}
+        this.allmoney = Data.RealSellPrice
         this.addressInfo = Object.assign({}, Data.DefaultConsigneeInfo);
       })
     },
@@ -322,20 +322,22 @@ export default {
         });
         return false;
       }
-      if(!this.couponFirst){
-        wx.showModal({
-          title: "提示",
-          content:"已经兑换且只能兑换一次",
-          confirmColor: "#cab894",
-          mask:true
-        });
-        return false;
-      }
-      api.UseSvipCoupon(this.couponCode).then(({Data})=>{
-        if(Data!=null){
-          this.couponFirst = false
-          this.SvipDeductionCouponAmount = Data.SvipDeductionCouponAmount
+      api.UseSvipCoupon(this.couponCode).then(({Data,State,Msg})=>{
+        if(State){
+          let temp = this.Data.RealSellPrice -Data.SvipDeductionCouponAmount;
+          if(temp<0){
+            this.allmoney =  0
+          }else{
+            this.allmoney =  temp
+          }
           this.Data.SvipDeductionCouponAmount = Data.SvipDeductionCouponAmount
+        }else{
+          wx.showModal({
+            title: "提示",
+            content:Msg,
+            confirmColor: "#cab894",
+            mask:true
+          });
         }
       })
      
