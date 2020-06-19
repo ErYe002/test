@@ -2,7 +2,7 @@
   <bottom-flip :is-show.sync="isShow">
     <p class="title-box">
         <span class="img">
-            <img src="/static/images/logo_text.png" class="img"/>
+            <img :src="imgUrl" class="img"/>
         </span>
       <img @click="hideEvent" class="icon-close" src="/static/images/icon_cart_tips_close.png"/>
     </p>
@@ -78,7 +78,8 @@
         sphList: [],
         serisItem:[],
         sphGoodsId:"",
-        specification:""
+        specification:"",
+        imgUrl:""
       };
     },
 
@@ -109,6 +110,7 @@
           if(Data!=null){
             this.sphList = Data.GoodsFields[0].Children
             this.serisItem = Data.SeriesItems
+            this.imgUrl = Data.ImageUrl
             this.checkId();
           }
         })
