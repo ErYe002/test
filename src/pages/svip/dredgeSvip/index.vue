@@ -280,7 +280,7 @@ export default {
     _getPageData() {
       let that = this
       api.getSvipPageData().then(({Data})=>{
-        if(Data!=null&&Data.SvipBuyInfo.SVIPPresentList.length>0){
+        if(Data!=null&&Data.SvipBuyInfo!=null&&Data.SvipBuyInfo.SVIPPresentList!=null&&Data.SvipBuyInfo.SVIPPresentList.length>0){
           let temp = 0;
           Data.SvipBuyInfo.SVIPPresentList.forEach(item=>{
             if(item.HasProperty){
