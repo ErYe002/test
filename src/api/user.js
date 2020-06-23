@@ -51,7 +51,7 @@ const api = {
   //获取最新的AccessToken
   getAccessToken() {
     return http.post(
-      'ThirdPartnerLogin/WechatSamllApplciationAccessToken'
+      'ThirdPartnerLogin/WechatMinProgramAccessToken'
     );
   },
   //获取个人中心用户信息
