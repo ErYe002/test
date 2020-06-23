@@ -357,37 +357,39 @@ export default {
         });
         return false;
       }
-      //赠品选中提示
-      let flag = this.Data.SvipBuyInfo.SVIPPresentList.some(item=>{return item.IsSelected==false})
-      if(flag&&this.checkSelectStatus){
-        wx.showModal({
-          title: '提示',
-          content: '尊敬的用户，您还有赠品没有选择，如果您不勾选，视为您自愿放弃赠品',
-          cancelText:"再想想",
-          confirmText:"继续购买",
-          success (res) {
-            if (res.confirm) {
-              that.checkSelectStatus  = false;
-            } else if (res.cancel) {
-              console.log('用户点击取消')
+      if(this.Data.SvipBuyInfo!=null&&this.Data.SvipBuyInfo.SVIPPresentList!=null&&this.Data.SvipBuyInfo.SVIPPresentList.length>0){
+        //赠品选中提示
+        let flag = this.Data.SvipBuyInfo.SVIPPresentList.some(item=>{return item.IsSelected==false})
+        if(flag&&this.checkSelectStatus){
+          wx.showModal({
+            title: '提示',
+            content: '尊敬的用户，您还有赠品没有选择，如果您不勾选，视为您自愿放弃赠品',
+            cancelText:"再想想",
+            confirmText:"继续购买",
+            success (res) {
+              if (res.confirm) {
+                that.checkSelectStatus  = false;
+              } else if (res.cancel) {
+                console.log('用户点击取消')
+              }
             }
-          }
-        })
-        return false
-      }
-      //赠品选中属性提示
-      let filed = this.Data.SvipBuyInfo.SVIPPresentList.filter(item=>{
-          if(item.IsSelected&&item.HasProperty){
-            return item.SureGoodsIdL==""||item.SureGoodsIdR==""
-          }
-        })
-      if(filed.length>0){
-         wx.showModal({
-          title: "提示",
-          content:"请选择赠品属性",
-          mask:true
-        });
-        return false;
+          })
+          return false
+        }
+        //赠品选中属性提示
+        let filed = this.Data.SvipBuyInfo.SVIPPresentList.filter(item=>{
+            if(item.IsSelected&&item.HasProperty){
+              return item.SureGoodsIdL==""||item.SureGoodsIdR==""
+            }
+          })
+        if(filed.length>0){
+          wx.showModal({
+            title: "提示",
+            content:"请选择赠品属性",
+            mask:true
+          });
+          return false;
+        }
       }
       //地址判断
       if(this.addressInfo==null&&!this.addressInfo.ID){
@@ -400,21 +402,24 @@ export default {
       }
       //处理发送数据
       let goodsArr = [];
-      this.Data.SvipBuyInfo.SVIPPresentList.forEach(item=>{
-        let temp = {};
-        if(item.IsSelected){
-          if(item.HasProperty){
-            if(item.SureGoodsIdL){
-              goodsArr.push({"GoodsId":item.SureGoodsIdL,"RealGoodsId":item.SureIdL,"Specification":item.SpecificationL})
+      if(this.Data.SvipBuyInfo!=null&&this.Data.SvipBuyInfo.SVIPPresentList!=null&&this.Data.SvipBuyInfo.SVIPPresentList.length>0){
+          this.Data.SvipBuyInfo.SVIPPresentList.forEach(item=>{
+            let temp = {};
+            if(item.IsSelected){
+              if(item.HasProperty){
+                if(item.SureGoodsIdL){
+                  goodsArr.push({"GoodsId":item.SureGoodsIdL,"RealGoodsId":item.SureIdL,"Specification":item.SpecificationL})
+                }
+                if(item.SureGoodsIdR){
+                  goodsArr.push({"GoodsId":item.SureGoodsIdR,"RealGoodsId":item.SureIdR,"Specification":item.SpecificationR})
+                }
+              }else{
+                goodsArr.push({"GoodsId":item.GoodsId})
+              }
             }
-            if(item.SureGoodsIdR){
-              goodsArr.push({"GoodsId":item.SureGoodsIdR,"RealGoodsId":item.SureIdR,"Specification":item.SpecificationR})
-            }
-          }else{
-            goodsArr.push({"GoodsId":item.GoodsId})
-          }
-        }
-      })
+          })
+      }
+ 
       this.goodsArr = goodsArr;
       this.submitOrder();
     },
