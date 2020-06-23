@@ -58,14 +58,14 @@
      <section class="middle-view">
         <div class="goods-box">
           <div class="content-code">
-              <div class="content-tip" v-if="Data.SvipBuyInfo!=null&&Data.SvipBuyInfo.SVIPPresentList.length>0">
+              <div class="content-tip" v-if="Data.SvipBuyInfo!=null&&Data.SvipBuyInfo.SVIPPresentList!=null&&Data.SvipBuyInfo.SVIPPresentList.length>0">
                 <span class="tip-one">开通SVIP即送{{allGiftMoney}}元开卡礼</span>
               </div>
               <div class="img-box">
                 <img :src="Data.SvipBuyInfo!=null&&Data.SvipBuyInfo.SVIPAdvertUrl" mode="widthFix" alt="" class="img">
               </div>
           </div>
-          <div class="goods-item"  v-if="Data.SvipBuyInfo!=null&&Data.SvipBuyInfo.SVIPPresentList.length>0">
+          <div class="goods-item"  v-if="Data.SvipBuyInfo!=null&&Data.SvipBuyInfo.SVIPPresentList!=null&&Data.SvipBuyInfo.SVIPPresentList.length>0">
             <blcok v-for="(gItem,idx) in Data.SvipBuyInfo.SVIPPresentList" :key="idx">
               <div class="goods-box">
                 <span class="check-btn">
@@ -153,7 +153,7 @@
           </div>
         </div>   
     </section>
-    <section class="bottom-view" v-if="Data.SvipBuyInfo!=null&&Data.SvipBuyInfo.SVIPPresentList.length>0">
+    <section class="bottom-view" v-if="Data.SvipBuyInfo!=null&&Data.SvipBuyInfo.SVIPPresentList!=null&&Data.SvipBuyInfo.SVIPPresentList.length>0">
         <div class="address-box">
           <view class='top-bg'></view>
           <navigator v-if="addressInfo!=null" :url="'/pages/order/chooseAddress/main?SelectedConsigneeId='+addressInfo.ID" class='info-box'>
@@ -425,7 +425,7 @@ export default {
     },
        //提交订单 去支付
     submitOrder() {
-      api.submitSvipOrder(this.Data.CouponNo,this.addressInfo.ID,this.goodsArr).then(({Data,Msg,State}) => {
+      api.submitSvipOrder(this.Data.CouponNo,this.goodsArr.length>0?this.addressInfo.ID:null,this.goodsArr).then(({Data,Msg,State}) => {
         // console.log(Data)
          this.submitResultInfo = Data;
         this.submitResultMsg = Msg
