@@ -156,7 +156,7 @@
     <section class="bottom-view" v-if="Data.SvipBuyInfo!=null&&Data.SvipBuyInfo.SVIPPresentList!=null&&Data.SvipBuyInfo.SVIPPresentList.length>0">
         <div class="address-box">
           <view class='top-bg'></view>
-          <navigator v-if="addressInfo!=null" :url="'/pages/order/chooseAddress/main?SelectedConsigneeId='+addressInfo.ID" class='info-box'>
+          <navigator v-if="addressInfo!=null&&addressInfo.ID" :url="'/pages/order/chooseAddress/main?SelectedConsigneeId='+addressInfo.ID" class='info-box'>
             <view class='info'>
               <view class='contact-name'>
                 {{addressInfo.ConsigneeName}}
@@ -374,15 +374,6 @@ export default {
           return false;
         }
       }
-      //地址判断
-      if(this.addressInfo==null&&!this.addressInfo.ID){
-        wx.showModal({
-          title: "提示",
-          content:"请选择地址",
-          mask:true
-        });
-        return false;
-      }
       //处理发送数据
       let goodsArr = [];
       if(this.Data.SvipBuyInfo!=null&&this.Data.SvipBuyInfo.SVIPPresentList!=null&&this.Data.SvipBuyInfo.SVIPPresentList.length>0){
@@ -403,6 +394,17 @@ export default {
           })
       }
       this.goodsArr = goodsArr;
+
+      //地址判断
+      if(!this.addressInfo.ID&&this.goodsArr.length>0){
+        wx.showModal({
+          title: "提示",
+          content:"请选择地址",
+          mask:true
+        });
+        return false;
+      }
+
       if(this.Data.SvipBuyInfo!=null&&this.Data.SvipBuyInfo.SVIPPresentList!=null&&this.Data.SvipBuyInfo.SVIPPresentList.length>0){
         //赠品选中提示
         let flag = this.Data.SvipBuyInfo.SVIPPresentList.some(item=>{return item.IsSelected==false})
