@@ -85,7 +85,7 @@
           </li>
         </ul>
         <p class="total-price">
-          {{IsPaid.IsPaid?'实付款：':'需付款：'}}
+          {{orderInfo.IsPaid?'实付款：':'需付款：'}}
           <text>¥{{orderInfo.RealTotalPrice}}</text>
         </p>
         <p class="order-time">下单时间：{{orderInfo.OrderTime}}</p>
