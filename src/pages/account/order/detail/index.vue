@@ -85,7 +85,7 @@
           </li>
         </ul>
         <p class="total-price">
-          {{isPaid=='true'?'实付款：':'需付款：'}}
+          {{IsPaid.IsPaid?'实付款：':'需付款：'}}
           <text>¥{{orderInfo.RealTotalPrice}}</text>
         </p>
         <p class="order-time">下单时间：{{orderInfo.OrderTime}}</p>
@@ -128,8 +128,7 @@ export default {
       orderId: "",
       dataSource:"",
       svip:false,
-      orderInfo: null,
-      isPaid:"false"
+      orderInfo: null
     };
   },
   computed: {
@@ -141,9 +140,6 @@ export default {
     }
     if (options && options.dataSource!=null&&options.dataSource!="") {
       this.dataSource = options.dataSource;
-    }
-    if (options && options.isPaid!=null) {
-      this.isPaid = options.isPaid;
     }
      if (options && options.svip!=null) {
       this.svip = options.svip;

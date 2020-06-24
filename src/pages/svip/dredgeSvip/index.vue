@@ -264,7 +264,10 @@ export default {
     if(flag){
       wx.setStorageSync('isRefreshOrder',false)
       let addresId = wx.getStorageSync('addresId')
-      this.getAddressDetail(addresId);
+      if(addresId){
+        this.getAddressDetail(addresId);
+        wx.setStorageSync('addresId',"")
+      }
     }
   },
   onLoad(){

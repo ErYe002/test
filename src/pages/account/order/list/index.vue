@@ -42,7 +42,7 @@
       <ul class="order-list">
         <template v-if="listQuery.queryState != 6">
           <li class="o-item" v-for="(item, idx) in orderList" :key="idx">
-            <a :href="'/pages/account/order/detail/main?orderId=' + item.OrderId+'&dataSource='+item.DataSource+'&isPaid='+item.IsPaid" class="link">
+            <a :href="'/pages/account/order/detail/main?orderId=' + item.OrderId+'&dataSource='+item.DataSource" class="link">
               <div class="title">
                 <span class="order-no" @click.stop="copyOrderNo(item.OrderNo)">
                   <text class="ht-tag" v-if="item.ShopId == 2">海淘</text>
