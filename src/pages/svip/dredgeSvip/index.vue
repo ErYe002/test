@@ -359,24 +359,6 @@ export default {
         return false;
       }
       if(this.Data.SvipBuyInfo!=null&&this.Data.SvipBuyInfo.SVIPPresentList!=null&&this.Data.SvipBuyInfo.SVIPPresentList.length>0){
-        //赠品选中提示
-        let flag = this.Data.SvipBuyInfo.SVIPPresentList.some(item=>{return item.IsSelected==false})
-        if(flag&&this.checkSelectStatus){
-          wx.showModal({
-            title: '提示',
-            content: '尊敬的用户，您还有赠品没有选择，如果您不勾选，视为您自愿放弃赠品',
-            cancelText:"再想想",
-            confirmText:"继续购买",
-            success (res) {
-              if (res.confirm) {
-                that.checkSelectStatus  = false;
-              } else if (res.cancel) {
-                console.log('用户点击取消')
-              }
-            }
-          })
-          return false
-        }
         //赠品选中属性提示
         let filed = this.Data.SvipBuyInfo.SVIPPresentList.filter(item=>{
             if(item.IsSelected&&item.HasProperty){
@@ -420,8 +402,30 @@ export default {
             }
           })
       }
- 
       this.goodsArr = goodsArr;
+      if(this.Data.SvipBuyInfo!=null&&this.Data.SvipBuyInfo.SVIPPresentList!=null&&this.Data.SvipBuyInfo.SVIPPresentList.length>0){
+        //赠品选中提示
+        let flag = this.Data.SvipBuyInfo.SVIPPresentList.some(item=>{return item.IsSelected==false})
+        if(flag&&this.checkSelectStatus){
+          wx.showModal({
+            title: '提示',
+            content: '尊敬的用户，您还有赠品没有选择，如果您不勾选，视为您自愿放弃赠品',
+            cancelText:"再想想",
+            confirmText:"继续购买",
+            success (res) {
+              if (res.confirm) {
+                that.checkSelectStatus  = false;
+                that.submitOrder();
+              } else if (res.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
+          return false
+        }
+      }
+ 
+
       this.submitOrder();
     },
        //提交订单 去支付
