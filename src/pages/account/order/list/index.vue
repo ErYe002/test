@@ -42,7 +42,7 @@
       <ul class="order-list">
         <template v-if="listQuery.queryState != 6">
           <li class="o-item" v-for="(item, idx) in orderList" :key="idx">
-            <a :href="'/pages/account/order/detail/main?orderId=' + item.OrderId+'&dataSource='+item.DataSource" class="link">
+            <a :href="'/pages/account/order/detail/main?orderId=' + item.OrderId+'&dataSource='+item.DataSource+'&isPaid='+item.IsPaid" class="link">
               <div class="title">
                 <span class="order-no" @click.stop="copyOrderNo(item.OrderNo)">
                   <text class="ht-tag" v-if="item.ShopId == 2">海淘</text>
@@ -66,7 +66,7 @@
               </div>
             </a>
             <p class="amount-box">
-              共{{item.Quantity}}件，实付款：
+              共{{item.Quantity}}件，{{item.IsPaid?'实付款：':'需付款：'}}
               <span class="amount">¥{{item.OrderPayment}}</span>
             </p>
             <ul class="btn-list">

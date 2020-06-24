@@ -324,6 +324,7 @@ export default {
       }
       api.UseSvipCoupon(this.couponCode).then(({Data,State,Msg})=>{
         if(State){
+          this.Data.CouponNo = this.couponCode;
           let temp = this.Data.SvipSellPrice -Data.SvipDeductionCouponAmount;
           if(temp<0){
             this.allmoney =  0
