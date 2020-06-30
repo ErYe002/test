@@ -61,7 +61,7 @@
               <div class="content-tip" v-if="Data.SvipBuyInfo!=null&&Data.SvipBuyInfo.SVIPPresentList!=null&&Data.SvipBuyInfo.SVIPPresentList.length>0">
                 <span class="tip-one">开通SVIP即送{{allGiftMoney}}元开卡礼</span>
               </div>
-              <div class="img-box">
+              <div class="img-box" v-if="Data.SvipBuyInfo!=null&&Data.SvipBuyInfo.SVIPAdvertUrl!=null">
                 <img :src="Data.SvipBuyInfo!=null&&Data.SvipBuyInfo.SVIPAdvertUrl" mode="widthFix" alt="" class="img">
               </div>
           </div>

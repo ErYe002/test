@@ -98,11 +98,11 @@ export default {
     wx.setNavigationBarTitle({
       title: '会员中心'
     })
-    if(this.token){
-      this._getPageData();
-    }else{
-      this._getImg();
-    }
+    // if(this.token){
+    //   this._getPageData();
+    // }else{
+    //   this._getImg();
+    // }
   },
   computed: {
     ...mapState("user", ["token"])
