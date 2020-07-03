@@ -120,6 +120,7 @@ export default {
   display: flex;
   .left-list {
     width: 90px;
+    background: #f7f8f5;
     .scroll-list {
       background: #f7f8f5;
       .scroll-item {

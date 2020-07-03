@@ -92,7 +92,16 @@ let MIXIN = {
               url:
                 "/pages/svip/dredgeSvip/main"
             });
-          }else {
+          }else if(path.indexOf("sancity") != -1 ){
+            wx.showModal({
+              title:"提示",
+              showCancel:false,
+              content:"请下载可得APP体验，谢谢",
+              mask:true
+            })
+            return false;
+          }
+          else {
             console.log("此路径禁止跳转", path);
           }
         }

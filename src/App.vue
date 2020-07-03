@@ -1,8 +1,12 @@
 <script>
 import api from '@/api/user'
 import {mapActions} from 'vuex';
+import TDSDK  from "../static/tdsdk/tdweapp.js";
 
 export default {
+  onLaunch(options){
+    TDSDK.App.onLaunch(options)
+  },
   async created () {
     // 调用API从本地缓存中获取数据
     /*

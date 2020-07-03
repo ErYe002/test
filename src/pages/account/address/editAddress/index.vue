@@ -258,6 +258,8 @@ export default {
       api.editAddresss(this.consigneeId,this.addressInfo.ConsigneeName,this.addressInfo.ContactMobile,this.addressInfo.ProvinceId,this.addressInfo.ProvinceName,this.addressInfo.CityId,this.addressInfo.CityName,this.addressInfo.DistrictId,this.addressInfo.DistrictName,this.addressInfo.Address,this.addressInfo.PostalCode,this.IsDefault).then(({ Data, State, Msg }) => {
         if (State){
           that.setSelectAddressId(Data)
+           wx.setStorageSync('isRefreshOrder',true)//返回svip确认订单页onshow开关
+          wx.setStorageSync('addresId',Data)
           wx.navigateBack({
             delta: 2 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
           });
@@ -282,6 +284,8 @@ export default {
         console.log(State);
         if (State){
           that.setSelectAddressId(Data)
+           wx.setStorageSync('isRefreshOrder',true)//返回svip确认订单页onshow开关
+          wx.setStorageSync('addresId',Data)
           wx.navigateBack({
             delta: 2 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
           });

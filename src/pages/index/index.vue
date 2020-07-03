@@ -62,6 +62,7 @@ import { mapState } from "vuex";
 import api from "@/api";
 import userapi from "@/api/user";
 import authorization from "@/utils/authorization";
+const TDSDK = require('../../../static/tdsdk/tdweapp'); 
 
 export default {
   data() {
@@ -144,6 +145,9 @@ export default {
         }
       })
     }
+  },
+  onLoad(){
+    TDSDK.Event.event({id: '首页'})
   },
   onHide(){
     this.currentMenuCode = "";

@@ -5,7 +5,7 @@
         <span class="order-no">订单编号：{{orderInfo.OrderNo}}</span>
         <span class="order-status">{{orderInfo.OrderState}}</span>
       </section>
-      <section class="address-box" v-if="!svip">
+      <section class="address-box">
         <p class="top-bg"></p>
         <div class="address-info">
           <p class="name">{{orderInfo.Consignee}}</p>
@@ -85,7 +85,7 @@
           </li>
         </ul>
         <p class="total-price">
-          实付款：
+          {{orderInfo.IsPaid?'实付款：':'需付款：'}}
           <text>¥{{orderInfo.RealTotalPrice}}</text>
         </p>
         <p class="order-time">下单时间：{{orderInfo.OrderTime}}</p>
@@ -141,7 +141,7 @@ export default {
     if (options && options.dataSource!=null&&options.dataSource!="") {
       this.dataSource = options.dataSource;
     }
-     if (options && options.svip) {
+     if (options && options.svip!=null) {
       this.svip = options.svip;
     }
     this._getPageData();

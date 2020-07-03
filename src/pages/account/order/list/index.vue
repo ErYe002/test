@@ -66,7 +66,7 @@
               </div>
             </a>
             <p class="amount-box">
-              共{{item.Quantity}}件，实付款：
+              共{{item.Quantity}}件，{{item.IsPaid?'实付款：':'需付款：'}}
               <span class="amount">¥{{item.OrderPayment}}</span>
             </p>
             <ul class="btn-list">
