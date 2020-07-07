@@ -15,6 +15,11 @@ const request = (url, method, data, header, showLoading = true, isNeedErrorTips 
       wx.showNavigationBarLoading();
     }
     let requestUrl = config.apiurl + '/api/' + url;
+    //区分是否微信广告统计
+    if(url.indexOf("api.weixin.qq.com")!=-1){
+       requestUrl =  url;
+    }
+
     wx.request({
       url: requestUrl,
       data,
@@ -35,6 +40,10 @@ const request = (url, method, data, header, showLoading = true, isNeedErrorTips 
           return resolve({ State: false, Msg: 'token已失效' });
         }
         const data = result.data;
+        //微信广告行为转换回传参数返回格式 {"errcode":0," errmsg ":""}
+        if(requestUrl.indexOf("api.weixin.qq.com")!=-1){
+            resolve(data);
+        }
         //后台返回一般格式示例：{ "State": true, "Msg": "", "Data": 4 }
         if (data['State']) {
           resolve(data);
