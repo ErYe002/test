@@ -1,8 +1,10 @@
 //命名：模块名+功能
 
-//token
+//token userId
 export const TOKEN_SET = 'TOKEN_SET'
 export const TOKEN_CLEAR = 'TOKEN_CLEAR'
+export const USERID_SET = 'USERID_SET'
+export const USERID_CLEAR = 'USERID_CLEAR'
 
 //历史搜索记录
 export const HISTORY_SEARCH_SET = 'HISTORY_SEARCH_SET'

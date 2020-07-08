@@ -50,13 +50,14 @@ export default {
     ...mapState('wxinfo', ['sessionKey'])
   },
   methods: {
-    ...mapActions('user', ['setToken']),
+    ...mapActions('user', ['setToken','setUserId']),
     getPhonenumber(e) {
     if (e.mp.detail.errMsg.indexOf('ok') != -1) {
         // 将加密数据传递给API进行解密并登录
         api.bindMobileForMinProgram(this.isNewUser, this.partnerId, e.mp.detail.encryptedData, e.mp.detail.iv, this.sessionKey).then(({ Data }) => {
           //登录完成保存token到本地
           this.setToken(Data.Token)
+          this.setUserId(Data.UserId)
           wx.showToast({
             title: '登录成功',
             duration: 2000
