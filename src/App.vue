@@ -21,6 +21,7 @@ export default {
     let flag = await this._checkToken()
     if(!flag){
       this.removeToken()
+      this.removeUserId()
     } else {
       this.setTokenByStorage()
     }
@@ -53,7 +54,7 @@ export default {
   },
   methods: {
     ...mapActions('user', [
-        'setTokenByStorage', 'removeToken'
+        'setTokenByStorage', 'removeToken','removeUserId'
     ]),
     ...mapActions("search", ["setSearchHistoryByStorage"]),
     ...mapActions('wxinfo', [
