@@ -14,9 +14,9 @@
                   <button v-if="!token" open-type="getUserInfo" @getuserinfo="getUserInfo_svip" class="button_b">
                     <img :src="item.ImageUrl" >
                   </button>
-                  <img :src="item.ImageUrl" v-else  @click="$navigateTo(item.TargetUrl)">
+                  <img :src="item.ImageUrl" v-else  @click="banner_click(item.TargetUrl)">
                 </block>
-              <img v-else :src="item.ImageUrl" @click="$navigateTo(item.TargetUrl)" />
+              <img v-else :src="item.ImageUrl" @click="banner_click(item.TargetUrl)" />
             </swiper-item>
           </swiper>
           <ul class="pages">
@@ -304,10 +304,34 @@ export default {
   methods: {
     trace(item,type){
       TDSDK.Event.event({id: 'icon_'+item.Name})
+      //kede行为统计
+      this.$onInformationCollection({
+        token:"WeChat",
+        uid:wx.getStorageSync('USERID'),
+        opentype:"click",
+        time:Date.now().toString(),
+        page:tools.getCurrentPageUrl(),
+        eventname:"首页Icon",
+        eventval:JSON.stringify({"TargetUrl":item.TargetUrl,"IconName":item.Name})
+      })
       if(type==1){
           this.$navigateTo(item.TargetUrl)
       }
  
+    },
+      banner_click(TargetUrl){
+        this.$navigateTo(TargetUrl)
+      //kede行为统计
+      this.$onInformationCollection({
+        token:"WeChat",
+        uid:wx.getStorageSync('USERID'),
+        opentype:"click",
+        time:Date.now().toString(),
+        page:tools.getCurrentPageUrl(),
+        eventname:"首页Banner",
+        eventval:JSON.stringify({"TargetUrl":TargetUrl})
+      })
+        
     },
     getUserInfo_svip(e){
       authorization.doLogin(e.mp.detail.encryptedData, e.mp.detail.iv, () => {

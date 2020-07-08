@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import utils from '@/utils';
 
 export default {
   data() {
@@ -18,6 +19,16 @@ export default {
         this.url = 'https://m.kede.com/'+decodeURIComponent(options.path)
       }
     }
+    //kede行为统计
+      this.$onInformationCollection({
+        token:"WeChat",
+        uid:wx.getStorageSync('USERID'),
+        opentype:"view",
+        time:Date.now().toString(),
+        page:utils.getCurrentPageUrl(),
+        eventname:"Template",
+        eventval:JSON.stringify({linkAddress:this.url})
+      })
   },
   methods:{
     error(e){
