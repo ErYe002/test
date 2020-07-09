@@ -151,15 +151,15 @@ export default {
     //td统计
     TDSDK.Event.event({id: '首页'})
     //kede行为统计
-    api.onInformationCollection({
-      token:wx.getStorageSync('TOKEN'),
-      uid:wx.getStorageSync('USERID'),
-      opentype:"view",
-      time:Date.now(),
-      page:utils.getCurrentPageUrl,
-      eventname:"首页",
-      eventval:""
-    })
+    this.$onInformationCollection({
+        token:"WeChat",
+        uid:wx.getStorageSync('USERID'),
+        opentype:"view",
+        time:Date.now().toString(),
+        page:utils.getCurrentPageUrl(),
+        eventname:"首页",
+        eventval:""
+      })
   },
   onHide(){
     this.currentMenuCode = "";

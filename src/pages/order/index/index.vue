@@ -321,6 +321,16 @@ export default {
       console.log(options)
       this.getConfirmOrderDetail();
     }
+    //kede行为统计
+    this.$onInformationCollection({
+      token:"WeChat",
+      uid:wx.getStorageSync('USERID'),
+      opentype:"view",
+      time:Date.now().toString(),
+      page:utils.getCurrentPageUrl(),
+      eventname:"结算页",
+      eventval:""
+    })
   },
   onShow(){
     console.log("------onshow-----")
@@ -498,6 +508,16 @@ export default {
       }
       console.log(this.formModel)
       TDSDK.Event.event({id: '点击提交订单'})
+       //kede行为统计
+      this.$onInformationCollection({
+        token:"WeChat",
+        uid:wx.getStorageSync('USERID'),
+        opentype:"click",
+        time:Date.now().toString(),
+        page:utils.getCurrentPageUrl(),
+        eventname:"点击提交订单",
+        eventval:""
+      })
       api.submitOrder({...this.formModel}).then(({Data,Msg,State}) => {
         console.log(Data)
         this.submitResultInfo = Data;

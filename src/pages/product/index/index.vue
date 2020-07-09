@@ -1403,6 +1403,7 @@ import { mapActions, mapState } from "vuex";
 import bottomFlip from "@/components/bottomFlip";
 import wxParse from "mpvue-wxparse";
 import authorization from "@/utils/authorization"; 
+import utils from "@/utils"; 
 import store from '@/store'
 const TDSDK = require('../../../../static/tdsdk/tdweapp'); 
 let timeId;
@@ -1498,10 +1499,22 @@ export default {
     this.seocode = options.seocode;
     this.getisComp(options.seocode);
     this._getCartNum();
+    
     //用户是否有授权过用户信息
     if (store.state.userInfo.userInfo != null) {
       this.hasUserInfo = true
     }
+  //kede行为统计
+     this.$onInformationCollection({
+      token:"WeChat",
+      uid:wx.getStorageSync('USERID'),
+      opentype:"view",
+      time:Date.now().toString(),
+      page:utils.getCurrentPageUrl(),
+      eventname:"商详页",
+      eventval:JSON.stringify({"seocode":this.seocode})
+    })
+
     timeId = setTimeout(()=>{
       this.isShowTag = false;
     },6000)

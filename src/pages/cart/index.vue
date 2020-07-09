@@ -767,6 +767,7 @@ import { mapState } from "vuex";
 import coupon from "./components/coupon";
 import attrs from "./components/attrs";
 import tariff from "./components/tariff";
+import utils from "@/utils"; 
 const TDSDK = require('../../../static/tdsdk/tdweapp'); 
 
 export default {
@@ -814,6 +815,17 @@ export default {
   },
   onLoad(){
     TDSDK.Event.event({id: '购物车'})
+
+    //kede行为统计
+    this.$onInformationCollection({
+      token:"WeChat",
+      uid:wx.getStorageSync('USERID'),
+      opentype:"view",
+      time:Date.now().toString(),
+      page:utils.getCurrentPageUrl(),
+      eventname:"购物车页",
+      eventval:""
+    })
   },
   onShow() {
     let that = this;
