@@ -78,7 +78,12 @@ const api = {
       }
       return http.post(url)
     },
-    
+    //页面埋点-方法
+    onInformationCollection(data){
+      return http.postByNoErrorTips("data/uc/",JSON.stringify(data),{
+        'content-type':'application/json'
+      })
+    }
 }
 
 export default api

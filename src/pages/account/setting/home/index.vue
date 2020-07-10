@@ -77,9 +77,10 @@ export default {
     this._getPersonnelProfile()
   },
   methods:{
-    ...mapActions('user', ['removeToken']),
+    ...mapActions('user', ['removeToken',"removeUserId"]),
     logoutEvent(){
       this.removeToken()
+      this.removeUserId()
       wx.switchTab({
         url: '/pages/index/main'
       })

@@ -256,8 +256,10 @@
 
 import api from "@/api/cart";
 import cartApi from "@/api/cart";
+import wxadApi from "@/api/wxad";
 import {mapState} from "vuex"
 import {mapActions} from "vuex"
+import utils from '@/utils';
 import goodsList from "@/pages/order/components/goodsList";
 const TDSDK = require('../../../../static/tdsdk/tdweapp'); 
 
@@ -305,6 +307,7 @@ export default {
   },
   onLoad(options) {
     TDSDK.Event.event({id: '结算页'})
+    this.wxadDealIdTime()//判断是否是在广告有效时间转化 目前默认30分钟 30*60=1800s
     if(options){
       this.formModel.selectShopId = options.shopId;
       if (this.formModel.selectShopId == 2) {
@@ -318,7 +321,16 @@ export default {
       console.log(options)
       this.getConfirmOrderDetail();
     }
-    
+    //kede行为统计
+    this.$onInformationCollection({
+      token:"WeChat",
+      uid:wx.getStorageSync('USERID'),
+      opentype:"view",
+      time:Date.now().toString(),
+      page:utils.getCurrentPageUrl(),
+      eventname:"结算页",
+      eventval:""
+    })
   },
   onShow(){
     console.log("------onshow-----")
@@ -496,6 +508,16 @@ export default {
       }
       console.log(this.formModel)
       TDSDK.Event.event({id: '点击提交订单'})
+       //kede行为统计
+      this.$onInformationCollection({
+        token:"WeChat",
+        uid:wx.getStorageSync('USERID'),
+        opentype:"click",
+        time:Date.now().toString(),
+        page:utils.getCurrentPageUrl(),
+        eventname:"点击提交订单",
+        eventval:""
+      })
       api.submitOrder({...this.formModel}).then(({Data,Msg,State}) => {
         console.log(Data)
         this.submitResultInfo = Data;
@@ -511,6 +533,9 @@ export default {
               url: '/pages/order/submitResult/main?resultMsg='+Msg+'&shopId='+this.formModel.selectShopId+'&orderNo='+Data.OrderNo+'&OrderAmount='+Data.OrderAmount+'&OrderId='+Data.OrderId,
             })
           }
+
+          //微信广告转化统计
+          this.wxadInfo();
         }else{
           let tempMsg = "";
           if (Msg) {
@@ -572,7 +597,39 @@ export default {
           // wx.reportMonitor("3", 1);
         });
     },
-    
+    //微信广告行为转化统计
+    wxadInfo(){
+      let that = this
+      let click_id = wx.getStorageSync("click_id");
+      if(click_id){
+        wxadApi.getAccountToken().then(({Data})=>{
+          wxadApi.wxadCallbckData(
+            Data.AccessToken,
+            Data.WebUserActionSetId,
+            utils.getCurrentPageUrl(),
+            click_id,
+            that.orderInfo.RealTotalPrice,
+            "COMPLETE_ORDER"
+          ).then(res=>{
+            console.log(res,"回传行为转换返回参数状态")
+            wx.removeStorageSync("click_id")
+            wx.removeStorageSync("click_id_time")
+          })
+        })
+      }
+    },
+    //微信广告处理click_id缓存时间
+    wxadDealIdTime(){
+      let timesync = wx.getStorageSync("click_id_time");
+      if(timesync){
+        let timeNow = new Date();
+        let temp = (timeNow -  timesync)/1000;//换算成秒
+        if(temp>1800){
+            wx.removeStorageSync("click_id")
+            wx.removeStorageSync("click_id_time")
+        }
+      }
+    }
   }
 }
 </script>

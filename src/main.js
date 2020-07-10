@@ -2,6 +2,7 @@ import Vue from "vue";
 import App from "./App";
 import store from "./store";
 import cartApi from "./api/cart";
+import api from "./api";
 
 let MIXIN = {
   onUnload() {
@@ -130,6 +131,10 @@ let MIXIN = {
           text: Data.toString()
         });
       });
+    },
+    //可得行为统计
+    $onInformationCollection(data){
+      api.onInformationCollection([data])
     }
   }
 };

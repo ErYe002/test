@@ -15,6 +15,8 @@
 
 <script>
 import api from '@/api/user'
+import wxadApi from "@/api/wxad"
+import utils from '@/utils'
 import { mapActions, mapState } from 'vuex'
 
 export default {
@@ -25,6 +27,7 @@ export default {
     };
   },
   onLoad: function(options) {
+    this.wxadDealIdTime();//判断是否是在广告有效时间转化 目前默认30分钟 30*60=1800s
     if (options && options["partnerId"] && options["isNewUser"]) {
       this.isNewUser = options["isNewUser"]
       this.partnerId = options["partnerId"]
@@ -47,17 +50,19 @@ export default {
     ...mapState('wxinfo', ['sessionKey'])
   },
   methods: {
-    ...mapActions('user', ['setToken']),
+    ...mapActions('user', ['setToken','setUserId']),
     getPhonenumber(e) {
     if (e.mp.detail.errMsg.indexOf('ok') != -1) {
         // 将加密数据传递给API进行解密并登录
         api.bindMobileForMinProgram(this.isNewUser, this.partnerId, e.mp.detail.encryptedData, e.mp.detail.iv, this.sessionKey).then(({ Data }) => {
           //登录完成保存token到本地
           this.setToken(Data.Token)
+          this.setUserId(Data.UserId)
           wx.showToast({
             title: '登录成功',
             duration: 2000
           })
+          this.wxadInfo();
           setTimeout(() => {
             wx.navigateBack({
               delta: 1
@@ -66,6 +71,37 @@ export default {
         })
       }
     },
+    //微信广告行为转化统计  确认有效销售线索CONFIRM_EFFECTIVE_LEADS  === 用户新注册数
+    wxadInfo(){
+      let that = this
+      let click_id = wx.getStorageSync("click_id");
+      if(click_id){
+        wxadApi.getAccountToken().then(({Data})=>{
+          wxadApi.wxadCallbckData(
+            Data.AccessToken,
+            Data.WebUserActionSetId,
+            utils.getCurrentPageUrl(),
+            click_id,
+            null,
+            "CONFIRM_EFFECTIVE_LEADS"
+          ).then(res=>{
+            console.log(res,"回传行为转换返回参数状态--注册")
+          })
+        })
+      }
+    },
+      //微信广告处理click_id缓存时间是（否在有效时间内转化）
+    wxadDealIdTime(){
+      let timesync = wx.getStorageSync("click_id_time");
+      if(timesync){
+        let timeNow = new Date();
+        let temp = (timeNow -  timesync)/1000;//换算成秒
+        if(temp>1800){
+            wx.removeStorageSync("click_id")
+            wx.removeStorageSync("click_id_time")
+        }
+      }
+    }
   }
 };
 </script>

@@ -61,6 +61,7 @@ import defaultIndex from "./components/default";
 import { mapState } from "vuex";
 import api from "@/api";
 import userapi from "@/api/user";
+import utils from "@/utils";
 import authorization from "@/utils/authorization";
 const TDSDK = require('../../../static/tdsdk/tdweapp'); 
 
@@ -147,7 +148,18 @@ export default {
     }
   },
   onLoad(){
+    //td统计
     TDSDK.Event.event({id: '首页'})
+    //kede行为统计
+    this.$onInformationCollection({
+        token:"WeChat",
+        uid:wx.getStorageSync('USERID'),
+        opentype:"view",
+        time:Date.now().toString(),
+        page:utils.getCurrentPageUrl(),
+        eventname:"首页",
+        eventval:""
+      })
   },
   onHide(){
     this.currentMenuCode = "";

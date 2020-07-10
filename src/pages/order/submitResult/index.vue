@@ -41,6 +41,7 @@
 
 <script>
 import api from "@/api/cart";
+import utils from '@/utils';
 const TDSDK = require('../../../../static/tdsdk/tdweapp'); 
 
 export default {
@@ -72,6 +73,16 @@ export default {
       this._getLikeGoods();
       this._getPaySuccessBanner();
     }
+    //kede行为统计
+     this.$onInformationCollection({
+      token:"WeChat",
+      uid:wx.getStorageSync('USERID'),
+      opentype:"view",
+      time:Date.now().toString(),
+      page:utils.getCurrentPageUrl(),
+      eventname:"购买成功页",
+      eventval:""
+    })
   },
   methods: {
     

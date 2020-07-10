@@ -1403,6 +1403,7 @@ import { mapActions, mapState } from "vuex";
 import bottomFlip from "@/components/bottomFlip";
 import wxParse from "mpvue-wxparse";
 import authorization from "@/utils/authorization"; 
+import utils from "@/utils"; 
 import store from '@/store'
 const TDSDK = require('../../../../static/tdsdk/tdweapp'); 
 let timeId;
@@ -1465,6 +1466,22 @@ export default {
       this.Poster = this.$mp.page.selectComponent('#sharepost')
   },
   onLoad(options) {
+      //处理来源微信广告的click_id参数
+      if(options.weixinadinfo){
+          // url参数中可以获取到gdt_vid、weixinadinfo参数值 let gdt_vid = options.gdt_vid
+        let weixinadinfo = options.weixinadinfo
+        // 获取广告id
+        let aid = 0;
+        let click_id = null;
+        if(weixinadinfo){
+          let weixinadinfoArr = weixinadinfo.split(".")
+          aid = weixinadinfoArr[0] //广告id
+          click_id = weixinadinfoArr[1]//点击click_id
+          wx.setStorageSync("click_id",weixinadinfoArr[1])
+          wx.setStorageSync("click_id_time",new Date())
+        }
+        console.log("‘来源广告的广告id是:’" + aid)
+      }
       TDSDK.Event.event({id: '商详页'})
       clearTimeout(timeId)
     
@@ -1482,10 +1499,22 @@ export default {
     this.seocode = options.seocode;
     this.getisComp(options.seocode);
     this._getCartNum();
+    
     //用户是否有授权过用户信息
     if (store.state.userInfo.userInfo != null) {
       this.hasUserInfo = true
     }
+  //kede行为统计
+     this.$onInformationCollection({
+      token:"WeChat",
+      uid:wx.getStorageSync('USERID'),
+      opentype:"view",
+      time:Date.now().toString(),
+      page:utils.getCurrentPageUrl(),
+      eventname:"商详页",
+      eventval:JSON.stringify({"seocode":this.seocode})
+    })
+
     timeId = setTimeout(()=>{
       this.isShowTag = false;
     },6000)
