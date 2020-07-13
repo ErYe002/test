@@ -1,5 +1,5 @@
 <template>
-  <article>
+  <article class="contain">
     <section class="user-box">
       <a href="/pages/account/setting/userInfo/main">
       <img
@@ -15,7 +15,7 @@
             />
         </p>
         <p class="name">
-          {{userInfoModel.UserName}}
+          用户名:{{userInfoModel.UserName}}
         </p>
       </div>
       <img
@@ -102,9 +102,22 @@ export default {
 </script>
 
 <style lang="less">
+.contain{
+  background: #F2F2F2;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  padding: 0 10px;
+}
 .user-box {
+  margin-top: 10px;
   font-size: 12px;
-  border-bottom: 15rpx solid #e5e5e5!important;
+  background: #fff;
+  margin-bottom: 10px;
+  border-radius: 10px;
   a{
     display: flex;
     align-items: center;
@@ -124,6 +137,7 @@ export default {
     margin-left: 10px;
     .nick{
       display: flex;
+      font-size: 14px;
     }
     .sex {
       display: inline-block;
@@ -132,48 +146,57 @@ export default {
       margin-left: 5px;
     }
     .name {
+      color: #8B8B8B;
+      font-size: 11px;
       height: 14.5px;
       margin-top: 5px;
-      width: 55px;
     }
   }
 }
 .setting{
   font-size: 14px;
-  border-bottom: 15rpx solid #e5e5e5!important;
+  margin-bottom: 10px;
+  background: #fff;
+  border-radius: 10px;
   .line{
     height: 50px;
     line-height: 50px;
-    border-bottom: 2rpx solid #e5e5e5!important;
+    border-bottom: 0.5px solid #CCCCCC!important;
     a{
       padding-left: 10px;
     }
     .tips {
+        font-size: 13px;
         display:inline-block;
         width: 100px;
         height: 50px;
         position: absolute;
-        right: 30px;
+        right: 40px;
         color: #888888;
         text-align: right;
+    }
+    &:last-child {
+      border: 0 !important;
     }
   }
 }
 .logout{
-    border-bottom: 15rpx solid #e5e5e5!important;
+  background: #fff;
+  border-radius: 10px;
     a {
         display: block;
         line-height: 50px;
         text-align: center;
         font-size: 14px;
+        color: #FF668E;
     }
 }
 .go-right-icon {
       position: absolute;
-      right: 11px;
+      right: 21px;
       display: inline-block;
-      height:14px;
-      width: 8px;
-      margin-top: 18px;
+      height:12px;
+      width: 7.5px;
+      margin-top: 20px;
   }
 </style>

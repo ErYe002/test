@@ -1,6 +1,6 @@
 <template>
-  <article>
-   <section>
+  <article class="contain">
+   <section class="view-box">
     <div class="modify-box">
       <label>用户名</label>
       <input class="txt" v-model="message" placeholder="最多10个汉字" />
@@ -62,12 +62,29 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.contain{
+  background: #F2F2F2;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  padding: 0 10px;
+}
+.view-box{
+  border-radius: 10px;
+  overflow: hidden;
+}
 .modify-box{
-    height: 50px;
+    height: 80px;
     display: flex;
     align-items: center;
-    
+    background: #fff;
+    margin-top: 10px;
     border-bottom: solid 1px #dcdcdc;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     label{
         width: 66px;
         line-height: 50px;
@@ -93,12 +110,13 @@ export default {
     }
 }
 .description-box{
-  margin-top: 25px;
   color: #888;
   font-size: 12px;
-  padding-left: 10px;
+  padding: 16px 10px;
+  background: #fff;
 }
 .btn-box{
+  left: 0;
   position: fixed;
   // height: 55px;
   width: 100%;

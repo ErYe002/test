@@ -11,8 +11,8 @@
         <div class="address">{{item.Address}}</div>
         <div class="editBtns">
           <div class="defaultBtn" @click="doSetDefaultAddress(item.ID)">
-            <Img class="imgIcon" v-if="item.IsDefault" src="/static/images/icon_checked.png"></Img>
-            <Img class="imgIcon" v-else src="/static/images/icon_no_checked.png"></Img>
+            <img class="imgIcon" v-if="item.IsDefault" src="/static/images/icon_checked.png"/>
+            <img class="imgIcon" v-else src="/static/images/icon_no_checked.png"/>
              设置默认
           </div>
           <div class="right">
@@ -20,10 +20,10 @@
               class="editItem"
               :href="'/pages/account/address/editAddress/main?isEdit=true&consigneeId=' + item.ID"
             >
-              <Img class="imgIcon" src="/static/images/icon_edit.png"></Img> 编辑
+              <img class="imgIcon" src="/static/images/icon_edit.png"/> 编辑
             </a>
             <div class="editItem" @click="doDeleteAddress(item.ID)">
-              <Img class="imgIcon" src=/static/images/account_favorite_delete.png></Img> 删除
+              <img class="imgIcon" src="/static/images/account_favorite_delete.png"/> 删除
             </div>
           </div>
         </div>

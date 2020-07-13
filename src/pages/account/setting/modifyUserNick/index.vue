@@ -1,6 +1,6 @@
 <template>
-  <article>
-  <section>
+  <article class="contain">
+  <section class="view-box">
     <div class="modify-box">
       <label>昵称</label>
       <input
@@ -70,11 +70,29 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.contain{
+  background: #F2F2F2;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  padding: 0 10px;
+}
+.view-box{
+  border-radius: 10px;
+  overflow: hidden;
+}
 .modify-box{
     display: flex;
     align-items: center;
-    height: 50px;
+    height: 80px;
+    margin-top: 10px;
+    background: #fff;
     border-bottom: 1px solid #dcdcdc;
+     border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     label{
         width: 50px;
         line-height: 50px;
@@ -100,13 +118,14 @@ export default {
     }
 }
 .description-box{
-    margin-top: 25px;
-    padding-left: 10px;
+    padding: 16px 10px;
+    background: #fff;
     font-size: 12px;
     color: #888;
 }
 .btn-box{
   position: fixed;
+  left: 0;
   // height: 55px;
   width: 100%;
   bottom: 0px;

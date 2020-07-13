@@ -1,6 +1,6 @@
 <template>
-  <article>
-      <section class="user-box">
+  <article class="contain">
+  <section class="user-box">
     <div class="line">
       <a class=" h-90" @click="_setHeadPortrait">
         <label class="l-lab">头像</label>
@@ -70,9 +70,11 @@
     </div>
   </section>
   <bottomFlip :isShow.sync="isShow">
-    <div @click="_switchActive(1)" :class="'sex-line ' + (tempSex == 1 ? 'active' : '')">男</div>
-    <div @click="_switchActive(0)" :class="'sex-line ' + (tempSex == 0 ? 'active' : '')">女</div>
-    <div class="sex-line c-888" @click="_setUserSex">确定</div>
+    <div class="sex-box">
+      <div @click="_setUserSex(1)" :class="'sex-line ' + (tempSex == 1 ? 'active' : '')">男</div>
+      <div @click="_setUserSex(0)" :class="'sex-line ' + (tempSex == 0 ? 'active' : '')">女</div>
+      <div class="sex-line c-888" @click="_hideBottomFlip">取消</div>
+    </div>
   </bottomFlip>
   </article>
 </template>
@@ -160,18 +162,22 @@ export default {
       this.tempSex = this.userInfoModel.Sex == "男" ? 1: (this.userInfoModel.Sex == "女" ? 0 : -1);
       this.isShow = true;
     },
+    _hideBottomFlip(){
+      this.isShow = false;
+    },
     //切换选中的性别
     _switchActive(i){
       this.tempSex = i;
     },
     //设置用户性别
-    _setUserSex(){
-      if(this.tempSex != 1 && this.tempSex != 0){
-        wx.showToast({
-          title: "请选择性别！"
-        });
-        return;
-      }
+    _setUserSex(i){
+      this.tempSex = i;
+      // if(this.tempSex != 1 && this.tempSex != 0){
+      //   wx.showToast({
+      //     title: "请选择性别！"
+      //   });
+      //   return;
+      // }
 
       api.setUserSex(this.tempSex).then(({})=>{
         wx.showToast({
@@ -188,9 +194,21 @@ export default {
 </script>
 
 <style lang="less">
+.contain{
+  background: #F2F2F2;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  padding: 0 10px;
+}
 .user-box{
-  border-bottom: 15rpx solid #eee!important;
+  background: #fff;
+  border-radius: 10px;
   overflow: hidden;
+  margin-top: 10px;
   .head{
     display: block;
     width: 64px;
@@ -208,21 +226,27 @@ export default {
       .l-lab{
           flex: 1;
           padding-left: 10px;
+          color: #363636;
+          font-size: 14px;
       }
       .r-lab{
           flex: 2;
           padding-right: 25px;
           text-align: right;
-          color:#888;
+          color:#9D9D9D;
+          font-size: 12px;
       }
     }
     a.h-90{
       height: 90px;
     }
+    &:last-child{
+      border: 0 !important;
+    }
   }
   .go-right-icon {
     position: absolute;
-    right: 11px;
+    right: 21px;
     display: inline-block;
     height:14px;
     width: 8px;
@@ -238,12 +262,29 @@ export default {
   border-top: 1px solid #dcdcdc;
   text-align: center;
   font-size: 15px;
+  color: #0075FF;
+  background: #fff;
+   &:nth-child(1){
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+    &:nth-child(2){
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+  // margin: 0 10px;
 }
-.active{
-  background-color: #e8e6e6;
-}
+// .active{
+//   background-color: #e8e6e6;
+// }
 .c-888{
-  color: #888;
+  border-radius: 10px;
+  margin-top: 10px;
+  background: #fff;
+}
+.sex-box{
+  background: rgba(0, 0, 0, 0.6);
+  padding: 10px;
 }
 
 </style>
