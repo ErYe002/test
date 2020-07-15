@@ -7,8 +7,8 @@ const api = {
   },
   //回传行为参数
   wxadCallbckData(
-    access_token,
-    WebUserActionSetId,
+    access_token = null,
+    WebUserActionSetId = null,
     url,
     click_id,
     amount,
@@ -48,7 +48,7 @@ const api = {
     }
 
     return http.postByNoErrorTips(
-      `https://api.weixin.qq.com/marketing/user_actions/add?version=v1.0&access_token=${access_token}`,
+      `Wechart/UserActionRecord`,
       data,
       {
         'content-type': 'application/json'
