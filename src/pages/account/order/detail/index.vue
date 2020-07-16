@@ -6,7 +6,7 @@
         <span class="order-status">{{orderInfo.OrderState}}</span>
       </section>
       <section class="address-box">
-        <p class="top-bg"></p>
+        <!-- <p class="top-bg"></p> -->
         <div class="address-info">
           <p class="name">{{orderInfo.Consignee}}</p>
           <p class="address">{{orderInfo.Direction}}</p>
@@ -59,7 +59,7 @@
           </li>
         </ul>
       </section>
-      <section class="order-pay-box">
+      <section class="order-pay-box last">
         <ul class="list">
           <li class="item">
             <b class="lable">商品总金额</b>
@@ -102,7 +102,7 @@
             <button class="kd-btn btn-default btn-small" @click="cancelOrderEvent(orderInfo.OrderId)">取消订单</button>
           </li>
           <li class="b-item" v-if="orderInfo.IsContactAirlines">
-            <button class="kd-btn btn-default btn-small" open-type="contact">联系客服</button>
+            <button class="kd-btn btn-default btn-small contact" open-type="contact">联系客服</button>
           </li>
           <li class="b-item" v-if="orderInfo.IsLogistics">
             <a :href="'/pages/account/logistics/main?shopId='+orderInfo.ShopId+'&orderId='+orderInfo.OrderId" class="kd-btn btn-default btn-small">查看物流</a>
@@ -226,8 +226,11 @@ export default {
 
 <style lang="less" scoped>
 .container {
+  padding: 10px;
   padding-bottom: 70px;
   box-sizing: border-box;
+  background: #f2f2f2;
+  padding-top: 0;
 }
 .order-no-box {
   padding: 15px;
@@ -235,14 +238,19 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 10px solid #eee;
+  margin-bottom: 10px;
+  background: #fff;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
   .order-status {
     color: #fe7e7d;
   }
 }
 .address-box {
   font-size: 14px;
-  border-bottom: 10px solid #eee;
+  background: #fff;
+  border-radius: 10px;
+  margin-bottom: 10px;
   .top-bg {
     background-image: url(https://pic.keede.com/app/images/icon_cart.png);
     background-position: 0 -248px;
@@ -268,7 +276,9 @@ export default {
 
 .goods-box {
   padding: 15px;
-  border-bottom: 10px solid #eee;
+  background: #fff;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
   .list {
     .item {
       padding-bottom: 15px;
@@ -328,6 +338,7 @@ export default {
 }
 
 .order-pay-box {
+  background: #fff;
   .list {
     padding: 10px 0;
     .item {
@@ -347,11 +358,10 @@ export default {
     }
   }
   &.small {
-    border-bottom: 10px solid #eee;
     .list {
       padding: 0;
       .item {
-        border-bottom: 0.5px solid #e5e5e5;
+        // border-bottom: 0.5px solid #e5e5e5;
         font-size: 13px;
         height: 40px;
         .lable {
@@ -374,6 +384,11 @@ export default {
     color: #888;
     font-size: 12px;
   }
+  &.last{
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding-bottom: 10px;
+  }
 }
 
 .btn-box {
@@ -382,8 +397,8 @@ export default {
   left: 0;
   right: 0;
   margin: 0 auto;
-  background: #fff;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  background: #f2f2f2;
+  // box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
   .btn-list {
     display: flex;
     justify-content: flex-end;
@@ -393,6 +408,13 @@ export default {
       margin-bottom: 10px;
       margin-left: 10px;
       width: 90px;
+      button,a{
+        border-radius: 8px;
+      }
+    }
+    .contact{
+      background: #BCB092;
+      color: #fff;
     }
   }
 }

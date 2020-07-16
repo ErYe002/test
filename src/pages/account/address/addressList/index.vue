@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="list-box">
     <li class="list" v-for="item in addressList" :key="item.ID">
       <div class="div">
         <div class="userInfo">
@@ -106,12 +106,24 @@ export default {
 page {
   height: 100%;
 }
+.list-box{
+  padding: 10px;
+  background: #f2f2f2;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 50px;
+  overflow-y: scroll;
+}
 .list {
-  border-bottom: 10rpx solid #e2e2e2;
+  border-radius: 10px;
+  background: #fff;
   padding-top: 20rpx;
   padding-left: 20rpx;
   padding-right: 20rpx;
   padding-bottom: 5rpx;
+  margin-bottom: 10px;
   box-sizing: border-box;
   font-size: 28rpx;
   display: flex;
@@ -198,7 +210,7 @@ page {
 /*新建收货地址按钮*/
 .bottom-btn-box {
   position: fixed;
-  z-index: 1;
+  z-index: 2;
   bottom: 0;
   left: 0;
   width: 100%;

@@ -82,14 +82,14 @@
               <span>{{Data.GoodsBase.SellPrice}}</span>
             </div>
             <div class="priceMsg">
-              <i
+              <!-- <i
                 class="price"
                 v-if="Data.GoodsBase.PriceLable!=null&&Data.GoodsBase.PriceLable == '限时直降'"
               >
                 <span v-if="Data.GoodsBase.ReducePrice>0">
                   <img src="/static/images/reduce_icon.png" alt="" class="img">
                 </span>
-              </i>
+              </i> -->
               <block>
                 <block v-if="isComp">
                   <span class="priceTag">套餐价</span>
@@ -110,6 +110,7 @@
                     <span class="svip-tag">SVIP价</span>
                   </span>
                 </block>
+                <span class="zhijiang" v-if="Data.GoodsBase.PriceLable!=null&&Data.GoodsBase.PriceLable == '限时直降'">限时直降↓</span>
                 <span class="jifen" v-if="Data.GoodsBase.GiftScore > 0">返{{Data.GoodsBase.GiftScore}}积分</span>
               </block>
             </div>
@@ -199,7 +200,7 @@
         </div>
       </div>
       <!-- 优惠活动一览 -->
-      <div class="promotionBox"
+      <div class="promotionBox discounts"
           v-if="Data.GoodsPagePromotion != null&& ( Data.GoodsBase.MaxScoreDeductionMoney > 0|| Data.GoodsPagePromotion.isHave||Data.GoodsPagePromotion.FullReducePromotion != null||Data.ErpGifts != null||(Data.GoodsPagePromotion.Coupons != null && Data.GoodsPagePromotion.Coupons.length>0)||(Data.GoodsBase.FirstBuyContent!=null&&Data.GoodsBase.FirstBuyContent.length>0)||(Data.GoodsPagePromotion.BuyReduceContent!=null&&Data.GoodsPagePromotion.BuyReduceContent!='')||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.Gift != null && Data.GoodsPagePromotion.Gift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FullGift != null && Data.GoodsPagePromotion.FullGift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FreeCollocation != null && Data.GoodsPagePromotion.FreeCollocation.length>0)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.FullReducePromotion != null)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.ChangeBuy != null && Data.GoodsPagePromotion.ChangeBuy.length>0)||(Data.ErpGifts != null && Data.ErpGifts.length>0))"
         > 
         <div class="actCon">
@@ -209,7 +210,7 @@
               v-if="Data.GoodsPagePromotion != null&&Data.GoodsPagePromotion.Coupons != null && Data.GoodsPagePromotion.Coupons.length>0"
               v-on:click="_showCoupon()"
             >
-              <span class="act-name">优惠</span>
+              <span class="act-name">● 优惠</span>
               <span class="coupon_icon">领券</span>
               <block v-for="item in Data.GoodsPagePromotion.Coupons" :key="item.index">
                 <span class="coupon" v-if="index<3">满{{item.MeetAmount}}-{{item.DeductionAmount}}</span>
@@ -226,7 +227,7 @@
                  open-type="getUserInfo"
                 @getuserinfo="loginEventCoupon"
             >
-              <span class="act-name">优惠</span>
+              <span class="act-name">● 优惠</span>
                 <span class="coupon_icon">领券</span>
                 <block v-for="item in Data.GoodsPagePromotion.Coupons" :key="item.index">
                   <span class="coupon" v-if="index<3">满{{item.MeetAmount}}-{{item.DeductionAmount}}</span>
@@ -375,31 +376,6 @@
 
         </div>
       </div>
-      <!-- 海淘明细 -->
-      <!-- <div class="promotionBox" v-if="Data.GoodsBase.ShopId==2">
-        <div class="blackLine">SEA SCOURING | 海淘明细</div>
-        <div class="actCon">
-          <div class="act-wuliu actLine">
-            <span class="act-name">物流</span>
-            <span class="act-con">
-              <img
-                :src="Data.GoodsBase.IsDirectPost?'https://pic.keede.com//app/images/wuliu2.png':'https://pic.keede.com//app/images/wuliu1.png'"
-                mode="widthFix"
-              />
-            </span>
-          </div>
-          <div class="act-shuifei actLine" @click="_showShuiFei()">
-            <div class="left-text">
-              <span class="act-name">税费</span>
-              <span class="act-con">进口税 商家承担</span>
-            </div>
-            <span class="act-info">
-              税费说明
-              <span class="icon">></span>
-            </span>
-          </div>
-        </div>
-      </div> -->
       <!-- 套餐组合 -->
       <block
         v-if="!Data.isComp&&Data.CompGoods!=null&&Data.CompGoods.CompCount!=null&&Data.CompGoods.CompCount>0"
@@ -407,8 +383,8 @@
         <div class="promotionBox compgroup">
           <div class="actCon">
             <div class="blackLine-group">
-              <span>
-                PACKAGE COMBINATION | 套餐组合
+              <span class="comp-title">
+                套餐组合
               </span>
                 <a
                 class="act-info"
@@ -418,6 +394,11 @@
                 <span class="icon">></span>
               </a>
               </div>
+          </div>
+          <div class="tczh-note">
+              套餐商品不参与单品活动，最高可省下￥
+              <em>{{Data.CompGoods.MaxReduceMoney}}</em>
+              &nbsp;共{{Data.CompGoods.CompCount}}款
           </div>
           <div class="compBox">
             <block v-if="CompList">
@@ -459,33 +440,14 @@
                 </scroll-view>
               </div>
             </block>
-              <div class="tczh-note">
-                套餐商品不参与单品活动，最高可省下￥
-                <em>{{Data.CompGoods.MaxReduceMoney}}</em>
-                &nbsp;共{{Data.CompGoods.CompCount}}款
-              </div>
           </div>
         </div>
       </block>
-      <!-- 功能参数 -->
-      <!-- <block
-        v-if="Data.isComp&&Data.Items!=null&&Data.Items[0]!=null&&Data.Items[0].IsSpecificationGoods"
-      >
-        <div class="actCon">
-          <div class="act-canshu actLine" @click="_showCanShu()">
-            <span class="act-name">参数</span>
-            <span class="act-con">含水量 直径 基弧...</span>
-            <span class="act-info">
-              <span class="icon">></span>
-            </span>
-          </div>
-        </div>
-      </block> -->
-      <div :class="{'promotionBox':true,'TOP':true,'haitaobox':Data.GoodsBase.ShopId==2}" v-if="Data.Attributes!=null && Data.Attributes.length> 0">
-        <div class="blackLine" v-if="Data.GoodsBase.ShopId==1" @click="Data.isComp&&Data.Items!=null&&Data.Items[0]!=null&&Data.Items[0].IsSpecificationGoods?_showCanShu():_showCanShu2()">
-         <span>FUNCTION PARAMETER | 功能参数</span><span class="icon">></span></div>
-        <div class="blackLine haitao" v-if="Data.GoodsBase.ShopId==2">SEA SCOURING | 海淘明细</div>
-        <div class="actCon haitao" v-if="Data.GoodsBase.ShopId==2">
+      <!-- 海淘明细参数 -->
+      <div class="promotionBox haitao-box" v-if="Data.GoodsBase.ShopId==2">
+        <div class="blackLine haitao">
+         <span class="title">● 海淘明细</span></div>
+        <div class="actCon haitao" >
           <div class="act-wuliu actLine">
             <span class="act-name">物流</span>
             <span class="act-con">
@@ -535,75 +497,101 @@
             </div>
           </div>
         </div>
+      </div>
+      <div :class="{'promotionBox':true,'TOP':true,'haitaobox':Data.GoodsBase.ShopId==2}" v-if="Data.Attributes!=null && Data.Attributes.length> 0">
+        <div class="blackLine">
+         <span class="title">● 光度及数量</span></div>
         <div class="xuanGou" v-if="Data.GoodsBase.IsSpecificationGoods">
-          <span class="xuanGou-name">选购</span>
-          <block v-if="isLogin">
-              <a
-                :href="Data.GoodsBase.GoodsType==4?frameAttrHref+'&IsBuyNow=false':normalAttrHref+'&IsBuyNow=false'"
-              >
-                <div class="eyeBox">
-                  <div class="eyeMsg">
-                    <div class="eyeType">右眼R</div>
-                    <div class="eyeNote">点击选择参数</div>
+          <div class="xuangou-box">
+            <block v-if="isLogin">
+                <div class="gd-choose-layout">
+                  <div class="text-eye">
+                    右眼R
                   </div>
-                  <div class="eyeImg">
-                    <img src="/static/images/icon-pro-eye.png" />
+
+                  <div class="choose-gd-click-layout" @click="openGdSelectPop('R')">
+                    <div class="text-gd-show" v-if="GoodsFields.length===1">
+                      {{postShowDouble.sphR===''?'请选择光度':'光度: '+postShowDouble.sphR}}
+                    </div>
+                    <div class="text-gd-show" v-if="GoodsFields.length>1">
+                      {{postShowDouble.sphR===''?'请选择光度':('光度: '+postShowDouble.sphR+' 散光: '+postShowDouble.cylR + ' 轴位: ' +
+                      postShowDouble.axisR)}}
+                    </div>
+                    <img src="/static/images/icon_attr_down.png" class="icon-arr-down"/>
                   </div>
-                </div>
-              </a>
-              <a
-                :href="Data.GoodsBase.GoodsType==4?frameAttrHref+'&IsBuyNow=false':normalAttrHref+'&IsBuyNow=false'"
-              >
-                <div class="eyeBox">
-                  <div class="eyeMsg">
-                    <div class="eyeType">左眼L</div>
-                    <div class="eyeNote">点击选择参数</div>
-                  </div>
-                  <div class="eyeImg">
-                    <img src="/static/images/icon-pro-eye.png" />
+                  <div style="display: flex;">
+                    <span  class="change-num-btn" @click="numchangeEvent('R',-1)">-</span>
+                    <input type="tel" :value="rightNum" v-model="rightNum" autocomplete="off"
+                          class="input-only-buy-num"/>
+                    <span class="change-num-btn" @click="numchangeEvent('R',1)">+</span>
                   </div>
                 </div>
-              </a>
-          </block>
-          <block v-else>
-              <button
-                open-type="getUserInfo"
-                @getuserinfo="loginEvent"
-              >
-                <div class="eyeBox">
-                  <div class="eyeMsg">
-                    <div class="eyeType">右眼R</div>
-                    <div class="eyeNote">点击选择参数</div>
+                <div class="gd-choose-layout">
+                  <div class="text-eye">
+                    左眼L
                   </div>
-                  <div class="eyeImg">
-                    <img src="/static/images/icon-pro-eye.png" />
+
+                  <div class="choose-gd-click-layout" @click="openGdSelectPop('L')">
+                    <div class="text-gd-show" v-if="GoodsFields.length===1">
+                      {{postShowDouble.sphL===''?'请选择光度':'光度: '+postShowDouble.sphL}}
+                    </div>
+                    <div class="text-gd-show" v-if="GoodsFields.length>1">
+                      {{postShowDouble.sphL===''?'请选择光度':('光度: '+postShowDouble.sphL+' 散光: '+postShowDouble.cylL + ' 轴位: ' +
+                      postShowDouble.axisL)}}
+                    </div>
+                    <img src="/static/images/icon_attr_down.png" class="icon-arr-down"/>
                   </div>
-                </div>
-              </button>
-              <button
-                open-type="getUserInfo"
-                @getuserinfo="loginEvent"
-              >
-                <div class="eyeBox">
-                  <div class="eyeMsg">
-                    <div class="eyeType">左眼L</div>
-                    <div class="eyeNote">点击选择参数</div>
-                  </div>
-                  <div class="eyeImg">
-                    <img src="/static/images/icon-pro-eye.png" />
+                  <div style="display: flex;">
+                    <span  class="change-num-btn" @click="numchangeEvent('L',-1)">-</span>
+                    <input type="tel" :value="leftNum" v-model="leftNum" autocomplete="off"
+                          class="input-only-buy-num"/>
+                    <span  class="change-num-btn" @click="numchangeEvent('L',1)">+</span>
                   </div>
                 </div>
-              </button>
-          </block>
-          <div class="dshsBox" @click="_showDSHS()">
-            <img src="/static/images/icon-pro-eye.png" />
-            <div>度数换算</div>
+            </block>
+            <block v-else>
+                <button
+                  open-type="getUserInfo"
+                  @getuserinfo="loginEvent"
+                >
+                  <div class="eyeBox">
+                    <div class="eyeMsg">
+                      <div class="eyeType">右眼R</div>
+                      <div class="eyeNote">点击选择参数</div>
+                    </div>
+                    <div class="eyeImg">
+                      <img src="/static/images/icon-pro-eye.png" />
+                    </div>
+                  </div>
+                </button>
+                <button
+                  open-type="getUserInfo"
+                  @getuserinfo="loginEvent"
+                >
+                  <div class="eyeBox">
+                    <div class="eyeMsg">
+                      <div class="eyeType">左眼L</div>
+                      <div class="eyeNote">点击选择参数</div>
+                    </div>
+                    <div class="eyeImg">
+                      <img src="/static/images/icon-pro-eye.png" />
+                    </div>
+                  </div>
+                </button>
+            </block>
           </div>
+          <div class="dshsBox" @click="_showDSHS()">
+            <img src="/static/images/icon-good-eye.png" />
+            <!-- <div>度数换算</div> -->
+          </div>
+        </div>
+        <div class="canshu-box" v-if="Data.GoodsBase.ShopId==1" @click="Data.isComp&&Data.Items!=null&&Data.Items[0]!=null&&Data.Items[0].IsSpecificationGoods?_showCanShu():_showCanShu2()">
+          <span class="canshu">参 数<text>商品编码 品牌 定牌...</text></span><span class="icon">></span>
         </div>
       </div>
       <!-- 套餐详情 -->
       <div class="compDetail promotionBox" v-if="Data.Items != null && Data.Items.length > 0">
-        <div class="blackLine">PACKAGE DETAILS | 套餐详细</div>
+        <!-- <div class="blackLine">PACKAGE DETAILS | 套餐详细</div> -->
         <div class="compTitle">
           <div class="left">套餐组合</div>
           <div>
@@ -696,7 +684,7 @@
       <div class="promotionBox" >
           <div class="actCon remarkBox">
             <div class="act-remark actLine">
-              <span class="act-name">瞳学评论({{Data.Remark==null?"0":Data.Remark.TotalCount}})</span>
+              <span class="act-name">● 瞳学评论({{Data.Remark==null?"0":Data.Remark.TotalCount}})</span>
               <a
                 class="act-info"
                 v-if="Data.Remark != null&&Data.Remark.TotalCount!=null&&Data.Remark.TotalCount>0"
@@ -709,7 +697,7 @@
           </div>
           <div class="remarkTag" v-if="Data.Remark != null && Data.Remark.TotalCount > 0">
             <ul>
-              <li class="tag">
+              <li class="tag all">
                 <a :href="'../remark/main?goodsid='+Data.GoodsBase.GoodsId+'&label=全部'">全部</a>
               </li>
               <li class="tag">
@@ -1391,6 +1379,18 @@
       <view class="cancel" @click='_close'>取消</view>
     </bottomFlip>
     <share-poster id='sharepost'></share-poster>
+    <gdNromalSelectPop
+      :is-show.sync="isShowGdSelectPop"
+      :gd-list="GoodsFields"
+      :sph-list="sphList"
+      :cyl-list="cylList"
+      :axis-list="axisList"
+      :sale-stock-type="SaleStockType"
+      :select-sph="selectSph"
+      :select-cyl="selectCyl"
+      :select-axis="selectAxis"
+      @backData="gdBackInfo"
+    />
   </div>
 
 </template>
@@ -1399,6 +1399,8 @@
 import api from "@/api/goods";
 import userapi from "@/api/user";
 import cartapi from "@/api/cart";
+import attrapi from "@/api/attr";
+import gdNromalSelectPop from "@/components/gdNromalSelectPop"
 import { mapActions, mapState } from "vuex";
 import bottomFlip from "@/components/bottomFlip";
 import wxParse from "mpvue-wxparse";
@@ -1406,6 +1408,11 @@ import authorization from "@/utils/authorization";
 import utils from "@/utils"; 
 import store from '@/store'
 const TDSDK = require('../../../../static/tdsdk/tdweapp'); 
+const buyNoProperty = 'api/cart/BuyNoProperty';
+const buyDoubleProperty = 'api/cart/BuyDoubleProperty';
+const buyDoubleCustomizedProperty = 'api/cart/BuyDoubleCustomizedProperty';
+const buyNoPropertyFrame = 'api/cart/BuyNoPropertyFrame';
+const buySinglePropertyFrame = 'api/cart/BuySingleProperty';
 let timeId;
 export default {
   data() {
@@ -1458,10 +1465,65 @@ export default {
       HasGifts:true,
       seocode:"",
       FollowGoodsState:false,
-      isShowTag:true
+      isShowTag:true,
+
+      seriesPosition: -1,
+      mainData: {},
+      mainGoods: {},
+      SeriesItems: [],
+      GoodsFields: [],
+      sphList: [],
+      cylList: [],
+      axisList: [],
+      leftNum: 1,
+      rightNum: 1,
+      singleNum: 1,
+      noPropertyQuantity: 1,
+      currentGoodsType: 0,// 0 无属性  1 有单个属性 2有2个属性
+      isShowGdSelectPop: false,
+      openSide: '',
+      postShowDouble: {sphL: '', sphR: '', cylL: '', cylR: '', axisL: '', axisR: ''},
+      postShowSingle: {sph: '', cyl: '', axis: ''},
+      postShowIdSingle: {sphId: '', cylId: '', axisI的: ''},
+      postIdDouble: {sphLId: '', sphRId: '', cylLId: '', cylRId: '', axisLId: '', axisRId: ''},
+      MaxSellNumber: '',
+      GoodsName: '',
+      SeriesId: '',
+      MarketPrice: '',
+      SalePrice: '',
+      SaleScore: '',
+      IsScarcity: '',
+      IsSpecialOffer: '',
+      SaleStockType: '',
+      MaxDeduction: '',
+      IsFreeCarriage: '',
+      RealGoodsId: '',
+      goodsId: '',
+      IsConfirmedBuy: false,
+      shopId: '',
+      selectSph: '',
+      selectCyl: '',
+      selectAxis: ''
       };
   },
   computed: {},
+  watch: {
+      leftNum: function (val, oldVal) {
+        if (val < 0) {
+          this.leftNum = 0;
+        }
+      },
+      rightNum: function (val, oldVal) {
+        if (val < 0) {
+          this.rightNum = 0;
+        }
+      },
+      singleNum: function (val, oldVal) {
+        if (val < 0) {
+          this.singleNum = 0;
+        }
+      },
+    },
   onReady(){
       this.Poster = this.$mp.page.selectComponent('#sharepost')
   },
@@ -1521,7 +1583,8 @@ export default {
   },
   components: {
     bottomFlip,
-    wxParse
+    wxParse,
+    gdNromalSelectPop
   },
   methods: {
     ...mapActions("remark", ["setData"]),
@@ -1680,7 +1743,9 @@ export default {
             : this._getSameTypeData2("PPTJ");
         }
         this._AttrHref();
-        
+        if(this.Data.GoodsBase.IsSpecificationGoods){
+          this._getData(this.Data.GoodsBase.GoodsId);
+        }
       });
     },
     _getGoodsAbout() {
@@ -2209,13 +2274,7 @@ export default {
           });
         }
       } else {
-        var href =
-          this.Data.GoodsBase.GoodsType == 4
-            ? this.frameAttrHref + "&IsBuyNow=false"
-            : this.normalAttrHref + "&IsBuyNow=false";
-        wx.navigateTo({
-          url: href
-        });
+        this.buyGoods(false)
       }
     },
     buyNow(IsConfirmedBuy) {
@@ -2378,13 +2437,7 @@ export default {
           });
         }
       } else {
-        var href =
-          this.Data.GoodsBase.GoodsType == 4
-            ? this.frameAttrHref + "&IsBuyNow=false"
-            : this.normalAttrHref + "&IsBuyNow=false";
-        wx.navigateTo({
-          url: href
-        });
+        this.buyGoods(true)
       }
     },
     gocart() {
@@ -2545,7 +2598,344 @@ export default {
           url:
             "/pages/svip/dredgeSvip/main"
         });
-    }
+    },
+
+    //点击左右眼  商品属性相关方法
+      _getData(goodsId) {
+        // api.postGoodsJoinCartNormal('179e08dc-d38a-42ed-a2ab-5b9516ea1bfd', null, false, false, true).then(({Data}) => {
+        attrapi.postGoodsJoinCartNormal(goodsId, null, false, false, true).then(({Data}) => {
+          console.log("主数据", Data);
+          this.mainData = Data;
+          this.mainGoods = Data.MainGoods;
+          this.SeriesItems = Data.MainGoods.SeriesItems;
+          this.GoodsFields = Data.MainGoods.GoodsFields;
+          this.setGdInfo(Data.MainGoods.GoodsFields);
+          this.shopId = Data.MainGoods.ShopId;
+          // this.SaleStockType = Data.MainGoods.SaleStockType;
+
+          //设置当前选中的系列坐标
+          if (Data.MainGoods.SeriesItems !== null) {
+            for (let i = 0; i < Data.MainGoods.SeriesItems.length; i++) {
+              let item = Data.MainGoods.SeriesItems[i];
+              if (item.GoodsId === Data.MainGoods.GoodsId) {
+                this.seriesPosition = i;
+              }
+            }
+          }
+
+
+          //区分当前商品类型
+          if (!Data.MainGoods.IsShowSingle) {//双
+            if (Data.MainGoods.GoodsFields.length === 0) {
+              this.currentGoodsType = 0;
+            } else {
+              this.currentGoodsType = 2;
+            }
+          } else {
+            if (Data.MainGoods.GoodsFields.length > 0) {
+              this.currentGoodsType = 1;
+            } else {
+              this.currentGoodsType = 0;
+            }
+          }
+
+          console.log('当前商品类型', this.currentGoodsType);
+
+
+          //清除数据
+          this.postShowDouble = {sphL: '', sphR: '', cylL: '', cylR: '', axisL: '', axisR: ''};
+          this.postShowSingle = {sph: '', cyl: '', axis: ''};
+          this.postIdDouble = {sphLId: '', sphRId: '', cylLId: '', cylRId: '', axisLId: '', axisRId: ''};
+        });
+
+      },
+      numchangeEvent(side, num) {
+        if (side === 'R') {//右
+          this.rightNum += num;
+        } else if (side === 'L') {//左
+          this.leftNum += num;
+        } else if (side === 'S') {//单
+          this.singleNum += num;
+        } else {
+          this.noPropertyQuantity += num;
+        }
+      },
+      openGdSelectPop(side) {
+        this.openSide = side;
+        this.isShowGdSelectPop = true;
+        if (side === 'R') {
+          this.selectSph = this.postShowDouble.sphR;
+          this.selectCyl = this.postShowDouble.cylR;
+          this.selectAxis = this.postShowDouble.axisR;
+        } else if (side === 'L') {
+          this.selectSph = this.postShowDouble.sphL;
+          this.selectCyl = this.postShowDouble.cylL;
+          this.selectAxis = this.postShowDouble.axisL;
+        } else {
+          this.selectSph = this.postShowSingle.sph;
+          this.selectCyl = this.postShowSingle.cyl;
+          this.selectAxis = this.postShowSingle.axis;
+        }
+      },
+      gdBackInfo(Data) {
+
+        if (this.openSide === 'R') {
+          this.postShowDouble.sphR = this.sphList[Data.selectSPHPosition].Value;
+          this.postIdDouble.sphRId = this.sphList[Data.selectSPHPosition].Id;
+          if (this.cylList.length > 0) {
+            this.postShowDouble.cylR = this.cylList[Data.selectCYLPosition].Value;
+            this.postIdDouble.cylRId = this.cylList[Data.selectCYLPosition].Id;
+          }
+          if (this.axisList.length > 0) {
+            this.postShowDouble.axisR = this.axisList[Data.selectAXISPosition].Value;
+            this.postIdDouble.axisRId = this.axisList[Data.selectAXISPosition].Id;
+          }
+          console.log('返回', this.postIdDouble);
+        } else if (this.openSide === 'L') {
+          this.postShowDouble.sphL = this.sphList[Data.selectSPHPosition].Value;
+          this.postIdDouble.sphLId = this.sphList[Data.selectSPHPosition].Id;
+          if (this.cylList.length > 0) {
+            this.postShowDouble.cylL = this.cylList[Data.selectCYLPosition].Value;
+            this.postIdDouble.cylLId = this.cylList[Data.selectCYLPosition].Id;
+          }
+          if (this.axisList.length > 0) {
+            this.postShowDouble.axisL = this.axisList[Data.selectAXISPosition].Value;
+            this.postIdDouble.axisLId = this.axisList[Data.selectAXISPosition].Id;
+          }
+          console.log('返回', this.postIdDouble);
+        } else if (this.openSide === 'S') {
+          this.postShowSingle.sph = this.sphList[Data.selectSPHPosition].Value;
+          this.postShowIdSingle.sphId = this.sphList[Data.selectSPHPosition].Id;
+          if (this.cylList.length > 0) {
+            this.postShowSingle.cyl = this.cylList[Data.selectCYLPosition].Value;
+            this.postShowIdSingle.cylId = this.cylList[Data.selectCYLPosition].Id;
+          }
+          if (this.axisList.length > 0) {
+            this.postShowSingle.axis = this.axisList[Data.selectAXISPosition].Value;
+            this.postShowIdSingle.axisI的 = this.axisList[Data.selectAXISPosition].Id;
+          }
+          console.log('返回', this.postShowIdSingle);
+        }
+        this.IsConfirmedBuy = Data.isConfirmedBuy;
+      },
+      setGdInfo(gdlist) {
+        for (let item of gdlist) {
+          if (item.FieldName === '光度') {
+            this.sphList = item.Children;
+          } else if (item.FieldName === '散光') {
+            this.cylList = item.Children;
+          } else if (item.FieldName === '轴位') {
+            this.axisList = item.Children;
+          }
+
+          console.log('参数', this.sphList.length, this.cylList.length, this.axisList.length);
+        }
+      },
+      buyGoods(immediately) {
+        if (this.getTotalNum() === 0) {
+          wx.showToast({
+            title: "请至少选择一个购买",
+            icon: "none"
+          });
+          return;
+        }
+        // this.setIdOfSelectrGd();
+
+        let postData = new Map();
+        postData.set('goodsId', this.mainData.MainGoods.GoodsId);
+        postData.set('IsConfirmedBuy', this.IsConfirmedBuy);
+        postData.set('ShopId', this.mainData.MainGoods.ShopId);
+
+        if (buyNoProperty === this.mainData.BuyUrl) {
+          postData.set('Quantity', this.noPropertyQuantity);
+          this.setTogerData(postData, 0);
+          attrapi.buyNoProperty(postData).then(({Data}) => {
+            console.log("无属性 返回", Data);
+            this.goToCart(immediately);
+          }).catch((Msg) => {
+            this.confirmedBuyShow(Msg);
+          });
+        } else if (buyDoubleProperty === this.mainData.BuyUrl) {
+          if (this.postIdDouble.sphLId === '' && this.postIdDouble.sphRId === '') {
+            wx.showToast({
+              title: "请至少选择一个购买",
+              icon: "none"
+            });
+            return;
+          }
+          if (this.postIdDouble.sphLId !== '' && this.leftNum > 0) {
+            postData.set('LeftQuantity', this.leftNum);
+            postData.set('LeftGD', this.postIdDouble.sphLId);
+            postData.set('LEFTGDNAME', this.postShowDouble.sphL);
+          } else {
+            postData.set('LeftQuantity', 0)
+          }
+
+          if (this.postIdDouble.sphRId !== '' && this.rightNum > 0) {
+            postData.set('RightQuantity', this.rightNum);
+            postData.set('RightGD', this.postIdDouble.sphRId);
+            postData.set('RIGHTGDNAME', this.postShowDouble.sphR)
+          } else {
+            postData.set('RightQuantity', 0)
+          }
+
+          this.setTogerData(postData, 2);
+          attrapi.buyDoubleProperty(postData).then(({Data, Msg, State}) => {
+            console.log("双属性 返回", Data, Msg, State);
+            this.goToCart(immediately);
+          }).catch((Msg) => {
+            this.confirmedBuyShow(Msg);
+          });
+        } else if (buyDoubleCustomizedProperty === this.mainData.BuyUrl) {
+          if (this.postIdDouble.sphLId === '' && this.postIdDouble.sphRId === '') {
+            wx.showToast({
+              title: "请至少选择一个购买",
+              icon: "none"
+            });
+            return;
+          }
+
+          if (this.postIdDouble.sphLId !== '' && this.leftNum > 0) {
+            postData.set('LeftQuantity', this.leftNum);
+            postData.set('LeftGD', this.postIdDouble.sphLId);
+            postData.set('LeftSG', this.postIdDouble.cylLId);
+            postData.set('LeftZW', this.postIdDouble.axisLId);
+          } else {
+            postData.set('LeftQuantity', 0)
+          }
+
+          if (this.postIdDouble.sphRId !== '' && this.rightNum > 0) {
+            postData.set('RightQuantity', this.leftNum);
+            postData.set('RightGD', this.postIdDouble.sphRId);
+            postData.set('RightSG', this.postIdDouble.cylRId);
+            postData.set('RightZW', this.postIdDouble.axisRId);
+          } else {
+            postData.set('RightQuantity', 0)
+          }
+          this.setTogerData(postData, 2);
+          attrapi.buyDoubleCustomizedProperty(postData).then(({Data}) => {
+            console.log("双属性散光定制 返回", Data);
+            this.goToCart(immediately);
+          }).catch((Msg) => {
+            this.confirmedBuyShow(Msg);
+          });
+        } else if (buyNoPropertyFrame === this.mainData.BuyUrl) {
+          postData.set('Quantity', this.noPropertyQuantity);
+          this.setTogerData(postData, 0);
+
+          attrapi.buyNoPropertyFrame(postData).then(({Data}) => {
+            console.log("无属性框架 返回", Data);
+            this.goToCart(immediately);
+          }).catch((Msg) => {
+            this.confirmedBuyShow(Msg);
+          });
+        } else if (buySinglePropertyFrame === this.mainData.BuyUrl) {
+          console.log(this.buySinglePropertyFrame);
+          postData.set('Quantity', this.singleNum);
+          postData.set('GD', this.postShowIdSingle.sphId);
+
+          this.setTogerData(postData, 1);
+          attrapi.buySingleProperty(postData).then(({Data}) => {
+            console.log("无属性框架 返回", Data);
+            this.goToCart(immediately);
+          }).catch((Msg) => {
+            this.confirmedBuyShow(Msg);
+          });
+        }
+      },
+      setTogerData(postData, type) {
+        postData.set("MaxSellNumber", this.MaxSellNumber);
+        postData.set("GoodsName", this.mainGoods.GoodsName);
+        postData.set("SeriesId", this.mainGoods.SeriesId);
+        postData.set("MarketPrice", this.MarketPrice);
+        postData.set("SalePrice", this.mainGoods.SalePrice);
+        postData.set("SaleScore", this.SaleScore);
+        postData.set("IsScarcity", this.IsScarcity);
+        postData.set("IsSpecialOffer", this.IsSpecialOffer);
+        postData.set("SaleStockType", this.SaleStockType);
+        postData.set("MaxDeduction", this.MaxDeduction);
+        postData.set("IsFreeCarriage", this.IsFreeCarriage);
+        postData.set("RealGoodsId", this.mainData.MainGoods.GoodsId);
+
+        if (this.GoodsFields.length > 0) {
+          for (let item of this.GoodsFields) {
+            if (item.FieldName === '光度') {
+              for (let sphItem of item.Children) {
+                if (type === 1) {
+                  if (this.postShowSingle.sph === sphItem.Value) {
+                    postData.set("RealGoodsId", this.mainData.MainGoods.GoodsId);
+                  }
+                } else if (2) {
+                  if (this.postShowDouble.sphL === sphItem.Value) {
+                    postData.set("LeftRealGoodsId", sphItem.RealGoodsId);
+                  }
+                  if (this.postShowDouble.sphR === sphItem.Value) {
+                    postData.set("RightRealGoodsId", sphItem.RealGoodsId);
+                  }
+                } else {
+                  postData.set("RealGoodsId", sphItem.RealGoodsId);
+                }
+              }
+            }
+          }
+        }
+
+      },
+      getTotalNum() {
+        switch (this.currentGoodsType) {
+          case 0:
+            return this.noPropertyQuantity;
+          case 1:
+            let signleQuantity = 0;
+            if (this.postShowSingle.sph !== '') {
+              signleQuantity += this.singleNum;
+            }
+            return signleQuantity;
+          case 2:
+            let leftQuantity = 0;
+            let rightQuantity = 0;
+            if (this.postShowDouble.sphL !== '') {
+              leftQuantity += this.leftNum;
+            }
+
+            if (this.postShowDouble.sphR !== '') {
+              rightQuantity += this.rightNum;
+            }
+            return leftQuantity + rightQuantity;
+        }
+      },
+      goToCart(imid) {
+        if (imid) {
+          wx.switchTab({
+            url: '/pages/cart/main?shopId=' + this.shopId
+          });
+        } else {
+          wx.showToast({
+            title: "加入购物车成功",
+            icon: "none"
+          });
+        }
+        this.$getCartCount();
+      },
+      confirmedBuyShow(Msg) {
+        let self = this;
+        wx.showModal({
+          title: '提示',
+          content: Msg,
+          icon: "none",
+          confirmText: '确定',
+          cancelText: '取消',
+          confirmColor: '#CAB894',
+          success(res) {
+            if (res.confirm) {
+              console.log('用户点击确定');
+              self.IsConfirmedBuy = true;
+            } else if (res.cancel) {
+              console.log('用户点击取消');
+            }
+          }
+        });
+      },
   },
         /**
    * 用户点击右上角分享
