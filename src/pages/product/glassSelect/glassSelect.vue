@@ -1,17 +1,17 @@
 <template>
   <div style="height: 100%">
     <section>
-      <div class="menu-pop-toggle-layout" @click="openMenu">
+      <div class="menu-pop-toggle-layout" >
         <span class="text-t6">当前选择：{{groupName}}</span>
-        <img class="ic-up-or-down" src="/static/images/ic_arrow_gray_down.png" v-if="!menuOpened"/>
+        <!-- <img class="ic-up-or-down" src="/static/images/ic_arrow_gray_down.png" v-if="!menuOpened"/>
 
-        <img class="ic-up-or-down" src="/static/images/ic_arrow_gray_up.png" v-else/>
+        <img class="ic-up-or-down" src="/static/images/ic_arrow_gray_up.png" v-else/> -->
       </div>
     </section>
 
-    <section class="dropdown-box" v-if="menuOpened">
-      <div class="trans-bg-60" v-if="menuOpened" @click="openMenu"></div>
-      <div class="pop-group-select-layout" v-if="menuOpened">
+    <section class="dropdown-box" >
+      <!-- <div class="trans-bg-60" v-if="menuOpened" @click="openMenu"></div> -->
+      <scroll-view class="pop-group-select-layout" scroll-x>
         <radio-group class="radio-group" @change="radioChange">
           <radio
             class="radio"
@@ -24,7 +24,7 @@
             <text class="text-group-name">{{item.value}}</text>
           </radio>
         </radio-group>
-      </div>
+      </scroll-view>
     </section>
 
     <div class="glass-list-layout">
@@ -61,6 +61,7 @@
         this.groupName = this.atttGlassListData[0].GroupName;
         if (options.groupSelectPosition !== undefined && options.groupSelectPosition != -1 ) {
           this.groupSelectPosition = Number(options.groupSelectPosition);
+          this.groupName = this.atttGlassListData[options.groupSelectPosition].GroupName;
           console.log('穿过来的参数进来了');
         }
         if (options.glassSelectPosiition !== undefined && options.glassSelectPosiition != -1) {
@@ -148,34 +149,22 @@
   }
 
   .dropdown-box {
-    position: fixed;
     width: 100%;
-    top: 40px;
-    left: 0;
-    height: 100%;
-    z-index: 3;
-    .trans-bg-60 {
-      background-color: rgba(0, 0, 0, 0.6);
-      height: 100%;
-      position: absolute;
-      top: 0;
-      width: 100%;
-      z-index: 2;
-    }
+    height: 100px;
   }
 
   .pop-group-select-layout {
-    display: flex;
-    flex: 1;
-    padding-bottom: 10px;
-    background-color: white;
-    position: relative;
-    z-index: 2;
+    height: 100%;
+    width: 100%;
     .radio-group {
       padding: 0 15px;
-
+      width: 150%;
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+      height: 100px;
       .radio {
-        width: 50%;
+        width: 30%;
         margin-top: 5px;
       }
       .text-group-name {

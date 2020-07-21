@@ -1,36 +1,38 @@
 <template>
   <!-- 评论 -->
   <div class="page">
-    <div class="actCon remarkBox">
-      <div class="act-remark actLine">
-        <img src="/static/images/smile.png" class="smile" alt />
-        <span>{{ramarkData.PraiseRatio}}%</span>
-        好评
+    <div class="common-top">
+      <div class="actCon remarkBox">
+        <div class="act-remark actLine">
+          <img src="/static/images/smile.png" class="smile" alt />
+          <span>{{ramarkData.PraiseRatio}}%</span>
+          好评
+        </div>
       </div>
-    </div>
-    <div
-      :class="'remarkTag '+(isShowMoreTag?'showMore':'')"
-      v-if="ramarkData != null && ramarkData.TotalCount > 0"
-    >
-      <ul>
-        <li :class="'tag '+(selecLabel=='全部'?'select':'')">
-          <a @click="_selectLabel('全部')">全部</a>
-        </li>
-        <li :class="'tag '+(selecLabel=='有图'?'select':'')">
-          <a @click="_selectLabel('有图')">有图（{{ramarkData.ImageCount}}）</a>
-        </li>
-        <block v-if="ramarkData.LableTags != null && ramarkData.LableTags.length>0">
-          <li
-            :class="'tag '+(item.Sentiment==0?'badlabel':'')+(item.CommentLabel==selecLabel?' select':'')"
-            v-for="(item, index) in  ramarkData.LableTags"
-            :key="index"
-          >
-            <a @click="_selectLabel(item.CommentLabel)">{{item.CommentLabel}}（{{item.Count}}）</a>
+      <div
+        :class="'remarkTag '+(isShowMoreTag?'showMore':'')"
+        v-if="ramarkData != null && ramarkData.TotalCount > 0"
+      >
+        <ul>
+          <li :class="'tag '+(selecLabel=='全部'?'select':'')">
+            <a @click="_selectLabel('全部')">全部</a>
           </li>
-        </block>
-      </ul>
+          <li :class="'tag '+(selecLabel=='有图'?'select':'')">
+            <a @click="_selectLabel('有图')">有图（{{ramarkData.ImageCount}}）</a>
+          </li>
+          <block v-if="ramarkData.LableTags != null && ramarkData.LableTags.length>0">
+            <li
+              :class="'tag '+(item.Sentiment==0?'badlabel':'')+(item.CommentLabel==selecLabel?' select':'')"
+              v-for="(item, index) in  ramarkData.LableTags"
+              :key="index"
+            >
+              <a @click="_selectLabel(item.CommentLabel)">{{item.CommentLabel}}（{{item.Count}}）</a>
+            </li>
+          </block>
+        </ul>
+      </div>
+      <div :class="'showTagBtn'" @click="_showMoreTag()"><span :class="(isShowMoreTag?'showMoreIcon':'icon')">{{isShowMoreTag?'∧':'∨'}}</span></div>
     </div>
-    <div :class="'showTagBtn'" @click="_showMoreTag()"><span :class="(isShowMoreTag?'showMoreIcon':'icon')">{{isShowMoreTag?'∧':'∨'}}</span></div>
     <block>
       <div class="remarkCon" v-if="Data != null ">
         <div v-for="(item,index) in Data" :key="index">
@@ -224,16 +226,22 @@ export default {
 
 <style lang="less" scoped>
 .page{
-  background: #f5f5f5;
+  background: #f2f2f2;
 }
+  .actCon{
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+  }
 .remarkBox {
   background: #fff;
+
   .act-remark {
     padding: 10px 15px;
     display: flex;
     align-items: center;
     color: #313131;
     font-size: 11px;
+ 
     ._span {
       color: #e31436;
       margin: 0 3px;
@@ -251,6 +259,11 @@ export default {
     border-right: none;
   }
 }
+.common-top{
+  padding: 10px 10px 0 10px;
+  border-radius: 20px;
+  overflow: hidden;
+}
 .remarkTag {
   background: #fff;
   padding: 0 15px;
@@ -261,7 +274,7 @@ export default {
     height: auto;
   }
   ._li {
-    background: #f4f2e6;
+    background: #E5E5E5;
     color: #313131;
     float: left;
     font-size: 12px;
@@ -270,11 +283,11 @@ export default {
     padding: 2px 6px;
     border-radius: 5px;
     &.badlabel {
-      background: #f3f3f3;
+      background: #E5E5E5;
     }
     &.select {
-      background: #cab894;
-      color: #ffffff;
+      background: #313131;
+      color: #FAE5AA;
     }
   }
 }
@@ -285,6 +298,8 @@ export default {
   // margin-left: -10%;
   text-align: center;
   line-height: 30px;
+   border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
   .icon{
     transform: scale(2, 1);
     color: #ccc;
@@ -295,9 +310,12 @@ export default {
   }
 }
 .remarkCon {
+  border-radius: 20px;
+  margin: 10px 0;
+  overflow: hidden;
   .remarkBox {
-    margin: 10px;
-    border-radius: 20px;
+    margin: 0 10px;
+    
     overflow: hidden;
     background: #fff;
 
@@ -305,7 +323,7 @@ export default {
     position: relative;
     // padding-bottom: 20px;
     // font-size: 12px;
-    // border-bottom: 5px solid #f5f5f5;
+    border-bottom: 0.5px solid #EBEBEB;
   }
   .comment-header {
     display: flex;
@@ -373,13 +391,14 @@ export default {
   }
 }
 .communtiyBox{
-      margin: 10px;
+      margin: 0px 10px;
       overflow: hidden;
       padding: 10px 15px;
       // height: 120px;
       background: #fff;
-      border-radius: 20px;
+      border-bottom: 0.5px solid #EBEBEB;
       .communtiy-swiper{
+        margin: 10rpx 20rpx 0;
           // height: 200px;
           .com-text{
             display: flex;

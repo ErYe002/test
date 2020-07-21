@@ -69,647 +69,649 @@
           <em class="coupon-btn" @click="showCouponListEvent">优惠券</em>
         </span>
       </p>
-      <template v-for="(cartItem, idx) in model.Carts">
-        <!-- 打包商品项 -->
-          <template v-if="cartItem.Packages!= null && cartItem.Packages.length > 0">
-              <div
-                v-for="(packItem, pidx) in cartItem.Packages"
-                :key="packItem.UniqueId+pidx"
-              >
-                  <i-swipeout i-class="i-swipeout-demo-item" :actions="actions" @change="handleDelete(packItem.UniqueId)" :toggle="toggle" :unclosable="unclosable">
-                      <view slot="content">
-                        <div class="cart-list-box pack-box">
-                          <p class="tips">
-                            <span class="check-btn" v-if="packItem.IsDisplayDelete">
-                              <img
-                                v-if="packItem.IsSelected"
-                                src="/static/images/icon_checked.png"
-                                class="icon"
-                                @click="unSelectGoodsEvent(packItem.UniqueId)"
-                              />
-                              <img
-                                v-else
-                                src="/static/images/icon_no_checked.png"
-                                class="icon"
-                                @click="selectGoodsEvent(packItem.UniqueId)"
-                              />
-                            </span>
-                            <span class="tag">套餐</span>
-                            <span class="title" v-if="packItem.IsDisplayChangeQuantity">
-                              <em
-                                class="cut"
-                                @click="modifyQuantityEvent(packItem.UniqueId, '', packItem.Quantity, 0)"
-                              >-</em>
-                              <input class="input" :value="packItem.Quantity" disabled />
-                              <em
-                                class="add"
-                                @click="modifyQuantityEvent(packItem.UniqueId, '', packItem.Quantity, 1)"
-                              >+</em>
-                            </span>
-                            <span class="promotion">
-                              <em class="tag" v-if="packItem.LimitQuantity > 0">限购{{packItem.LimitQuantity}}件</em>
-                              <em
-                                class="tag"
-                                v-if="packItem.ReductionPrice > 0"
-                              >比加入时降了{{packItem.ReductionPrice}}元</em>
-                            </span>
-                            <span class="link">
-                              <em>¥</em>
-                              <span>{{packItem.PackagePrice}}</span>
-                            </span>
-                          </p>
-                          <ul
-                            class="goods-list"
-                            v-if="packItem.PackageItems != null && packItem.PackageItems.length > 0"
-                          >
-                            <li
-                              class="g-item"
-                              v-for="(goodItem, gidx) in packItem.PackageItems"
-                              :key="goodItem.GoodsId+gidx"
+      <div class="box-good">
+        <template v-for="(cartItem, idx) in model.Carts">
+          <!-- 打包商品项 -->
+            <template v-if="cartItem.Packages!= null && cartItem.Packages.length > 0">
+                <div
+                  v-for="(packItem, pidx) in cartItem.Packages"
+                  :key="packItem.UniqueId+pidx"
+                >
+                    <i-swipeout i-class="i-swipeout-demo-item" :actions="actions" @change="handleDelete(packItem.UniqueId)" :toggle="toggle" :unclosable="unclosable">
+                        <view slot="content">
+                          <div class="cart-list-box pack-box">
+                            <p class="tips">
+                              <span class="check-btn" v-if="packItem.IsDisplayDelete">
+                                <img
+                                  v-if="packItem.IsSelected"
+                                  src="/static/images/icon_checked.png"
+                                  class="icon"
+                                  @click="unSelectGoodsEvent(packItem.UniqueId)"
+                                />
+                                <img
+                                  v-else
+                                  src="/static/images/icon_no_checked.png"
+                                  class="icon"
+                                  @click="selectGoodsEvent(packItem.UniqueId)"
+                                />
+                              </span>
+                              <span class="tag">套餐</span>
+                              <span class="title" v-if="packItem.IsDisplayChangeQuantity">
+                                <em
+                                  class="cut"
+                                  @click="modifyQuantityEvent(packItem.UniqueId, '', packItem.Quantity, 0)"
+                                >-</em>
+                                <input class="input" :value="packItem.Quantity" disabled />
+                                <em
+                                  class="add"
+                                  @click="modifyQuantityEvent(packItem.UniqueId, '', packItem.Quantity, 1)"
+                                >+</em>
+                              </span>
+                              <span class="promotion">
+                                <em class="tag" v-if="packItem.LimitQuantity > 0">限购{{packItem.LimitQuantity}}件</em>
+                                <em
+                                  class="tag"
+                                  v-if="packItem.ReductionPrice > 0"
+                                >比加入时降了{{packItem.ReductionPrice}}元</em>
+                              </span>
+                              <span class="link">
+                                <em>¥</em>
+                                <span>{{packItem.PackagePrice}}</span>
+                              </span>
+                            </p>
+                            <ul
+                              class="goods-list"
+                              v-if="packItem.PackageItems != null && packItem.PackageItems.length > 0"
                             >
-                              <div class="goods-box">
-                                <div class="g-info">
-                                  <a :href="'/pages/product/index/main?seocode='+goodItem.SeoCode+'&isComp=true'">
-                                    <img class="g-img" :src="goodItem.ImageUrl" />
-                                  </a>
-                                  <div class="info">
-                                    <a
-                                      :href="'/pages/product/index/main?seocode='+goodItem.SeoCode+'&isComp=true'"
-                                      class="g-name"
-                                    >
-                                      <span class="oversea-tag" v-if="shopId == 2">海淘</span>
-                                      {{goodItem.GoodsName}}
+                              <li
+                                class="g-item"
+                                v-for="(goodItem, gidx) in packItem.PackageItems"
+                                :key="goodItem.GoodsId+gidx"
+                              >
+                                <div class="goods-box">
+                                  <div class="g-info">
+                                    <a :href="'/pages/product/index/main?seocode='+goodItem.SeoCode+'&isComp=true'">
+                                      <img class="g-img" :src="goodItem.ImageUrl" />
                                     </a>
-                                    <template v-if="goodItem.Specifications">
-                                      <p class="g-attr" v-for="spItem in goodItem.Specifications" :key="spItem">
-                                        <span class="attr-text">{{spItem}}</span>
+                                    <div class="info">
+                                      <a
+                                        :href="'/pages/product/index/main?seocode='+goodItem.SeoCode+'&isComp=true'"
+                                        class="g-name"
+                                      >
+                                        <span class="oversea-tag" v-if="shopId == 2">海淘</span>
+                                        {{goodItem.GoodsName}}
+                                      </a>
+                                      <template v-if="goodItem.Specifications">
+                                        <p class="g-attr" v-for="spItem in goodItem.Specifications" :key="spItem">
+                                          <span class="attr-text">{{spItem}}</span>
+                                        </p>
+                                      </template>
+                                      <p v-else class="g-attr">
+                                        <span class="attr-text"></span>
+                                        <span class="num">×{{goodItem.TotalQuantity}}</span>
                                       </p>
-                                    </template>
-                                    <p v-else class="g-attr">
-                                      <span class="attr-text"></span>
-                                      <span class="num">×{{goodItem.TotalQuantity}}</span>
-                                    </p>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      </view>
-                  </i-swipeout>
-              </div>
-          </template>
-        <!-- 满类型促销的商品 -->
-        <template v-if="cartItem.MeetPromotions != null && cartItem.MeetPromotions.length > 0">
-          <div
-            v-for="(mpItem, midx) in cartItem.MeetPromotions"
-            :key="mpItem.PromotionId+midx"
-          >
-                <div class="cart-list-box">
-                  <p class="tips">
-                    <span class="tag">{{mpItem.MeetPromotionType == 2 ? '满赠':'满减'}}</span>
-                    <span class="title">{{mpItem.MeetPriceHint}}</span>
-                    <a
-                      :href="'/pages/search/pieceTogether/main?shopId='+shopId+'&promotionId='+mpItem.PromotionId+'&title=满减'"
-                      class="link"
-                    >{{mpItem.IsMeet ? '再逛逛':'去凑单'}}></a>
-                  </p>
-                  <!-- 商品列表 -->
-                  <ul class="goods-list">
-                    <li class="g-item" v-for="(gItem, gidx) in mpItem.BuyGoodsList" :key="gItem.UniqueId+gidx">
-                        <i-swipeout i-class="i-swipeout-demo-item" :actions="actions" @change="handleDelete(gItem.UniqueId)" :key='idx' :toggle="toggle" :unclosable="unclosable">
-                          <view slot="content">
-                              <div class="goods-box">
-                                <span class="check-btn" v-if="gItem.IsDisplayDelete">
-                                  <img
-                                    v-if="gItem.IsSelected"
-                                    src="/static/images/icon_checked.png"
-                                    class="icon"
-                                    @click="unSelectGoodsEvent(gItem.UniqueId)"
-                                  />
-                                  <img
-                                    v-else
-                                    src="/static/images/icon_no_checked.png"
-                                    class="icon"
-                                    @click="selectGoodsEvent(gItem.UniqueId)"
-                                  />
-                                </span>
-                                <div class="g-info">
-                                  <a :href="'/pages/product/index/main?seocode='+gItem.SeoCode+'&isComp=false'">
-                                    <img class="g-img" :src="gItem.ImageUrl" />
-                                  </a>
-                                  <div class="info">
-                                    <a
-                                      :href="'/pages/product/index/main?seocode='+gItem.SeoCode+'&isComp=false'"
-                                      class="g-name"
-                                    >
-                                      <span class="oversea-tag" v-if="shopId == 2">海淘</span>
-                                      {{gItem.GoodsName}}
+                              </li>
+                            </ul>
+                          </div>
+                        </view>
+                    </i-swipeout>
+                </div>
+            </template>
+          <!-- 满类型促销的商品 -->
+          <template v-if="cartItem.MeetPromotions != null && cartItem.MeetPromotions.length > 0">
+            <div
+              v-for="(mpItem, midx) in cartItem.MeetPromotions"
+              :key="mpItem.PromotionId+midx"
+            >
+                  <div class="cart-list-box">
+                    <p class="tips">
+                      <span class="tag">{{mpItem.MeetPromotionType == 2 ? '满赠':'满减'}}</span>
+                      <span class="title">{{mpItem.MeetPriceHint}}</span>
+                      <a
+                        :href="'/pages/search/pieceTogether/main?shopId='+shopId+'&promotionId='+mpItem.PromotionId+'&title=满减'"
+                        class="link"
+                      >{{mpItem.IsMeet ? '再逛逛':'去凑单'}}></a>
+                    </p>
+                    <!-- 商品列表 -->
+                    <ul class="goods-list">
+                      <li class="g-item" v-for="(gItem, gidx) in mpItem.BuyGoodsList" :key="gItem.UniqueId+gidx">
+                          <i-swipeout i-class="i-swipeout-demo-item" :actions="actions" @change="handleDelete(gItem.UniqueId)" :key='idx' :toggle="toggle" :unclosable="unclosable">
+                            <view slot="content">
+                                <div class="goods-box">
+                                  <span class="check-btn" v-if="gItem.IsDisplayDelete">
+                                    <img
+                                      v-if="gItem.IsSelected"
+                                      src="/static/images/icon_checked.png"
+                                      class="icon"
+                                      @click="unSelectGoodsEvent(gItem.UniqueId)"
+                                    />
+                                    <img
+                                      v-else
+                                      src="/static/images/icon_no_checked.png"
+                                      class="icon"
+                                      @click="selectGoodsEvent(gItem.UniqueId)"
+                                    />
+                                  </span>
+                                  <div class="g-info">
+                                    <a :href="'/pages/product/index/main?seocode='+gItem.SeoCode+'&isComp=false'">
+                                      <img class="g-img" :src="gItem.ImageUrl" />
                                     </a>
-                                    <!-- 有属性商品光度和数量 -->
-                                    <template
-                                      v-if="gItem.SpecificationItems != null && gItem.SpecificationItems.length > 0"
-                                    >
-                                      <p class="g-attr" v-if="gItem.BuyType == 3">
-                                        <span
-                                          class="attr-text"
-                                        >{{gItem.Attributes == null ? '' : gItem.Attributes}}</span>
-                                        <span class="modify">
-                                          <i
-                                            class="cut"
-                                            @click="modifyQuantityEvent(gItem.UniqueId, '', gItem.Quantity, 0)"
-                                          >-</i>
-                                          <input class="input" :value="gItem.Quantity" disabled />
-                                          <i
-                                            class="add"
-                                            @click="modifyQuantityEvent(gItem.UniqueId, '', gItem.Quantity, 1)"
-                                          >+</i>
-                                        </span>
-                                      </p>
-                                      <p
-                                        class="g-attr"
-                                        v-for="spItem in gItem.SpecificationItems"
-                                        :key="spItem.RealGoodsId"
+                                    <div class="info">
+                                      <a
+                                        :href="'/pages/product/index/main?seocode='+gItem.SeoCode+'&isComp=false'"
+                                        class="g-name"
                                       >
-                                        <span
-                                          :class="{attr: true, line: gItem.BuyType == 3}"
-                                          v-if="gItem.BuyType != 3"
-                                          @click="editCartItemEvent(gItem.UniqueId, '', spItem.RealGoodsId, spItem.Quantity)"
+                                        <span class="oversea-tag" v-if="shopId == 2">海淘</span>
+                                        {{gItem.GoodsName}}
+                                      </a>
+                                      <!-- 有属性商品光度和数量 -->
+                                      <template
+                                        v-if="gItem.SpecificationItems != null && gItem.SpecificationItems.length > 0"
+                                      >
+                                        <p class="g-attr" v-if="gItem.BuyType == 3">
+                                          <span
+                                            class="attr-text"
+                                          >{{gItem.Attributes == null ? '' : gItem.Attributes}}</span>
+                                          <span class="modify">
+                                            <i
+                                              class="cut"
+                                              @click="modifyQuantityEvent(gItem.UniqueId, '', gItem.Quantity, 0)"
+                                            >-</i>
+                                            <input class="input" :value="gItem.Quantity" disabled />
+                                            <i
+                                              class="add"
+                                              @click="modifyQuantityEvent(gItem.UniqueId, '', gItem.Quantity, 1)"
+                                            >+</i>
+                                          </span>
+                                        </p>
+                                        <p
+                                          class="g-attr"
+                                          v-for="spItem in gItem.SpecificationItems"
+                                          :key="spItem.RealGoodsId"
                                         >
-                                          <em
-                                            class="text"
-                                          >{{spItem.Specification}} {{spItem.AnotherName == null ? '' : spItem.AnotherName}}</em>
-                                          <img class="icon" src="/static/images/icon_attr_down.png" />
-                                        </span>
-                                        <span v-else :class="{attr: true, line: gItem.BuyType == 3}">
-                                          <em
-                                            class="text"
-                                          >{{spItem.Specification}} {{spItem.AnotherName == null ? '' : spItem.AnotherName}}</em>
-                                          <em>×{{spItem.Quantity}}</em>
-                                        </span>
-                                        <span
-                                          class="modify"
+                                          <span
+                                            :class="{attr: true, line: gItem.BuyType == 3}"
+                                            v-if="gItem.BuyType != 3"
+                                            @click="editCartItemEvent(gItem.UniqueId, '', spItem.RealGoodsId, spItem.Quantity)"
+                                          >
+                                            <em
+                                              class="text"
+                                            >{{spItem.Specification}} {{spItem.AnotherName == null ? '' : spItem.AnotherName}}</em>
+                                            <img class="icon" src="/static/images/icon_attr_down.png" />
+                                          </span>
+                                          <span v-else :class="{attr: true, line: gItem.BuyType == 3}">
+                                            <em
+                                              class="text"
+                                            >{{spItem.Specification}} {{spItem.AnotherName == null ? '' : spItem.AnotherName}}</em>
+                                            <em>×{{spItem.Quantity}}</em>
+                                          </span>
+                                          <span
+                                            class="modify"
+                                            v-if="gItem.IsDisplayChangeQuantity && gItem.BuyType != 3"
+                                          >
+                                            <i
+                                              class="cut"
+                                              @click="modifyQuantityEvent(gItem.UniqueId, spItem.RealGoodsId, spItem.Quantity, 0)"
+                                            >-</i>
+                                            <input class="input" :value="spItem.Quantity" disabled />
+                                            <i
+                                              class="add"
+                                              @click="modifyQuantityEvent(gItem.UniqueId, spItem.RealGoodsId, spItem.Quantity, 1)"
+                                            >+</i>
+                                          </span>
+                                        </p>
+                                      </template>
+                                      <!-- 无属性商品 -->
+                                      <template v-else>
+                                        <p
+                                          class="g-attr"
                                           v-if="gItem.IsDisplayChangeQuantity && gItem.BuyType != 3"
                                         >
-                                          <i
-                                            class="cut"
-                                            @click="modifyQuantityEvent(gItem.UniqueId, spItem.RealGoodsId, spItem.Quantity, 0)"
-                                          >-</i>
-                                          <input class="input" :value="spItem.Quantity" disabled />
-                                          <i
-                                            class="add"
-                                            @click="modifyQuantityEvent(gItem.UniqueId, spItem.RealGoodsId, spItem.Quantity, 1)"
-                                          >+</i>
-                                        </span>
-                                      </p>
-                                    </template>
-                                    <!-- 无属性商品 -->
-                                    <template v-else>
-                                      <p
-                                        class="g-attr"
-                                        v-if="gItem.IsDisplayChangeQuantity && gItem.BuyType != 3"
-                                      >
-                                        <span class="attr-text">{{gItem.Attributes == null ? '':gItem.Attributes}}</span>
-                                        <span class="modify">
-                                          <i
-                                            class="cut"
-                                            @click="modifyQuantityEvent(gItem.UniqueId, '', gItem.Quantity, 0)"
-                                          >-</i>
-                                          <input class="input" :value="gItem.Quantity" disabled />
-                                          <i
-                                            class="add"
-                                            @click="modifyQuantityEvent(gItem.UniqueId, '', gItem.Quantity, 1)"
-                                          >+</i>
-                                        </span>
-                                      </p>
-                                    </template>
-                                    <div class="g-price">
-                                      <div class="price">
-                                        <em class="unit">¥</em>
-                                        <b>{{gItem.Price}}</b>
-                                        <div :class="{tag: true, vip: gItem.PriceLable == '会员价'}">
-                                          <img
-                                            v-if="gItem.PriceLable == '会员价'"
-                                            :src="'/static/images/level_0'+ model.RoleId + '.jpg'"
-                                          />
-                                          <span>{{gItem.PriceLable}}</span>
+                                          <span class="attr-text">{{gItem.Attributes == null ? '':gItem.Attributes}}</span>
+                                          <span class="modify">
+                                            <i
+                                              class="cut"
+                                              @click="modifyQuantityEvent(gItem.UniqueId, '', gItem.Quantity, 0)"
+                                            >-</i>
+                                            <input class="input" :value="gItem.Quantity" disabled />
+                                            <i
+                                              class="add"
+                                              @click="modifyQuantityEvent(gItem.UniqueId, '', gItem.Quantity, 1)"
+                                            >+</i>
+                                          </span>
+                                        </p>
+                                      </template>
+                                      <div class="g-price">
+                                        <div class="price">
+                                          <em class="unit">¥</em>
+                                          <b>{{gItem.Price}}</b>
+                                          <div :class="{tag: true, vip: gItem.PriceLable == '会员价'}">
+                                            <img
+                                              v-if="gItem.PriceLable == '会员价'"
+                                              :src="'/static/images/level_0'+ model.RoleId + '.jpg'"
+                                            />
+                                            <span class="span-label">{{gItem.PriceLable}}</span>
+                                          </div>
                                         </div>
-                                      </div>
-                                      <div class="promotion">
-                                        <span v-if="gItem.IsNewMemberPromotion" class="tag">新人专享价</span>
-                                        <span
-                                          v-if="gItem.LimitQuantity > 0 && !gItem.IsNewMemberPromotion"
-                                          class="tag"
-                                        >限购{{gItem.LimitQuantity}}件</span>
-                                        <span
-                                          v-if="gItem.ReductionPrice > 0"
-                                          class="tag"
-                                        >比加入时降了{{gItem.ReductionPrice}}元</span>
+                                        <div class="promotion">
+                                          <span v-if="gItem.IsNewMemberPromotion" class="tag">新人专享价</span>
+                                          <span
+                                            v-if="gItem.LimitQuantity > 0 && !gItem.IsNewMemberPromotion"
+                                            class="tag"
+                                          >限购{{gItem.LimitQuantity}}件</span>
+                                          <span
+                                            v-if="gItem.ReductionPrice > 0"
+                                            class="tag"
+                                          >比加入时降了{{gItem.ReductionPrice}}元</span>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                              <!-- 买送 -->
-                              <template v-if="gItem.FreeGifts != null && gItem.FreeGifts.length > 0">
-                                <p
-                                  class="repurchase-box"
-                                  v-for="(fItem, fidx) in gItem.FreeGifts"
-                                  :key="fItem.UniqueId+fidx"
-                                >
-                                  <span class="tag">买送</span>
-                                  <template v-if="gItem.FreeGifts.length > 1">
-                                    <span class="title">该品买就送{{fItem.GoodsName}}等{{gItem.FreeGifts.length}}种商品</span>
-                                    <a class="link" @click="editCartItemEvent(fItem.UniqueId, '', '', 0)">去看看></a>
-                                  </template>
-                                  <template v-else-if="fItem.IsSpecificationGoods">
-                                    <span class="title">该品买就送{{fItem.GoodsName}}</span>
-                                    <template
-                                      v-if="fItem.Specifications != null && fItem.Specifications.length > 0"
-                                    >
-                                      <span v-for="spItem in fItem.Specifications" :key="spItem">{{spItem}}</span>
+                                <!-- 买送 -->
+                                <template v-if="gItem.FreeGifts != null && gItem.FreeGifts.length > 0">
+                                  <p
+                                    class="repurchase-box"
+                                    v-for="(fItem, fidx) in gItem.FreeGifts"
+                                    :key="fItem.UniqueId+fidx"
+                                  >
+                                    <span class="tag">买送</span>
+                                    <template v-if="gItem.FreeGifts.length > 1">
+                                      <span class="title">该品买就送{{fItem.GoodsName}}等{{gItem.FreeGifts.length}}种商品</span>
+                                      <a class="link" @click="editCartItemEvent(fItem.UniqueId, '', '', 0)">去看看></a>
                                     </template>
-                                    <span class="num">×{{fItem.TotalQuantity}}</span>
-                                    <a class="link">选属性></a>
-                                  </template>
-                                  <template v-else>
-                                    <span class="title">该品买就送{{fItem.GoodsName}}</span>
-                                    <span class="num">×{{fItem.TotalQuantity}}</span>
-                                    <a class="link" @click="editCartItemEvent(fItem.UniqueId, '', '', 0)">去看看></a>
-                                  </template>
-                                </p>
-                              </template>
+                                    <template v-else-if="fItem.IsSpecificationGoods">
+                                      <span class="title">该品买就送{{fItem.GoodsName}}</span>
+                                      <template
+                                        v-if="fItem.Specifications != null && fItem.Specifications.length > 0"
+                                      >
+                                        <span v-for="spItem in fItem.Specifications" :key="spItem">{{spItem}}</span>
+                                      </template>
+                                      <span class="num">×{{fItem.TotalQuantity}}</span>
+                                      <a class="link">选属性></a>
+                                    </template>
+                                    <template v-else>
+                                      <span class="title">该品买就送{{fItem.GoodsName}}</span>
+                                      <span class="num">×{{fItem.TotalQuantity}}</span>
+                                      <a class="link" @click="editCartItemEvent(fItem.UniqueId, '', '', 0)">去看看></a>
+                                    </template>
+                                  </p>
+                                </template>
 
-                              <!-- 换购 -->
-                              <template
-                                v-if="gItem.FreedomCollocations != null && gItem.FreedomCollocations.length > 0"
-                              >
-                                <p
-                                  class="repurchase-box"
-                                  v-for="fItem in gItem.FreedomCollocations"
-                                  :key="fItem.UniqueId"
+                                <!-- 换购 -->
+                                <template
+                                  v-if="gItem.FreedomCollocations != null && gItem.FreedomCollocations.length > 0"
                                 >
-                                  <span class="tag">换购</span>
-                                  <span class="title">
-                                    已
-                                    <b>+{{fItem.SumPrice}}</b>
-                                    元，换购{{fItem.GoodsName}}
-                                  </span>
-                                  <span class="num">×{{fItem.SumQuantity}}</span>
+                                  <p
+                                    class="repurchase-box"
+                                    v-for="fItem in gItem.FreedomCollocations"
+                                    :key="fItem.UniqueId"
+                                  >
+                                    <span class="tag">换购</span>
+                                    <span class="title">
+                                      已
+                                      <b>+{{fItem.SumPrice}}</b>
+                                      元，换购{{fItem.GoodsName}}
+                                    </span>
+                                    <span class="num">×{{fItem.SumQuantity}}</span>
+                                    <a
+                                      :href="'/pages/cart/addBuy/main?shopId='+shopId+'&uniqueId='+gItem.UniqueId"
+                                      class="link"
+                                    >去切换></a>
+                                  </p>
+                                </template>
+                                <p class="repurchase-tips" v-else-if="gItem.IsFillFreedomCollocation">
+                                  <span class="tag">加钱换购</span>
+                                  <span class="title">该商品参与加钱换购</span>
                                   <a
                                     :href="'/pages/cart/addBuy/main?shopId='+shopId+'&uniqueId='+gItem.UniqueId"
                                     class="link"
-                                  >去切换></a>
+                                  >去换购></a>
+                                </p>
+                            </view>
+                          </i-swipeout>
+                      </li>
+                    </ul>
+                  </div>
+
+            </div>
+          </template>
+
+          <!-- 普通商品 -->
+          <template v-if="cartItem.NormalGoods != null && cartItem.NormalGoods.length > 0">
+            <div class="cart-list-box" :key='idx'>
+              <ul class="goods-list">
+                <li
+                  class="g-item"
+                  v-for="(nItem, nidx) in cartItem.NormalGoods"
+                  :key="nItem.UniqueId+nidx"
+                >
+                    <i-swipeout i-class="i-swipeout-demo-item" :actions="actions" @change="handleDelete(nItem.UniqueId)" :toggle="toggle" :unclosable="unclosable">
+                      <view slot="content">
+                        <div class="goods-box">
+                          <span class="check-btn" v-if="nItem.IsDisplayDelete">
+                            <img
+                              v-if="nItem.IsSelected"
+                              src="/static/images/icon_checked.png"
+                              class="icon"
+                              @click="unSelectGoodsEvent(nItem.UniqueId)"
+                            />
+                            <img
+                              v-else
+                              src="/static/images/icon_no_checked.png"
+                              class="icon"
+                              @click="selectGoodsEvent(nItem.UniqueId)"
+                            />
+                          </span>
+                          <div class="g-info">
+                            <a :href="'/pages/product/index/main?seocode='+nItem.SeoCode+'&isComp=false'">
+                              <img class="g-img" :src="nItem.ImageUrl" />
+                            </a>
+                            <div class="info">
+                              <a
+                                :href="'/pages/product/index/main?seocode='+nItem.SeoCode+'&isComp=false'"
+                                class="g-name"
+                              >
+                                <span class="oversea-tag" v-if="shopId == 2">海淘</span>
+                                {{nItem.GoodsName}}
+                              </a>
+                              <!-- 有属性商品光度和数量 -->
+                              <template
+                                v-if="nItem.SpecificationItems != null && nItem.SpecificationItems.length > 0"
+                              >
+                                <p class="g-attr" v-if="nItem.BuyType == 3">
+                                  <span
+                                    class="attr-text"
+                                  >{{nItem.Attributes == null ? '' : nItem.Attributes}}</span>
+                                  <span class="modify">
+                                    <i
+                                      class="cut"
+                                      @click="modifyQuantityEvent(nItem.UniqueId, '', nItem.Quantity, 0)"
+                                    >-</i>
+                                    <input class="input" :value="nItem.Quantity" disabled />
+                                    <i
+                                      class="add"
+                                      @click="modifyQuantityEvent(nItem.UniqueId, '', nItem.Quantity, 1)"
+                                    >+</i>
+                                  </span>
+                                </p>
+                                <p
+                                  class="g-attr"
+                                  v-for="spItem in nItem.SpecificationItems"
+                                  :key="spItem.RealGoodsId"
+                                >
+                                  <span
+                                    :class="{attr: true, line: nItem.BuyType == 3}"
+                                    @click="editCartItemEvent(nItem.UniqueId, nItem.GoodsId, spItem.RealGoodsId, spItem.Quantity)"
+                                  >
+                                    <em
+                                      class="text"
+                                    >{{spItem.Specification}} {{spItem.AnotherName == null ? '' : spItem.AnotherName}}</em>
+                                    <img
+                                      class="icon"
+                                      v-if="nItem.BuyType != 3"
+                                      src="/static/images/icon_attr_down.png"
+                                    />
+                                    <em v-else>×{{spItem.Quantity}}</em>
+                                  </span>
+                                  <span
+                                    class="modify"
+                                    v-if="nItem.IsDisplayChangeQuantity && nItem.BuyType != 3"
+                                  >
+                                    <i
+                                      class="cut"
+                                      @click="modifyQuantityEvent(nItem.UniqueId, spItem.RealGoodsId, spItem.Quantity, 0)"
+                                    >-</i>
+                                    <input class="input" :value="spItem.Quantity" disabled />
+                                    <i
+                                      class="add"
+                                      @click="modifyQuantityEvent(nItem.UniqueId, spItem.RealGoodsId, spItem.Quantity, 1)"
+                                    >+</i>
+                                  </span>
                                 </p>
                               </template>
-                              <p class="repurchase-tips" v-else-if="gItem.IsFillFreedomCollocation">
-                                <span class="tag">加钱换购</span>
-                                <span class="title">该商品参与加钱换购</span>
-                                <a
-                                  :href="'/pages/cart/addBuy/main?shopId='+shopId+'&uniqueId='+gItem.UniqueId"
-                                  class="link"
-                                >去换购></a>
-                              </p>
+                              <!-- 无属性商品 -->
+                              <template v-else>
+                                <p
+                                  class="g-attr"
+                                  v-if="nItem.IsDisplayChangeQuantity && nItem.BuyType != 3"
+                                >
+                                  <span class="attr-text">{{nItem.Attributes == null ? '':nItem.Attributes}}</span>
+                                  <span class="modify">
+                                    <i
+                                      class="cut"
+                                      @click="modifyQuantityEvent(nItem.UniqueId, '', nItem.Quantity, 0)"
+                                    >-</i>
+                                    <input class="input" :value="nItem.Quantity" disabled />
+                                    <i
+                                      class="add"
+                                      @click="modifyQuantityEvent(nItem.UniqueId, '', nItem.Quantity, 1)"
+                                    >+</i>
+                                  </span>
+                                </p>
+                              </template>
+                              <div class="g-price">
+                                <div class="price">
+                                  <template v-if="nItem.IsScore">
+                                    <b>{{nItem.BuyScore}}积分</b>
+                                  </template>
+                                  <template v-else>
+                                    <em class="unit">¥</em>
+                                    <b>{{nItem.Price}}</b>
+                                    <div :class="{tag: true, vip: nItem.PriceLable == '会员价'}">
+                                      <img
+                                        v-if="nItem.PriceLable == '会员价'"
+                                        :src="'/static/images/level_0'+ model.RoleId + '.jpg'"
+                                      />
+                                      <span class="span-label">{{nItem.PriceLable}}</span>
+                                    </div>
+                                  </template>
+                                </div>
+                                <div class="promotion">
+                                  <span v-if="nItem.IsNewMemberPromotion" class="tag">新人专享价</span>
+                                  <span
+                                    v-if="nItem.LimitQuantity > 0 && !nItem.IsNewMemberPromotion"
+                                    class="tag"
+                                  >限购{{nItem.LimitQuantity}}件</span>
+                                  <span
+                                    v-if="nItem.ReductionPrice > 0"
+                                    class="tag"
+                                  >比加入时降了{{nItem.ReductionPrice}}元</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- 买送 -->
+                        <template v-if="nItem.FreeGifts != null && nItem.FreeGifts.length > 0">
+                          <p
+                            class="repurchase-box"
+                            v-for="(fItem, fidx) in nItem.FreeGifts"
+                            :key="fItem.UniqueId+fidx"
+                          >
+                            <span class="tag">买送</span>
+                            <template v-if="nItem.FreeGifts.length > 1">
+                              <span class="title">该品买就送{{fItem.GoodsName}}等{{nItem.FreeGifts.length}}种商品</span>
+                              <a class="link" @click="editCartItemEvent(fItem.UniqueId, '', '', 0)">去看看></a>
+                            </template>
+                            <template v-else-if="fItem.IsSpecificationGoods">
+                              <span class="title">该品买就送{{fItem.GoodsName}}</span>
+                              <template
+                                v-if="fItem.Specifications != null && fItem.Specifications.length > 0"
+                              >
+                                <span v-for="spItem in fItem.Specifications" :key="spItem">{{spItem}}</span>
+                              </template>
+                              <span class="num">×{{fItem.TotalQuantity}}</span>
+                              <a class="link">选属性></a>
+                            </template>
+                            <template v-else>
+                              <span class="title">该品买就送{{fItem.GoodsName}}</span>
+                              <span class="num">×{{fItem.TotalQuantity}}</span>
+                              <a class="link" @click="editCartItemEvent(fItem.UniqueId, '', '', 0)">去看看></a>
+                            </template>
+                          </p>
+                        </template>
+                        <!-- 换购 -->
+                        <template
+                          v-if="nItem.FreedomCollocations != null && nItem.FreedomCollocations.length > 0"
+                        >
+                          <p
+                            class="repurchase-box"
+                            v-for="fItem in nItem.FreedomCollocations"
+                            :key="fItem.UniqueId"
+                          >
+                            <span class="tag">换购</span>
+                            <span class="title">
+                              已
+                              <b>+{{fItem.SumPrice}}</b>
+                              元，换购{{fItem.GoodsName}}
+                            </span>
+                            <span class="num">×{{fItem.SumQuantity}}</span>
+                            <a
+                              :href="'/pages/cart/addBuy/main?shopId='+shopId+'&uniqueId='+nItem.UniqueId"
+                              class="link"
+                            >去切换></a>
+                          </p>
+                        </template>
+                        <p class="repurchase-tips" v-else-if="nItem.IsFillFreedomCollocation">
+                          <span class="tag">加钱换购</span>
+                          <span class="title">该商品参与加钱换购</span>
+                          <a
+                            :href="'/pages/cart/addBuy/main?shopId='+shopId+'&uniqueId='+nItem.UniqueId"
+                            class="link"
+                          >去换购></a>
+                        </p>
+                        </view>
+                    </i-swipeout>
+                </li>
+              </ul>
+            </div>
+
+          </template>
+
+          <!-- 满赠换专区 -->
+          <template
+            v-if="cartItem.AllExchangeAndGifts != null && cartItem.AllExchangeAndGifts.length > 0 && !isEdit"
+          >
+                <div class="cart-list-box promotion-box" :key='idx'>
+                  <p class="tips">
+                    <span class="title">满赠换专区</span>
+                    <a class="link">可多选</a>
+                  </p>
+                  <ul class="goods-list">
+                    <li
+                      class="g-item"
+                      v-for="(eItem, eidx) in cartItem.AllExchangeAndGifts"
+                      :key="eItem.GoodsId+eidx"
+                    >
+                        <i-swipeout i-class="i-swipeout-demo-item" :actions="actions" @change="handleDelete(eItem.UniqueId)" :toggle="toggle" :unclosable="unclosable">
+                          <view slot="content">
+                                  <div class="goods-box">
+                                    <span class="check-btn">
+                                      <img
+                                        v-if="eItem.IsSelected"
+                                        src="/static/images/icon_checked.png"
+                                        class="icon"
+                                        @click="unSelectGoodsEvent(eItem.UniqueId)"
+                                      />
+                                      <img
+                                        v-else-if="!eItem.IsSelected && eItem.IsSpecificationGoods && eItem.SpecificationItems == null"
+                                        src="/static/images/icon_no_checked.png"
+                                        class="icon"
+                                        @click="editCartItemEvent(eItem.UniqueId, '', '', 1)"
+                                      />
+                                      <img
+                                        v-else-if="!eItem.IsSelected && !eItem.IsSpecificationGoods && eItem.TotalQuantity == 0"
+                                        src="/static/images/icon_no_checked.png"
+                                        class="icon"
+                                        @click="editCartItemEvent(eItem.UniqueId, '', '', 1)"
+                                      />
+                                      <img
+                                        v-else
+                                        src="/static/images/icon_no_checked.png"
+                                        class="icon"
+                                        @click="selectGoodsEvent(eItem.UniqueId)"
+                                      />
+                                    </span>
+                                    <div class="g-info">
+                                      <a
+                                        :href="'/pages/product/index/main?seocode='+eItem.SeoCode+'&isComp=false'"
+                                        class="g-name"
+                                      >{{eItem.PromotionTheme}}</a>
+                                      <div class="info-box">
+                                        <img :src="eItem.ImageUrl" class="g-img" />
+                                        <div class="info">
+                                          <!-- 有属性商品 -->
+                                          <template
+                                            v-if="eItem.SpecificationItems != null && eItem.SpecificationItems.length > 0"
+                                          >
+                                            <p
+                                              class="g-attr"
+                                              v-for="spItem in eItem.SpecificationItems"
+                                              :key="spItem.RealGoodsId"
+                                            >
+                                              <span
+                                                class="attr"
+                                                @click="editCartItemEvent(eItem.UniqueId, '', spItem.RealGoodsId, spItem.Quantity)"
+                                              >
+                                                <em
+                                                  class="text"
+                                                >{{spItem.Specification}} {{spItem.AnotherName == null ? '' : spItem.AnotherName}}</em>
+                                                <img class="icon" src="/static/images/icon_attr_down.png" />
+                                              </span>
+                                              <span class="modify">
+                                                <i
+                                                  class="cut"
+                                                  @click="editCartItemEvent(eItem.UniqueId, '', spItem.RealGoodsId, spItem.Quantity)"
+                                                >-</i>
+                                                <input class="input" :value="spItem.Quantity" disabled />
+                                                <i
+                                                  class="add"
+                                                  @click="editCartItemEvent(eItem.UniqueId, '', spItem.RealGoodsId, spItem.Quantity)"
+                                                >+</i>
+                                              </span>
+                                            </p>
+                                          </template>
+                                          <p v-else class="g-attr">
+                                            <span
+                                              class="attr-text"
+                                            >{{eItem.Attributes == null ? '' : eItem.Attributes}}</span>
+                                            <span class="modify">
+                                              <i
+                                                class="cut"
+                                                @click="editCartItemEvent(eItem.UniqueId, '', '00000000-0000-0000-0000-000000000000', eItem.TotalQuantity)"
+                                              >-</i>
+                                              <input class="input" :value="eItem.TotalQuantity" disabled />
+                                              <i
+                                                class="add"
+                                                @click="editCartItemEvent(eItem.UniqueId, '', '00000000-0000-0000-0000-000000000000', eItem.TotalQuantity)"
+                                              >+</i>
+                                            </span>
+                                          </p>
+                                          <div class="g-price">
+                                            <div class="price">
+                                              <em class="unit">¥</em>
+                                              <b>{{eItem.Price}}</b>
+                                              <em class="unit">x1</em>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
                           </view>
                         </i-swipeout>
                     </li>
                   </ul>
                 </div>
 
-          </div>
-        </template>
-
-        <!-- 普通商品 -->
-        <template v-if="cartItem.NormalGoods != null && cartItem.NormalGoods.length > 0">
-          <div class="cart-list-box" :key='idx'>
-            <ul class="goods-list">
-              <li
-                class="g-item"
-                v-for="(nItem, nidx) in cartItem.NormalGoods"
-                :key="nItem.UniqueId+nidx"
-              >
-                  <i-swipeout i-class="i-swipeout-demo-item" :actions="actions" @change="handleDelete(nItem.UniqueId)" :toggle="toggle" :unclosable="unclosable">
-                    <view slot="content">
-                      <div class="goods-box">
-                        <span class="check-btn" v-if="nItem.IsDisplayDelete">
-                          <img
-                            v-if="nItem.IsSelected"
-                            src="/static/images/icon_checked.png"
-                            class="icon"
-                            @click="unSelectGoodsEvent(nItem.UniqueId)"
-                          />
-                          <img
-                            v-else
-                            src="/static/images/icon_no_checked.png"
-                            class="icon"
-                            @click="selectGoodsEvent(nItem.UniqueId)"
-                          />
-                        </span>
-                        <div class="g-info">
-                          <a :href="'/pages/product/index/main?seocode='+nItem.SeoCode+'&isComp=false'">
-                            <img class="g-img" :src="nItem.ImageUrl" />
-                          </a>
-                          <div class="info">
-                            <a
-                              :href="'/pages/product/index/main?seocode='+nItem.SeoCode+'&isComp=false'"
-                              class="g-name"
-                            >
-                              <span class="oversea-tag" v-if="shopId == 2">海淘</span>
-                              {{nItem.GoodsName}}
-                            </a>
-                            <!-- 有属性商品光度和数量 -->
-                            <template
-                              v-if="nItem.SpecificationItems != null && nItem.SpecificationItems.length > 0"
-                            >
-                              <p class="g-attr" v-if="nItem.BuyType == 3">
-                                <span
-                                  class="attr-text"
-                                >{{nItem.Attributes == null ? '' : nItem.Attributes}}</span>
-                                <span class="modify">
-                                  <i
-                                    class="cut"
-                                    @click="modifyQuantityEvent(nItem.UniqueId, '', nItem.Quantity, 0)"
-                                  >-</i>
-                                  <input class="input" :value="nItem.Quantity" disabled />
-                                  <i
-                                    class="add"
-                                    @click="modifyQuantityEvent(nItem.UniqueId, '', nItem.Quantity, 1)"
-                                  >+</i>
-                                </span>
-                              </p>
-                              <p
-                                class="g-attr"
-                                v-for="spItem in nItem.SpecificationItems"
-                                :key="spItem.RealGoodsId"
-                              >
-                                <span
-                                  :class="{attr: true, line: nItem.BuyType == 3}"
-                                  @click="editCartItemEvent(nItem.UniqueId, nItem.GoodsId, spItem.RealGoodsId, spItem.Quantity)"
-                                >
-                                  <em
-                                    class="text"
-                                  >{{spItem.Specification}} {{spItem.AnotherName == null ? '' : spItem.AnotherName}}</em>
-                                  <img
-                                    class="icon"
-                                    v-if="nItem.BuyType != 3"
-                                    src="/static/images/icon_attr_down.png"
-                                  />
-                                  <em v-else>×{{spItem.Quantity}}</em>
-                                </span>
-                                <span
-                                  class="modify"
-                                  v-if="nItem.IsDisplayChangeQuantity && nItem.BuyType != 3"
-                                >
-                                  <i
-                                    class="cut"
-                                    @click="modifyQuantityEvent(nItem.UniqueId, spItem.RealGoodsId, spItem.Quantity, 0)"
-                                  >-</i>
-                                  <input class="input" :value="spItem.Quantity" disabled />
-                                  <i
-                                    class="add"
-                                    @click="modifyQuantityEvent(nItem.UniqueId, spItem.RealGoodsId, spItem.Quantity, 1)"
-                                  >+</i>
-                                </span>
-                              </p>
-                            </template>
-                            <!-- 无属性商品 -->
-                            <template v-else>
-                              <p
-                                class="g-attr"
-                                v-if="nItem.IsDisplayChangeQuantity && nItem.BuyType != 3"
-                              >
-                                <span class="attr-text">{{nItem.Attributes == null ? '':nItem.Attributes}}</span>
-                                <span class="modify">
-                                  <i
-                                    class="cut"
-                                    @click="modifyQuantityEvent(nItem.UniqueId, '', nItem.Quantity, 0)"
-                                  >-</i>
-                                  <input class="input" :value="nItem.Quantity" disabled />
-                                  <i
-                                    class="add"
-                                    @click="modifyQuantityEvent(nItem.UniqueId, '', nItem.Quantity, 1)"
-                                  >+</i>
-                                </span>
-                              </p>
-                            </template>
-                            <div class="g-price">
-                              <div class="price">
-                                <template v-if="nItem.IsScore">
-                                  <b>{{nItem.BuyScore}}积分</b>
-                                </template>
-                                <template v-else>
-                                  <em class="unit">¥</em>
-                                  <b>{{nItem.Price}}</b>
-                                  <div :class="{tag: true, vip: nItem.PriceLable == '会员价'}">
-                                    <img
-                                      v-if="nItem.PriceLable == '会员价'"
-                                      :src="'/static/images/level_0'+ model.RoleId + '.jpg'"
-                                    />
-                                    <span>{{nItem.PriceLable}}</span>
-                                  </div>
-                                </template>
-                              </div>
-                              <div class="promotion">
-                                <span v-if="nItem.IsNewMemberPromotion" class="tag">新人专享价</span>
-                                <span
-                                  v-if="nItem.LimitQuantity > 0 && !nItem.IsNewMemberPromotion"
-                                  class="tag"
-                                >限购{{nItem.LimitQuantity}}件</span>
-                                <span
-                                  v-if="nItem.ReductionPrice > 0"
-                                  class="tag"
-                                >比加入时降了{{nItem.ReductionPrice}}元</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- 买送 -->
-                      <template v-if="nItem.FreeGifts != null && nItem.FreeGifts.length > 0">
-                        <p
-                          class="repurchase-box"
-                          v-for="(fItem, fidx) in nItem.FreeGifts"
-                          :key="fItem.UniqueId+fidx"
-                        >
-                          <span class="tag">买送</span>
-                          <template v-if="nItem.FreeGifts.length > 1">
-                            <span class="title">该品买就送{{fItem.GoodsName}}等{{nItem.FreeGifts.length}}种商品</span>
-                            <a class="link" @click="editCartItemEvent(fItem.UniqueId, '', '', 0)">去看看></a>
-                          </template>
-                          <template v-else-if="fItem.IsSpecificationGoods">
-                            <span class="title">该品买就送{{fItem.GoodsName}}</span>
-                            <template
-                              v-if="fItem.Specifications != null && fItem.Specifications.length > 0"
-                            >
-                              <span v-for="spItem in fItem.Specifications" :key="spItem">{{spItem}}</span>
-                            </template>
-                            <span class="num">×{{fItem.TotalQuantity}}</span>
-                            <a class="link">选属性></a>
-                          </template>
-                          <template v-else>
-                            <span class="title">该品买就送{{fItem.GoodsName}}</span>
-                            <span class="num">×{{fItem.TotalQuantity}}</span>
-                            <a class="link" @click="editCartItemEvent(fItem.UniqueId, '', '', 0)">去看看></a>
-                          </template>
-                        </p>
-                      </template>
-                      <!-- 换购 -->
-                      <template
-                        v-if="nItem.FreedomCollocations != null && nItem.FreedomCollocations.length > 0"
-                      >
-                        <p
-                          class="repurchase-box"
-                          v-for="fItem in nItem.FreedomCollocations"
-                          :key="fItem.UniqueId"
-                        >
-                          <span class="tag">换购</span>
-                          <span class="title">
-                            已
-                            <b>+{{fItem.SumPrice}}</b>
-                            元，换购{{fItem.GoodsName}}
-                          </span>
-                          <span class="num">×{{fItem.SumQuantity}}</span>
-                          <a
-                            :href="'/pages/cart/addBuy/main?shopId='+shopId+'&uniqueId='+nItem.UniqueId"
-                            class="link"
-                          >去切换></a>
-                        </p>
-                      </template>
-                      <p class="repurchase-tips" v-else-if="nItem.IsFillFreedomCollocation">
-                        <span class="tag">加钱换购</span>
-                        <span class="title">该商品参与加钱换购</span>
-                        <a
-                          :href="'/pages/cart/addBuy/main?shopId='+shopId+'&uniqueId='+nItem.UniqueId"
-                          class="link"
-                        >去换购></a>
-                      </p>
-                      </view>
-                  </i-swipeout>
-              </li>
-            </ul>
-          </div>
+          </template>
 
         </template>
-
-        <!-- 满赠换专区 -->
-        <template
-          v-if="cartItem.AllExchangeAndGifts != null && cartItem.AllExchangeAndGifts.length > 0 && !isEdit"
-        >
-              <div class="cart-list-box promotion-box" :key='idx'>
-                <p class="tips">
-                  <span class="title">满赠换专区</span>
-                  <a class="link">可多选</a>
-                </p>
-                <ul class="goods-list">
-                  <li
-                    class="g-item"
-                    v-for="(eItem, eidx) in cartItem.AllExchangeAndGifts"
-                    :key="eItem.GoodsId+eidx"
-                  >
-                      <i-swipeout i-class="i-swipeout-demo-item" :actions="actions" @change="handleDelete(eItem.UniqueId)" :toggle="toggle" :unclosable="unclosable">
-                        <view slot="content">
-                                <div class="goods-box">
-                                  <span class="check-btn">
-                                    <img
-                                      v-if="eItem.IsSelected"
-                                      src="/static/images/icon_checked.png"
-                                      class="icon"
-                                      @click="unSelectGoodsEvent(eItem.UniqueId)"
-                                    />
-                                    <img
-                                      v-else-if="!eItem.IsSelected && eItem.IsSpecificationGoods && eItem.SpecificationItems == null"
-                                      src="/static/images/icon_no_checked.png"
-                                      class="icon"
-                                      @click="editCartItemEvent(eItem.UniqueId, '', '', 1)"
-                                    />
-                                    <img
-                                      v-else-if="!eItem.IsSelected && !eItem.IsSpecificationGoods && eItem.TotalQuantity == 0"
-                                      src="/static/images/icon_no_checked.png"
-                                      class="icon"
-                                      @click="editCartItemEvent(eItem.UniqueId, '', '', 1)"
-                                    />
-                                    <img
-                                      v-else
-                                      src="/static/images/icon_no_checked.png"
-                                      class="icon"
-                                      @click="selectGoodsEvent(eItem.UniqueId)"
-                                    />
-                                  </span>
-                                  <div class="g-info">
-                                    <a
-                                      :href="'/pages/product/index/main?seocode='+eItem.SeoCode+'&isComp=false'"
-                                      class="g-name"
-                                    >{{eItem.PromotionTheme}}</a>
-                                    <div class="info-box">
-                                      <img :src="eItem.ImageUrl" class="g-img" />
-                                      <div class="info">
-                                        <!-- 有属性商品 -->
-                                        <template
-                                          v-if="eItem.SpecificationItems != null && eItem.SpecificationItems.length > 0"
-                                        >
-                                          <p
-                                            class="g-attr"
-                                            v-for="spItem in eItem.SpecificationItems"
-                                            :key="spItem.RealGoodsId"
-                                          >
-                                            <span
-                                              class="attr"
-                                              @click="editCartItemEvent(eItem.UniqueId, '', spItem.RealGoodsId, spItem.Quantity)"
-                                            >
-                                              <em
-                                                class="text"
-                                              >{{spItem.Specification}} {{spItem.AnotherName == null ? '' : spItem.AnotherName}}</em>
-                                              <img class="icon" src="/static/images/icon_attr_down.png" />
-                                            </span>
-                                            <span class="modify">
-                                              <i
-                                                class="cut"
-                                                @click="editCartItemEvent(eItem.UniqueId, '', spItem.RealGoodsId, spItem.Quantity)"
-                                              >-</i>
-                                              <input class="input" :value="spItem.Quantity" disabled />
-                                              <i
-                                                class="add"
-                                                @click="editCartItemEvent(eItem.UniqueId, '', spItem.RealGoodsId, spItem.Quantity)"
-                                              >+</i>
-                                            </span>
-                                          </p>
-                                        </template>
-                                        <p v-else class="g-attr">
-                                          <span
-                                            class="attr-text"
-                                          >{{eItem.Attributes == null ? '' : eItem.Attributes}}</span>
-                                          <span class="modify">
-                                            <i
-                                              class="cut"
-                                              @click="editCartItemEvent(eItem.UniqueId, '', '00000000-0000-0000-0000-000000000000', eItem.TotalQuantity)"
-                                            >-</i>
-                                            <input class="input" :value="eItem.TotalQuantity" disabled />
-                                            <i
-                                              class="add"
-                                              @click="editCartItemEvent(eItem.UniqueId, '', '00000000-0000-0000-0000-000000000000', eItem.TotalQuantity)"
-                                            >+</i>
-                                          </span>
-                                        </p>
-                                        <div class="g-price">
-                                          <div class="price">
-                                            <em class="unit">¥</em>
-                                            <b>{{eItem.Price}}</b>
-                                            <em class="unit">x1</em>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                        </view>
-                      </i-swipeout>
-                  </li>
-                </ul>
-              </div>
-
-        </template>
-
-      </template>
+      </div>
     </article>
     <!-- 底部结算 -->
     <article class="bottom-box" v-if="isHasCartData">

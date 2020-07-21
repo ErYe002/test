@@ -2,12 +2,13 @@
   padding-top: 40px;
   margin-bottom: 50px;
   box-sizing: border-box;
+  background: #f2f2f2;
 }
 .cart_box{
   padding-bottom:49px; 
 }
 .tab-box {
-  background: #000;
+  background: #FF668E;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -29,8 +30,8 @@
       }
       &.current {
         font-weight: bold;
-        border-bottom: 2px solid #cab894;
-        color: #cab894;
+        border-bottom: 2px solid #fff;
+        color: #fff;
       }
     }
   }
@@ -115,7 +116,7 @@
   display: flex;
   align-items: center;
   padding: 0 10px;
-  background: #c9c9cb;
+  background: #F7BACA;
   font-size: 12px;
   .icon-bell {
     display: block;
@@ -144,7 +145,7 @@
   display: flex;
   align-items: center;
   font-size: 12px;
-  background: #f2f2f2;
+  background: #F3E4E8;
   padding: 5px 10px;
   .icon-horn {
     display: block;
@@ -190,13 +191,14 @@
       margin: 0 4px;
     }
     .coupon-btn {
-      color: #cab894;
+      color: #000;
     }
   }
 }
 
 .cart-list-box {
   border-bottom: 10px solid #f0f0f0;
+  background: #fff;
   .tips,
   .repurchase-tips,
   .repurchase-box {
@@ -387,17 +389,23 @@
                     }
                   }
                 }
+                .span-label{
+                  background: #231815;
+                  color: #FAE5AA;
+                  border-radius: 3px;
+                }
               }
               .promotion {
                 display: flex;
                 align-items: center;
                 justify-content: flex-end;
                 .tag {
-                  color: #cab894;
+                  color: #BCB092;
                   font-size: 9px;
                   padding: 1px 2px;
-                  border: 0.5px solid #cab894;
+                  border: 0.5px solid #BCB092;
                   margin: 0 2px;
+                  border-radius: 3px;
                 }
               }
             }
@@ -547,4 +555,7 @@
   padding: 2px 4px;
   margin-right: 3px;
   font-weight: 300;
+}
+.box-good{
+  padding: 0 10px;
 }

@@ -74,6 +74,7 @@
               <div class="again">
                 <button
                     class="kd-btn btn-default btn-small"
+                    @click="buyAgain(item.OrderId)"
                   >再来一单</button>
               </div>
               <ul class="btn-list">
@@ -395,6 +396,11 @@ export default {
     },
     orderImgError(index){
       this.orderList[index].GoodsImageUrl='https://pic.keede.com//app/images/goods_errimg.png';
+    },
+    buyAgain(id){
+      api.buyAginOrder(id).then(({Data})=>{
+        console.log(Data)
+      })
     }
   }
 };

@@ -176,7 +176,7 @@
                 <img class="icon" src="/static/images/home_tuihuan.png" />
                 <p class="text">退换货</p>
               </button>
-              <a v-else @click="toAppTips('可得小程序暂时不支持退换货功能哦，请下载可得眼镜APP使用此功能')" class="link">
+              <a v-else @click="toAppTips('可得小程序暂时不支持退换货功能哦，请下载可得眼镜APP使用此功能或者联系在线客服')" class="link">
                 <span
                   class="dot"
                   v-if="userInfoModel.OrderCountOfCustomerService > 0"
@@ -321,7 +321,7 @@
         </section>
       </section>
     </article>
-    <section class="more-like">
+    <section class="more-like" v-if="goodsList != null && goodsList.length > 0">
       <div class="title">猜你喜欢</div>
       <article class="goods_nav_goods">
         <div class="goods_list">

@@ -1,20 +1,20 @@
 <template>
-  <div>
+  <div class="list-box">
     <view class='list'>
-    <view class='item' v-for="item in addressList" :key="item.ID">
-      <view :class="item.ID == SelectedConsigneeId ? 'choose-btn.active':'choose-btn'" :data-id='item.ID' :data-valid='item.IsValid' @click='saveConsigneeId'></view>
+      <view class='item' v-for="item in addressList" :key="item.ID">
+        <view :class="item.ID == SelectedConsigneeId ? 'choose-btn.active':'choose-btn'" :data-id='item.ID' :data-valid='item.IsValid' @click='saveConsigneeId'></view>
         <view class='info-box' :data-id='item.ID' :data-valid='item.IsValid' @click='saveConsigneeId'>
-          <view class='contact-user'>
-            <text>{{item.ConsigneeName}}</text>
-            <text class='phone'>{{item.ContactMobile}}</text>
-            <block v-if='!item.IsValid'>
-              <text class='default'>地址不合法，请修改</text>
-            </block>
-            <block wx:else>
-              <text class='default' v-if='item.IsDefault'>默认</text>
-            </block>
-          </view>
-          <view class='contact-address'>{{item.Address}}</view>
+            <view class='contact-user'>
+              <text>{{item.ConsigneeName}}</text>
+              <text class='phone'>{{item.ContactMobile}}</text>
+              <block v-if='!item.IsValid'>
+                <text class='default'>地址不合法，请修改</text>
+              </block>
+              <block wx:else>
+                <text class='default' v-if='item.IsDefault'>默认</text>
+              </block>
+            </view>
+            <view class='contact-address'>{{item.Address}}</view>
         </view>
         <view class='edit-btn' @click='toEdit' :data-id='item.ID'>
           <image src="/static/images/icon_edit.png" class="icon" />
@@ -84,8 +84,20 @@ export default {
 page {
   height: 100%;
 }
+.list-box{
+  padding: 10px;
+  background: #f2f2f2;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 50px;
+  overflow-y: scroll;
+}
 .list .item {
-  border-bottom: 1rpx solid #dcdcdc;
+  background: #fff;
+  border-radius: 10px;
+  margin-bottom: 10px;
   padding: 30rpx;
   box-sizing: border-box;
   font-size: 28rpx;

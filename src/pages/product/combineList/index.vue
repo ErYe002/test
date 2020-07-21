@@ -115,7 +115,7 @@ export default {
     box-sizing: border-box;
     .uil_titlecon {
       overflow: hidden;
-      border-bottom: dashed 1px #dcdcdc;
+      // border-bottom: dashed 1px #dcdcdc;
       padding-left: 1em;
       padding-right: 1em;
       .ui_listtitle {
@@ -148,9 +148,9 @@ export default {
               margin-left: 2%;
             }
             ._i {
-              background: #EB5255;
+              border: 0.5px solid #7A7A7A;
               padding: 2px 6px;
-              color: #fff;
+              color: #7A7A7A;
               margin-left: 2%;
               font-size: 11px;
               white-space: nowrap;
@@ -212,7 +212,7 @@ export default {
         .cgs_prs {
           line-height: 34px;
           font-size: 16px;
-          color: #EB5255;;
+          color: #000000;
           font-weight: 400;
         }
       }

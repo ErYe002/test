@@ -134,6 +134,7 @@ let MIXIN = {
     },
     //可得行为统计
     $onInformationCollection(data){
+      data.token =  wx.getStorageSync('DeviceID')
       api.onInformationCollection([data])
     }
   }

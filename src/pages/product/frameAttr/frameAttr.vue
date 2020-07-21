@@ -1,19 +1,25 @@
 <template>
-  <article>
+  <article class="contain">
     <!--最顶部选择-->
     <section class="out-box">
       <div class="black_line">
-        Step1 请确认购买需求
+        <span>Step1</span> 请确认购买需求
       </div>
       <div class="frame_buy_type">
-        <img v-if="buyType===1" src='/static/images/a_frame_select.png' class="frame_bug_frame_and_glass"
-             @click="changeTypeEvent(1)"/>
-        <img v-else="buyType===2" src='/static/images/a_frame_unselect.png' class="frame_bug_frame_and_glass"
-             @click="changeTypeEvent(1)"/>
-        <img v-if="buyType===2" src='/static/images/b_frame_select.png' class="frame_bug_frame_and_glass"
-             @click="changeTypeEvent(2)"/>
-        <img v-else="buyType===1" src='/static/images/b_frame_unselect.png' class="frame_bug_frame_and_glass"
-             @click="changeTypeEvent(2)"/>
+        <div @click="changeTypeEvent(1)" class="frame_buy_type_box">
+            <img v-if="buyType===1" src='/static/images/frameA_light.png' class="frame_bug_frame_and_glass"
+             />
+             <img v-else src='/static/images/frameA_gray.png' class="frame_bug_frame_and_glass"
+             />
+             <span :class="{'active':buyType===1}">需要镜架+镜片</span>
+        </div>
+        <div @click="changeTypeEvent(2)" class="frame_buy_type_box">
+            <img v-if="buyType===2" src='/static/images/frameB_light.png' class="frame_bug_frame_and_glass"
+             />
+             <img v-else src='/static/images/frameB_gray.png' class="frame_bug_frame_and_glass"
+             />
+             <span :class="{'active':buyType===2}">仅需要镜架</span>
+        </div>
       </div>
       <!-- <div class="line"/> -->
     </section>
@@ -34,7 +40,7 @@
     <section class="out-box" v-if="buyType===1">
     <!--验光单选择-->
     <div class="black_line" v-if="buyType===1">
-      Step2 请选择光度
+      <span>Step2</span> 请选择光度
     </div>
 
       <section class="not_choose_gd_layout" v-if="buyType===1">
@@ -77,33 +83,38 @@
     </section>
     <!--精品选择-->
     <section v-if="buyType===1&& groupGlassData.length>0" class="out-box">
-      <div class="black_line">
-        Step3 请选择镜片
-      </div>
-      <div class="view_chose_glass_layout">
-        <a :class="glassBtnCanClick?'btn_chose_glass': 'btn_chose_glass disable'" @click="startGlassAct"
-           v-if="!glassSelected">
-          选择镜片
-        </a>
-
-        <div class="glass-choosed-layout" v-else>
-          <img :src="glassBean.ImageUrl" class="glass-image"/>
-          <div class="mid-text-view">
-            <div class="glass-text">
-              {{glassBean.GoodsName}}
-            </div>
-
-            <div class="text-pair">
-              一对 ￥{{glassBean.SellPrice}}
-            </div>
-          </div>
-
-          <div class="text-change" @click="startGlassAct">
-            更换 >
-          </div>
+      <div class="black_line jingpian">
+        <i><span>Step3</span> 请选择镜片</i>
+        <div class="view_chose_glass_layout">
+          <a :class="glassBtnCanClick?'btn_chose_glass': 'btn_chose_glass disable'" @click="startGlassAct"
+            v-if="!glassSelected">
+            选择镜片
+          </a>
         </div>
       </div>
-      <div class="line"/>
+        <div class="view_chose_glass_layout">
+          <!-- <a :class="glassBtnCanClick?'btn_chose_glass': 'btn_chose_glass disable'" @click="startGlassAct"
+            v-if="!glassSelected">
+            选择镜片
+          </a> -->
+
+          <div class="glass-choosed-layout" v-if="glassSelected">
+            <img :src="glassBean.ImageUrl" class="glass-image"/>
+            <div class="mid-text-view">
+              <div class="glass-text">
+                {{glassBean.GoodsName}}
+              </div>
+
+              <div class="text-pair">
+                一对 ￥{{glassBean.SellPrice}}
+              </div>
+            </div>
+
+            <div class="text-change" @click="startGlassAct">
+              更换 >
+            </div>
+          </div>
+        </div>
     </section>
     <div class="contact-service-layout">
       <div>
@@ -497,41 +508,69 @@
 </script>
 
 <style lang="less">
+.contain{
+  background: #f2f2f2;
+  position: fixed;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
 .out-box{
-      border: 1px solid #B9B9B9;
+    background: #fff;
     margin: 10px;
     border-radius: 20px;
     overflow: hidden;
     box-sizing: border-box;
 }
+.jingpian{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 40px !important;
+}
   .black_line {
     width: 100%;
     height: 26px;
     line-height: 26px;
-    color: #ffffff;
+    color: #000;
     font-size: 13px;
-    background: #CAB894;
+    padding: 5px;
     // margin-top: 20px;
     text-indent: 1em;
+    span{
+      font-weight: bold;
+    }
   }
 
   .frame_buy_type {
     width: 100%;
-    height: 86px;
+    height: 70px;
     display: flex;
-
+    border-top: 0.5px solid #CCCCCC;
+    box-sizing: border-box;
     align-items: center;
-
-    .frame_bug_frame_and_glass {
+    .frame_buy_type_box{
       width: 50%;
       height: 45px;
-      margin: 0 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9C9C9E;
+      box-sizing: border-box;
+      .frame_bug_frame_and_glass{
+        width: 26.5px;
+        height: 26.5px;
+      }
+      &:first-child{
+        border-right: 0.5px solid #CCCCCC;
+      }
+      span{
+        margin-left: 5px;
+      }
     }
-
-    .frame_only_buy_frame {
-      width: 50%;
-      height: 45px;
-      margin: 0 15px;
+    .active{
+      color: #BCB092;
     }
   }
 
@@ -544,7 +583,7 @@
   .btn_chose_glass {
     background: #cab894;
     color: #fff;
-    height: 36px;
+    height: 30px;
     width: 100%;
     font-size: 15px;
     display: flex;
@@ -572,9 +611,10 @@
   }
 
   .not_choose_gd_layout {
-
+    background: #f2f2f2;
     padding: 0 15px 10px 15px;
-
+    margin: 5px;
+    border-radius: 20px;
     .frame_old_buy_gd_net_select_layout {
       display: flex;
       flex-direction: row;
@@ -599,6 +639,7 @@
       color: #b6b6b6;
       align-items: center;
       justify-content: center;
+      background: #fff;
       &.black {
         color: black;
       }
@@ -626,10 +667,10 @@
       align-items: center;
       justify-content: center;
       &.black {
-        background-color: #CAB894;
+        background-color: #000;
       }
       &.gold {
-        background-color: #A74C2D;
+        background-color: #BCB092;
       }
 
     }

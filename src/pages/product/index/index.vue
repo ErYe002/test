@@ -498,56 +498,240 @@
           </div>
         </div>
       </div>
-      <div :class="{'promotionBox':true,'TOP':true,'haitaobox':Data.GoodsBase.ShopId==2}" v-if="Data.Attributes!=null && Data.Attributes.length> 0">
-        <div class="blackLine">
-         <span class="title">● 光度及数量</span></div>
-        <div class="xuanGou" v-if="Data.GoodsBase.IsSpecificationGoods">
-          <div class="xuangou-box">
+      <div v-if="Data.GoodsBase.GoodsType!=4">
+        <div :class="{'promotionBox':true,'TOP':true,'haitaobox':Data.GoodsBase.ShopId==2}" v-if="Data.Attributes!=null && Data.Attributes.length> 0">
+          <div class="blackLine" v-if="Data.GoodsBase.IsSpecificationGoods">
+            <span class="title">● 光度及数量</span>
+          <!-- <span class="title" v-else>● 数量</span> -->
+          </div>
+          <block v-if="currentGoodsType!==0">
+            <div class="xuanGou" v-if="Data.GoodsBase.IsSpecificationGoods">
+              <div class="xuangou-box">
+                <block v-if="isLogin">
+                    <block v-if="currentGoodsType===2">
+                      <div class="gd-choose-layout">
+                        <div class="text-eye">
+                          右眼R
+                        </div>
+
+                        <div class="choose-gd-click-layout" @click="openGdSelectPop('R')">
+                          <div class="text-gd-show" v-if="GoodsFields.length===1">
+                            {{postShowDouble.sphR===''?'请选择光度':'光度: '+postShowDouble.sphR}}
+                          </div>
+                          <div class="text-gd-show" v-if="GoodsFields.length>1">
+                            {{postShowDouble.sphR===''?'请选择光度':('光度: '+postShowDouble.sphR+' 散光: '+postShowDouble.cylR + ' 轴位: ' +
+                            postShowDouble.axisR)}}
+                          </div>
+                          <img src="/static/images/icon_attr_down.png" class="icon-arr-down"/>
+                        </div>
+                        <div style="display: flex;">
+                          <span  class="change-num-btn" @click="numchangeEvent('R',-1)">-</span>
+                          <input type="tel" :value="rightNum" v-model="rightNum" autocomplete="off"
+                                class="input-only-buy-num"/>
+                          <span class="change-num-btn" @click="numchangeEvent('R',1)">+</span>
+                        </div>
+                      </div>
+                      <div class="gd-choose-layout">
+                        <div class="text-eye">
+                          左眼L
+                        </div>
+
+                        <div class="choose-gd-click-layout" @click="openGdSelectPop('L')">
+                          <div class="text-gd-show" v-if="GoodsFields.length===1">
+                            {{postShowDouble.sphL===''?'请选择光度':'光度: '+postShowDouble.sphL}}
+                          </div>
+                          <div class="text-gd-show" v-if="GoodsFields.length>1">
+                            {{postShowDouble.sphL===''?'请选择光度':('光度: '+postShowDouble.sphL+' 散光: '+postShowDouble.cylL + ' 轴位: ' +
+                            postShowDouble.axisL)}}
+                          </div>
+                          <img src="/static/images/icon_attr_down.png" class="icon-arr-down"/>
+                        </div>
+                        <div style="display: flex;">
+                          <span  class="change-num-btn" @click="numchangeEvent('L',-1)">-</span>
+                          <input type="tel" :value="leftNum" v-model="leftNum" autocomplete="off"
+                                class="input-only-buy-num"/>
+                          <span  class="change-num-btn" @click="numchangeEvent('L',1)">+</span>
+                        </div>
+                      </div>
+                    </block>
+                    <block v-if="currentGoodsType===1">
+                      <div class="gd-choose-layout">
+                        <div class="text-eye">
+                          光度
+                        </div>
+
+                        <div class="choose-gd-click-layout" @click="openGdSelectPop('S')">
+                          <div class="text-gd-show" v-if="GoodsFields.length===1">
+                            {{postShowSingle.sph===''?'请选择光度':postShowSingle.sph}}
+                          </div>
+                          <div class="text-gd-show" v-if="GoodsFields.length>1">
+                            {{postShowSingle.sph===''?'请选择光度':('光度 '+postShowSingle.sph+' 散光 '+postShowSingle.cyl + ' 轴位 ' +
+                            postShowSingle.axis)}}
+                          </div>
+                          <img src="/static/images/icon_attr_down.png" class="icon-arr-down"/>
+                        </div>
+                        <div style="display: flex;">
+                          <img src="/static/images/cart_sub_icon.png" class="change-num-btn" @click="numchangeEvent('S',-1)"/>
+                          <input type="tel" :value="singleNum" v-model="singleNum" autocomplete="off"
+                                class="input-only-buy-num"/>
+                          <img src="/static/images/cart_add_icon.png" class="change-num-btn" @click="numchangeEvent('S',1)"/>
+                        </div>
+                      </div>
+                    </block>
+                </block>
+                <block v-else>
+                    <button
+                      class="btn"
+                      open-type="getUserInfo"
+                      @getuserinfo="loginEvent"
+                    >
+                      <div class="gd-choose-layout">
+                          <div class="text-eye">
+                            右眼R
+                          </div>
+
+                          <div class="choose-gd-click-layout" >
+                            <div class="text-gd-show" >
+                              请选择光度
+                            </div>
+                            <img src="/static/images/icon_attr_down.png" class="icon-arr-down"/>
+                          </div>
+                          <div style="display: flex;">
+                            <span  class="change-num-btn">-</span>
+                            <input type="tel" :value="rightNum" v-model="rightNum" autocomplete="off"
+                                  class="input-only-buy-num"/>
+                            <span class="change-num-btn">+</span>
+                          </div>
+                      </div>
+                      <div class="gd-choose-layout">
+                        <div class="text-eye">
+                          左眼L
+                        </div>
+
+                        <div class="choose-gd-click-layout">
+                          <div class="text-gd-show">
+                            请选择光度
+                          </div>
+                          <img src="/static/images/icon_attr_down.png" class="icon-arr-down"/>
+                        </div>
+                        <div style="display: flex;">
+                          <span  class="change-num-btn">-</span>
+                          <input type="tel" :value="leftNum" v-model="leftNum" autocomplete="off"
+                                class="input-only-buy-num"/>
+                          <span  class="change-num-btn" >+</span>
+                        </div>
+                      </div>
+                    </button>
+                </block>
+              </div>
+              <div class="dshsBox" @click="_showDSHS()">
+                <img src="/static/images/icon-good-eye.png" />
+                <!-- <div>度数换算</div> -->
+              </div>
+            </div>
+          </block>
+          <block v-if="currentGoodsType==0">
+            <div class="xuanGou" v-if="Data.GoodsBase.IsSpecificationGoods">
+              <div class="xuangou-box">
+                <block v-if="isLogin">
+                  <div class="no-property-layout">
+                    <div style="display: flex;flex: 1">
+
+                    </div>
+                    <div style="display: flex;">
+                      <img src="/static/images/cart_sub_icon.png" class="change-num-btn" @click="numchangeEvent('N',-1)"/>
+                      <input type="tel" :value="noPropertyQuantity" v-model="noPropertyQuantity" autocomplete="off"
+                            class="input-only-buy-num"/>
+                      <img src="/static/images/cart_add_icon.png" class="change-num-btn" @click="numchangeEvent('N',1)"/>
+                    </div>
+                  </div>
+                </block>
+                <block v-else>
+                    <button
+                      class="btn"
+                      open-type="getUserInfo"
+                      @getuserinfo="loginEvent"
+                    >
+                      <div class="gd-choose-layout">
+                          <div class="text-eye">
+                            右眼R
+                          </div>
+
+                          <div class="choose-gd-click-layout" >
+                            <div class="text-gd-show">
+                            请选择光度
+                            </div>
+                            <img src="/static/images/icon_attr_down.png" class="icon-arr-down"/>
+                          </div>
+                          <div style="display: flex;">
+                            <span  class="change-num-btn">-</span>
+                            <input type="tel" :value="rightNum" v-model="rightNum" autocomplete="off"
+                                  class="input-only-buy-num"/>
+                            <span class="change-num-btn" >+</span>
+                          </div>
+                      </div>
+                      <div class="gd-choose-layout">
+                        <div class="text-eye">
+                          左眼L
+                        </div>
+
+                        <div class="choose-gd-click-layout" >
+                          <div class="text-gd-show">
+                            请选择光度
+                          </div>
+                          <img src="/static/images/icon_attr_down.png" class="icon-arr-down"/>
+                        </div>
+                        <div style="display: flex;">
+                          <span  class="change-num-btn" >-</span>
+                          <input type="tel" :value="leftNum" v-model="leftNum" autocomplete="off"
+                                class="input-only-buy-num"/>
+                          <span  class="change-num-btn" >+</span>
+                        </div>
+                      </div>
+                    </button>
+                </block>
+              </div>
+              <div class="dshsBox" v-if="Data.GoodsBase.IsSpecificationGoods" @click="_showDSHS()">
+                <img src="/static/images/icon-good-eye.png" />
+              </div>
+            </div>
+          </block>
+          <div class="canshu-box" v-if="Data.GoodsBase.ShopId==1" @click="Data.isComp&&Data.Items!=null&&Data.Items[0]!=null&&Data.Items[0].IsSpecificationGoods?_showCanShu():_showCanShu2()">
+            <span class="canshu">参 数<text>商品编码 品牌 定牌...</text></span><span class="icon">></span>
+          </div>
+        </div>
+      </div>
+      <div v-if='Data.GoodsBase.GoodsType==4'>
+        <div :class="{'promotionBox':true,'TOP':true,'haitaobox':Data.GoodsBase.ShopId==2}" v-if="Data.Attributes!=null && Data.Attributes.length> 0">
+          <div class="xuanGou" v-if="Data.GoodsBase.IsSpecificationGoods">
+            <span class="xuanGou-name">选购</span>
             <block v-if="isLogin">
-                <div class="gd-choose-layout">
-                  <div class="text-eye">
-                    右眼R
-                  </div>
-
-                  <div class="choose-gd-click-layout" @click="openGdSelectPop('R')">
-                    <div class="text-gd-show" v-if="GoodsFields.length===1">
-                      {{postShowDouble.sphR===''?'请选择光度':'光度: '+postShowDouble.sphR}}
+                <a
+                  :href="Data.GoodsBase.GoodsType==4?frameAttrHref+'&IsBuyNow=false':normalAttrHref+'&IsBuyNow=false'"
+                >
+                  <div class="eyeBox">
+                    <div class="eyeMsg">
+                      <div class="eyeType">右眼R</div>
+                      <div class="eyeNote">点击选择参数</div>
                     </div>
-                    <div class="text-gd-show" v-if="GoodsFields.length>1">
-                      {{postShowDouble.sphR===''?'请选择光度':('光度: '+postShowDouble.sphR+' 散光: '+postShowDouble.cylR + ' 轴位: ' +
-                      postShowDouble.axisR)}}
+                    <div class="eyeImg">
+                      <img src="/static/images/icon-pro-eye.png" />
                     </div>
-                    <img src="/static/images/icon_attr_down.png" class="icon-arr-down"/>
                   </div>
-                  <div style="display: flex;">
-                    <span  class="change-num-btn" @click="numchangeEvent('R',-1)">-</span>
-                    <input type="tel" :value="rightNum" v-model="rightNum" autocomplete="off"
-                          class="input-only-buy-num"/>
-                    <span class="change-num-btn" @click="numchangeEvent('R',1)">+</span>
-                  </div>
-                </div>
-                <div class="gd-choose-layout">
-                  <div class="text-eye">
-                    左眼L
-                  </div>
-
-                  <div class="choose-gd-click-layout" @click="openGdSelectPop('L')">
-                    <div class="text-gd-show" v-if="GoodsFields.length===1">
-                      {{postShowDouble.sphL===''?'请选择光度':'光度: '+postShowDouble.sphL}}
+                </a>
+                <a
+                  :href="Data.GoodsBase.GoodsType==4?frameAttrHref+'&IsBuyNow=false':normalAttrHref+'&IsBuyNow=false'"
+                >
+                  <div class="eyeBox">
+                    <div class="eyeMsg">
+                      <div class="eyeType">左眼L</div>
+                      <div class="eyeNote">点击选择参数</div>
                     </div>
-                    <div class="text-gd-show" v-if="GoodsFields.length>1">
-                      {{postShowDouble.sphL===''?'请选择光度':('光度: '+postShowDouble.sphL+' 散光: '+postShowDouble.cylL + ' 轴位: ' +
-                      postShowDouble.axisL)}}
+                    <div class="eyeImg">
+                      <img src="/static/images/icon-pro-eye.png" />
                     </div>
-                    <img src="/static/images/icon_attr_down.png" class="icon-arr-down"/>
                   </div>
-                  <div style="display: flex;">
-                    <span  class="change-num-btn" @click="numchangeEvent('L',-1)">-</span>
-                    <input type="tel" :value="leftNum" v-model="leftNum" autocomplete="off"
-                          class="input-only-buy-num"/>
-                    <span  class="change-num-btn" @click="numchangeEvent('L',1)">+</span>
-                  </div>
-                </div>
+                </a>
             </block>
             <block v-else>
                 <button
@@ -580,13 +764,6 @@
                 </button>
             </block>
           </div>
-          <div class="dshsBox" @click="_showDSHS()">
-            <img src="/static/images/icon-good-eye.png" />
-            <!-- <div>度数换算</div> -->
-          </div>
-        </div>
-        <div class="canshu-box" v-if="Data.GoodsBase.ShopId==1" @click="Data.isComp&&Data.Items!=null&&Data.Items[0]!=null&&Data.Items[0].IsSpecificationGoods?_showCanShu():_showCanShu2()">
-          <span class="canshu">参 数<text>商品编码 品牌 定牌...</text></span><span class="icon">></span>
         </div>
       </div>
       <!-- 套餐详情 -->
@@ -1391,6 +1568,15 @@
       :select-axis="selectAxis"
       @backData="gdBackInfo"
     />
+    <gdSelectMore
+      :gid ="Data&&Data.GoodsBase.GoodsId"
+      :is-show.sync="isShowGdSelectPopMore"
+      :sph-list="sphList"
+      :cyl-list="cylList"
+      :axis-list="axisList"
+      :price="Data&&Data.GoodsBase.SellPrice"
+      @backData="gdBackInfoCart"
+    />
   </div>
 
 </template>
@@ -1400,7 +1586,8 @@ import api from "@/api/goods";
 import userapi from "@/api/user";
 import cartapi from "@/api/cart";
 import attrapi from "@/api/attr";
-import gdNromalSelectPop from "@/components/gdNromalSelectPop"
+import gdNromalSelectPop from "@/components/gdNromalSelectPop";
+import gdSelectMore from "@/components/gdSelectMore";
 import { mapActions, mapState } from "vuex";
 import bottomFlip from "@/components/bottomFlip";
 import wxParse from "mpvue-wxparse";
@@ -1503,7 +1690,9 @@ export default {
       shopId: '',
       selectSph: '',
       selectCyl: '',
-      selectAxis: ''
+      selectAxis: '',
+
+      isShowGdSelectPopMore:false
       };
   },
   computed: {},
@@ -1584,7 +1773,8 @@ export default {
   components: {
     bottomFlip,
     wxParse,
-    gdNromalSelectPop
+    gdNromalSelectPop,
+    gdSelectMore
   },
   methods: {
     ...mapActions("remark", ["setData"]),
@@ -1648,7 +1838,7 @@ export default {
         Data.GoodsBase.ScoreDeductionPrice = Data.GoodsBase.ScoreDeductionPrice.toFixed(
           2
         );
-        if(Data.GoodsPagePromotion.Gift == null||Data.GoodsPagePromotion.Gift.Length==0){
+        if(Data.GoodsPagePromotion.Gift == null||Data.GoodsPagePromotion.Gift.length==0){
           this.HasGifts==false;
         }
         if (
@@ -1743,9 +1933,7 @@ export default {
             : this._getSameTypeData2("PPTJ");
         }
         this._AttrHref();
-        if(this.Data.GoodsBase.IsSpecificationGoods){
-          this._getData(this.Data.GoodsBase.GoodsId);
-        }
+        this._getData(this.Data.GoodsBase.GoodsId);
       });
     },
     _getGoodsAbout() {
@@ -2123,7 +2311,6 @@ export default {
     },
     addCart(IsConfirmedBuy) {
       // 判断是否是无属性商品
-
       var that = this;
       if (!this.Data.GoodsBase.IsSpecificationGoods && !this.isComp&&!this.HasGifts) {
         //无属性商品且非打包
@@ -2274,7 +2461,14 @@ export default {
           });
         }
       } else {
-        this.buyGoods(false)
+        if(this.Data.GoodsBase.GoodsType == 4){
+          var href = this.frameAttrHref + "&IsBuyNow=false"
+          wx.navigateTo({
+            url: href
+          });
+        }else{
+          this.buyGoods(false)
+        }
       }
     },
     buyNow(IsConfirmedBuy) {
@@ -2437,7 +2631,14 @@ export default {
           });
         }
       } else {
-        this.buyGoods(true)
+        if(this.Data.GoodsBase.GoodsType == 4){
+          var href = this.frameAttrHref + "&IsBuyNow=false"
+          wx.navigateTo({
+            url: href
+          });
+        }else{
+          this.buyGoods(true)
+        }
       }
     },
     gocart() {
@@ -2472,11 +2673,12 @@ export default {
       const isBuyNow = e.currentTarget.dataset.isBuyNow;
       authorization.doLogin(e.mp.detail.encryptedData, e.mp.detail.iv, () => {
         this.isLogin = true;
-        if (isBuyNow) {
-          this.buyNow();
-        } else {
-          this.addCart();
-        }
+        this._getData(this.Data.GoodsBase.GoodsId);
+        // if (isBuyNow) {
+        //   this.buyNow();
+        // } else {
+        //   this.addCart();
+        // }
       });
     },
     loginEventCoupon(e) {
@@ -2718,6 +2920,29 @@ export default {
         }
         this.IsConfirmedBuy = Data.isConfirmedBuy;
       },
+      gdBackInfoCart(obj){
+        let data =  {
+                    "JsonGoodsItems": JSON.stringify(obj.joinGoodsList),
+                    "GoodsId": obj.goodsId,
+                    "RealGoodsId": "",
+                    "IsBuyByScore": false,
+                    "ActivityId": "",
+                    "AppActivityType": 0,
+                    "IsConfirmedBuy": true,
+                    "MaxDeduction": 0,
+                    "MaxSellNumber": this.Data.GoodsBase.MaxSellNumber,
+                    "SalePrice": this.Data.GoodsBase.SalePrice,
+                    "IsFreeCarriage": this.Data.GoodsBase.IsFreeCarriage,
+                    "ShopId": this.Data.GoodsBase.ShopId,
+                    "GDPropertyGifts": "",
+                    "NoPropertyGifts": "",
+                    "GDPropertyGoodsGifts": [],
+                    "NoPropertyGoodsGifts": []
+                  }
+        attrapi.buyMoreProperty(data).then(res=>{
+          console.log(res)
+        })
+      },
       setGdInfo(gdlist) {
         for (let item of gdlist) {
           if (item.FieldName === '光度') {
@@ -2733,14 +2958,15 @@ export default {
       },
       buyGoods(immediately) {
         if (this.getTotalNum() === 0) {
-          wx.showToast({
-            title: "请至少选择一个购买",
-            icon: "none"
-          });
+          this.isShowGdSelectPopMore = true
+          // wx.showToast({
+          //   title: "请至少选择一个购买",
+          //   icon: "none"
+          // });
           return;
         }
         // this.setIdOfSelectrGd();
-
+        console.log(this.mainData,"this.mainData")
         let postData = new Map();
         postData.set('goodsId', this.mainData.MainGoods.GoodsId);
         postData.set('IsConfirmedBuy', this.IsConfirmedBuy);

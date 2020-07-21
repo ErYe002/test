@@ -20,24 +20,42 @@
           </div>
           <div class="role-level-box">
             <p class="icon-level">
-              <img
-                src="/static/images/level_01.jpg"
-              />
-              <img
-                src="/static/images/level_02.jpg"
-              />
-              <img
-                src="/static/images/level_03.jpg"
-              />
-              <img
-                src="/static/images/level_04.jpg"
-              />
-              <img
-                src="/static/images/level_05.jpg"
-              />
-              <img
-                src="/static/images/level_06.jpg"
-              />
+              <span class="icon-box">
+                <img
+                  src="/static/images/level_01.jpg"
+                />
+                <span v-if="userInfoModel.LevelNum==1" class="text">您当前等级</span>
+              </span>
+              <span class="icon-box">
+                <img
+                  src="/static/images/level_02.jpg"
+                />
+                <span v-if="userInfoModel.LevelNum==2" class="text">您当前等级</span>
+              </span>
+              <span class="icon-box">
+                <img
+                  src="/static/images/level_03.jpg"
+                />
+                <span v-if="userInfoModel.LevelNum==3" class="text">您当前等级</span>
+              </span>
+              <span class="icon-box">
+                <img
+                  src="/static/images/level_04.jpg"
+                />
+                <span v-if="userInfoModel.LevelNum==4" class="text">您当前等级</span>
+              </span>
+              <span class="icon-box">
+                <img
+                  src="/static/images/level_05.jpg"
+                />
+                <span v-if="userInfoModel.LevelNum==5" class="text">您当前等级</span>
+              </span>
+              <span class="icon-box">
+                <img
+                  src="/static/images/level_06.jpg"
+                />
+                <span v-if="userInfoModel.LevelNum==6" class="text">您当前等级</span>
+              </span>
             </p>
             <div class="lines">
               <p class="bg-circle">
@@ -235,6 +253,20 @@ export default {
         width: 18px;
         height: 18px;
         display: inline-block;
+      }
+      .icon-box{
+        position: relative;
+      }
+      .text{
+        position: absolute;
+        top: -16px;
+        left: 5px;
+        font-size: 8px;
+        display: inline-block;
+        width: 43px;
+        padding: 2px;
+        background: #6E6444;
+        color: #fff;
       }
     }
     .lines{
