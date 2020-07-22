@@ -2951,24 +2951,18 @@ export default {
                       "JsonGoodsItems": JSON.stringify(obj.joinGoodsList),
                       "GoodsId": obj.goodsId,
                       "IsBuyByScore": false,
-                      "AppActivityType": 0,
                       "IsConfirmedBuy": this.IsConfirmedBuy,
-                      "MaxDeduction": 0,
+                      "MaxDeduction": this.Data.GoodsBase.ScoreDeductionPrice,
                       "MaxSellNumber": this.Data.GoodsBase.MaxSellNumber,
                       "SalePrice": this.Data.GoodsBase.SalePrice,
                       "IsFreeCarriage": this.Data.GoodsBase.IsFreeCarriage,
                       "ShopId": this.Data.GoodsBase.ShopId,
-                      "RealGoodsId": null,
-                      "ActivityId": null,
-                      "GDPropertyGifts": [],
-                      "NoPropertyGifts": [],
-                      "GDPropertyGoodsGifts": [],
-                      "NoPropertyGoodsGifts": []
+                      "RealGoodsId": obj.goodsId
                     }
           attrapi.buyMoreProperty(data).then(res=>{
             console.log(res)
             this.goToCart(obj.imid)
-            // this.isShowGdSelectPopMore = false
+            this.isShowGdSelectPopMore = false
           }).catch((Msg)=>{
             this.confirmedBuyShow(Msg);
           })
