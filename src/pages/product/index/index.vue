@@ -1575,6 +1575,7 @@
       :cyl-list="cylList"
       :axis-list="axisList"
       :price="Data&&Data.GoodsBase.SellPrice"
+      :imid="immediately"
       @backData="gdBackInfoCart"
     />
   </div>
@@ -1692,7 +1693,8 @@ export default {
       selectCyl: '',
       selectAxis: '',
 
-      isShowGdSelectPopMore:false
+      isShowGdSelectPopMore:false,
+      immediately:false
       };
   },
   computed: {},
@@ -2921,27 +2923,56 @@ export default {
         this.IsConfirmedBuy = Data.isConfirmedBuy;
       },
       gdBackInfoCart(obj){
-        let data =  {
-                    "JsonGoodsItems": JSON.stringify(obj.joinGoodsList),
-                    "GoodsId": obj.goodsId,
-                    "RealGoodsId": "",
-                    "IsBuyByScore": false,
-                    "ActivityId": "",
-                    "AppActivityType": 0,
-                    "IsConfirmedBuy": true,
-                    "MaxDeduction": 0,
-                    "MaxSellNumber": this.Data.GoodsBase.MaxSellNumber,
-                    "SalePrice": this.Data.GoodsBase.SalePrice,
-                    "IsFreeCarriage": this.Data.GoodsBase.IsFreeCarriage,
-                    "ShopId": this.Data.GoodsBase.ShopId,
-                    "GDPropertyGifts": "",
-                    "NoPropertyGifts": "",
-                    "GDPropertyGoodsGifts": [],
-                    "NoPropertyGoodsGifts": []
-                  }
-        attrapi.buyMoreProperty(data).then(res=>{
-          console.log(res)
-        })
+        if(obj.joinCylList.length!=0&&obj.joinAxisList.length!=0){
+            //散光定制加车
+              let postData = new Map();
+              postData.set('goodsId', this.mainData.MainGoods.GoodsId);
+              postData.set('IsConfirmedBuy', this.IsConfirmedBuy);
+              postData.set('ShopId', this.mainData.MainGoods.ShopId);
+              postData.set('RightQuantity', 0)
+              
+            if (obj.joinCylList.length !== 0 ) {
+              postData.set('LeftQuantity', 1);
+              postData.set('LeftGD', obj.joinGoodsList[0].SphereId);
+              postData.set('LeftSG', obj.joinCylList[0].SphereId);
+              postData.set('LeftZW', obj.joinAxisList[0].SphereId);
+            }
+            this.setTogerData(postData,2)
+             attrapi.buyDoubleCustomizedProperty(postData).then(({Data}) => {
+                console.log("双属性散光定制 返回", Data);
+                this.goToCart(obj.imid);
+                 this.isShowGdSelectPopMore = false
+              }).catch((Msg) => {
+                this.confirmedBuyShow(Msg);
+              });
+        }else{
+            //多光度商品加车
+          let data =  {
+                      "JsonGoodsItems": JSON.stringify(obj.joinGoodsList),
+                      "GoodsId": obj.goodsId,
+                      "IsBuyByScore": false,
+                      "AppActivityType": 0,
+                      "IsConfirmedBuy": this.IsConfirmedBuy,
+                      "MaxDeduction": 0,
+                      "MaxSellNumber": this.Data.GoodsBase.MaxSellNumber,
+                      "SalePrice": this.Data.GoodsBase.SalePrice,
+                      "IsFreeCarriage": this.Data.GoodsBase.IsFreeCarriage,
+                      "ShopId": this.Data.GoodsBase.ShopId,
+                      "RealGoodsId": null,
+                      "ActivityId": null,
+                      "GDPropertyGifts": [],
+                      "NoPropertyGifts": [],
+                      "GDPropertyGoodsGifts": [],
+                      "NoPropertyGoodsGifts": []
+                    }
+          attrapi.buyMoreProperty(data).then(res=>{
+            console.log(res)
+            this.goToCart(obj.imid)
+            // this.isShowGdSelectPopMore = false
+          }).catch((Msg)=>{
+            this.confirmedBuyShow(Msg);
+          })
+        }
       },
       setGdInfo(gdlist) {
         for (let item of gdlist) {
@@ -2958,6 +2989,7 @@ export default {
       },
       buyGoods(immediately) {
         if (this.getTotalNum() === 0) {
+          this.immediately = immediately
           this.isShowGdSelectPopMore = true
           // wx.showToast({
           //   title: "请至少选择一个购买",
@@ -3070,17 +3102,17 @@ export default {
         }
       },
       setTogerData(postData, type) {
-        postData.set("MaxSellNumber", this.MaxSellNumber);
+        postData.set("MaxSellNumber", this.Data.GoodsBase.MaxSellNumber);
         postData.set("GoodsName", this.mainGoods.GoodsName);
         postData.set("SeriesId", this.mainGoods.SeriesId);
-        postData.set("MarketPrice", this.MarketPrice);
+        postData.set("MarketPrice", this.Data.GoodsBase.SellPrice);
         postData.set("SalePrice", this.mainGoods.SalePrice);
-        postData.set("SaleScore", this.SaleScore);
-        postData.set("IsScarcity", this.IsScarcity);
-        postData.set("IsSpecialOffer", this.IsSpecialOffer);
-        postData.set("SaleStockType", this.SaleStockType);
-        postData.set("MaxDeduction", this.MaxDeduction);
-        postData.set("IsFreeCarriage", this.IsFreeCarriage);
+        postData.set("SaleScore",  this.Data.GoodsBase.SaleScore);
+        postData.set("IsScarcity", this.Data.GoodsBase.IsScarcity);
+        postData.set("IsSpecialOffer", this.Data.GoodsBase.IsSpecialOffer);
+        postData.set("SaleStockType", this.Data.GoodsBase.SaleStockType);
+        postData.set("MaxDeduction",  this.Data.GoodsBase.ScoreDeductionPrice);
+        postData.set("IsFreeCarriage", this.Data.GoodsBase.IsFreeCarriage);
         postData.set("RealGoodsId", this.mainData.MainGoods.GoodsId);
 
         if (this.GoodsFields.length > 0) {
@@ -3091,7 +3123,7 @@ export default {
                   if (this.postShowSingle.sph === sphItem.Value) {
                     postData.set("RealGoodsId", this.mainData.MainGoods.GoodsId);
                   }
-                } else if (2) {
+                } else if (type === 2) {
                   if (this.postShowDouble.sphL === sphItem.Value) {
                     postData.set("LeftRealGoodsId", sphItem.RealGoodsId);
                   }

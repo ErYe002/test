@@ -92,7 +92,7 @@ const api = {
   //再来一单
   buyAginOrder(OrderId){
     return http.post(
-      `/Cart/BuyAgain?orderId=${OrderId}`
+      `Cart/BuyAgain?orderId=${OrderId}`
     )
   },
 };
