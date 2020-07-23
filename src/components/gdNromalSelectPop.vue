@@ -1,7 +1,7 @@
 <template>
   <bottom-flip :is-show.sync="isShow">
     <p class="title-box">
-      <b>选择参数</b>
+      <b>选择隐形验光度数</b>
       <img @click="hideEvent" class="icon-close" src="/static/images/icon_cart_tips_close.png"/>
     </p>
 

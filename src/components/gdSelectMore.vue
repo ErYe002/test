@@ -11,6 +11,21 @@
       <img @click="hideEvent" class="icon-close" src="/static/images/icon_cart_tips_close.png"/>
     </div>
     <scroll-view scroll-y="true" class="scroll-box" :scroll-top="scrollHeight">
+         <div class="item-title">
+            <div>
+                <span class="sph-title" v-if="serisItem.length>0">
+                颜色
+                </span>
+                <div class="item-layout" v-if="serisItem.length>0">
+                <div v-for="(item,index) in serisItem" v-bind:key="index" style="padding:5px;box-sizing:border-box;width: 20%"
+                    >
+                    <div :class="{'item-gd':true,'select':selectGoodsId==item.GoodsId}" @click="selectSeriesEvent(item.GoodsId)">
+                    {{item.AnotherName}}
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
         <div  class="item-list">
             <div>
                 <span class="sph" v-if="sphList.length>0">
@@ -115,7 +130,7 @@
         cylList:[],
         axisList:[],
         serisItem:[],
-        sphGoodsId:"",
+        selectGoodsId:"",
         specification:"",
         imgUrl:"",
         GoodsName:"",
@@ -137,7 +152,7 @@
           if (val === true) {
             this.isConfirmedBuy = false;
             this.scrollHeight = 0;
-            this.sphGoodsId = this.selectGoodsId;
+            this.selectGoodsId = this.gid;
             this.getData()
           }else{
             this.joinGoodsList = []
@@ -154,11 +169,19 @@
         this.joinAxisList = []
         this.$emit('update:isShow', false)
       },
+      selectSeriesEvent(Id){
+        this.selectGoodsId = Id;
+       this.joinGoodsList = []
+        this.joinCylList = []
+        this.joinAxisList = []
+        this.getData()
+      },
       getData(){
-        api.getGoodsField(this.gid).then(({Data})=>{
+        api.getGoodsField(this.selectGoodsId).then(({Data})=>{
           if(Data!=null){
             this.imgUrl = Data.ImageUrl
             this.GoodsName = Data.GoodsName
+            this.serisItem = Data.SeriesItems
            this.setGdInfo(Data.GoodsFields)
           }
         })
@@ -282,7 +305,7 @@
           this.isConfirmedBuy = true;
         }
         this.$emit('backData', {
-          goodsId:this.gid,
+          goodsId:this.selectGoodsId,
           joinGoodsList:this.joinGoodsList,
           joinCylList:this.joinCylList,
           joinAxisList:this.joinAxisList,

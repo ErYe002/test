@@ -703,6 +703,7 @@
       </div>
       <div v-if='Data.GoodsBase.GoodsType==4'>
         <div :class="{'promotionBox':true,'TOP':true,'haitaobox':Data.GoodsBase.ShopId==2}" v-if="Data.Attributes!=null && Data.Attributes.length> 0">
+          
           <div class="xuanGou" v-if="Data.GoodsBase.IsSpecificationGoods">
             <span class="xuanGou-name">选购</span>
             <block v-if="isLogin">
@@ -763,6 +764,9 @@
                   </div>
                 </button>
             </block>
+          </div>
+          <div class="canshu-box" v-if="Data.GoodsBase.ShopId==1" @click="Data.isComp&&Data.Items!=null&&Data.Items[0]!=null&&Data.Items[0].IsSpecificationGoods?_showCanShu():_showCanShu2()">
+            <span class="canshu" style="padding-left:5px">参 数<text>商品编码 品牌 定牌...</text></span><span class="icon">></span>
           </div>
         </div>
       </div>
@@ -2675,6 +2679,7 @@ export default {
       const isBuyNow = e.currentTarget.dataset.isBuyNow;
       authorization.doLogin(e.mp.detail.encryptedData, e.mp.detail.iv, () => {
         this.isLogin = true;
+        this.getisComp(this.seocode);
         this._getData(this.Data.GoodsBase.GoodsId);
         // if (isBuyNow) {
         //   this.buyNow();

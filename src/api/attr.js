@@ -122,11 +122,11 @@ const api = {
   },
   //获取商品属性
   getGoodsField(GId){
-    return http.post(`/Goods/GoodsField?goodsId=${GId}`);
+    return http.postByNoErrorTips(`/Goods/GoodsField?goodsId=${GId}`);
   },
   //
   buyMoreProperty(data){
-    return http.post(`Cart/BuyMoreProperty`,
+    return http.postByNoErrorTips(`Cart/BuyMoreProperty`,
       data,
       {
         'content-type':'application/json'
