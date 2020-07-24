@@ -60,7 +60,7 @@
       <div class="btn-confirm" @click="disMissPoo" v-else>
         确定
       </div>
-      <div class="btn-confirm" @click="disMissPoo" v-if="sellOut && saleStockType==='1'">
+      <div class="btn-confirm" @click="disMissPoo" v-if="sellOut && saleStockType===1">
         继续购买
       </div>
     </div>
@@ -78,7 +78,7 @@
       sphList: [],
       cylList: [],
       axisList: [],
-      saleStockType: '',
+      saleStockType: {type: String},
       selectSph: '',
       selectCyl: '',
       selectAxis: '',
@@ -190,7 +190,7 @@
 
         }
 
-        if (this.saleStockType === '1' && this.sellOut) {
+        if (this.saleStockType === 1&& this.sellOut) {
           this.isConfirmedBuy = true;
         }
 

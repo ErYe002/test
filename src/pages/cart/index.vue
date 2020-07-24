@@ -6,10 +6,10 @@
           :class="{item: true, current: shopId == 1}"
           @click="changeShopEvent(1)"
         >境内自营({{domesticShop}})</li>
-        <li
+        <!-- <li
           :class="{item: true, current: shopId == 2}"
           @click="changeShopEvent(2)"
-        >海淘({{overseasShop}})</li>
+        >海淘({{overseasShop}})</li> -->
       </ul>
       <span v-if="isHasCartData" class="edit-btn" @click="editCartEvent">{{isEdit ? '完成':'编辑'}}</span>
     </article>

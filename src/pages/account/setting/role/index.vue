@@ -54,7 +54,7 @@
                 <img
                   src="/static/images/level_06.jpg"
                 />
-                <span v-if="userInfoModel.LevelNum==6" class="text">您当前等级</span>
+                <span v-if="userInfoModel.LevelNum==6"  class="text level">您当前等级</span>
               </span>
             </p>
             <div class="lines">
@@ -267,6 +267,9 @@ export default {
         padding: 2px;
         background: #6E6444;
         color: #fff;
+      }
+      .level{
+        left: -12px !important;
       }
     }
     .lines{

@@ -73,6 +73,23 @@
           />
         </div>
       </div>
+      <!-- 商品量贩活动  阶梯价 -->
+      <div class="BuyReduceContent-box" v-if="Data.GoodsPagePromotion.BuyReduceContent!=null&&Data.GoodsPagePromotion.BuyReduceContent!=''">
+        <div class="BuyReduceContent">
+          <div class="one">
+            <span class="queantiy">{{Data.GoodsPagePromotion.BuyReduceActivityInfo.BuyReducePriceSettingList[0].FirstQuantity}}-{{Data.GoodsPagePromotion.BuyReduceActivityInfo.BuyReducePriceSettingList[0].EndQuantity}}件</span>
+            <span class="price">￥{{Data.GoodsPagePromotion.BuyReduceActivityInfo.BuyReducePriceSettingList[0].Price}}/件</span>
+          </div>
+          <div class="two">
+            <span class="queantiy">{{Data.GoodsPagePromotion.BuyReduceActivityInfo.BuyReducePriceSettingList[1].FirstQuantity}}-{{Data.GoodsPagePromotion.BuyReduceActivityInfo.BuyReducePriceSettingList[1].EndQuantity}}件</span>
+            <span class="price">￥{{Data.GoodsPagePromotion.BuyReduceActivityInfo.BuyReducePriceSettingList[1].Price}}/件</span>
+          </div>
+          <div class="three">
+            <span class="queantiy">{{Data.GoodsPagePromotion.BuyReduceActivityInfo.BuyReducePriceSettingList[2].FirstQuantity}}件及以上</span>
+            <span class="price">￥{{Data.GoodsPagePromotion.BuyReduceActivityInfo.BuyReducePriceSettingList[2].Price}}/件</span>
+          </div>
+        </div>
+      </div>
       <!-- 商品属性 -->
       <div class="proInfo">
         <div class="proInfoTop">
@@ -201,7 +218,7 @@
       </div>
       <!-- 优惠活动一览 -->
       <div class="promotionBox discounts"
-          v-if="Data.GoodsPagePromotion != null&& ( Data.GoodsBase.MaxScoreDeductionMoney > 0|| Data.GoodsPagePromotion.isHave||Data.GoodsPagePromotion.FullReducePromotion != null||Data.ErpGifts != null||(Data.GoodsPagePromotion.Coupons != null && Data.GoodsPagePromotion.Coupons.length>0)||(Data.GoodsBase.FirstBuyContent!=null&&Data.GoodsBase.FirstBuyContent.length>0)||(Data.GoodsPagePromotion.BuyReduceContent!=null&&Data.GoodsPagePromotion.BuyReduceContent!='')||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.Gift != null && Data.GoodsPagePromotion.Gift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FullGift != null && Data.GoodsPagePromotion.FullGift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FreeCollocation != null && Data.GoodsPagePromotion.FreeCollocation.length>0)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.FullReducePromotion != null)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.ChangeBuy != null && Data.GoodsPagePromotion.ChangeBuy.length>0)||(Data.ErpGifts != null && Data.ErpGifts.length>0))"
+          v-if="Data.GoodsPagePromotion != null&& ( Data.GoodsBase.MaxScoreDeductionMoney > 0|| Data.GoodsPagePromotion.isHave||Data.GoodsPagePromotion.FullReducePromotion != null||Data.ErpGifts != null||(Data.GoodsPagePromotion.Coupons != null && Data.GoodsPagePromotion.Coupons.length>0)||(Data.GoodsBase.FirstBuyContent!=null&&Data.GoodsBase.FirstBuyContent.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.Gift != null && Data.GoodsPagePromotion.Gift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FullGift != null && Data.GoodsPagePromotion.FullGift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FreeCollocation != null && Data.GoodsPagePromotion.FreeCollocation.length>0)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.FullReducePromotion != null)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.ChangeBuy != null && Data.GoodsPagePromotion.ChangeBuy.length>0)||(Data.ErpGifts != null && Data.ErpGifts.length>0))"
         > 
         <div class="actCon">
           <block v-if="isLogin">
@@ -250,7 +267,7 @@
             <span class="act-con">积分至多抵扣￥{{Data.GoodsBase.ScoreDeductionPrice}}</span>
           </div> -->
           <div class="discountsFull" 
-              v-if="(Data.GoodsBase.FirstBuyContent!=null&&Data.GoodsBase.FirstBuyContent.length>0)||(Data.GoodsPagePromotion.BuyReduceContent!=null&&Data.GoodsPagePromotion.BuyReduceContent!='')||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.Gift != null && Data.GoodsPagePromotion.Gift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FullGift != null && Data.GoodsPagePromotion.FullGift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FreeCollocation != null && Data.GoodsPagePromotion.FreeCollocation.length>0)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.FullReducePromotion != null)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.ChangeBuy != null && Data.GoodsPagePromotion.ChangeBuy.length>0)||(Data.ErpGifts != null && Data.ErpGifts.length>0)"  
+              v-if="(Data.GoodsBase.FirstBuyContent!=null&&Data.GoodsBase.FirstBuyContent.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.Gift != null && Data.GoodsPagePromotion.Gift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FullGift != null && Data.GoodsPagePromotion.FullGift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FreeCollocation != null && Data.GoodsPagePromotion.FreeCollocation.length>0)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.FullReducePromotion != null)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.ChangeBuy != null && Data.GoodsPagePromotion.ChangeBuy.length>0)||(Data.ErpGifts != null && Data.ErpGifts.length>0)"  
             >
               <div class="discountsFull-item">
                 <div
@@ -263,16 +280,16 @@
                     <span class="act-con">新人专享价:￥{{Data.GoodsBase.FirstBuyContent}}</span>
                   </span>
                 </div>
-                <div
+                <!-- <div
                   class="act-dikou actLine"
                   v-if="Data.GoodsPagePromotion.BuyReduceContent!=null&&Data.GoodsPagePromotion.BuyReduceContent!=''"
                 >
-                  <!-- <span class="act-name">量贩</span> -->
+                  <span class="act-name">量贩</span>
                   <span>
                     <span class="act-name-icon"><img src="/static/images/de_liangfan@2x.png" class="act-name-icon" alt=""></span>
                     <span class="act-con">{{Data.GoodsPagePromotion.BuyReduceContent}}</span>
                   </span>
-                </div>
+                </div> -->
                 <div
                   class="act-zengpin actLine"
                   v-if="Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.Gift != null && Data.GoodsPagePromotion.Gift.length>0"
@@ -1566,7 +1583,7 @@
       :sph-list="sphList"
       :cyl-list="cylList"
       :axis-list="axisList"
-      :sale-stock-type="SaleStockType"
+      :sale-stock-type="Data&&Data.GoodsBase.SaleStockType"
       :select-sph="selectSph"
       :select-cyl="selectCyl"
       :select-axis="selectAxis"
@@ -2925,7 +2942,7 @@ export default {
           }
           console.log('返回', this.postShowIdSingle);
         }
-        this.IsConfirmedBuy = Data.isConfirmedBuy;
+        // this.IsConfirmedBuy = Data.isConfirmedBuy;
       },
       gdBackInfoCart(obj){
         if(obj.joinCylList.length!=0&&obj.joinAxisList.length!=0){
