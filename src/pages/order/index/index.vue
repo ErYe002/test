@@ -1163,9 +1163,9 @@ page {
 }
 .order_vip_img{
   width: 30px;
-  height: 16px;
+  height: 11.5px;
   margin-right: 6px;
-  vertical-align:sub;
+  // vertical-align:sub;
 }
 .useCouponScore-box{
   padding: 5px 8px;
