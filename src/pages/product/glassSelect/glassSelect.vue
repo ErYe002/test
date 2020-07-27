@@ -158,13 +158,12 @@
     width: 100%;
     .radio-group {
       padding: 0 15px;
-      width: 150%;
       display: flex;
       flex-wrap: wrap;
       flex-direction: column;
       height: 100px;
       .radio {
-        width: 30%;
+        width: 60%;
         margin-top: 5px;
       }
       .text-group-name {

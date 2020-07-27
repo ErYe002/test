@@ -231,8 +231,10 @@
                 let obj = {SphereId:RealGoodsId,Quantity:1,value:value}
                 let flag = this.joinGoodsList.some(item=>{return item.SphereId==RealGoodsId})
                 if(!flag){
+                    this.scrollHeight = this.scrollHeight+20
                     this.joinGoodsList.push(obj)
                 }else{
+                    this.scrollHeight = this.scrollHeight-20
                     let arr = this.joinGoodsList.filter(item=>{return item.SphereId!=RealGoodsId})
                     this.joinGoodsList = arr
                 }

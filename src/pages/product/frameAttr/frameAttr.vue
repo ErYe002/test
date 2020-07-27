@@ -234,6 +234,11 @@
       this.goodsId = options.goodsId;
       this._getFrameData(options.goodsId);
       this._getOptometryBillBaiscDataLibrary();
+      if(wx.getStorageSync('postIdBean')&&wx.getStorageSync('postInfoBean')){
+        this.postInfoBean = Object.assign({},wx.getStorageSync('postInfoBean'))
+        this.postIdBean = Object.assign({},wx.getStorageSync('postIdBean'),{groupPId: '',glassPId: ''})
+      }
+        
     },
 
     watch: {
@@ -481,7 +486,8 @@
           pushData.set("LeftZW", this.postIdBean.axisLId);
           pushData.set("RightZW", this.postIdBean.axisRId);
           pushData.set("TongJu", this.postIdBean.pdId);
-
+          wx.setStorageSync('postIdBean', this.postIdBean)
+          wx.setStorageSync('postInfoBean', this.postInfoBean)
           api.buyFrameAndGlass(pushData).then(({Data}) => {
 
             this.$getCartCount();
