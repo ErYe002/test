@@ -119,33 +119,35 @@
           </navigator>
       </view>
     </view>
-    <view class='useCouponScore' v-if="orderInfo.IsCanUseScore">
+    <view class="useCouponScore-box">
+      <view class='useCouponScore' v-if="orderInfo.IsCanUseScore">
+        <!-- <view class='useCouponScore'> -->
+        <view class='counponContent'>
+          <view class='couponTitle'>{{orderInfo.UseScoreContent}}<span class='couponSubtitle'>({{orderInfo.TotalScoreContent}})</span></view>
+          <!-- <view class='couponSubtitle'>当前{{orderInfo.TotalScoreContent}}</view> -->
+        </view>
+        <switch class="swiper" checked="" @change="changeUseScore" color="#C9C9CB"/>
+      </view>
+      <view class='useCouponScore' v-if="orderInfo.ShopId == 1 && orderInfo.AllBalance > 0">
       <!-- <view class='useCouponScore'> -->
-      <view class='counponContent'>
-        <view class='couponTitle'>{{orderInfo.UseScoreContent}}<span class='couponSubtitle'>({{orderInfo.TotalScoreContent}})</span></view>
-        <!-- <view class='couponSubtitle'>当前{{orderInfo.TotalScoreContent}}</view> -->
+        <view class='counponContent'>
+          <view class='couponTitle'>余额</view>
+          <view class='couponSubtitle'>可用￥{{orderInfo.AllBalance}} <span v-if="formModel.isUseBalance">，使用￥{{orderInfo.NewAvailableBalance}} </span></view>
+        </view>
+        <switch class="swiper" checked="" @change="changeUseBalance" color="#C9C9CB"/> 
       </view>
-      <switch class="swiper" checked="" @change="changeUseScore" color="#C9C9CB"/>
-    </view>
-    <view class='useCouponScore' v-if="orderInfo.ShopId == 1 && orderInfo.AllBalance > 0">
-    <!-- <view class='useCouponScore'> -->
-      <view class='counponContent'>
-        <view class='couponTitle'>余额</view>
-        <view class='couponSubtitle'>可用￥{{orderInfo.AllBalance}} <span v-if="formModel.isUseBalance">，使用￥{{orderInfo.NewAvailableBalance}} </span></view>
+      
+      <!-- <div class="sectionLine"></div> -->
+      <view class='buy-vip-box' v-if="!orderInfo.IsVip && orderInfo.ShopId != 2">
+        <view class="order_vip_box">
+          <img src="/static/images/order_svip.png" class="order_vip_img">
+        </view>
+        <view class='b-left'>
+          <view class='title'>{{orderInfo.BuySvipDiscountContent}}</view>
+          <view class='subtitle'>{{orderInfo.BuySvipAmountConent}}</view>
+        </view>
+        <switch class="swiper" :checked="orderInfo.IsBuySvip" @change="changeBuyVip" color="#C9C9CB"/> 
       </view>
-      <switch class="swiper" checked="" @change="changeUseBalance" color="#C9C9CB"/> 
-    </view>
-    
-    <!-- <div class="sectionLine"></div> -->
-    <view class='buy-vip-box' v-if="!orderInfo.IsVip && orderInfo.ShopId != 2">
-      <view class="order_vip_box">
-        <img src="/static/images/order_svip.png" class="order_vip_img">
-      </view>
-      <view class='b-left'>
-        <view class='title'>{{orderInfo.BuySvipDiscountContent}}</view>
-        <view class='subtitle'>{{orderInfo.BuySvipAmountConent}}</view>
-      </view>
-      <switch class="swiper" :checked="orderInfo.IsBuySvip" @change="changeBuyVip" color="#C9C9CB"/> 
     </view>
     <view class='amount-box'>
       <view class='flex-line'>
@@ -745,8 +747,7 @@ page {
 .order-box {
   font-size: 26rpx;
   background: #fff;
-  border-top-right-radius: 10px;
-  border-top-left-radius: 10px;
+  border-radius: 10px;
 }
 .order-box .shop-name {
   color: #171717;
@@ -820,7 +821,7 @@ page {
   justify-content: space-between;
   padding: 20rpx;
   box-sizing: border-box;
-  background: #fff;
+  background: #f2f2f2;
   // border-bottom: 1rpx solid #dcdcdc;
   font-size: 28rpx;
   /*海淘*/
@@ -920,7 +921,7 @@ page {
   padding: 20rpx;
   box-sizing: border-box;
   // border-bottom: solid 2rpx #F0F0F0;
-  background: #fff;
+  background: #f2f2f2;
 }
 .amount-box .flex-line {
   border-bottom: none;
@@ -1063,7 +1064,7 @@ page {
   padding: 30rpx;
   box-sizing: border-box;
   // border-bottom: 12rpx solid #F0F0F0;
-  background: #fff;
+  background: #f2f2f2;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
@@ -1144,8 +1145,10 @@ page {
 .buy-vip-box{
   display: flex;
   // margin: 14px;
-  background: #fff;
+  background: #313131;
   padding: 10px 5px 10px 15px;
+  color: #F9E5AA;
+  border-radius: 10px;
   .b-left{
     flex: 1;
   }
@@ -1154,7 +1157,6 @@ page {
     font-size: 15px;
   }
   .subtitle{
-    color: #888888;
     font-size: 12px;
     font-weight: 300;
   }
@@ -1164,5 +1166,10 @@ page {
   height: 16px;
   margin-right: 6px;
   vertical-align:sub;
+}
+.useCouponScore-box{
+  padding: 5px 8px;
+  background: #fff;
+  border-radius: 10px;
 }
 </style>
