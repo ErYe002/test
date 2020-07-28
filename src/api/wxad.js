@@ -3,7 +3,7 @@ import http from '@/utils/request.js';
 const api = {
   //获取access_token以及user_action_set_id
   getAccountToken() {
-    return http.getByNoLoading('Wechart/WeChatOfficialAccountToken');
+    return http.getByNoLoading('/Wechart/WeChatOfficialAccountToken');
   },
   //回传行为参数
   wxadCallbckData(

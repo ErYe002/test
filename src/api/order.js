@@ -91,8 +91,8 @@ const api = {
   },
   //再来一单
   buyAginOrder(OrderId){
-    return http.post(
-      `Cart/BuyAgain?orderId=${OrderId}`
+    return http.postByNoErrorTips(
+      `/Cart/BuyAgain?orderId=${OrderId}`
     )
   },
 };

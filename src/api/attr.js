@@ -126,7 +126,7 @@ const api = {
   },
   //
   buyMoreProperty(data){
-    return http.postByNoErrorTips(`Cart/BuyMoreProperty`,
+    return http.postByNoErrorTips(`/Cart/BuyMoreProperty`,
       data,
       {
         'content-type':'application/json'

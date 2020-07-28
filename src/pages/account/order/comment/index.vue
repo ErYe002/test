@@ -345,7 +345,7 @@ export default {
                     api.addGoodsComment(currentTemp.orderId,currentTemp.goodsId,currentTemp.goodsgrade,currentTemp.commentContent,currentTemp.uploadedImgPath,currentTemp.serviceGrade,currentTemp.expressGrade,currentTemp.tags)
                     .then(({Data})=>{
                         wx.showToast({
-                            title:"评价成功!",
+                            title:"感谢您的点评，快去联系客服领取您的好评返现!",
                             icon:"none"
                         });
                         wx.setStorageSync('isCommentReturn',true)
@@ -364,7 +364,7 @@ export default {
         if(this.images.length == 0){
             api.addGoodsComment(this.orderId,this.goodsId,this.goodsgrade,this.commentContent,null,this.serviceGrade,this.expressGrade,null).then(({Data}) => {
                 wx.showToast({
-                        title:"评价成功!",
+                        title:"感谢您的点评，快去联系客服领取您的好评返现!",
                         icon:"none"
                     });
                 that.setCommentedId(that.goodsId);

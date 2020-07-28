@@ -14,7 +14,7 @@ const request = (url, method, data, header, showLoading = true, isNeedErrorTips 
     } else {
       wx.showNavigationBarLoading();
     }
-    let requestUrl = config.apiurl + '/api/' + url;
+    let requestUrl = config.apiurl + '/api' + url;
     //区分是否微信广告统计
     if(url.indexOf("api.weixin.qq.com")!=-1){
        requestUrl =  url;

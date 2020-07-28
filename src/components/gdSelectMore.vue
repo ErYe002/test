@@ -265,9 +265,13 @@
                     let Quantity = item.Quantity-1
                     if(Quantity>0){
                         item.Quantity = Quantity
+                    }else{
+                      let arr = this.joinGoodsList.filter(item=>{return item.SphereId!=RealGoodsId})
+                      this.joinGoodsList = arr
                     }
                 }
             })
+            this.checkId();
         }else if(type=="add"){
             this.joinGoodsList.forEach(item=>{
                 if(RealGoodsId==item.SphereId){

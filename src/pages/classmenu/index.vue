@@ -13,7 +13,10 @@
         </scroll-view>
       </div>
       <div class="right-list">
-        <scroll-view class="scroll-list" scroll-y :style="{height: 'calc(100vh - 47px)'}">
+        <scroll-view class="scroll-list" scroll-y :style="{height: 'calc(100vh - 47px)'}" @scrolltolower="bindscrolltolower">
+          <!-- <div class="banner-img">
+            <img src="https://pic.keede.com/AppImages/1114c2dc-ed81-4927-a3fa-d6ec5969b912.jpg?v=2020071501" alt="" mode="heightFix" class="img">
+          </div> -->
           <div class="scroll-item" v-for="rightItem in rightList" :key="rightItem.ClassID">
             <p class="title">{{rightItem.ClassName}}</p>
             <div class="list">
@@ -27,6 +30,9 @@
               </a>
             </div>
           </div>
+          <!-- <div>
+
+          </div> -->
         </scroll-view>
       </div>
     </section>
@@ -82,6 +88,9 @@ export default {
     leftItemClickEvent(pid){
         this.selectedParentID = pid
         this.changeRightData()
+    },
+    bindscrolltolower(e){
+      console.log("滚动到底部")
     }
   }
 };
@@ -166,6 +175,18 @@ export default {
             }
           }
         }
+      }
+    }
+    .banner-img{
+      margin-top: 10px;
+      width: 100%;
+      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .img{
+        height: 100%;
+        border-radius: 10px;
       }
     }
   }

@@ -80,7 +80,7 @@ const api = {
     },
     //页面埋点-方法
     onInformationCollection(data){
-      return http.postByNoErrorTips("data/uc/",JSON.stringify(data),{
+      return http.postByNoErrorTips("/data/uc/",JSON.stringify(data),{
         'content-type':'application/json'
       })
     }

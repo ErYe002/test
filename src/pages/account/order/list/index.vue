@@ -399,7 +399,27 @@ export default {
     },
     buyAgain(id){
       api.buyAginOrder(id).then(({Data})=>{
-        console.log(Data)
+          wx.showToast({
+            title: "加入购物车成功",
+            icon: "none"
+          });
+      }).catch((Msg)=>{
+          wx.showModal({
+          title: '提示',
+          content: Msg,
+          icon: "none",
+          confirmText: '确定',
+          cancelText: '取消',
+          confirmColor: '#CAB894',
+          success(res) {
+            if (res.confirm) {
+              console.log('用户点击确定');
+              // self.isConfirmedBuy = true;
+            } else if (res.cancel) {
+              console.log('用户点击取消');
+            }
+          }
+        });
       })
     }
   }

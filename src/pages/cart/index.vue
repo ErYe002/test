@@ -77,7 +77,7 @@
                   v-for="(packItem, pidx) in cartItem.Packages"
                   :key="packItem.UniqueId+pidx"
                 >
-                    <i-swipeout i-class="i-swipeout-demo-item" :actions="actions" @change="handleDelete(packItem.UniqueId)" :toggle="toggle" :unclosable="unclosable">
+                    <i-swipeout i-class="i-swipeout-demo-item" :actions="actions" @change="(e)=>{handleDelete(e,packItem.UniqueId)}" :toggle="toggle" :unclosable="unclosable">
                         <view slot="content">
                           <div class="cart-list-box pack-box">
                             <p class="tips">
@@ -178,7 +178,7 @@
                     <!-- 商品列表 -->
                     <ul class="goods-list">
                       <li class="g-item" v-for="(gItem, gidx) in mpItem.BuyGoodsList" :key="gItem.UniqueId+gidx">
-                          <i-swipeout i-class="i-swipeout-demo-item" :actions="actions" @change="handleDelete(gItem.UniqueId)" :key='idx' :toggle="toggle" :unclosable="unclosable">
+                          <i-swipeout i-class="i-swipeout-demo-item" :actions="actions" @change="(e)=>{handleDelete(e,gItem.UniqueId)}" :key='idx' :toggle="toggle" :unclosable="unclosable">
                             <view slot="content">
                                 <div class="goods-box">
                                   <span class="check-btn" v-if="gItem.IsDisplayDelete">
@@ -389,7 +389,7 @@
                   v-for="(nItem, nidx) in cartItem.NormalGoods"
                   :key="nItem.UniqueId+nidx"
                 >
-                    <i-swipeout i-class="i-swipeout-demo-item" :actions="actions" @change="handleDelete(nItem.UniqueId)" :toggle="toggle" :unclosable="unclosable">
+                    <i-swipeout i-class="i-swipeout-demo-item" :actions="actions" @change="(e)=>{handleDelete(e,nItem.UniqueId)}" :toggle="toggle" :unclosable="unclosable">
                       <view slot="content">
                         <div class="goods-box">
                           <span class="check-btn" v-if="nItem.IsDisplayDelete">
@@ -607,7 +607,7 @@
                       v-for="(eItem, eidx) in cartItem.AllExchangeAndGifts"
                       :key="eItem.GoodsId+eidx"
                     >
-                        <i-swipeout i-class="i-swipeout-demo-item" :actions="actions" @change="handleDelete(eItem.UniqueId)" :toggle="toggle" :unclosable="unclosable">
+                        <i-swipeout i-class="i-swipeout-demo-item" :actions="actions" @change="(e)=>{handleDelete(e,eItem.UniqueId)}" :toggle="toggle" :unclosable="unclosable">
                           <view slot="content">
                                   <div class="goods-box">
                                     <span class="check-btn">
@@ -799,8 +799,14 @@ export default {
             {
                 name: '删除',
                 color: '#fff',
-                width : 80,
+                width : 40,
                 background:"#000"
+            },
+             {
+                name: '移入收藏夹',
+                color: '#fff',
+                width : 70,
+                background:"#cab894"
             }
         ],
         toggle:true,
@@ -1083,19 +1089,28 @@ export default {
     },
 
     //左滑删除
-    handleDelete (uniqueId) {
+    handleDelete (e,uniqueId) {
+      let detail = e.mp.detail
       let that = this
       that.selectGoodsEvent(uniqueId) 
       wx.showModal({
         title: '提示',
-        content: '确定删除该商品吗？',
+        content: detail.index==0?"确定删除该商品吗？":'确定移入收藏夹吗？',
         confirmColor: '#5BB53C',
         success: function(res) {
           if (res.confirm) {
-            api.deleteCartGoods([uniqueId]).then(() => {
-              that._getPageData();
-              that._getCartItemsCount();
-            });
+            if(detail.index==0){
+                api.deleteCartGoods([uniqueId]).then(() => {
+                  that._getPageData();
+                  that._getCartItemsCount();
+                });
+            }else{
+              api.collectionCartGoods([uniqueId]).then(() => {
+                that._getPageData();
+                that._getCartItemsCount();
+              });
+            }
+          
           }
           if (res.cancel) {
             that.unSelectGoodsEvent(uniqueId);
