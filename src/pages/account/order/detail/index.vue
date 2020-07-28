@@ -105,7 +105,7 @@
             <button class="kd-btn btn-default btn-small" @click="cancelOrderEvent(orderInfo.OrderId)">取消订单</button>
           </li>
           <li class="b-item" v-if="orderInfo.IsContactAirlines">
-            <button class="kd-btn btn-default btn-small contact" open-type="contact">联系客服</button>
+            <button class="kd-btn btn-default btn-small" open-type="contact">联系客服</button>
           </li>
           <li class="b-item" v-if="orderInfo.IsLogistics">
             <a :href="'/pages/account/logistics/main?shopId='+orderInfo.ShopId+'&orderId='+orderInfo.OrderId" class="kd-btn btn-default btn-small">查看物流</a>
@@ -413,7 +413,15 @@ export default {
       // width: 90px;
       button,a{
         padding: 0 10px;
-        border-radius: 8px;
+        border-radius: 7px;
+      }
+      &:last-child{
+        button,a{
+          background: #FF668E !important;
+          color: #fff !important;
+          border-radius: 7px;
+          border: 0;
+        }
       }
     }
     .contact{

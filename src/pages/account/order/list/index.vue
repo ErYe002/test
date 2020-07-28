@@ -38,6 +38,7 @@
         </ul>
       </section>
     </article>
+    <img class="banner_url" src="https://pic.keede.com/AppImages/1114c2dc-ed81-4927-a3fa-d6ec5969b912.jpg?v=2020071501" alt="" v-if="listQuery.queryState==6" mode='widthFix'>
     <section class="order-box">
       <ul class="order-list">
         <template v-if="listQuery.queryState != 6">
@@ -100,7 +101,7 @@
                   <button class="kd-btn btn-default btn-small">评价</button>
                 </li>-->
                 <li class="b-item" v-if="item.IsContactAirlines">
-                  <button class="kd-btn btn-default btn-small contact" open-type="contact">联系客服</button>
+                  <button class="kd-btn btn-default btn-small" open-type="contact">联系客服</button>
                 </li>
                 <li class="b-item" v-if="item.IsPayment" @click="_wechatPay(item.OrderId)">
                   <button class="kd-btn btn-small">付款</button>
@@ -622,6 +623,14 @@ page {
             color:#999999;
             border:0.5px solid #888888;
           }
+          &:last-child{
+            button,a{
+              background: #FF668E !important;
+              color: #fff !important;
+              border-radius: 7px;
+              border: 0;
+            }
+          }
         }
         button{
           padding: 0 10px;
@@ -708,5 +717,9 @@ page {
   padding: 2px 4px;
   margin-right: 3px;
   font-weight: 300;
+}
+.banner_url{
+  width: 100%;
+  // height: 100px;
 }
 </style>
