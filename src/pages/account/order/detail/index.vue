@@ -92,6 +92,9 @@
       </section>
       <section class="btn-box">
         <ul class="btn-list">
+          <li class="b-item">
+            <button class="kd-btn btn-default btn-small again" @click="buyAgain(item.OrderId)">再来一单</button>
+          </li>
           <li class="b-item" v-if="orderInfo.ShopId != 2 && orderInfo.IsAfterSale">
             <button class="kd-btn btn-default btn-small" @click="toAppTips('可得小程序暂时不支持退换货功能哦，请下载可得眼镜APP使用此功能')">退换货</button>
           </li>
@@ -407,8 +410,9 @@ export default {
     .b-item {
       margin-bottom: 10px;
       margin-left: 10px;
-      width: 90px;
+      // width: 90px;
       button,a{
+        padding: 0 10px;
         border-radius: 8px;
       }
     }
@@ -418,4 +422,12 @@ export default {
     }
   }
 }
+ .again{
+            padding: 0 10px;
+            border-radius: 7px;
+            width: 73px;
+            color: #FF668E;
+            box-sizing: border-box;
+            border:0.5px solid #FF668E;
+          }
 </style>

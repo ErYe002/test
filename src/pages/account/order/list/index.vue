@@ -639,8 +639,8 @@ page {
       .waitDivFirst {
         margin-right: 10px;
         .waitCommentGoodsImg {
-          height: 50px;
-          width: 50px;
+          height: 75px;
+          width: 75px;
         }
       }
       .waitDivSecond {
