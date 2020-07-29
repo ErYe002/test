@@ -11,7 +11,7 @@
           @change="bannerChange"
           v-if="bannerType=='Img'"
         >
-          <swiper-item v-for="item in Data.GoodsBase.AppendImgs" :key="item.index">
+          <swiper-item v-for="(item,index) in Data.GoodsBase.AppendImgs" :key="index">
             <img :src="item" alt mode="widthFix" />
           </swiper-item>
         </swiper>
@@ -56,8 +56,8 @@
           >
             <view
               :class="'series '+(Data.GoodsBase.SeoCode==item.SeoCode?'selected':'')"
-              v-for="item in Data.Series"
-              :key="item.index"
+              v-for="(item,index) in Data.Series"
+              :key="index"
             >
               <a  disabled @click="changeSeries(item.SeoCode)">
                 <img :src="item.SeriesImg" />
@@ -229,7 +229,7 @@
             >
               <span class="act-name">● 优惠</span>
               <span class="coupon_icon">领券</span>
-              <block v-for="item in Data.GoodsPagePromotion.Coupons" :key="item.index">
+              <block v-for="(item,index) in Data.GoodsPagePromotion.Coupons" :key="index">
                 <span class="coupon" v-if="index<3">满{{item.MeetAmount}}-{{item.DeductionAmount}}</span>
               </block>
               <span class="act-info">
@@ -246,7 +246,7 @@
             >
               <span class="act-name">● 优惠</span>
                 <span class="coupon_icon">领券</span>
-                <block v-for="item in Data.GoodsPagePromotion.Coupons" :key="item.index">
+                <block v-for="(item,index) in Data.GoodsPagePromotion.Coupons" :key="index">
                   <span class="coupon" v-if="index<3">满{{item.MeetAmount}}-{{item.DeductionAmount}}</span>
                 </block>
                 <span class="act-info">
@@ -311,8 +311,8 @@
                 >
                   <div
                     class="act-manzeng actLine"
-                    v-for="item in Data.GoodsPagePromotion.FullGift"
-                    :key="item.index"
+                    v-for="(item,index) in Data.GoodsPagePromotion.FullGift"
+                    :key="index"
                     @click=" _showActive('MZ')"
                   >
                     <!-- <span class="act-name">满赠</span> -->
@@ -358,8 +358,8 @@
                 >
                   <div
                     class="act-manhuan actLine"
-                    v-for="item in Data.GoodsPagePromotion.ChangeBuy"
-                    :key="item.index"
+                    v-for="(item,index) in Data.GoodsPagePromotion.ChangeBuy"
+                    :key="index"
                     @click=" _showActive2('MH')"
                   >
                     <!-- <span class="act-name">满换</span> -->
@@ -428,7 +428,7 @@
                   </div>
                 </div>
                 <div class="tczh-namelist">
-                  <block v-for="item in Data.CompGoods.CompGoods" :key="item.index">
+                  <block v-for="(item,index) in Data.CompGoods.CompGoods" :key="index">
                     <div
                       :class="index==compIndex?'select':''"
                       v-if="index<3"
@@ -504,7 +504,7 @@
             <div class="act-canshu actLine" @click="_showCanShu2()">
               <span class="act-name">参数</span>
               <span class="act-con">
-                <block v-for="(item,index) in Data.Attributes" :key="item.index">
+                <block v-for="(item,index) in Data.Attributes" :key="index">
                   <span v-if="index<3">{{item.Name}}&nbsp;</span>
                 </block>...
               </span>
@@ -799,7 +799,7 @@
           </div>
         </div>
         <div class="compGoods" v-if="NowCompData==null">
-          <block v-for="item in Data.Items" :key="item.index">
+          <block v-for="(item,index) in Data.Items" :key="index">
             <div class="compGoodBox">
               <a
                 class="compGoodImg"
@@ -835,7 +835,7 @@
           </block>
         </div>
         <div class="compGoods" v-else>
-          <block v-for="item in NowCompData" :key="item.index">
+          <block v-for="(item,index) in NowCompData" :key="index">
             <div class="compGoodBox">
               <a
                 class="compGoodImg"
@@ -906,8 +906,8 @@
               <block v-if="Data.Remark.LableTags != null && Data.Remark.LableTags.length>0">
                 <li
                   :class="'tag '+(Data.Sentiment==0?'badlabel':'')"
-                  v-for="item in  Data.Remark.LableTags"
-                  :key="item.index"
+                  v-for="(item,index) in  Data.Remark.LableTags"
+                  :key="index"
                 >
                   <a
                     :href="'../remark/main?goodsid='+Data.GoodsBase.GoodsId+'&label='+(item.CommentLabel)"
@@ -1019,7 +1019,7 @@
             </div>
             <div class="goodsTypeBox" v-if="QueryGoodsData!=null">
               <swiper display-multiple-items="3.2">
-                <block v-for="item in QueryGoodsData" :key="item.index">
+                <block v-for="(item,index) in QueryGoodsData" :key="index">
                   <swiper-item>
                     <a  disabled @click="changeSeries(item.SeoCode)">
                       <img :src="item.Img" mode="widthFix" />
@@ -1052,7 +1052,7 @@
             </div>
             <div class="goodsTypeBox">
               <swiper display-multiple-items="3.2">
-                <block v-for="item in QueryGoodsData2" :key="item.index">
+                <block v-for="(item,index) in QueryGoodsData2" :key="index">
                   <swiper-item style="marginRight:5px">
                     <a disabled @click="changeSeries(item.SeoCode)">
                       <img :src="item.GoodsImg" mode="widthFix" />
@@ -1185,7 +1185,7 @@
         <h2>产品参数</h2>
         <div class="canShu-content">
           <ul>
-            <block v-for="item in Data.Attributes" :key="item.index">
+            <block v-for="(item,index) in Data.Attributes" :key="index">
               <li v-if="item.Name!='品牌'">
                 <em>{{item.Name}}</em>
                 <span>{{item.Value}}</span>
@@ -1202,8 +1202,8 @@
                 >
                   <div
                     :data-bigimg="color.GoodsMainImageUrl"
-                    v-for="color in Data.Series"
-                    :key="color.index"
+                    v-for="(color,index) in Data.Series"
+                    :key="index"
                   >
                     <em>{{color.AnotherName}}</em>
                     <img :src="color.SeriesImg" />
@@ -1238,8 +1238,8 @@
             >
               <li
                 :class="(item.LimitationType == 1? 'newman' : '')"
-                v-for="item in Data.GoodsPagePromotion.Coupons"
-                :key="item.index"
+                v-for="(item,index) in Data.GoodsPagePromotion.Coupons"
+                :key="index"
               >
                 <div>
                   <span>
@@ -1304,14 +1304,14 @@
               v-if="Data.GoodsPagePromotion.FullReducePromotion.DeductionSettings != null && Data.GoodsPagePromotion.FullReducePromotion.DeductionSettings.length>0"
             >
               <span
-                v-for="item in Data.GoodsPagePromotion.FullReducePromotion.DeductionSettings"
-                :key="item.index"
+                v-for="(item,index) in Data.GoodsPagePromotion.FullReducePromotion.DeductionSettings"
+                :key="index"
               >满{{item.StartMeetAmount}}-{{item.ReduceAmount}}元</span>
             </div>
             <div>
               <em
-                v-for="item in Data.GoodsPagePromotion.FullReducePromotion.DeductionSettings"
-                :key="item.index"
+                v-for="(item,index) in Data.GoodsPagePromotion.FullReducePromotion.DeductionSettings"
+                :key="index"
               >{{item.Content==null ? "" : "(" + item.Content + ")"}}</em>
             </div>
             <div class>
@@ -1377,7 +1377,7 @@
             </div>
             <div class="mezp-list">
               <ul>
-                <li v-for="item in Data.GoodsPagePromotion.FullGift" :key="item.index">
+                <li v-for="(item,index) in Data.GoodsPagePromotion.FullGift" :key="index">
                   <div class="mezp-pro">
                     <div class="imgbox">
                       <img :src="item.Img" />
@@ -1422,8 +1422,8 @@
               <ul>
                 <li
                   class="afterline"
-                  v-for="item in Data.GoodsPagePromotion.FreeCollocation"
-                  :key="item.index"
+                  v-for="(item,index) in Data.GoodsPagePromotion.FreeCollocation"
+                  :key="index"
                 >
                   <div class="jqhg-pro">
                     <em>+￥{{item.Price}}换购</em>
@@ -1456,8 +1456,8 @@
               <ul>
                 <li
                   class="afterline"
-                  v-for="item in Data.GoodsPagePromotion.ChangeBuy"
-                  :key="item.index"
+                  v-for="(item,index) in Data.GoodsPagePromotion.ChangeBuy"
+                  :key="index"
                 >
                   <div class="mehg-pro">
                     <em>订单{{item.Content}}</em>
@@ -1612,7 +1612,7 @@ import gdNromalSelectPop from "@/components/gdNromalSelectPop";
 import gdSelectMore from "@/components/gdSelectMore";
 import { mapActions, mapState } from "vuex";
 import bottomFlip from "@/components/bottomFlip";
-import wxParse from "mpvue-wxparse";
+import wxParse from "kede-mpvue-wxparse";
 import authorization from "@/utils/authorization"; 
 import utils from "@/utils"; 
 import store from '@/store'
