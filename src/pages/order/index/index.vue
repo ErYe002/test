@@ -161,10 +161,10 @@
         <view class='text'>¥{{orderInfo.SvipSellPrice}}</view>
       </view>
     </view>
-    <view class='amount-box' v-if="(orderInfo.IsVip || orderInfo.IsBuySvip) && orderInfo.SvipPromotionPrice > 0">
+    <view class='amount-box svip-content' v-if="(orderInfo.IsVip || orderInfo.IsBuySvip) && orderInfo.SvipPromotionPrice > 0">
       <view class='flex-line'>
-        <view class='label'>SVIP优惠</view>
-        <view class='text'>¥{{orderInfo.SvipPromotionPrice}}</view>
+        <view class='label svip-title'>SVIP优惠</view>
+        <view class='text svip-price'>¥{{orderInfo.SvipPromotionPrice}}</view>
       </view>
     </view>
     <view class='amount-box' v-if="orderInfo.MeetPriceDownPrice > 0">
@@ -1172,4 +1172,21 @@ page {
   background: #fff;
   border-radius: 10px;
 }
+.svip-content{
+  padding: 0 10px;
+  .svip-title{
+    font-size: 15px;
+    padding: 6px;
+    border-radius: 8px;
+    color: #000 !important;
+    background: #f9e5aa !important;
+    font-weight: bold !important;
+  }
+  .svip-price{
+    font-size: 15px;
+    color: #000 !important;
+    font-weight: bold !important;
+  }
+}
+
 </style>

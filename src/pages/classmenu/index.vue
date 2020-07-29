@@ -9,14 +9,14 @@
     <section class="classmenu-box">
       <div class="left-list">
         <scroll-view class="scroll-list" scroll-y ="{height: 'calc(100vh - 47px)'}">
-          <div v-for="leftItem in leftList" :class="(leftItem.ClassID == selectedParentID ? 'active ':'') + 'scroll-item'" :key="leftItem.ClassID" @click="leftItemClickEvent(leftItem.ClassID)">{{leftItem.ClassName}}</div>
+          <div v-for="leftItem in leftList" :class="(leftItem.ClassID == selectedParentID ? 'active ':'') + 'scroll-item'" :key="leftItem.ClassID" @click="leftItemClickEvent(leftItem.ClassID,leftItem.SEOCode)">{{leftItem.ClassName}}</div>
         </scroll-view>
       </div>
       <div class="right-list">
         <scroll-view class="scroll-list" scroll-y :style="{height: 'calc(100vh - 47px)'}" @scrolltolower="bindscrolltolower">
-          <!-- <div class="banner-img">
+          <div class="banner-img" v-if="SEOCode=='pinpaiguantwo'">
             <img src="https://pic.keede.com/AppImages/1114c2dc-ed81-4927-a3fa-d6ec5969b912.jpg?v=2020071501" alt="" mode="heightFix" class="img">
-          </div> -->
+          </div>
           <div class="scroll-item" v-for="rightItem in rightList" :key="rightItem.ClassID">
             <p class="title">{{rightItem.ClassName}}</p>
             <div class="list">
@@ -30,9 +30,38 @@
               </a>
             </div>
           </div>
-          <!-- <div>
-
-          </div> -->
+          <div  class="like-goods-wrap" v-if="goodsList.length > 0">
+              <ul class="list">
+                <block v-if="goodsList.length > 0">
+                <a
+                  :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'"
+                  class="item"
+                  v-for="item in goodsList"
+                  :key="item.SeoCode"
+                >
+                  <!-- <div class="save_money" v-if="item.SvipPrice-0>0&&item.SvipPrice-0<item.SalePrice-0">立省{{item.SaveMoney}}元</div> -->
+                  <img :src="item.ImageUrl" class="img" mode="widthFix"/>
+                  <p class="name">{{item.GoodsName}}</p>
+                  <div class="info">
+                    <!-- <div class="floor_one">
+                      <span class="jifen" v-if="item.GoodsScoreText!=null&&item.GoodsScoreText!=''">{{item.GoodsScoreText}}</span>
+                      <span class="quan" v-if="item.HasCoupon">券</span>
+                    </div> -->
+                    <div class="floor_two">
+                      <span class="price-old">原价 ￥{{item.SalePrice}}</span>
+                    </div>
+                    <div class="floor_three" v-if="item.SvipPrice-0>0&&item.SvipPrice-0<item.SalePrice-0">
+                      <img src="/static/images/goods_vip.png" alt="" class="img">
+                      <em class="price-icon">￥</em>
+                      <span class="price">{{item.SvipPrice}}</span>
+                    </div>
+                  </div>
+                  <!-- <div class="three-piont">...</div> -->
+                </a>
+                </block>
+              </ul>
+              <!-- <p class="no-more-tips" v-if="page == totalPage">已经到底了哦~</p> -->
+          </div>
         </scroll-view>
       </div>
     </section>
@@ -41,7 +70,7 @@
 
 <script>
 import api from "@/api/classmenu";
-
+import searchapi from "@/api/search";
 let sourceData
 
 export default {
@@ -50,8 +79,24 @@ export default {
       // scHeight: 0, //scroll-view高度
       selectedParentID: '',  //左列当前选中的ParentID
         leftList:[],
-        rightList:[]
-    };
+        rightList:[],
+        SEOCode:"",
+        goodsList:[],
+        isLoading:false,
+        totalPage:0,
+        listQuery: {
+          className: "", //分类名称
+          classId: "", //分类ID
+          page: 1, //页码
+          sort: 0, //排序方式：0：综合  2：销量  3：价格从小到大  4：价格从大到小
+          seoCode: "", //分类seocode
+          //以下数据来自筛选条件页
+          brandId: "", //品牌ID
+          uPrice: "", //最高价
+          lPrice: "", //最低价
+          attrs: [] //其余筛选条件组合
+        }
+    }
   },
   created() {
     // const sysInfo = wx.getStorageSync("sysInfo");
@@ -76,6 +121,9 @@ export default {
             }
         })
         this.selectedParentID = this.leftList[0].ClassID
+        this.SEOCode = this.leftList[0].SEOCode
+        this.listQuery.classId = this.leftList[0].ClassID;
+        this.listQuery.seoCode = this.leftList[0].SEOCode
         this.changeRightData()
       });
     },
@@ -85,12 +133,40 @@ export default {
         })
         this.rightList = rightList[0]['ChildAppClassDTO']
     },
-    leftItemClickEvent(pid){
+    leftItemClickEvent(pid,SEOCode){
         this.selectedParentID = pid
+        this.SEOCode = SEOCode
+        this.listQuery.classId = pid;
+        this.listQuery.seoCode = SEOCode;
         this.changeRightData()
     },
     bindscrolltolower(e){
       console.log("滚动到底部")
+    },
+    _searchGoods() {
+      if (!this.isLoading) {
+        this.isLoading = true;
+        searchapi
+          .getScreeningGoodsList({ ...this.listQuery })
+          .then(({ Data, TotalPage }) => {
+            this.goodsList =
+              this.listQuery.page > 1 ? this.goodsList.concat(Data) : Data;
+            this.totalPage = TotalPage;
+            //webview页面跳转到原生搜索页时，只会带seocode参数，所以必须补全剩余的classid和classname
+            if(this.listQuery.page == 1 && Data.length > 0 && this.$root.$mp.query.from){
+              this.listQuery.classId = Data[0].ClassId
+              this.listQuery.className = Data[0].ClassName
+            }
+            //没有搜索到任何数据
+            if (!Data || Data.length <= 0) {
+              this.isNoData = true;
+            }
+          })
+          .finally(() => {
+            this.isLoading = false;
+            this.setIsNeedFilter(false);
+          });
+      }
     }
   }
 };
@@ -187,6 +263,105 @@ export default {
       .img{
         height: 100%;
         border-radius: 10px;
+      }
+    }
+  }
+}
+.like-goods-wrap {
+  .list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .item {
+      border: 0.5px solid #E3E3E3;
+      box-sizing: border-box;
+      width: 125px;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 8px;
+      padding-bottom: 8px;
+      position: relative;
+      .img {
+        display: block;
+        width: 125px;
+        height: 125px;
+      }
+      .name,
+      .desc,
+      .info {
+        padding: 0 9px;
+      }
+      .name {
+          height: 32px;
+        color: #B29F7E;
+        font-size: 12px;
+        margin-top: 5px;
+        white-space: initial;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        display: -webkit-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .info {
+        .floor_one{
+          color: #E83828;
+          font-size: 8px;
+          margin: 10px 0;
+          .jifen{
+            border: 1px solid #E83828;
+            padding: 2px 5px;
+            border-radius: 5px;
+            margin-right: 5px;
+          }
+          .quan{
+            border: 1px solid #E83828;
+            padding: 2px 3px;
+            border-radius: 5px;
+          }
+        }
+        .floor_two{
+          color: #878788;
+          font-size: 10px;
+        }
+        .floor_three{
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          .img{
+            width: 12px;
+            height: 12px;
+            margin-right: 5px;
+          }
+          .price-icon{
+            font-size: 10px;
+            font-weight: bold;
+          }
+          .price{
+            font-weight: bold;
+            font-size: 14px;
+          }
+        }
+      }
+      .save_money{
+        color: #fff;
+        background: #E83828;
+        font-size: 10px;
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        padding: 2px;
+        border-radius: 4px;
+      }
+      .three-piont{
+        position: absolute;
+        right: 10px;
+        bottom: 20px;
+        color: #DCDDDD;
+      }
+      &:nth-child(odd) {
+        margin-right: 9px;
       }
     }
   }

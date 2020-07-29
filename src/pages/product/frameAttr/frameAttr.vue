@@ -474,7 +474,7 @@
               this.postIdBean.pdId = pd.FieldId;
             }
           }
-          pushData.set("IsBuyByScore", '');
+          pushData.set("IsBuyByScore", 'false');
           pushData.set("LeftQuantity", '0');
           pushData.set("RightQuantity", '0');
           pushData.set("GlassGroupId", this.postIdBean.groupPId);

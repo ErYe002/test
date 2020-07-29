@@ -31,6 +31,16 @@
       <section class="assets-box">
         <ul class="assets-list">
           <li class="assets-item">
+            <button open-type="getUserInfo" @getuserinfo="getUserInfo" v-if="!token" class="link">
+              <p class="number">0</p>
+              <p class="text">SVIP已节省</p>
+            </button>
+            <a v-else  class="link">
+              <p class="number">{{walletModel.SvipDeductionTotalAmount || 0.00}}</p>
+              <p class="text">SVIP已节省</p>
+            </a>
+          </li>
+          <li class="assets-item">
             <button
               open-type="getUserInfo"
               @getuserinfo="getUserInfo"
@@ -405,7 +415,8 @@ const userInfoModelTemp = {
 const walletModelTemp = {
   Balance: 0.0,
   CountOfCoupon: 0,
-  Score: 0
+  Score: 0,
+  SvipDeductionTotalAmount:0
 };
 
 export default {
