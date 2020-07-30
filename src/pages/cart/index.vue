@@ -293,7 +293,9 @@
                                               v-if="gItem.PriceLable == '会员价'"
                                               :src="'/static/images/level_0'+ model.RoleId + '.jpg'"
                                             />
-                                            <span class="span-label">{{gItem.PriceLable}}</span>
+                                            <span class="span-label"
+                                              v-if="shopId==1&&model.IsSvip&&gItem.Price==gItem.SvipPrice&&gItem.NomalPrice>gItem.SvipPrice"
+                                              >SVIP价 已优惠{{gItem.hasSaveSvipPrice}}元</span>
                                           </div>
                                         </div>
                                         <div class="promotion">
@@ -506,7 +508,10 @@
                                         v-if="nItem.PriceLable == '会员价'"
                                         :src="'/static/images/level_0'+ model.RoleId + '.jpg'"
                                       />
-                                      <span class="span-label">{{nItem.PriceLable}}</span>
+                                      <!-- <span class="span-label">{{nItem.PriceLable}}</span> -->
+                                      <span class="span-label"
+                                      v-if="shopId==1&&model.IsSvip&&nItem.Price==nItem.SvipPrice&&nItem.NomalPrice>nItem.SvipPrice"
+                                      >SVIP价 已优惠{{nItem.hasSaveSvipPrice}}元</span>
                                     </div>
                                   </template>
                                 </div>
@@ -1000,6 +1005,7 @@ export default {
       // this.selectedItemCount = 0;
       this.selectedCartItem = [];
       this.canSelectedCartItem = [];
+      let that = this;
       api.getCartDetail(this.shopId).then(({ Data }) => {
         if (Data == null) {
           this.model = null;
@@ -1045,6 +1051,9 @@ export default {
                       }
                     });
                   }
+                  if(that.shopId==1&&newData.IsSvip&&nItem.Price==nItem.SvipPrice&&nItem.NomalPrice>nItem.SvipPrice){
+                    nItem.hasSaveSvipPrice = (nItem.NomalPrice-nItem.SvipPrice).toFixed(2)
+                  }
                 });
               }
               //处理满类型商品中的换购商品数据
@@ -1072,6 +1081,9 @@ export default {
                             fdItem.SumPrice = fdItem.SumQuantity * fdItem.Price;
                           }
                         });
+                      }
+                      if(that.shopId==1&&newData.IsSvip&&fItem.Price==fItem.SvipPrice&&fItem.NomalPrice>fItem.SvipPrice){
+                        fItem.hasSaveSvipPrice = (fItem.NomalPrice-fItem.SvipPrice).toFixed(2)
                       }
                     });
                   }

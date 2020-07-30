@@ -18,7 +18,7 @@
             <img src="https://pic.keede.com/AppImages/1114c2dc-ed81-4927-a3fa-d6ec5969b912.jpg?v=2020071501" alt="" mode="heightFix" class="img">
           </div>
           <div class="scroll-item" v-for="rightItem in rightList" :key="rightItem.ClassID">
-            <p class="title">{{rightItem.ClassName}}</p>
+            <p class="title" v-if="SEOCode!='pinpaiguantwo'">{{rightItem.ClassName}}</p>
             <div class="list">
               <a :href="'/pages/search/screen/main?className=' + childItem.ClassName +'&classId=' + childItem.ClassID + '&seoCode=' + childItem.SEOCode" class="link" v-for="(childItem, idx) in rightItem.ChildAppClassDTO" :key="idx">
                 <img
@@ -30,7 +30,7 @@
               </a>
             </div>
           </div>
-          <div  class="like-goods-wrap" v-if="goodsList.length > 0">
+          <div  class="like-goods-wrap" >
               <ul class="list">
                 <block v-if="goodsList.length > 0">
                 <a
@@ -60,7 +60,8 @@
                 </a>
                 </block>
               </ul>
-              <!-- <p class="no-more-tips" v-if="page == totalPage">已经到底了哦~</p> -->
+              <p class="no-more-tips" v-if="listQuery.page == totalPage">已经到底了哦~</p>
+              <p class="no-data-box" v-else-if="isNoData">抱歉，没有找到你想要的商品哦</p>
           </div>
         </scroll-view>
       </div>
@@ -83,11 +84,13 @@ export default {
         SEOCode:"",
         goodsList:[],
         isLoading:false,
+        isNoData:false,
         totalPage:0,
         listQuery: {
           className: "", //分类名称
           classId: "", //分类ID
           page: 1, //页码
+          size:10,
           sort: 0, //排序方式：0：综合  2：销量  3：价格从小到大  4：价格从大到小
           seoCode: "", //分类seocode
           //以下数据来自筛选条件页
@@ -132,16 +135,27 @@ export default {
             return this.selectedParentID == ele.ClassID
         })
         this.rightList = rightList[0]['ChildAppClassDTO']
+        if(this.rightList==null||this.rightList.length==0){
+          this._searchGoods()
+        }
     },
     leftItemClickEvent(pid,SEOCode){
         this.selectedParentID = pid
         this.SEOCode = SEOCode
         this.listQuery.classId = pid;
         this.listQuery.seoCode = SEOCode;
+        //初始化商品
+        this.listQuery.page = 1;
+        this.isNoData = false;
+        this.goodsList = [];
+        this.totalPage = 0;
         this.changeRightData()
     },
     bindscrolltolower(e){
-      console.log("滚动到底部")
+      if (this.listQuery.page < this.totalPage) {
+        this.listQuery.page++;
+        this._searchGoods();
+      }
     },
     _searchGoods() {
       if (!this.isLoading) {
@@ -164,7 +178,6 @@ export default {
           })
           .finally(() => {
             this.isLoading = false;
-            this.setIsNeedFilter(false);
           });
       }
     }
@@ -366,4 +379,11 @@ export default {
     }
   }
 }
+ .no-more-tips,
+  .no-data-box {
+    color: #666;
+    font-size: 12px;
+    text-align: center;
+    margin: 20px 0;
+  }
 </style>

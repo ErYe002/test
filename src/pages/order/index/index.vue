@@ -1183,7 +1183,7 @@ page {
     font-weight: bold !important;
   }
   .svip-price{
-    font-size: 15px;
+    font-size: 16px !important;
     color: #000 !important;
     font-weight: bold !important;
   }

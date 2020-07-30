@@ -38,7 +38,7 @@
         </ul>
       </section>
     </article>
-    <img class="banner_url" src="https://pic.keede.com/AppImages/1114c2dc-ed81-4927-a3fa-d6ec5969b912.jpg?v=2020071501" alt="" v-if="listQuery.queryState==6" mode='widthFix'>
+    <img class="banner_url" src="https://pic.keede.com/app/images/shouhuoshaipinglun.png" alt="" v-if="listQuery.queryState==6" mode='widthFix'>
     <section class="order-box">
       <ul class="order-list">
         <template v-if="listQuery.queryState != 6">

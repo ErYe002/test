@@ -1,32 +1,38 @@
 <template>
-  <div style="height: 100%">
+  <div style="height: 100%" class="contain">
     <section>
       <div class="menu-pop-toggle-layout" >
         <span class="text-t6">当前选择：{{groupName}}</span>
-        <!-- <img class="ic-up-or-down" src="/static/images/ic_arrow_gray_down.png" v-if="!menuOpened"/>
+        <div class="dropdown-box" >
+          <img src="/static/images/icon_right_grey.png" alt="" class="trans-bg" />
+          <scroll-view class="pop-group-select-layout" scroll-x @scroll="scroll">
+            <radio-group class="radio-group" @change="radioChange">
+              <radio
+                class="radio"
+                v-for="item in groupNameList"
+                :key="item.value"
+                :value="item.index"
+                :checked="groupSelectPosition===item.index"
+                :color="'#cab894'"
+              >
+                <text class="text-group-name">{{item.value}}</text>
+              </radio>
+            </radio-group>
+          </scroll-view>
+          <div class="nav-dont">
+                  <div class="dont"></div>
+                  <div class="line-box">
+                    <div class="line" :style="{left:xxx+'px'}">
 
-        <img class="ic-up-or-down" src="/static/images/ic_arrow_gray_up.png" v-else/> -->
+                    </div>
+                  </div>
+                  <div class="dont"></div>
+              </div>
+        </div>
       </div>
-    </section>
+      
 
-    <section class="dropdown-box" >
-      <!-- <div class="trans-bg-60" v-if="menuOpened" @click="openMenu"></div> -->
-      <scroll-view class="pop-group-select-layout" scroll-x>
-        <radio-group class="radio-group" @change="radioChange">
-          <radio
-            class="radio"
-            v-for="item in groupNameList"
-            :key="item.value"
-            :value="item.index"
-            :checked="groupSelectPosition===item.index"
-            :color="'#cab894'"
-          >
-            <text class="text-group-name">{{item.value}}</text>
-          </radio>
-        </radio-group>
-      </scroll-view>
     </section>
-
     <div class="glass-list-layout">
       <div :class="(index===glassSelectPosiition && item.canEnable)?'glass-item select':'glass-item'"
            v-for="(item,index) in atttGlassListData[groupSelectPosition].EyeGlassList"
@@ -74,7 +80,8 @@
         menuOpened: false,
         groupSelectPosition: 0,
         glassSelectPosiition: 0,
-        groupName: ''
+        groupName: '',
+        xxx:0
       };
     },
     computed: {
@@ -111,7 +118,17 @@
         });
         this.glassSelectPosiition = index;
         this.setGroupSelectPosition({groupPosition: this.groupSelectPosition, glassosition: this.glassSelectPosiition});
-      }
+      },
+      scroll(e){
+        let that = this
+        wx.getSystemInfo({
+          success (res) {
+            that.xxx  = (e.mp.detail.scrollLeft*10/(e.mp.detail.scrollWidth-res.screenWidth))
+            }
+        })
+        // console.log(e.mp.detail)
+        // this.xxx = e.mp.detail.scrollLeft;//scrollWidth
+      },
 
     }
   }
@@ -120,21 +137,26 @@
 <style lang="less">
   page {
     height: 100%;
-    padding-top: 40px;
+    padding-top: 153px;
     box-sizing: border-box;
+    background: #f2f2f2;
   }
-
-  .menu-pop-toggle-layout {
-    height: 40px;
-    width: 100%;
-    display: flex;
+  .contain{
     padding: 0 10px;
+  }
+  .menu-pop-toggle-layout {
+    border-top: 10px solid #f2f2f2;
+    height: 140px;
+    display: flex;
+    margin: 0 10px;
+    flex-direction: column;
     box-sizing: border-box;
     background-color: white;
     justify-content: space-between;
     align-items: center;
     position: fixed;
     top: 0;
+    right: 0;
     left: 0;
     z-index: 3;
 
@@ -143,18 +165,38 @@
       width: 33px;
     }
     .text-t6 {
+      border-top-right-radius: 10px;
+      border-top-left-radius: 10px;
+      width: 100%;
       color: #666666;
       font-size: 14px;
+      height: 40px;
+      padding-left:15px ;
+      line-height: 40px;
+      text-align: left;
     }
   }
 
   .dropdown-box {
     width: 100%;
-    height: 100px;
+    padding-bottom: 5px;
+    border-bottom: 0.5px solid #DEDEDE;
+    position: relative;
+    background: #fff;
+    box-sizing: border-box;
+    .trans-bg{
+      position: absolute;
+      right: 2px;
+      top: 50%;
+      margin-top: -6px;
+      width: 8px;
+      height: 12px;
+      z-index: 5;
+    }
   }
 
   .pop-group-select-layout {
-    height: 100%;
+    height: 100px;
     width: 100%;
     .radio-group {
       padding: 0 15px;
@@ -179,6 +221,7 @@
     background-color: #cab894;
     position: fixed;
     bottom: 0;
+    left: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -190,16 +233,17 @@
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    margin-bottom: 70px;
-
+    padding-bottom: 70px;
+    background: #fff;
     .glass-item {
       width: calc(50% - 20px);
       margin: 10px 10px 0 10px;
       box-sizing: border-box;
-      border: #d9d9d9 solid 2px;
+      border: #d9d9d9 solid 1px;
       position: relative;
+      border-radius: 3px;
       &.select {
-        border: #d8c29b solid 2px;
+        border: #d8c29b solid 1px;
       }
     }
 
@@ -247,10 +291,37 @@
         height: 25px;
         background: #cab894;
         font-size: 12px;
+        border-radius: 3px;
         &.disable {
           background-color: #cccccc;
         }
       }
     }
   }
+  .nav-dont{
+      width: 100%;
+      height: 3px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #fff;
+      .dont{
+        width: 3px;
+        height: 3px;
+        border-radius: 50%;
+        background: #f7e6c3;
+      }
+      .line-box{
+        width: 30px;
+        height: 3px;
+        position: relative;
+        .line{
+          width: 20px;
+          height: 3px;
+          position: absolute;
+          transition: all 1s;
+          background: #3e3a39;
+        }
+      }
+    }
 </style>

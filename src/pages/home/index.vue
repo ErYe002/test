@@ -36,7 +36,7 @@
               <p class="text">SVIP已节省</p>
             </button>
             <a v-else  class="link">
-              <p class="number">{{walletModel.SvipDeductionTotalAmount || 0.00}}</p>
+              <p class="number">{{userInfoModel.SvipDeductionTotalAmount || 0.00}}</p>
               <p class="text">SVIP已节省</p>
             </a>
           </li>
@@ -409,14 +409,14 @@ const userInfoModelTemp = {
   OrderCountOfWaitDeliver: 0,
   OrderCountOfWaitEvaluate: 0,
   OrderCountOfWaitPay: 0,
-  IsSvip: false
+  IsSvip: false,
+  SvipDeductionTotalAmount:0
 };
 
 const walletModelTemp = {
   Balance: 0.0,
   CountOfCoupon: 0,
-  Score: 0,
-  SvipDeductionTotalAmount:0
+  Score: 0
 };
 
 export default {
