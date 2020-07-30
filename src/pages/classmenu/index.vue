@@ -14,13 +14,12 @@
       </div>
       <div class="right-list">
         <scroll-view class="scroll-list" scroll-y :style="{height: 'calc(100vh - 47px)'}" @scrolltolower="bindscrolltolower">
-          <div class="banner-img" v-if="SEOCode=='pinpaiguantwo'">
+          <div class="banner-img" v-if="SEOCode=='pinpaiguantwo'" @click="$navigateTo(LinkUrl)">
             <img :src="ImageUrl" alt="" mode="heightFix" class="img">
           </div>
-          <div class="scroll-item" v-for="rightItem in rightList" :key="rightItem.ClassID">
-            <p class="title" v-if="SEOCode!='pinpaiguantwo'">{{rightItem.ClassName}}</p>
+          <div class="scroll-item" v-if="SEOCode=='pinpaiguantwo'">
             <div class="list">
-              <a :href="'/pages/search/screen/main?className=' + childItem.ClassName +'&classId=' + childItem.ClassID + '&seoCode=' + childItem.SEOCode" class="link" v-for="(childItem, idx) in rightItem.ChildAppClassDTO" :key="idx">
+              <a :href="'/pages/search/screen/main?className=' + childItem.ClassName +'&classId=' + childItem.ClassID + '&seoCode=' + childItem.SEOCode" class="link" v-for="(childItem, idx) in rightList" :key="idx">
                 <img
                   class="img"
                   :src="childItem.ImageUrl"
@@ -30,6 +29,21 @@
               </a>
             </div>
           </div>
+          <block v-else >
+            <div class="scroll-item" v-for="rightItem in rightList" :key="rightItem.ClassID">
+              <p class="title">{{rightItem.ClassName}}</p>
+              <div class="list">
+                <a :href="'/pages/search/screen/main?className=' + childItem.ClassName +'&classId=' + childItem.ClassID + '&seoCode=' + childItem.SEOCode" class="link" v-for="(childItem, idx) in rightItem.ChildAppClassDTO" :key="idx">
+                  <img
+                    class="img"
+                    :src="childItem.ImageUrl"
+                    lazy-load="true"
+                  />
+                  <span class="text">{{childItem.ClassName}}</span>
+                </a>
+              </div>
+            </div>
+           </block>
           <div  class="like-goods-wrap" >
               <ul class="list">
                 <block v-if="goodsList.length > 0">
@@ -83,6 +97,7 @@ export default {
         rightList:[],
         SEOCode:"",
         ImageUrl:null,
+        LinkUrl:"",
         goodsList:[],
         isLoading:false,
         isNoData:false,
@@ -129,6 +144,7 @@ export default {
         this.listQuery.classId = this.leftList[0].ClassID;
         this.listQuery.seoCode = this.leftList[0].SEOCode
         this.ImageUrl = this.leftList[0].ImageUrl
+        this.LinkUrl = this.leftList[0].LinkUrl
         this.changeRightData()
       });
     },
