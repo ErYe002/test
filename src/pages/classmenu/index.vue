@@ -15,7 +15,7 @@
       <div class="right-list">
         <scroll-view class="scroll-list" scroll-y :style="{height: 'calc(100vh - 47px)'}" @scrolltolower="bindscrolltolower">
           <div class="banner-img" v-if="SEOCode=='pinpaiguantwo'">
-            <img src="https://pic.keede.com/AppImages/1114c2dc-ed81-4927-a3fa-d6ec5969b912.jpg?v=2020071501" alt="" mode="heightFix" class="img">
+            <img :src="ImageUrl" alt="" mode="heightFix" class="img">
           </div>
           <div class="scroll-item" v-for="rightItem in rightList" :key="rightItem.ClassID">
             <p class="title" v-if="SEOCode!='pinpaiguantwo'">{{rightItem.ClassName}}</p>
@@ -48,9 +48,9 @@
                       <span class="quan" v-if="item.HasCoupon">券</span>
                     </div> -->
                     <div class="floor_two">
-                      <span class="price-old">原价 ￥{{item.SalePrice}}</span>
+                      <span class="price-old">原价 ￥{{item.Price}}</span>
                     </div>
-                    <div class="floor_three" v-if="item.SvipPrice-0>0&&item.SvipPrice-0<item.SalePrice-0">
+                    <div class="floor_three" v-if="item.SvipPrice-0>0&&item.SvipPrice-0<item.Price-0">
                       <img src="/static/images/goods_vip.png" alt="" class="img">
                       <em class="price-icon">￥</em>
                       <span class="price">{{item.SvipPrice}}</span>
@@ -82,6 +82,7 @@ export default {
         leftList:[],
         rightList:[],
         SEOCode:"",
+        ImageUrl:null,
         goodsList:[],
         isLoading:false,
         isNoData:false,
@@ -127,6 +128,7 @@ export default {
         this.SEOCode = this.leftList[0].SEOCode
         this.listQuery.classId = this.leftList[0].ClassID;
         this.listQuery.seoCode = this.leftList[0].SEOCode
+        this.ImageUrl = this.leftList[0].ImageUrl
         this.changeRightData()
       });
     },
