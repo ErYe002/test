@@ -121,7 +121,7 @@
             </a>
           </div>
           <ul class="list">
-            <li class="item">
+            <li class="item" @click="onTD('待付款')">
               <button
                 open-type="getUserInfo"
                 @getuserinfo="getUserInfo"
@@ -141,7 +141,7 @@
                 <p class="text">待付款</p>
               </a>
             </li>
-            <li class="item">
+            <li class="item" @click="onTD('待发货')">
               <button
                 open-type="getUserInfo"
                 @getuserinfo="getUserInfo"
@@ -161,7 +161,7 @@
                 <p class="text">待发货</p>
               </a>
             </li>
-            <li class="item">
+            <li class="item" @click="onTD('待评价')">
               <button
                 open-type="getUserInfo"
                 @getuserinfo="getUserInfo"
@@ -181,7 +181,7 @@
                 <p class="text">待评价</p>
               </a>
             </li>
-            <li class="item">
+            <li class="item" @click="onTD('退换货')">
               <button open-type="getUserInfo" @getuserinfo="getUserInfo" v-if="!token" class="link">
                 <img class="icon" src="/static/images/home_tuihuan.png" />
                 <p class="text">退换货</p>
@@ -202,7 +202,7 @@
         <section class="service-box">
           <p class="title">我的应用</p>
           <ul class="list">
-            <li class="item">
+            <li class="item" @click="onTD('我的拼团')">
               <navigator
                 open-type="navigate"
                 target="miniProgram"
@@ -214,7 +214,7 @@
                 <p class="text">我的拼团</p>
               </navigator>
             </li>
-            <li class="item">
+            <li class="item" @click="onTD('我的收藏')">
               <button
                 open-type="getUserInfo"
                 @getuserinfo="getUserInfo"
@@ -230,7 +230,7 @@
                 <p class="text">我的收藏</p>
               </a>
             </li>
-            <li class="item">
+            <li class="item" @click="onTD('收货地址')">
               <button
                 open-type="getUserInfo"
                 @getuserinfo="getUserInfo"
@@ -253,7 +253,7 @@
         <section class="function-box">
           <p class="title">我的服务</p>
           <ul class="list">
-            <li class="item">
+            <li class="item" @click="onTD('微信客服')">
               <button
                 open-type="getUserInfo"
                 @getuserinfo="getUserInfo"
@@ -268,19 +268,19 @@
                 <p class="text">微信客服</p>
               </a>
             </li>
-            <li class="item">
+            <li class="item" @click="onTD('在线客服')">
               <button open-type="contact" class="link">
                 <img src="/static/images/home_customeonline1.png" class="icon" />
                 <p class="text">在线客服</p>
               </button>
             </li>
-            <li class="item">
+            <li class="item" @click="onTD('电话客服')">
               <a @click="contactServiceByPhone" class="link">
                 <img src="/static/images/home_callcustome.png" class="icon" />
                 <p class="text">电话客服</p>
               </a>
             </li>
-            <li class="item">
+            <li class="item" @click="onTD('我要告状')">
                 <button
                   open-type="getUserInfo"
                   @getuserinfo="getUserInfo"
@@ -295,7 +295,7 @@
                   <p class="text">我要告状</p>
                 </a>
             </li>
-            <li class="item">
+            <li class="item" @click="onTD('账户设置')">
               <button
                 open-type="getUserInfo"
                 @getuserinfo="getUserInfo"
@@ -304,7 +304,7 @@
                 class="link"
               >
                 <img src="/static/images/home_set.png" class="icon" />
-                <p class="text">设置</p>
+                <p class="text">账户设置</p>
               </button>
               <a v-else href="/pages/account/setting/home/main" class="link">
                 <img src="/static/images/home_set.png" class="icon" />
@@ -342,6 +342,7 @@
                 <a
                 :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'"
                 class="item"
+                @click="onTD('我的下方商品点击量',1,item.GoodsId)"
                 >
                 <div>
                     <img :src="item.ImageUrl" class="img" />
@@ -400,6 +401,8 @@ import goodsapi from "@/api";
 import authorization from "@/utils/authorization";
 import centerFlip from "@/components/centerFlip";
 import { mapState } from "vuex";
+import utils from "@/utils"; 
+const TDSDK = require('../../../static/tdsdk/tdweapp'); 
 
 const userInfoModelTemp = {
   GradeName: "普通会员",
@@ -707,6 +710,20 @@ export default {
           });
       }
     },
+    //统计
+    onTD(name,type,GoodsId){
+      TDSDK.Event.event({id: type==1?name:"mine_"+name})
+      
+       this.$onInformationCollection({
+        token:"WeChat",
+        uid:wx.getStorageSync('USERID'),
+        opentype:"click",
+        time:Date.now().toString(),
+        page:utils.getCurrentPageUrl(),
+        eventname:type==1?name:"mine_"+name,
+        eventval:type==1?JSON.stringify({"GoodsId":GoodsId}):""
+      })
+    }
   }
 };
 </script>

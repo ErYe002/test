@@ -59,7 +59,7 @@
               v-for="(item,index) in Data.Series"
               :key="index"
             >
-              <a  disabled @click="changeSeries(item.SeoCode)">
+              <a  disabled @click="changeSeries(1,item.SeoCode,null)">
                 <img :src="item.SeriesImg" />
                 <span v-if="Data.GoodsBase.SeoCode==item.SeoCode">{{item.AnotherName}}</span>
               </a>
@@ -1021,7 +1021,7 @@
               <swiper display-multiple-items="3.2">
                 <block v-for="(item,index) in QueryGoodsData" :key="index">
                   <swiper-item>
-                    <a  disabled @click="changeSeries(item.SeoCode)">
+                    <a  disabled @click="changeSeries(2,item.SeoCode,item.GoodsId)">
                       <img :src="item.Img" mode="widthFix" />
                       <div class="goodsName">{{item.GoodsName}}</div>
                       <div class="goodsPrice">￥{{item.Price}}</div>
@@ -1054,7 +1054,7 @@
               <swiper display-multiple-items="3.2">
                 <block v-for="(item,index) in QueryGoodsData2" :key="index">
                   <swiper-item style="marginRight:5px">
-                    <a disabled @click="changeSeries(item.SeoCode)">
+                    <a disabled @click="changeSeries(3,item.SeoCode,item.GoodsId)">
                       <img :src="item.GoodsImg" mode="widthFix" />
                       <div class="goodsName">{{item.GoodsName}}</div>
                       <div class="goodsPrice">￥{{item.Price}}</div>
@@ -1828,12 +1828,15 @@ export default {
       }
     },
     //切换系列
-    changeSeries(seocode){
+    changeSeries(number,seocode,GoodsId){
         wx.pageScrollTo({
           scrollTop: 0,
           duration: 0
         })
         this.getisComp(seocode);
+        if(number==2||number==3){
+          this.goodsLikeInfo(number,GoodsId)
+        }
     },
     _getPageData(seocode) {
       //判断是否登录
@@ -2824,6 +2827,48 @@ export default {
           url:
             "/pages/svip/dredgeSvip/main"
         });
+    },
+    //猜你喜欢广告位统计
+    goodsLikeInfo(number,GoodsId){
+      let eventname='商详页_';
+      if(number==2){
+          switch (this.QueryGoodsType) {
+            case "goodsType":
+              eventname +='同类别';
+              break;
+            case "price":
+              eventname +='同价位';
+              break;
+            case "period":
+              eventname +='同周期';
+              break;
+            default:
+              break;
+          }
+      }else if(number==3){
+           switch (this.QueryGoodsType2) {
+            case "PPTJ":
+              eventname +='品牌推荐';
+              break;
+            case "CNXH":
+              eventname +='猜你喜欢';
+              break;
+            case "RXPH":
+              eventname +='热销排行';
+              break;
+            default:
+              break;
+          }
+      }
+      this.$onInformationCollection({
+        token:"WeChat",
+        uid:wx.getStorageSync('USERID'),
+        opentype:"click",
+        time:Date.now().toString(),
+        page:utils.getCurrentPageUrl(),
+        eventname:eventname,
+        eventval:JSON.stringify({"GoodsId":GoodsId})
+      })
     },
 
     //点击左右眼  商品属性相关方法

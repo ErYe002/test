@@ -535,7 +535,16 @@ export default {
               url: '/pages/order/submitResult/main?resultMsg='+Msg+'&shopId='+this.formModel.selectShopId+'&orderNo='+Data.OrderNo+'&OrderAmount='+Data.OrderAmount+'&OrderId='+Data.OrderId,
             })
           }
-
+          //
+          this.$onInformationCollection({
+            token:"WeChat",
+            uid:wx.getStorageSync('USERID'),
+            opentype:"click",
+            time:Date.now().toString(),
+            page:utils.getCurrentPageUrl(),
+            eventname:"下单成功",
+            eventval:JSON.stringify({"OrderId":Data.OrderId})
+          })
           //微信广告转化统计
           this.wxadInfo();
         }else{

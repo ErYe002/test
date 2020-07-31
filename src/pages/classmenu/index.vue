@@ -61,8 +61,9 @@
                       <span class="jifen" v-if="item.GoodsScoreText!=null&&item.GoodsScoreText!=''">{{item.GoodsScoreText}}</span>
                       <span class="quan" v-if="item.HasCoupon">券</span>
                     </div> -->
-                    <div class="floor_two">
-                      <span class="price-old">原价 ￥{{item.Price}}</span>
+                    <div :class="{'floor_two':true,'price_two':!(item.SvipPrice-0>0&&item.SvipPrice-0<item.Price-0)}">
+                      <span v-if='item.SvipPrice-0>0&&item.SvipPrice-0<item.Price-0' :class="{'price-old':true}">原价 </span>
+                      <span :class="{'price-old':true,'price':!(item.SvipPrice-0>0&&item.SvipPrice-0<item.Price-0)}">￥{{item.Price}}</span>
                     </div>
                     <div class="floor_three" v-if="item.SvipPrice-0>0&&item.SvipPrice-0<item.Price-0">
                       <img src="/static/images/goods_vip.png" alt="" class="img">
@@ -352,9 +353,17 @@ export default {
             border-radius: 5px;
           }
         }
+        .price_two{
+          margin-top:5px;
+        }
         .floor_two{
           color: #878788;
           font-size: 10px;
+          .price{
+            font-weight: bold;
+            font-size: 14px;
+            color:#000;
+          }
         }
         .floor_three{
           display: flex;

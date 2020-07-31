@@ -144,6 +144,8 @@
 import api from "@/api/order";
 import cartApi from "@/api/cart";
 import { mapState } from "vuex";
+import utils from "@/utils"; 
+const TDSDK = require('../../../../../static/tdsdk/tdweapp'); 
 
 export default {
   data() {
@@ -400,10 +402,16 @@ export default {
     },
     buyAgain(id){
       api.buyAginOrder(id).then(({Data})=>{
-          wx.showToast({
-            title: "加入购物车成功",
-            icon: "none"
-          });
+          this.onTD(id)
+           wx.showToast({
+              title: "加入购物车成功~",
+              icon: "none"
+            });
+            setTimeout(function() {
+              wx.switchTab({
+                url: "/pages/cart/main"
+              });
+            }, 1000);
       }).catch((Msg)=>{
           wx.showModal({
           title: '提示',
@@ -421,6 +429,20 @@ export default {
             }
           }
         });
+      })
+    },
+    //统计
+    onTD(OrderId){
+      TDSDK.Event.event({id: '再来一单'})
+      
+       this.$onInformationCollection({
+        token:"WeChat",
+        uid:wx.getStorageSync('USERID'),
+        opentype:"click",
+        time:Date.now().toString(),
+        page:utils.getCurrentPageUrl(),
+        eventname:"再来一单",
+        eventval:JSON.stringify({"OrderId":OrderId})
       })
     }
   }

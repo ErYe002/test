@@ -93,7 +93,7 @@
       <section class="btn-box">
         <ul class="btn-list">
           <li class="b-item">
-            <button class="kd-btn btn-default btn-small again" @click="buyAgain(item.OrderId)">再来一单</button>
+            <button class="kd-btn btn-default btn-small again" @click="buyAgain(orderId)">再来一单</button>
           </li>
           <li class="b-item" v-if="orderInfo.ShopId != 2 && orderInfo.IsAfterSale">
             <button class="kd-btn btn-default btn-small" @click="toAppTips('可得小程序暂时不支持退换货功能哦，请下载可得眼镜APP使用此功能')">退换货</button>
@@ -124,6 +124,8 @@ import api from "@/api/order";
 import tools from '@/utils'
 import cartApi from "@/api/cart";
 import { mapState } from "vuex";
+import utils from "@/utils"; 
+const TDSDK = require('../../../../../static/tdsdk/tdweapp');
 
 export default {
   data() {
@@ -222,6 +224,51 @@ export default {
           } 
         }
       });
+    },
+     buyAgain(id){
+      api.buyAginOrder(id).then(({Data})=>{
+          this.onTD(id)
+         wx.showToast({
+              title: "加入购物车成功~",
+              icon: "none"
+            });
+            setTimeout(function() {
+              wx.switchTab({
+                url: "/pages/cart/main"
+              });
+            }, 1000);
+      }).catch((Msg)=>{
+          wx.showModal({
+          title: '提示',
+          content: Msg,
+          icon: "none",
+          confirmText: '确定',
+          cancelText: '取消',
+          confirmColor: '#CAB894',
+          success(res) {
+            if (res.confirm) {
+              console.log('用户点击确定');
+              // self.isConfirmedBuy = true;
+            } else if (res.cancel) {
+              console.log('用户点击取消');
+            }
+          }
+        });
+      })
+    },
+    //统计
+    onTD(OrderId){
+      TDSDK.Event.event({id: '再来一单'})
+      
+       this.$onInformationCollection({
+        token:"WeChat",
+        uid:wx.getStorageSync('USERID'),
+        opentype:"click",
+        time:Date.now().toString(),
+        page:utils.getCurrentPageUrl(),
+        eventname:"再来一单",
+        eventval:JSON.stringify({"OrderId":OrderId})
+      })
     }
   }
 };
