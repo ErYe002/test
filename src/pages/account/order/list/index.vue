@@ -97,9 +97,12 @@
                     :href="'/pages/account/logistics/main?shopId='+item.ShopId+'&orderId='+item.OrderId"
                   >查看物流</a>
                 </li>
-                <!-- <li class="b-item" v-if="item.IsAppraise">
-                  <button class="kd-btn btn-default btn-small">评价</button>
-                </li>-->
+                <li class="b-item" v-if="item.IsAppraise">
+                  <a
+                    class="kd-btn btn-default btn-small wuliu"
+                    :href="'/pages/account/order/commentDetail/main'"
+                  >评价返现</a>
+                </li>
                 <li class="b-item" v-if="item.IsContactAirlines">
                   <button class="kd-btn btn-default btn-small" open-type="contact">联系客服</button>
                 </li>

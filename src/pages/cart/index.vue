@@ -293,6 +293,7 @@
                                               v-if="gItem.PriceLable == '会员价'"
                                               :src="'/static/images/level_0'+ model.RoleId + '.jpg'"
                                             />
+                                            <span class="span-label" v-if="nItem.PriceLable == '会员价'||nItem.PriceLable == '促销价'">{{nItem.PriceLable}}</span>
                                             <span class="span-label"
                                               v-if="shopId==1&&model.IsSvip&&gItem.Price==gItem.SvipPrice&&gItem.NomalPrice>gItem.SvipPrice"
                                               >SVIP价 已优惠{{gItem.hasSaveSvipPrice}}元</span>
@@ -508,7 +509,7 @@
                                         v-if="nItem.PriceLable == '会员价'"
                                         :src="'/static/images/level_0'+ model.RoleId + '.jpg'"
                                       />
-                                      <!-- <span class="span-label">{{nItem.PriceLable}}</span> -->
+                                      <span class="span-label" v-if="nItem.PriceLable == '会员价'||nItem.PriceLable == '促销价'">{{nItem.PriceLable}}</span>
                                       <span class="span-label"
                                       v-if="shopId==1&&model.IsSvip&&nItem.Price==nItem.SvipPrice&&nItem.NomalPrice>nItem.SvipPrice"
                                       >SVIP价 已优惠{{nItem.hasSaveSvipPrice}}元</span>

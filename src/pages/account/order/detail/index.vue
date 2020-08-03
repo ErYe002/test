@@ -98,9 +98,12 @@
           <li class="b-item" v-if="orderInfo.ShopId != 2 && orderInfo.IsAfterSale">
             <button class="kd-btn btn-default btn-small" @click="toAppTips('可得小程序暂时不支持退换货功能哦，请下载可得眼镜APP使用此功能')">退换货</button>
           </li>
-          <!-- <li class="b-item" v-if="orderInfo.IsAppraise">
-            <button class="kd-btn btn-default btn-small">评价</button>
-          </li> -->
+          <li class="b-item" v-if="orderInfo.IsAppraise">
+            <a
+                class="kd-btn btn-default btn-small"
+                :href="'/pages/account/order/commentDetail/main'"
+                  >评价返现</a>
+          </li>
           <li class="b-item" v-if="orderInfo.IsCancel">
             <button class="kd-btn btn-default btn-small" @click="cancelOrderEvent(orderInfo.OrderId)">取消订单</button>
           </li>

@@ -360,7 +360,7 @@
           }
           console.log('返回', this.postShowIdSingle);
         }
-        this.IsConfirmedBuy = Data.isConfirmedBuy;
+        // this.IsConfirmedBuy = Data.isConfirmedBuy;
       },
       setGdInfo(gdlist) {
         for (let item of gdlist) {
@@ -504,6 +504,8 @@
         postData.set("MaxDeduction", this.MaxDeduction);
         postData.set("IsFreeCarriage", this.IsFreeCarriage);
         postData.set("RealGoodsId", this.mainData.MainGoods.GoodsId);
+        postData.set("LeftRealGoodsId", '00000000-0000-0000-0000-000000000000');
+        postData.set("LeftRealGoodsId", '00000000-0000-0000-0000-000000000000');
 
         if (this.GoodsFields.length > 0) {
           for (let item of this.GoodsFields) {

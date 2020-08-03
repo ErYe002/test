@@ -515,7 +515,7 @@
           </div>
         </div>
       </div>
-      <div v-if="Data.GoodsBase.GoodsType!=4">
+      <div v-if="Data.GoodsBase.GoodsType!=4&&Data.GoodsBase.GoodsType!=8">
         <div :class="{'promotionBox':true,'TOP':true,'haitaobox':Data.GoodsBase.ShopId==2}" v-if="Data.Attributes!=null && Data.Attributes.length> 0">
           <div class="blackLine" v-if="Data.GoodsBase.IsSpecificationGoods">
             <span class="title">● 光度及数量</span>
@@ -718,7 +718,7 @@
           </div>
         </div>
       </div>
-      <div v-if='Data.GoodsBase.GoodsType==4'>
+      <div v-if='Data.GoodsBase.GoodsType==4||Data.GoodsBase.GoodsType==8'>
         <div :class="{'promotionBox':true,'TOP':true,'haitaobox':Data.GoodsBase.ShopId==2}" v-if="Data.Attributes!=null && Data.Attributes.length> 0">
           
           <div class="xuanGou" v-if="Data.GoodsBase.IsSpecificationGoods">
@@ -2492,7 +2492,13 @@ export default {
           wx.navigateTo({
             url: href
           });
-        }else{
+        }else if(this.Data.GoodsBase.GoodsType == 8){
+          var href = this.normalAttrHref + "&IsBuyNow=false"
+            wx.navigateTo({
+              url: href
+            });
+        }
+        else{
           this.buyGoods(false)
         }
       }
@@ -2662,7 +2668,13 @@ export default {
           wx.navigateTo({
             url: href
           });
-        }else{
+        }else if(this.Data.GoodsBase.GoodsType == 8){
+          var href = this.normalAttrHref + "&IsBuyNow=false"
+            wx.navigateTo({
+              url: href
+            });
+        }
+        else{
           this.buyGoods(true)
         }
       }
@@ -3175,6 +3187,8 @@ export default {
         postData.set("MaxDeduction",  this.Data.GoodsBase.ScoreDeductionPrice);
         postData.set("IsFreeCarriage", this.Data.GoodsBase.IsFreeCarriage);
         postData.set("RealGoodsId", this.mainData.MainGoods.GoodsId);
+        postData.set("LeftRealGoodsId", '00000000-0000-0000-0000-000000000000');
+        postData.set("LeftRealGoodsId", '00000000-0000-0000-0000-000000000000');
 
         if (this.GoodsFields.length > 0) {
           for (let item of this.GoodsFields) {
