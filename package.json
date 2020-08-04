@@ -25,7 +25,6 @@
   "dependencies": {
     "kede-mpvue-wxparse": "^0.6.5",
     "mpvue": "^2.0.0",
-    "mpvue-wxparse": "^0.6.5",
     "vuex": "^3.1.2"
   },
   "devDependencies": {

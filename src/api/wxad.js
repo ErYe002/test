@@ -48,7 +48,7 @@ const api = {
     }
 
     return http.postByNoErrorTips(
-      `Wechart/UserActionRecord`,
+      `/Wechart/UserActionRecord`,
       data,
       {
         'content-type': 'application/json'
