@@ -92,7 +92,7 @@
       </section>
       <section class="btn-box">
         <ul class="btn-list">
-          <li class="b-item">
+          <li class="b-item" v-if="orderInfo.IsCanBugAgain">
             <button class="kd-btn btn-default btn-small again" @click="buyAgain(orderId)">再来一单</button>
           </li>
           <li class="b-item" v-if="orderInfo.ShopId != 2 && orderInfo.IsAfterSale">

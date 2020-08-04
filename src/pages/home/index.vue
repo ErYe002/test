@@ -342,6 +342,7 @@
                 <a
                 :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'"
                 class="item"
+                v-if="index<4"
                 @click="onTD('我的下方商品点击量',1,item.GoodsId)"
                 >
                 <div>

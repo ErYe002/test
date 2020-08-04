@@ -74,6 +74,7 @@
             <div class="btn-box">
               <div class="again">
                 <button
+                    v-if="item.IsCanBugAgain"
                     class="kd-btn btn-default btn-small"
                     @click="buyAgain(item.OrderId)"
                   >再来一单</button>

@@ -154,7 +154,7 @@ export default {
             return this.selectedParentID == ele.ClassID
         })
         this.rightList = rightList[0]['ChildAppClassDTO']
-        if(this.rightList==null||this.rightList.length==0){
+        if((this.rightList==null||this.rightList.length==0)&&this.SEOCode){
           this._searchGoods()
         }
     },
