@@ -613,19 +613,18 @@ export default {
       let that = this
       let click_id = wx.getStorageSync("click_id");
       if(click_id){
-        wxadApi.getAccountToken().then(({Data})=>{
-          wxadApi.wxadCallbckData(
-            Data.AccessToken,
-            Data.WebUserActionSetId,
-            utils.getCurrentPageUrl(),
-            click_id,
-            that.orderInfo.RealTotalPrice,
-            "COMPLETE_ORDER"
-          ).then(res=>{
-            console.log(res,"回传行为转换返回参数状态")
-            wx.removeStorageSync("click_id")
-            wx.removeStorageSync("click_id_time")
-          })
+        console.log(click_id,"click_id")
+        wxadApi.wxadCallbckData(
+          null,
+          null,
+          utils.getCurrentPageUrl(),
+          click_id,
+          that.orderInfo.RealTotalPrice,
+          "COMPLETE_ORDER"
+        ).then(res=>{
+          console.log(res,"回传行为转换返回参数状态")
+          wx.removeStorageSync("click_id")
+          wx.removeStorageSync("click_id_time")
         })
       }
     },

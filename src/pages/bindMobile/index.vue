@@ -76,10 +76,9 @@ export default {
       let that = this
       let click_id = wx.getStorageSync("click_id");
       if(click_id){
-        wxadApi.getAccountToken().then(({Data})=>{
           wxadApi.wxadCallbckData(
-            Data.AccessToken,
-            Data.WebUserActionSetId,
+            null,
+            null,
             utils.getCurrentPageUrl(),
             click_id,
             null,
@@ -87,7 +86,7 @@ export default {
           ).then(res=>{
             console.log(res,"回传行为转换返回参数状态--注册")
           })
-        })
+
       }
     },
       //微信广告处理click_id缓存时间是（否在有效时间内转化）
