@@ -21,7 +21,7 @@ const api = {
                     "url":"http://www.qq.com/"+url,
                     "action_type":action_type,
                     "trace":{
-                        "click_id":"『"+click_id+"』"
+                        "click_id":click_id
                     },
                     "action_param":{
                         "value": amount,
@@ -37,7 +37,7 @@ const api = {
                     "url":"http://www.qq.com/"+url,
                     "action_type":action_type,
                     "trace":{
-                        "click_id":"『"+click_id+"』"
+                        "click_id":click_id
                     },
                     "action_param":{
                         "leads_type": "RESERVE"
