@@ -179,7 +179,7 @@
       getData(){
         api.getGoodsJoinCartNormal(this.selectGoodsId,false).then(({Data})=>{
           if(Data!=null){
-            this.imgUrl = Data.ImageUrl
+            this.imgUrl = Data.MainGoods.MainImageUrl
             this.GoodsName = Data.MainGoods.GoodsName
             this.serisItem = Data.MainGoods.SeriesItems
             this.price = Data.MainGoods.SalePrice
