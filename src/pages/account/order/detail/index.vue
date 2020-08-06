@@ -231,16 +231,21 @@ export default {
      buyAgain(id){
       api.buyAginOrder(id).then(({Data,Msg})=>{
           this.onTD(id)
-          wx.showToast({
-              title: Msg?Msg:"加入购物车成功~",
-              icon: "none",
-              duration:1500
-            });
-            setTimeout(function() {
-              wx.switchTab({
-                url: "/pages/cart/main"
-              });
-            }, 2000);
+            wx.showModal({
+              title: '提示',
+              content: Msg?Msg:"加入购物车成功~",
+              showCancel:false,
+              confirmColor:'#cab894',
+              success (res) {
+                  if (res.confirm) {
+                    wx.switchTab({
+                      url: "/pages/cart/main"
+                    });
+                  } else if (res.cancel) {
+                  console.log('用户点击取消')
+                  }
+              }
+          })
       }).catch((Msg)=>{
           wx.showModal({
           title: '提示',

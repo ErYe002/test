@@ -9,7 +9,7 @@
     <section class="classmenu-box">
       <div class="left-list">
         <scroll-view class="scroll-list" scroll-y ="{height: 'calc(100vh - 47px)'}">
-          <div v-for="leftItem in leftList" :class="(leftItem.ClassID == selectedParentID ? 'active ':'') + 'scroll-item'" :key="leftItem.ClassID" @click="leftItemClickEvent(leftItem.ClassID,leftItem.SEOCode)">{{leftItem.ClassName}}</div>
+          <div v-for="leftItem in leftList" :class="(leftItem.ClassID == selectedParentID ? 'active ':'') + 'scroll-item'" :key="leftItem.ClassID" @click="leftItemClickEvent(leftItem.ClassID,leftItem.SEOCode,leftItem.ClassName)">{{leftItem.ClassName}}</div>
         </scroll-view>
       </div>
       <div class="right-list">
@@ -17,23 +17,10 @@
           <div class="banner-img" v-if="SEOCode=='pinpaiguantwo'" @click="$navigateTo(LinkUrl)">
             <img :src="ImageUrl" alt="" v-if="ImageUrl" mode="heightFix" class="img">
           </div>
-          <div class="scroll-item" v-if="SEOCode=='pinpaiguantwo'">
-            <div class="list">
-              <a :href="'/pages/search/screen/main?className=' + childItem.ClassName +'&classId=' + childItem.ClassID + '&seoCode=' + childItem.SEOCode" class="link" v-for="(childItem, idx) in rightList" :key="idx">
-                <img
-                  class="img"
-                  :src="childItem.ImageUrl"
-                  lazy-load="true"
-                />
-                <span class="text">{{childItem.ClassName}}</span>
-              </a>
-            </div>
-          </div>
-          <block v-else >
-            <div class="scroll-item" v-for="rightItem in rightList" :key="rightItem.ClassID">
-              <p class="title">{{rightItem.ClassName}}</p>
+          <block v-if="!isGoodsList">
+            <div class="scroll-item" v-if="SEOCode=='pinpaiguantwo'">
               <div class="list">
-                <a :href="'/pages/search/screen/main?className=' + childItem.ClassName +'&classId=' + childItem.ClassID + '&seoCode=' + childItem.SEOCode" class="link" v-for="(childItem, idx) in rightItem.ChildAppClassDTO" :key="idx">
+                <a :href="'/pages/search/screen/main?className=' + childItem.ClassName +'&classId=' + childItem.ClassID + '&seoCode=' + childItem.SEOCode" class="link" v-for="(childItem, idx) in rightList" :key="idx">
                   <img
                     class="img"
                     :src="childItem.ImageUrl"
@@ -43,6 +30,21 @@
                 </a>
               </div>
             </div>
+            <block v-else >
+              <div class="scroll-item" v-for="rightItem in rightList" :key="rightItem.ClassID">
+                <p class="title">{{rightItem.ClassName}}</p>
+                <div class="list">
+                  <a :href="'/pages/search/screen/main?className=' + childItem.ClassName +'&classId=' + childItem.ClassID + '&seoCode=' + childItem.SEOCode" class="link" v-for="(childItem, idx) in rightItem.ChildAppClassDTO" :key="idx">
+                    <img
+                      class="img"
+                      :src="childItem.ImageUrl"
+                      lazy-load="true"
+                    />
+                    <span class="text">{{childItem.ClassName}}</span>
+                  </a>
+                </div>
+              </div>
+            </block>
            </block>
           <div  class="like-goods-wrap" >
               <ul class="list">
@@ -97,9 +99,11 @@ export default {
         leftList:[],
         rightList:[],
         SEOCode:"",
+        ClassName:"",
         ImageUrl:null,
         LinkUrl:"",
         goodsList:[],
+        isGoodsList:false,
         isLoading:false,
         isNoData:false,
         totalPage:0,
@@ -142,6 +146,7 @@ export default {
         })
         this.selectedParentID = this.leftList[0].ClassID
         this.SEOCode = this.leftList[0].SEOCode
+        this.ClassName = this.leftList[0].ClassName
         this.listQuery.classId = this.leftList[0].ClassID;
         this.listQuery.seoCode = this.leftList[0].SEOCode
         this.ImageUrl = this.leftList[0].ImageUrl
@@ -154,16 +159,20 @@ export default {
             return this.selectedParentID == ele.ClassID
         })
         this.rightList = rightList[0]['ChildAppClassDTO']
-        if((this.rightList==null||this.rightList.length==0)&&this.SEOCode){
+        
+        if(this.ClassName.indexOf("日抛")!=-1||this.ClassName.indexOf("年抛")!=-1||this.ClassName.indexOf("月抛")!=-1){
+          this.isGoodsList = true
           this._searchGoods()
         }
     },
-    leftItemClickEvent(pid,SEOCode){
+    leftItemClickEvent(pid,SEOCode,ClassName){
+        this.ClassName = ClassName
         this.selectedParentID = pid
         this.SEOCode = SEOCode
         this.listQuery.classId = pid;
         this.listQuery.seoCode = SEOCode;
         //初始化商品
+        this.isGoodsList = false
         this.listQuery.page = 1;
         this.isNoData = false;
         this.goodsList = [];

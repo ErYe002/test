@@ -802,18 +802,19 @@ export default {
         quantity: 1
       }, //正在编辑的商品信息
       actions:[
+          {
+                name: '移入收藏夹',
+                color: '#fff',
+                width : 70,
+                background:"#cab894"
+            },
             {
                 name: '删除',
                 color: '#fff',
                 width : 40,
                 background:"#000"
-            },
-             {
-                name: '移入收藏夹',
-                color: '#fff',
-                width : 70,
-                background:"#cab894"
             }
+             
         ],
         toggle:true,
         unclosable:false
@@ -1108,11 +1109,11 @@ export default {
       that.selectGoodsEvent(uniqueId) 
       wx.showModal({
         title: '提示',
-        content: detail.index==0?"确定删除该商品吗？":'确定移入收藏夹吗？',
+        content: detail.index==1?"确定删除该商品吗？":'确定移入收藏夹吗？',
         confirmColor: '#5BB53C',
         success: function(res) {
           if (res.confirm) {
-            if(detail.index==0){
+            if(detail.index==1){
                 api.deleteCartGoods([uniqueId]).then(() => {
                   that._getPageData();
                   that._getCartItemsCount();
