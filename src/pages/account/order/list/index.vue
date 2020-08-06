@@ -405,17 +405,18 @@ export default {
       this.orderList[index].GoodsImageUrl='https://pic.keede.com//app/images/goods_errimg.png';
     },
     buyAgain(id){
-      api.buyAginOrder(id).then(({Data})=>{
+      api.buyAginOrder(id).then(({Data,Msg})=>{
           this.onTD(id)
            wx.showToast({
-              title: "加入购物车成功~",
-              icon: "none"
+              title: Msg?Msg:"加入购物车成功~",
+              icon: "none",
+              duration:1500
             });
             setTimeout(function() {
               wx.switchTab({
                 url: "/pages/cart/main"
               });
-            }, 1000);
+            }, 2000);
       }).catch((Msg)=>{
           wx.showModal({
           title: '提示',

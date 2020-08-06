@@ -58,6 +58,10 @@ const api = {
   postGoodsJoinCartNormal(GId, isAllSaleScore, GrouponActivityId, isPresale, IsAllStock) {
     return http.postByNoErrorTips(`/Goods/JoinCart?GId=${GId}&isAllSaleScore=${isAllSaleScore}&GrouponActivityId=${GrouponActivityId}&isPresale=${isPresale}&IsAllStock=${IsAllStock}`);
   },
+    //加入购物车(非框架购买属性选择)/新版多光度接口-get方法
+    getGoodsJoinCartNormal(GId, isAllSaleScore) {
+      return http.getByNoErrorTips(`/Goods/GetGoodsSaleFiled?GId=${GId}&isAllSaleScore=${isAllSaleScore}`);
+    },
   //无属性的商品
   buyNoProperty(mapPrams) {
     let selfUrl = `&Quantity=${mapPrams.get('Quantity')}&GDPropertyGifts=&SelectedSpecifications=&RealGoodsId=${mapPrams.get('RealGoodsId')}&NoPropertyGifts=`;

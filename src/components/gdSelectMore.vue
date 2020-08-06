@@ -11,7 +11,7 @@
       <img @click="hideEvent" class="icon-close" src="/static/images/icon_cart_tips_close.png"/>
     </div>
     <scroll-view scroll-y="true" class="scroll-box" :scroll-top="scrollHeight">
-         <div class="item-title">
+         <div class="item-title" v-if="serisItem">
             <div>
                 <span class="sph-title" v-if="serisItem.length>0">
                 颜色
@@ -116,7 +116,6 @@
     props: {
       isShow: {type: Boolean, default: false},
       gid:"",
-      price:"",
       imid:""
     },
     data() {
@@ -131,6 +130,7 @@
         axisList:[],
         serisItem:[],
         selectGoodsId:"",
+        price:"",
         specification:"",
         imgUrl:"",
         GoodsName:"",
@@ -177,12 +177,13 @@
         this.getData()
       },
       getData(){
-        api.getGoodsField(this.selectGoodsId).then(({Data})=>{
+        api.getGoodsJoinCartNormal(this.selectGoodsId,false).then(({Data})=>{
           if(Data!=null){
             this.imgUrl = Data.ImageUrl
-            this.GoodsName = Data.GoodsName
-            this.serisItem = Data.SeriesItems
-           this.setGdInfo(Data.GoodsFields)
+            this.GoodsName = Data.MainGoods.GoodsName
+            this.serisItem = Data.MainGoods.SeriesItems
+            this.price = Data.MainGoods.SalePrice
+           this.setGdInfo(Data.MainGoods.GoodsFields)
           }
         })
       },

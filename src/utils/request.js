@@ -6,10 +6,13 @@ const request = (url, method, data, header, showLoading = true, isNeedErrorTips 
     if(showLoading){
       if(url.indexOf('WechatSamllApplciationLogin') != -1){
         wx.showLoading({
-          title: '正在登录'
+          title: '正在登录',
+          mask:true
         });
       } else {
-        wx.showLoading();
+        wx.showLoading({
+          mask:true
+        });
       }
     } else {
       wx.showNavigationBarLoading();

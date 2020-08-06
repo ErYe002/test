@@ -1595,7 +1595,6 @@
       :sph-list="sphList"
       :cyl-list="cylList"
       :axis-list="axisList"
-      :price="Data&&Data.GoodsBase.SellPrice"
       :imid="immediately"
       @backData="gdBackInfoCart"
     />
@@ -2886,7 +2885,7 @@ export default {
     //点击左右眼  商品属性相关方法
       _getData(goodsId) {
         // api.postGoodsJoinCartNormal('179e08dc-d38a-42ed-a2ab-5b9516ea1bfd', null, false, false, true).then(({Data}) => {
-        attrapi.postGoodsJoinCartNormal(goodsId, null, false, false, true).then(({Data}) => {
+        attrapi.getGoodsJoinCartNormal(goodsId, false).then(({Data}) => {
           console.log("主数据", Data);
           this.mainData = Data;
           this.mainGoods = Data.MainGoods;
