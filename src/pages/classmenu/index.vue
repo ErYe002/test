@@ -15,7 +15,7 @@
       <div class="right-list">
         <scroll-view class="scroll-list" scroll-y :style="{height: 'calc(100vh - 47px)'}" @scrolltolower="bindscrolltolower">
           <div class="banner-img" v-if="SEOCode=='pinpaiguantwo'" @click="$navigateTo(LinkUrl)">
-            <img :src="ImageUrl" alt="" v-if="ImageUrl" mode="heightFix" class="img">
+            <img :src="ImageUrl" alt="" v-if="ImageUrl" class="img">
           </div>
           <block v-if="!isGoodsList">
             <div class="scroll-item" v-if="SEOCode=='pinpaiguantwo'">
@@ -301,7 +301,7 @@ export default {
       justify-content: center;
       align-items: center;
       .img{
-        width: 270px;
+        width: 260px;
         height: 100px;
         border-radius: 10px;
       }
