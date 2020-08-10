@@ -97,6 +97,10 @@
 
         this.groupSelectPosition = Number(e.mp.detail.value);
         this.groupName = this.atttGlassListData[this.groupSelectPosition].GroupName;
+        wx.pageScrollTo({
+          scrollTop: 0,
+          duration: 300
+        })
       },
       openMenu() {
         this.menuOpened = !this.menuOpened;

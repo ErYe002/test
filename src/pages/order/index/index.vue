@@ -119,7 +119,7 @@
           </navigator>
       </view>
     </view>
-    <view class="useCouponScore-box">
+    <view class="useCouponScore-box" v-if="orderInfo.IsCanUseScore||(orderInfo.ShopId == 1 && orderInfo.AllBalance > 0)||(!orderInfo.IsVip && orderInfo.ShopId != 2)">
       <view class='useCouponScore' v-if="orderInfo.IsCanUseScore">
         <!-- <view class='useCouponScore'> -->
         <view class='counponContent'>

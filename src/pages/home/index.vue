@@ -87,7 +87,7 @@
             <div class="svip_tips">
               SVIP会员
             </div>
-            <div class="svip_time" v-if="userInfoModel.IsSvip">{{userInfoModel.SvipBeginDate}}-{{userInfoModel.SvipEndDate}}</div>
+            <div class="svip_time" v-if="userInfoModel.IsSvip">{{userInfoModel.SvipBeginDate}}——{{userInfoModel.SvipEndDate}}</div>
             <div class="svip_content" v-else>尊享会员特权</div>
             <button open-type="getUserInfo" @getuserinfo="getUserInfo" v-if="!token" class="btn_vip" >
                 <span class="btn_vip_text">查看详情</span>
