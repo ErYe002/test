@@ -120,7 +120,7 @@ const api = {
     },
   //svip确认订单页
   getSvipPageData() {
-    return http.post('/SvipBuy/ConfirmSvipOrder?versionNo=4.7.0');
+    return http.post('/SvipBuy/ConfirmSvipOrder?versionNo=5.0.0');
   },
   //svip提交订单
   submitSvipOrder(CouponNo,ConsigneeId,GoodsList) {
