@@ -2,6 +2,7 @@
 import api from '@/api/user'
 import {mapActions} from 'vuex';
 import TDSDK  from "../static/tdsdk/tdweapp.js";
+import utils from "./utils"
 
 export default {
   onLaunch(options){
@@ -51,6 +52,8 @@ export default {
     // const sysInfo = wx.getSystemInfoSync()
     // wx.setStorageSync('sysInfo', sysInfo)
     this.setSearchHistoryByStorage()
+
+    this.checkDeviceID()
   },
   methods: {
     ...mapActions('user', [
@@ -74,6 +77,13 @@ export default {
       api.getAppMainInfo(code).then((Data) => {
         this.setWXinfo(Data)
       })
+    },
+    /**检查是否存在DeviceID */
+    checkDeviceID(){
+      let DeviceID = wx.getStorageSync('DeviceID')
+      if(!DeviceID){
+        wx.setStorageSync('DeviceID',utils.guid())
+      }
     }
   }
 }

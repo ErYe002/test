@@ -6,7 +6,7 @@
         <span class="order-status">{{orderInfo.OrderState}}</span>
       </section>
       <section class="address-box">
-        <p class="top-bg"></p>
+        <!-- <p class="top-bg"></p> -->
         <div class="address-info">
           <p class="name">{{orderInfo.Consignee}}</p>
           <p class="address">{{orderInfo.Direction}}</p>
@@ -59,7 +59,7 @@
           </li>
         </ul>
       </section>
-      <section class="order-pay-box">
+      <section class="order-pay-box last">
         <ul class="list">
           <li class="item">
             <b class="lable">商品总金额</b>
@@ -92,12 +92,18 @@
       </section>
       <section class="btn-box">
         <ul class="btn-list">
+          <li class="b-item" v-if="orderInfo.IsCanBuyAgain">
+            <button class="kd-btn btn-default btn-small again" @click="buyAgain(orderId)">再来一单</button>
+          </li>
           <li class="b-item" v-if="orderInfo.ShopId != 2 && orderInfo.IsAfterSale">
             <button class="kd-btn btn-default btn-small" @click="toAppTips('可得小程序暂时不支持退换货功能哦，请下载可得眼镜APP使用此功能')">退换货</button>
           </li>
-          <!-- <li class="b-item" v-if="orderInfo.IsAppraise">
-            <button class="kd-btn btn-default btn-small">评价</button>
-          </li> -->
+          <li class="b-item" v-if="orderInfo.IsAppraise">
+            <a
+                class="kd-btn btn-default btn-small"
+                :href="'/pages/account/order/commentDetail/main'"
+                  >评价返现</a>
+          </li>
           <li class="b-item" v-if="orderInfo.IsCancel">
             <button class="kd-btn btn-default btn-small" @click="cancelOrderEvent(orderInfo.OrderId)">取消订单</button>
           </li>
@@ -121,6 +127,8 @@ import api from "@/api/order";
 import tools from '@/utils'
 import cartApi from "@/api/cart";
 import { mapState } from "vuex";
+import utils from "@/utils"; 
+const TDSDK = require('../../../../../static/tdsdk/tdweapp');
 
 export default {
   data() {
@@ -219,6 +227,57 @@ export default {
           } 
         }
       });
+    },
+     buyAgain(id){
+      api.buyAginOrder(id).then(({Data,Msg})=>{
+          this.onTD(id)
+            wx.showModal({
+              title: '提示',
+              content: Msg?Msg:"加入购物车成功~",
+              showCancel:false,
+              confirmColor:'#cab894',
+              success (res) {
+                  if (res.confirm) {
+                    wx.switchTab({
+                      url: "/pages/cart/main"
+                    });
+                  } else if (res.cancel) {
+                  console.log('用户点击取消')
+                  }
+              }
+          })
+      }).catch((Msg)=>{
+          wx.showModal({
+          title: '提示',
+          content: Msg,
+          icon: "none",
+          confirmText: '确定',
+          cancelText: '取消',
+          confirmColor: '#CAB894',
+          success(res) {
+            if (res.confirm) {
+              console.log('用户点击确定');
+              // self.isConfirmedBuy = true;
+            } else if (res.cancel) {
+              console.log('用户点击取消');
+            }
+          }
+        });
+      })
+    },
+    //统计
+    onTD(OrderId){
+      TDSDK.Event.event({id: '再来一单'})
+      
+       this.$onInformationCollection({
+        token:"WeChat",
+        uid:wx.getStorageSync('USERID'),
+        opentype:"click",
+        time:Date.now().toString(),
+        page:utils.getCurrentPageUrl(),
+        eventname:"再来一单",
+        eventval:JSON.stringify({"OrderId":OrderId})
+      })
     }
   }
 };
@@ -226,8 +285,11 @@ export default {
 
 <style lang="less" scoped>
 .container {
+  padding: 10px;
   padding-bottom: 70px;
   box-sizing: border-box;
+  background: #f2f2f2;
+  padding-top: 0;
 }
 .order-no-box {
   padding: 15px;
@@ -235,14 +297,19 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 10px solid #eee;
+  margin-bottom: 10px;
+  background: #fff;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
   .order-status {
     color: #fe7e7d;
   }
 }
 .address-box {
   font-size: 14px;
-  border-bottom: 10px solid #eee;
+  background: #fff;
+  border-radius: 10px;
+  margin-bottom: 10px;
   .top-bg {
     background-image: url(https://pic.keede.com/app/images/icon_cart.png);
     background-position: 0 -248px;
@@ -268,7 +335,9 @@ export default {
 
 .goods-box {
   padding: 15px;
-  border-bottom: 10px solid #eee;
+  background: #fff;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
   .list {
     .item {
       padding-bottom: 15px;
@@ -328,6 +397,7 @@ export default {
 }
 
 .order-pay-box {
+  background: #fff;
   .list {
     padding: 10px 0;
     .item {
@@ -347,11 +417,10 @@ export default {
     }
   }
   &.small {
-    border-bottom: 10px solid #eee;
     .list {
       padding: 0;
       .item {
-        border-bottom: 0.5px solid #e5e5e5;
+        // border-bottom: 0.5px solid #e5e5e5;
         font-size: 13px;
         height: 40px;
         .lable {
@@ -374,6 +443,11 @@ export default {
     color: #888;
     font-size: 12px;
   }
+  &.last{
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding-bottom: 10px;
+  }
 }
 
 .btn-box {
@@ -382,8 +456,8 @@ export default {
   left: 0;
   right: 0;
   margin: 0 auto;
-  background: #fff;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  background: #f2f2f2;
+  // box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
   .btn-list {
     display: flex;
     justify-content: flex-end;
@@ -392,8 +466,32 @@ export default {
     .b-item {
       margin-bottom: 10px;
       margin-left: 10px;
-      width: 90px;
+      // width: 90px;
+      button,a{
+        padding: 0 10px;
+        border-radius: 7px;
+      }
+      &:last-child{
+        button,a{
+          background: #FF668E !important;
+          color: #fff !important;
+          border-radius: 7px;
+          border: 0;
+        }
+      }
+    }
+    .contact{
+      background: #BCB092;
+      color: #fff;
     }
   }
 }
+ .again{
+            padding: 0 10px;
+            border-radius: 7px;
+            width: 73px;
+            color: #FF668E;
+            box-sizing: border-box;
+            border:0.5px solid #FF668E;
+          }
 </style>

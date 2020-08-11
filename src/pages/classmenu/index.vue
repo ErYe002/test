@@ -9,23 +9,76 @@
     <section class="classmenu-box">
       <div class="left-list">
         <scroll-view class="scroll-list" scroll-y ="{height: 'calc(100vh - 47px)'}">
-          <div v-for="leftItem in leftList" :class="(leftItem.ClassID == selectedParentID ? 'active ':'') + 'scroll-item'" :key="leftItem.ClassID" @click="leftItemClickEvent(leftItem.ClassID)">{{leftItem.ClassName}}</div>
+          <div v-for="leftItem in leftList" :class="(leftItem.ClassID == selectedParentID ? 'active ':'') + 'scroll-item'" :key="leftItem.ClassID" @click="leftItemClickEvent(leftItem.ClassID,leftItem.SEOCode,leftItem.ClassName)">{{leftItem.ClassName}}</div>
         </scroll-view>
       </div>
       <div class="right-list">
-        <scroll-view class="scroll-list" scroll-y :style="{height: 'calc(100vh - 47px)'}">
-          <div class="scroll-item" v-for="rightItem in rightList" :key="rightItem.ClassID">
-            <p class="title">{{rightItem.ClassName}}</p>
-            <div class="list">
-              <a :href="'/pages/search/screen/main?className=' + childItem.ClassName +'&classId=' + childItem.ClassID + '&seoCode=' + childItem.SEOCode" class="link" v-for="(childItem, idx) in rightItem.ChildAppClassDTO" :key="idx">
-                <img
-                  class="img"
-                  :src="childItem.ImageUrl"
-                  lazy-load="true"
-                />
-                <span class="text">{{childItem.ClassName}}</span>
-              </a>
+        <scroll-view class="scroll-list" scroll-y :style="{height: 'calc(100vh - 47px)'}" @scrolltolower="bindscrolltolower">
+          <div class="banner-img" v-if="SEOCode=='pinpaiguantwo'" @click="$navigateTo(LinkUrl)">
+            <img :src="ImageUrl" alt="" v-if="ImageUrl" class="img">
+          </div>
+          <block v-if="!isGoodsList">
+            <div class="scroll-item" v-if="SEOCode=='pinpaiguantwo'">
+              <div class="list">
+                <a :href="'/pages/search/screen/main?className=' + childItem.ClassName +'&classId=' + childItem.ClassID + '&seoCode=' + childItem.SEOCode" class="link" v-for="(childItem, idx) in rightList" :key="idx">
+                  <img
+                    class="img"
+                    :src="childItem.ImageUrl"
+                    lazy-load="true"
+                  />
+                  <span class="text">{{childItem.ClassName}}</span>
+                </a>
+              </div>
             </div>
+            <block v-else >
+              <div class="scroll-item" v-for="rightItem in rightList" :key="rightItem.ClassID">
+                <p class="title">{{rightItem.ClassName}}</p>
+                <div class="list">
+                  <a :href="'/pages/search/screen/main?className=' + childItem.ClassName +'&classId=' + childItem.ClassID + '&seoCode=' + childItem.SEOCode" class="link" v-for="(childItem, idx) in rightItem.ChildAppClassDTO" :key="idx">
+                    <img
+                      class="img"
+                      :src="childItem.ImageUrl"
+                      lazy-load="true"
+                    />
+                    <span class="text">{{childItem.ClassName}}</span>
+                  </a>
+                </div>
+              </div>
+            </block>
+           </block>
+          <div  class="like-goods-wrap" >
+              <ul class="list">
+                <block v-if="goodsList.length > 0">
+                <a
+                  :href="'/pages/product/index/main?seocode='+item.SeoCode+'&isComp=false'"
+                  class="item"
+                  v-for="item in goodsList"
+                  :key="item.SeoCode"
+                >
+                  <!-- <div class="save_money" v-if="item.SvipPrice-0>0&&item.SvipPrice-0<item.SalePrice-0">立省{{item.SaveMoney}}元</div> -->
+                  <img :src="item.ImageUrl" class="img" mode="widthFix"/>
+                  <p class="name">{{item.GoodsName}}</p>
+                  <div class="info">
+                    <!-- <div class="floor_one">
+                      <span class="jifen" v-if="item.GoodsScoreText!=null&&item.GoodsScoreText!=''">{{item.GoodsScoreText}}</span>
+                      <span class="quan" v-if="item.HasCoupon">券</span>
+                    </div> -->
+                    <div :class="{'floor_two':true,'price_two':!(item.SvipPrice-0>0&&item.SvipPrice-0<item.Price-0)}">
+                      <span v-if='item.SvipPrice-0>0&&item.SvipPrice-0<item.Price-0' :class="{'price-old':true}">原价 </span>
+                      <span :class="{'price-old':true,'price':!(item.SvipPrice-0>0&&item.SvipPrice-0<item.Price-0)}">￥{{item.Price}}</span>
+                    </div>
+                    <div class="floor_three" v-if="item.SvipPrice-0>0&&item.SvipPrice-0<item.Price-0">
+                      <img src="/static/images/goods_vip.png" alt="" class="img">
+                      <em class="price-icon">￥</em>
+                      <span class="price">{{item.SvipPrice}}</span>
+                    </div>
+                  </div>
+                  <!-- <div class="three-piont">...</div> -->
+                </a>
+                </block>
+              </ul>
+              <p class="no-more-tips" v-if="listQuery.page == totalPage">已经到底了哦~</p>
+              <p class="no-data-box" v-else-if="isNoData">抱歉，没有找到你想要的商品哦</p>
           </div>
         </scroll-view>
       </div>
@@ -35,7 +88,7 @@
 
 <script>
 import api from "@/api/classmenu";
-
+import searchapi from "@/api/search";
 let sourceData
 
 export default {
@@ -44,8 +97,30 @@ export default {
       // scHeight: 0, //scroll-view高度
       selectedParentID: '',  //左列当前选中的ParentID
         leftList:[],
-        rightList:[]
-    };
+        rightList:[],
+        SEOCode:"",
+        ClassName:"",
+        ImageUrl:null,
+        LinkUrl:"",
+        goodsList:[],
+        isGoodsList:false,
+        isLoading:false,
+        isNoData:false,
+        totalPage:0,
+        listQuery: {
+          className: "", //分类名称
+          classId: "", //分类ID
+          page: 1, //页码
+          size:10,
+          sort: 0, //排序方式：0：综合  2：销量  3：价格从小到大  4：价格从大到小
+          seoCode: "", //分类seocode
+          //以下数据来自筛选条件页
+          brandId: "", //品牌ID
+          uPrice: "", //最高价
+          lPrice: "", //最低价
+          attrs: [] //其余筛选条件组合
+        }
+    }
   },
   created() {
     // const sysInfo = wx.getStorageSync("sysInfo");
@@ -70,6 +145,12 @@ export default {
             }
         })
         this.selectedParentID = this.leftList[0].ClassID
+        this.SEOCode = this.leftList[0].SEOCode
+        this.ClassName = this.leftList[0].ClassName
+        this.listQuery.classId = this.leftList[0].ClassID;
+        this.listQuery.seoCode = this.leftList[0].SEOCode
+        this.ImageUrl = this.leftList[0].ImageUrl
+        this.LinkUrl = this.leftList[0].LinkUrl
         this.changeRightData()
       });
     },
@@ -78,10 +159,55 @@ export default {
             return this.selectedParentID == ele.ClassID
         })
         this.rightList = rightList[0]['ChildAppClassDTO']
+        
+        if(this.ClassName.indexOf("日抛")!=-1||this.ClassName.indexOf("年抛")!=-1||this.ClassName.indexOf("月抛")!=-1){
+          this.isGoodsList = true
+          this._searchGoods()
+        }
     },
-    leftItemClickEvent(pid){
+    leftItemClickEvent(pid,SEOCode,ClassName){
+        this.ClassName = ClassName
         this.selectedParentID = pid
+        this.SEOCode = SEOCode
+        this.listQuery.classId = pid;
+        this.listQuery.seoCode = SEOCode;
+        //初始化商品
+        this.isGoodsList = false
+        this.listQuery.page = 1;
+        this.isNoData = false;
+        this.goodsList = [];
+        this.totalPage = 0;
         this.changeRightData()
+    },
+    bindscrolltolower(e){
+      if (this.listQuery.page < this.totalPage) {
+        this.listQuery.page++;
+        this._searchGoods();
+      }
+    },
+    _searchGoods() {
+      if (!this.isLoading) {
+        this.isLoading = true;
+        searchapi
+          .getScreeningGoodsList({ ...this.listQuery })
+          .then(({ Data, TotalPage }) => {
+            this.goodsList =
+              this.listQuery.page > 1 ? this.goodsList.concat(Data) : Data;
+            this.totalPage = TotalPage;
+            //webview页面跳转到原生搜索页时，只会带seocode参数，所以必须补全剩余的classid和classname
+            if(this.listQuery.page == 1 && Data.length > 0 && this.$root.$mp.query.from){
+              this.listQuery.classId = Data[0].ClassId
+              this.listQuery.className = Data[0].ClassName
+            }
+            //没有搜索到任何数据
+            if (!Data || Data.length <= 0) {
+              this.isNoData = true;
+            }
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
+      }
     }
   }
 };
@@ -168,6 +294,132 @@ export default {
         }
       }
     }
+    .banner-img{
+      margin-top: 10px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .img{
+        width: 260px;
+        height: 100px;
+        border-radius: 10px;
+      }
+    }
   }
 }
+.like-goods-wrap {
+  .list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .item {
+      border: 0.5px solid #E3E3E3;
+      box-sizing: border-box;
+      width: 125px;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 8px;
+      padding-bottom: 8px;
+      position: relative;
+      .img {
+        display: block;
+        width: 125px;
+        height: 125px;
+      }
+      .name,
+      .desc,
+      .info {
+        padding: 0 9px;
+      }
+      .name {
+          height: 32px;
+        color: #B29F7E;
+        font-size: 12px;
+        margin-top: 5px;
+        white-space: initial;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        display: -webkit-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .info {
+        .floor_one{
+          color: #E83828;
+          font-size: 8px;
+          margin: 10px 0;
+          .jifen{
+            border: 1px solid #E83828;
+            padding: 2px 5px;
+            border-radius: 5px;
+            margin-right: 5px;
+          }
+          .quan{
+            border: 1px solid #E83828;
+            padding: 2px 3px;
+            border-radius: 5px;
+          }
+        }
+        .price_two{
+          margin-top:5px;
+        }
+        .floor_two{
+          color: #878788;
+          font-size: 10px;
+          .price{
+            font-weight: bold;
+            font-size: 14px;
+            color:#000;
+          }
+        }
+        .floor_three{
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          .img{
+            width: 12px;
+            height: 12px;
+            margin-right: 5px;
+          }
+          .price-icon{
+            font-size: 10px;
+            font-weight: bold;
+          }
+          .price{
+            font-weight: bold;
+            font-size: 14px;
+          }
+        }
+      }
+      .save_money{
+        color: #fff;
+        background: #E83828;
+        font-size: 10px;
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        padding: 2px;
+        border-radius: 4px;
+      }
+      .three-piont{
+        position: absolute;
+        right: 10px;
+        bottom: 20px;
+        color: #DCDDDD;
+      }
+      &:nth-child(odd) {
+        margin-right: 9px;
+      }
+    }
+  }
+}
+ .no-more-tips,
+  .no-data-box {
+    color: #666;
+    font-size: 12px;
+    text-align: center;
+    margin: 20px 0;
+  }
 </style>

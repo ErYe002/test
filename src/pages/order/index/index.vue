@@ -31,32 +31,32 @@
           </view>
           <view class='icon'></view>
         </navigator>
-        <view class='top-bg'></view>
+        <!-- <view class='top-bg'></view> -->
       </view>
       <!-- 海外购：身份证信息 -->
       <view class='idcard-box' v-if='orderInfo.ShopId == 2'>
         <label class='label'>
           <view class='text'>身份证</view>
-          <input class='input' placeholder='请输入收货人身份证号码' :value='formModel.IDCard' v-model="formModel.IDCard" type="idcard" confirm-type="done" />
+          <input class='input' placeholder='身份证上的名字与收货人名字完全一致才能通过海关' :value='formModel.IDCard' v-model="formModel.IDCard" type="idcard" confirm-type="done" />
         </label>
         <view class="idcard-tips">
           <view class="t">注：</view>
           <view class="text">
             <view>1.应海关要求，购买进口商品请您提供真实身份信息</view>
-            <view>2.身份证上的名字与收货人名字完全一致才能通过海关</view>
+            <!-- <view>2.身份证上的名字与收货人名字完全一致才能通过海关</view> -->
           </view>
         </view>
       </view>
       <view class='order-box'>
         <!-- 海外购添加haitao样式 -->
         <view :class='orderInfo.ShopId == 2 ? "haitao":""'>
-          <view class='shop-name'>
+          <!-- <view class='shop-name'>
             <view class="text">
               <img v-if="orderInfo.ShopId == 2" src="/static/images/icon_earth.png" class='icon' />
               <img v-else src="/static/images/icon_shop.png" class='icon' /> {{orderInfo.ShopId == 2 ? "品质进口海淘":"可得境内自营"}}
             </view>
             <view v-if='orderInfo.ShopId != 2' class="sub-text">全国送 预计2-5工作日送达</view>
-          </view>
+          </view> -->
           <view class='goods-info' @click="showGoodsListEvent">
             <scroll-view class="scroll-view_H" scroll-x="true"  enable-flex="true">
               <div class="scroll-item" v-for="(item, idx) in orderInfo.Goods" :key="idx">
@@ -110,7 +110,7 @@
         </view>
       </view>
     </view>
-    <div class="sectionLine"></div>
+    <!-- <div class="sectionLine"></div> -->
     <view class='amount-box'>
       <view class='flex-line'>
         <view class='couponTitle'>优惠券</view>
@@ -119,33 +119,35 @@
           </navigator>
       </view>
     </view>
-    <view class='useCouponScore' v-if="orderInfo.IsCanUseScore">
+    <view class="useCouponScore-box" v-if="orderInfo.IsCanUseScore||(orderInfo.ShopId == 1 && orderInfo.AllBalance > 0)||(!orderInfo.IsVip && orderInfo.ShopId != 2)">
+      <view class='useCouponScore' v-if="orderInfo.IsCanUseScore">
+        <!-- <view class='useCouponScore'> -->
+        <view class='counponContent'>
+          <view class='couponTitle'>{{orderInfo.UseScoreContent}}<span class='couponSubtitle'>({{orderInfo.TotalScoreContent}})</span></view>
+          <!-- <view class='couponSubtitle'>当前{{orderInfo.TotalScoreContent}}</view> -->
+        </view>
+        <switch class="swiper" checked="" @change="changeUseScore" color="#C9C9CB"/>
+      </view>
+      <view class='useCouponScore' v-if="orderInfo.ShopId == 1 && orderInfo.AllBalance > 0">
       <!-- <view class='useCouponScore'> -->
-      <view class='counponContent'>
-        <view class='couponTitle'>{{orderInfo.UseScoreContent}}<span class='couponSubtitle'>({{orderInfo.TotalScoreContent}})</span></view>
-        <!-- <view class='couponSubtitle'>当前{{orderInfo.TotalScoreContent}}</view> -->
+        <view class='counponContent'>
+          <view class='couponTitle'>余额</view>
+          <view class='couponSubtitle'>可用￥{{orderInfo.AllBalance}} <span v-if="formModel.isUseBalance">，使用￥{{orderInfo.NewAvailableBalance}} </span></view>
+        </view>
+        <switch class="swiper" checked="" @change="changeUseBalance" color="#C9C9CB"/> 
       </view>
-      <switch class="swiper" checked="" @change="changeUseScore" color="#cab894"/>
-    </view>
-    <view class='useCouponScore' v-if="orderInfo.ShopId == 1 && orderInfo.AllBalance > 0">
-    <!-- <view class='useCouponScore'> -->
-      <view class='counponContent'>
-        <view class='couponTitle'>余额</view>
-        <view class='couponSubtitle'>可用￥{{orderInfo.AllBalance}} <span v-if="formModel.isUseBalance">，使用￥{{orderInfo.NewAvailableBalance}} </span></view>
+      
+      <!-- <div class="sectionLine"></div> -->
+      <view class='buy-vip-box' v-if="!orderInfo.IsVip && orderInfo.ShopId != 2">
+        <view class="order_vip_box">
+          <img src="/static/images/order_svip.png" class="order_vip_img">
+        </view>
+        <view class='b-left'>
+          <view class='title'>{{orderInfo.BuySvipDiscountContent}}</view>
+          <view class='subtitle'>{{orderInfo.BuySvipAmountConent}}</view>
+        </view>
+        <switch class="swiper" :checked="orderInfo.IsBuySvip" @change="changeBuyVip" color="#C9C9CB"/> 
       </view>
-      <switch class="swiper" checked="" @change="changeUseBalance" color="#cab894"/> 
-    </view>
-    
-    <div class="sectionLine"></div>
-    <view class='buy-vip-box' v-if="!orderInfo.IsVip && orderInfo.ShopId != 2">
-      <view class="order_vip_box">
-        <img src="/static/images/order_svip.png" class="order_vip_img">
-      </view>
-      <view class='b-left'>
-        <view class='title'>{{orderInfo.BuySvipDiscountContent}}</view>
-        <view class='subtitle'>{{orderInfo.BuySvipAmountConent}}</view>
-      </view>
-      <switch class="swiper" :checked="orderInfo.IsBuySvip" @change="changeBuyVip" color="#cab894"/> 
     </view>
     <view class='amount-box'>
       <view class='flex-line'>
@@ -159,10 +161,10 @@
         <view class='text'>¥{{orderInfo.SvipSellPrice}}</view>
       </view>
     </view>
-    <view class='amount-box' v-if="(orderInfo.IsVip || orderInfo.IsBuySvip) && orderInfo.SvipPromotionPrice > 0">
+    <view class='amount-box svip-content' v-if="(orderInfo.IsVip || orderInfo.IsBuySvip) && orderInfo.SvipPromotionPrice > 0">
       <view class='flex-line'>
-        <view class='label'>SVIP优惠</view>
-        <view class='text'>¥{{orderInfo.SvipPromotionPrice}}</view>
+        <view class='label svip-title'>SVIP优惠</view>
+        <view class='text svip-price'>¥{{orderInfo.SvipPromotionPrice}}</view>
       </view>
     </view>
     <view class='amount-box' v-if="orderInfo.MeetPriceDownPrice > 0">
@@ -195,7 +197,7 @@
         <view class='text'>-¥{{orderInfo.PaymentByBalance}}</view>
       </view>
     </view>
-    <div class="sectionLine"></div>
+    <!-- <div class="sectionLine"></div> -->
     
     <!-- 用户协议 -->
     <view class="pay-protocol-box">
@@ -533,7 +535,16 @@ export default {
               url: '/pages/order/submitResult/main?resultMsg='+Msg+'&shopId='+this.formModel.selectShopId+'&orderNo='+Data.OrderNo+'&OrderAmount='+Data.OrderAmount+'&OrderId='+Data.OrderId,
             })
           }
-
+          //
+          this.$onInformationCollection({
+            token:"WeChat",
+            uid:wx.getStorageSync('USERID'),
+            opentype:"click",
+            time:Date.now().toString(),
+            page:utils.getCurrentPageUrl(),
+            eventname:"下单成功",
+            eventval:JSON.stringify({"OrderId":Data.OrderId})
+          })
           //微信广告转化统计
           this.wxadInfo();
         }else{
@@ -637,6 +648,10 @@ export default {
 page {
   padding-bottom: 160rpx;
 }
+.container{
+  padding: 10px;
+  background: #f2f2f2;
+}
 .container-wrap {
   top: 0px;
   left: 0px;
@@ -647,8 +662,11 @@ page {
   z-index: 0;
 }
 .address-box {
+  background: #fff;
   font-size: 28rpx;
-  border-bottom: solid 12rpx #F0F0F0;
+  margin-bottom: 10px;
+  border-radius: 10px;
+
 }
 .address-box .top-bg {
   background-image: url(https://pic.keede.com/app/images/icon_cart.png);
@@ -736,7 +754,8 @@ page {
 }
 .order-box {
   font-size: 26rpx;
-  border-bottom: solid 12rpx #F0F0F0;
+  background: #fff;
+  border-radius: 10px;
 }
 .order-box .shop-name {
   color: #171717;
@@ -760,8 +779,9 @@ page {
   display: flex;
   align-items: center;
   padding: 0 30rpx;
-  border-bottom: 1rpx solid #dcdcdc;
+  // border-bottom: 1rpx solid #dcdcdc;
   height: 160rpx;
+  padding-top: 10px;
 }
 .scroll-view_H {
   // white-space: nowrap;
@@ -809,7 +829,8 @@ page {
   justify-content: space-between;
   padding: 20rpx;
   box-sizing: border-box;
-  border-bottom: 1rpx solid #dcdcdc;
+  background: #f2f2f2;
+  // border-bottom: 1rpx solid #dcdcdc;
   font-size: 28rpx;
   /*海淘*/
 }
@@ -862,7 +883,8 @@ page {
 .useCouponScore {
   display: flex;
   align-items: center;
-  border-bottom: solid 2rpx #F0F0F0;
+  // border-bottom: solid 2rpx #F0F0F0;
+  background:#fff;
   padding-left: 20rpx;
   padding-top: 10rpx;
   padding-bottom: 10rpx;
@@ -906,7 +928,8 @@ page {
   font-size: 28rpx;
   padding: 20rpx;
   box-sizing: border-box;
-  border-bottom: solid 2rpx #F0F0F0;
+  // border-bottom: solid 2rpx #F0F0F0;
+  background: #f2f2f2;
 }
 .amount-box .flex-line {
   border-bottom: none;
@@ -983,6 +1006,8 @@ page {
   align-items: center;
   padding: 30rpx;
   box-sizing: border-box;
+  background: #fff;
+  border-radius: 10px;
   border-bottom: solid 12rpx #F0F0F0;
 }
 .haitao-tips .text-box {
@@ -1009,7 +1034,9 @@ page {
 }
 /*身份证*/
 .idcard-box {
-  border-bottom: 12rpx solid #F0F0F0;
+  margin-bottom: 10px;
+  background: #fff;
+  border-radius: 10px;
   padding: 20rpx;
   box-sizing: border-box;
 }
@@ -1030,6 +1057,7 @@ page {
   flex: 1;
   height: 40rpx;
   line-height: 40rpx;
+  font-size: 11px;
 }
 .idcard-box .idcard-tips {
   display: flex;
@@ -1043,7 +1071,10 @@ page {
 .pay-protocol-box {
   padding: 30rpx;
   box-sizing: border-box;
-  border-bottom: 12rpx solid #F0F0F0;
+  // border-bottom: 12rpx solid #F0F0F0;
+  background: #f2f2f2;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 .pay-protocol-box .checked-box image,
 .pay-protocol-box .checked-box .no-checked {
@@ -1121,9 +1152,11 @@ page {
 
 .buy-vip-box{
   display: flex;
-  margin: 14px;
-  background: #f2f2f2;
+  // margin: 14px;
+  background: #313131;
   padding: 10px 5px 10px 15px;
+  color: #F9E5AA;
+  border-radius: 10px;
   .b-left{
     flex: 1;
   }
@@ -1132,15 +1165,36 @@ page {
     font-size: 15px;
   }
   .subtitle{
-    color: #888888;
     font-size: 12px;
     font-weight: 300;
   }
 }
 .order_vip_img{
   width: 30px;
-  height: 16px;
+  height: 11.5px;
   margin-right: 6px;
-  vertical-align:sub;
+  // vertical-align:sub;
 }
+.useCouponScore-box{
+  padding: 5px 8px;
+  background: #fff;
+  border-radius: 10px;
+}
+.svip-content{
+  padding: 0 10px;
+  .svip-title{
+    font-size: 15px;
+    padding: 6px;
+    border-radius: 8px;
+    color: #000 !important;
+    background: #f9e5aa !important;
+    font-weight: bold !important;
+  }
+  .svip-price{
+    font-size: 16px !important;
+    color: #000 !important;
+    font-weight: bold !important;
+  }
+}
+
 </style>

@@ -1,13 +1,21 @@
 .container {
   padding-top: 40px;
-  margin-bottom: 50px;
+  padding-bottom: 50px;
   box-sizing: border-box;
+  background: #f2f2f2;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  right:0;
+  overflow-y: scroll;
+
 }
 .cart_box{
   padding-bottom:49px; 
 }
 .tab-box {
-  background: #000;
+  background: #FF668E;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -24,13 +32,13 @@
       color: #fff;
       box-sizing: border-box;
       opacity: 0.9;
-      &:last-child {
-        margin-right: 50px;
-      }
+      // &:last-child {
+      //   margin-right: 50px;
+      // }
       &.current {
         font-weight: bold;
-        border-bottom: 2px solid #cab894;
-        color: #cab894;
+        border-bottom: 2px solid #fff;
+        color: #fff;
       }
     }
   }
@@ -115,7 +123,7 @@
   display: flex;
   align-items: center;
   padding: 0 10px;
-  background: #c9c9cb;
+  background: #F7BACA;
   font-size: 12px;
   .icon-bell {
     display: block;
@@ -144,7 +152,7 @@
   display: flex;
   align-items: center;
   font-size: 12px;
-  background: #f2f2f2;
+  background: #F3E4E8;
   padding: 5px 10px;
   .icon-horn {
     display: block;
@@ -163,7 +171,7 @@
   justify-content: space-between;
   padding: 12px;
   font-size: 13px;
-  border-bottom: 0.5px solid #dedede;
+  // border-bottom: 0.5px solid #dedede;
   margin-top: 8px;
   .shop-name {
     display: flex;
@@ -190,13 +198,16 @@
       margin: 0 4px;
     }
     .coupon-btn {
-      color: #cab894;
+      color: #000;
     }
   }
 }
 
 .cart-list-box {
-  border-bottom: 10px solid #f0f0f0;
+  margin-bottom: 10px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
   .tips,
   .repurchase-tips,
   .repurchase-box {
@@ -207,7 +218,7 @@
     .tag {
       font-size: 10px;
       padding: 1px 4px;
-      background: #e31436;
+      background: #FF668E;
       color: #fff;
       font-weight: 350;
     }
@@ -217,7 +228,7 @@
       color: #535252;
     }
     .link {
-      color: #e41c3c;
+      color: #FF668E;
     }
 
     &.repurchase-tips,
@@ -375,11 +386,11 @@
                   font-size: 9px;
                   background: #000;
                   color: #fff;
-                  padding: 1px 2px;
                   &.vip {
                     display: flex;
                     align-items: center;
-                    padding: 0 2px 0 0;
+                    // padding: 0 2px 0 0;
+                    margin-right: 2px;
                     img {
                       display: block;
                       width: 14px;
@@ -387,17 +398,23 @@
                     }
                   }
                 }
+                .span-label{
+                  background: #231815;
+                  color: #FAE5AA;
+                  border-radius: 3px;
+                }
               }
               .promotion {
                 display: flex;
                 align-items: center;
                 justify-content: flex-end;
                 .tag {
-                  color: #cab894;
+                  color: #BCB092;
                   font-size: 9px;
                   padding: 1px 2px;
-                  border: 0.5px solid #cab894;
+                  border: 0.5px solid #BCB092;
                   margin: 0 2px;
+                  border-radius: 3px;
                 }
               }
             }
@@ -547,4 +564,7 @@
   padding: 2px 4px;
   margin-right: 3px;
   font-weight: 300;
+}
+.box-good{
+  padding: 0 10px;
 }

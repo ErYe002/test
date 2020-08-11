@@ -38,6 +38,7 @@
         </ul>
       </section>
     </article>
+    <img class="banner_url" src="https://pic.keede.com/app/images/shouhuoshaipinglun.png" alt="" v-if="listQuery.queryState==6" mode='widthFix'>
     <section class="order-box">
       <ul class="order-list">
         <template v-if="listQuery.queryState != 6">
@@ -46,11 +47,12 @@
               <div class="title">
                 <span class="order-no" @click.stop="copyOrderNo(item.OrderNo)">
                   <text class="ht-tag" v-if="item.ShopId == 2">海淘</text>
-                  订单编号：{{item.OrderNo}}
+                  <span>订单编号：<b v-if="item.ShopId == 2"  class="bz">占位</b>{{item.OrderNo}}<text class="btn_copy">复制</text> </span>
+                  
                 </span>
                 <span class="ops">
                   <span class="status">{{item.OrderState}}</span>
-                  <img class="icon" src="/static/images/icon_right_grey.png" />
+                  <img class="icon" src="/static/images/icon_right_red.png" />
                 </span>
               </div>
               <div class="goods-list">
@@ -69,35 +71,47 @@
               共{{item.Quantity}}件，{{item.IsPaid?'实付款：':'需付款：'}}
               <span class="amount">¥{{item.OrderPayment}}</span>
             </p>
-            <ul class="btn-list">
-              <li class="b-item" v-if="item.IsCancel">
+            <div class="btn-box">
+              <div class="again">
                 <button
-                  class="kd-btn btn-default btn-small"
-                  @click="cancelOrderEvent(item.OrderId)"
-                >取消订单</button>
-              </li>
-              <li class="b-item" v-if="item.ShopId != 2 && item.IsAfterSale">
-                <button
-                  class="kd-btn btn-default btn-small"
-                  @click="toAppTips('可得小程序暂时不支持退换货功能哦，请下载可得眼镜APP使用此功能')"
-                >退换货</button>
-              </li>
-              <li class="b-item" v-if="item.IsLogistics">
-                <a
-                  class="kd-btn btn-default btn-small"
-                  :href="'/pages/account/logistics/main?shopId='+item.ShopId+'&orderId='+item.OrderId"
-                >查看物流</a>
-              </li>
-              <!-- <li class="b-item" v-if="item.IsAppraise">
-                <button class="kd-btn btn-default btn-small">评价</button>
-              </li>-->
-              <li class="b-item" v-if="item.IsContactAirlines">
-                <button class="kd-btn btn-default btn-small" open-type="contact">联系客服</button>
-              </li>
-              <li class="b-item" v-if="item.IsPayment" @click="_wechatPay(item.OrderId)">
-                <button class="kd-btn btn-small">付款</button>
-              </li>
-            </ul>
+                    v-if="item.IsCanBuyAgain"
+                    class="kd-btn btn-default btn-small"
+                    @click="buyAgain(item.OrderId)"
+                  >再来一单</button>
+              </div>
+              <ul class="btn-list">
+                <li class="b-item" v-if="item.IsCancel">
+                  <button
+                    class="kd-btn btn-default btn-small"
+                    @click="cancelOrderEvent(item.OrderId)"
+                  >取消订单</button>
+                </li>
+                <li class="b-item" v-if="item.ShopId != 2 && item.IsAfterSale">
+                  <button
+                    class="kd-btn btn-default btn-small"
+                    @click="toAppTips('可得小程序暂时不支持退换货功能哦，请下载可得眼镜APP使用此功能')"
+                  >退换货</button>
+                </li>
+                <li class="b-item" v-if="item.IsLogistics">
+                  <a
+                    class="kd-btn btn-default btn-small wuliu"
+                    :href="'/pages/account/logistics/main?shopId='+item.ShopId+'&orderId='+item.OrderId"
+                  >查看物流</a>
+                </li>
+                <li class="b-item" v-if="item.IsAppraise">
+                  <a
+                    class="kd-btn btn-default btn-small wuliu"
+                    :href="'/pages/account/order/commentDetail/main'"
+                  >评价返现</a>
+                </li>
+                <li class="b-item" v-if="item.IsContactAirlines">
+                  <button class="kd-btn btn-default btn-small" open-type="contact">联系客服</button>
+                </li>
+                <li class="b-item" v-if="item.IsPayment" @click="_wechatPay(item.OrderId)">
+                  <button class="kd-btn btn-small">付款</button>
+                </li>
+              </ul>
+            </div>
           </li>
         </template>
         <template v-if="listQuery.queryState == 6">
@@ -114,7 +128,7 @@
               <a
                 class="gotoComment"
                 :href="'/pages/account/order/comment/main?orderId=' + item.OrderId +'&goodsId=' + item.GoodsId + '&goodsImageUrl=' + item.GoodsImageUrl+'&goodsName='+item.GoodsName"
-              >评价晒单</a>
+              >评价返现</a>
             </div>
           </li>
         </template>
@@ -134,6 +148,8 @@
 import api from "@/api/order";
 import cartApi from "@/api/cart";
 import { mapState } from "vuex";
+import utils from "@/utils"; 
+const TDSDK = require('../../../../../static/tdsdk/tdweapp'); 
 
 export default {
   data() {
@@ -387,6 +403,57 @@ export default {
     },
     orderImgError(index){
       this.orderList[index].GoodsImageUrl='https://pic.keede.com//app/images/goods_errimg.png';
+    },
+    buyAgain(id){
+      api.buyAginOrder(id).then(({Data,Msg})=>{
+          this.onTD(id)
+          wx.showModal({
+                  title: '提示',
+                  content: Msg?Msg:"加入购物车成功~",
+                  showCancel:false,
+                  confirmColor:'#cab894',
+                  success (res) {
+                      if (res.confirm) {
+                        wx.switchTab({
+                          url: "/pages/cart/main"
+                        });
+                      } else if (res.cancel) {
+                      console.log('用户点击取消')
+                      }
+                  }
+              })
+      }).catch((Msg)=>{
+          wx.showModal({
+          title: '提示',
+          content: Msg,
+          icon: "none",
+          confirmText: '确定',
+          cancelText: '取消',
+          confirmColor: '#CAB894',
+          success(res) {
+            if (res.confirm) {
+              console.log('用户点击确定');
+              // self.isConfirmedBuy = true;
+            } else if (res.cancel) {
+              console.log('用户点击取消');
+            }
+          }
+        });
+      })
+    },
+    //统计
+    onTD(OrderId){
+      TDSDK.Event.event({id: '再来一单'})
+      
+       this.$onInformationCollection({
+        token:"WeChat",
+        uid:wx.getStorageSync('USERID'),
+        opentype:"click",
+        time:Date.now().toString(),
+        page:utils.getCurrentPageUrl(),
+        eventname:"再来一单",
+        eventval:JSON.stringify({"OrderId":OrderId})
+      })
     }
   }
 };
@@ -398,7 +465,7 @@ page {
 }
 .container {
   min-height: 100%;
-  background: #f7f7f7;
+  background: #F6F6F6;
   // padding-top: 83px;
   box-sizing: border-box;
 }
@@ -463,8 +530,8 @@ page {
       box-sizing: border-box;
       &.current {
         font-weight: bold;
-        color: #cab894;
-        border-bottom: 2px solid #cab894;
+        color: #000;
+        border-bottom: 2px solid #FF668E;
       }
     }
   }
@@ -475,6 +542,7 @@ page {
   box-sizing: border-box;
   .order-list {
     .o-item {
+      border-radius: 10px;
       background: #fff;
       box-sizing: border-box;
       margin-bottom: 10px;
@@ -496,15 +564,31 @@ page {
               height: 15px;
               margin-right: 5px;
             }
+            span{
+              display: flex;
+              flex-wrap: wrap;
+
+            }
+            .bz{
+              color: transparent;
+            }
+            .btn_copy{
+              color: #FF668E;
+              font-size: 11px;
+              padding: 1px 5px;
+              border-radius: 5px;
+              border: 0.5px solid #FF668E;
+              margin-left: 3px;
+            }
           }
           .ops {
             display: flex;
             align-items: center;
-            color: #fe7e7d;
+            color: #FF435E;
             .icon {
               display: block;
-              width: 8px;
-              height: 14px;
+              width: 7px;
+              height: 11px;
               margin-left: 5px;
             }
           }
@@ -530,8 +614,24 @@ page {
         padding: 5px 10px;
         border-top: 0.5px solid #e5e5e5;
         .amount {
-          color: #cab894;
+          color: #FF435E;
           font-size: 14px;
+        }
+      }
+      .btn-box{
+        display: flex;
+        justify-content: space-between;
+        .again{
+          // width: 60px;
+          padding: 10px 0 0 15px;
+          button{
+            padding: 0 10px;
+            border-radius: 7px;
+            width: 73px;
+            color: #FF668E;
+            box-sizing: border-box;
+            border:0.5px solid #FF668E;
+          }
         }
       }
       .btn-list {
@@ -542,7 +642,31 @@ page {
         .b-item {
           margin-bottom: 10px;
           margin-left: 10px;
-          width: 90px;
+          // width: 90px;
+          // padding: 0 10px;
+          .contact{
+            background: #FF668E;
+            color: #fff;
+            border: 0;
+          }
+          .wuliu{
+            padding: 0 10px;
+            border-radius: 7px;
+            color:#999999;
+            border:0.5px solid #888888;
+          }
+          &:last-child{
+            button,a{
+              background: #FF668E !important;
+              color: #fff !important;
+              border-radius: 7px;
+              border: 0;
+            }
+          }
+        }
+        button{
+          padding: 0 10px;
+          border-radius: 7px;
         }
       }
     }
@@ -556,8 +680,8 @@ page {
       .waitDivFirst {
         margin-right: 10px;
         .waitCommentGoodsImg {
-          height: 50px;
-          width: 50px;
+          height: 75px;
+          width: 75px;
         }
       }
       .waitDivSecond {
@@ -573,25 +697,29 @@ page {
           position: absolute;
           right: 80px;
           bottom: 0px;
-          font-size: 10px;
+          font-size: 12px;
           text-align: center;
-          height: 20px;
-          width: 55px;
+          // height: 20px;
+          // width: 55px;
+           padding: 7px 10px;
+          border-radius: 7px;
           display: flex;
           justify-content: center;
           align-items: center;
         }
         .gotoComment {
-          border: 1px solid #cab894;
+          background: #FF668E;
           border-radius: 5px;
-          color: #cab894;
+          color: #fff;
           position: absolute;
           right: 10px;
           bottom: 0px;
           font-size: 12px;
           text-align: center;
-          height: 20px;
-          width: 55px;
+          // height: 20px;
+          // width: 55px;
+          padding: 7px 10px;
+          border-radius: 7px;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -621,5 +749,9 @@ page {
   padding: 2px 4px;
   margin-right: 3px;
   font-weight: 300;
+}
+.banner_url{
+  width: 100%;
+  // height: 100px;
 }
 </style>

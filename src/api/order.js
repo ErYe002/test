@@ -89,6 +89,12 @@ const api = {
       `/KedeCommunity/InsertThemeTag?value=${decodeURIComponent(value)}`
     )
   },
+  //再来一单
+  buyAginOrder(OrderId){
+    return http.postByNoErrorTips(
+      `/Cart/BuyAgain?orderId=${OrderId}`
+    )
+  },
 };
 
 export default api;

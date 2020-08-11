@@ -7,7 +7,7 @@ const api = {
   },
   //获取首页-新首页-v7.8-数据
   getHomePageData(){
-    return http.get(`/Home/AppHomePage202005?versionNo=4.6.0`)
+    return http.get(`/Home/AppHomePage202005?versionNo=5.0.0`)
   },
    //获取首页-新首页-v7.8-数据
   getHomePageGoods(pageIndex, pageSize,goodsType){
@@ -19,7 +19,7 @@ const api = {
   },
   //获取首页-推荐页数据
   getHomeRecommendData(){
-    return http.postByNoLoading(`/Home/AppHomeRecommendPage?versionNo=4.6.0`)
+    return http.postByNoLoading(`/Home/AppHomeRecommendPage?versionNo=5.0.0`)
   },
   //获取首页-推荐页猜你喜欢商品列表
   getHomeRecommendGoods(pageIndex, pageSize){
@@ -31,7 +31,7 @@ const api = {
   },
   //获取首页-框架页数据
   getHomeFramesData(){
-    return http.postByNoLoading(`/Home/AppHomeFramesPage?versionNo=4.6.0`)
+    return http.postByNoLoading(`/Home/AppHomeFramesPage?versionNo=5.0.0`)
   },
   //获取首页-框架页商品列表
   getHomeFramesGoods({wordIdList, stringWordIds, pageSize = 10, pageIndex = 1, isDefaultGoods = true} = {}){
@@ -56,11 +56,11 @@ const api = {
   },
     //获取首页-美瞳页数据
     getHomeMeiTongData(){
-      return http.postByNoLoading(`/home/AppHomeColoredContactsPage?versionNo=4.6.0`)
+      return http.postByNoLoading(`/home/AppHomeColoredContactsPage?versionNo=5.0.0`)
     },
     //获取首页-美瞳页商品列表
     getHomeMeiTongGoods(pageIndex, pageSize){
-      let url = `/home/GetAppHomeColoredContactsGoodsByPage?versionNo=4.6.0&pageSize=${pageSize}&pageIndex=${pageIndex}`
+      let url = `/home/GetAppHomeColoredContactsGoodsByPage?versionNo=5.0.0&pageSize=${pageSize}&pageIndex=${pageIndex}`
       if(pageIndex == 1){
         return http.postByNoLoading(url)
       }
@@ -68,11 +68,11 @@ const api = {
     },
     //获取首页-隐形护理页数据
     getHomeNurseData(){
-      return http.postByNoLoading(`/home/AppHomeContactCarePage?versionNo=4.6.0`)
+      return http.postByNoLoading(`/home/AppHomeContactCarePage?versionNo=5.0.0`)
     },
     //获取首页-隐形护理页商品列表
     getHomeNurseGoods(pageIndex, pageSize){
-      let url = `/home/GetAppHomeContactCareGoodsByPage?versionNo=4.6.0&pageSize=${pageSize}&pageIndex=${pageIndex}`
+      let url = `/home/GetAppHomeContactCareGoodsByPage?versionNo=5.0.0&pageSize=${pageSize}&pageIndex=${pageIndex}`
       if(pageIndex == 1){
         return http.postByNoLoading(url)
       }
@@ -80,7 +80,7 @@ const api = {
     },
     //页面埋点-方法
     onInformationCollection(data){
-      return http.postByNoErrorTips("data/uc/",JSON.stringify(data),{
+      return http.postByNoErrorTips("/data/uc/",JSON.stringify(data),{
         'content-type':'application/json'
       })
     }

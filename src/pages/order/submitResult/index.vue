@@ -81,7 +81,7 @@ export default {
       time:Date.now().toString(),
       page:utils.getCurrentPageUrl(),
       eventname:"购买成功页",
-      eventval:""
+      eventval:JSON.stringify({OrderNo:this.orderNo,OrderId:this.OrderId})
     })
   },
   methods: {

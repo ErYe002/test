@@ -1,5 +1,5 @@
 <template>
-    <article>
+    <article class="contain">
         <section class="user-box">
           <img class="bg" src="/static/images/level_bg.png" model="aspectFit" />
           <div class="user-top-box">
@@ -20,24 +20,42 @@
           </div>
           <div class="role-level-box">
             <p class="icon-level">
-              <img
-                src="/static/images/level_01.jpg"
-              />
-              <img
-                src="/static/images/level_02.jpg"
-              />
-              <img
-                src="/static/images/level_03.jpg"
-              />
-              <img
-                src="/static/images/level_04.jpg"
-              />
-              <img
-                src="/static/images/level_05.jpg"
-              />
-              <img
-                src="/static/images/level_06.jpg"
-              />
+              <span class="icon-box">
+                <img
+                  src="/static/images/level_01.jpg"
+                />
+                <span v-if="userInfoModel.LevelNum==1" class="text">您当前等级</span>
+              </span>
+              <span class="icon-box">
+                <img
+                  src="/static/images/level_02.jpg"
+                />
+                <span v-if="userInfoModel.LevelNum==2" class="text">您当前等级</span>
+              </span>
+              <span class="icon-box">
+                <img
+                  src="/static/images/level_03.jpg"
+                />
+                <span v-if="userInfoModel.LevelNum==3" class="text">您当前等级</span>
+              </span>
+              <span class="icon-box">
+                <img
+                  src="/static/images/level_04.jpg"
+                />
+                <span v-if="userInfoModel.LevelNum==4" class="text">您当前等级</span>
+              </span>
+              <span class="icon-box">
+                <img
+                  src="/static/images/level_05.jpg"
+                />
+                <span v-if="userInfoModel.LevelNum==5" class="text">您当前等级</span>
+              </span>
+              <span class="icon-box">
+                <img
+                  src="/static/images/level_06.jpg"
+                />
+                <span v-if="userInfoModel.LevelNum==6"  class="text level">您当前等级</span>
+              </span>
             </p>
             <div class="lines">
               <p class="bg-circle">
@@ -78,23 +96,25 @@
               </label>
               
             </span>
-            <span>{{item.AttainScore}}</span>
+            <span>{{item.AttainScore}}积分</span>
             <span>
               可得价
-              <label v-if="item.DiscountRate>0&&item.DiscountRate<1"> {{item.DiscountRate*10}} 折</label>
+              <label class="DiscountRate" v-if="item.DiscountRate>0&&item.DiscountRate<1"> {{item.DiscountRate*100}} 折</label>
             </span>
          </div>
-        </section>
-        <section class="text-box">
           <div class="area c-888">
             <p>注：</p>
             <p>1.个别活动及商品团购不再享受以上折扣，不同会员等级优惠幅度及售价以产品页面及购物车显示价格为准。</p>
             <p>2.V6会员优惠不与其他形式的返利返现优惠同享。</p>
           </div>
+        </section>
+        <section class="text-box">
           <div class="area">
             <p>晋级说明</p>
             <p>随着您购买商品金额的累加，您账户的等级积分将对应增加，一旦符合晋级条件，系统将自动升级您的会员级别。</p>
           </div>
+        </section>
+        <section class="text-box">
           <div class="area">
             <p>等级积分如何获得</p>
             <p>1.新注册会员即得100等级积分。</p>
@@ -176,6 +196,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.contain{
+  background: #F2F2F2;
+  padding-bottom: 10px;
+}
 .user-box{
   height: 250px;
   position: relative;
@@ -185,7 +209,7 @@ export default {
       top: 0px;
       left: 0px;
       width: 100%;
-      z-index: -1;
+      z-index: 0;
   }
   .user-top-box{
     display: flex;
@@ -194,6 +218,7 @@ export default {
     position: absolute;
     top: 20rpx;
     left: 0rpx;
+    background: transparent;
     .head {
       display: block;
       width: 60px;
@@ -204,6 +229,7 @@ export default {
       margin-left: 10px;
       font-size: 12px;
       .name{
+        font-size: 15px;
         color: white;
         margin-top: 10px;
       }
@@ -213,6 +239,7 @@ export default {
     }
   }
   .role-level-box{
+    background: transparent;
     position: absolute;
     top: 90px;
     display: block;
@@ -226,6 +253,23 @@ export default {
         width: 18px;
         height: 18px;
         display: inline-block;
+      }
+      .icon-box{
+        position: relative;
+      }
+      .text{
+        position: absolute;
+        top: -16px;
+        left: 5px;
+        font-size: 8px;
+        display: inline-block;
+        width: 43px;
+        padding: 2px;
+        background: #6E6444;
+        color: #fff;
+      }
+      .level{
+        left: -12px !important;
       }
     }
     .lines{
@@ -275,14 +319,19 @@ export default {
 }
 
 .level-list-box{
-  margin-top: 20px;
-  padding-left: 30rpx;
-  padding-right: 30rpx;
+  margin-top: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 10px 10px;
+  background: #fff;
+  border-radius: 10px;
   .head{
     line-height: 60px;
     height: 60px;
     border: 1px solid #cccccc;
     display: flex;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
   }
   .line{
     border-left: 1px solid #cccccc;
@@ -293,25 +342,50 @@ export default {
     line-height: 60px;
     height: 60px;
     color:#888888;
+    .DiscountRate{
+      color: #FF435E;
+    }
+    &:nth-last-child(2){
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
   }
   span{
       width: 33.33%;
       font-size: 14px;
       text-align: center;
       display: inline-block;
+  }
+  .area{
+    font-size: 11px;
+    color: #676666;
+    background: #fff;
+    p{
+      line-height: 18px;
     }
+  }
 }
 
 .text-box{
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 10px 10px;
+  margin-top: 10px;
   font-size: 12px;
+  background: #fff;
+  border-radius: 10px;
   .c-888{
     color:#888888;
   }
   .area{
-    padding: 30rpx;
-    border-bottom: solid 6px #F0F0F0!important;
+    margin-bottom: 10px;
     p{
       line-height: 18px;
+      &:first-child{
+        font-size: 14px;
+        color: #000;
+        font-weight: bold
+      }
     }
   }
 }

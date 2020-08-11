@@ -3,7 +3,7 @@ import http from '@/utils/request.js';
 const api = {
   //当前登录用户信息是否过期
   checkToken() {
-    return http.postByNoLoading('Account/GetScoreMallHead');
+    return http.postByNoLoading('/Account/GetScoreMallHead');
   },
   //用户登录
   appLogin(session_key, encryptedData, iv) {
@@ -51,20 +51,20 @@ const api = {
   //获取最新的AccessToken
   getAccessToken() {
     return http.post(
-      'ThirdPartnerLogin/WechatMinProgramAccessToken'
+      '/ThirdPartnerLogin/WechatMinProgramAccessToken'
     );
   },
   //获取个人中心用户信息
   getHomePageOfPersonnel() {
-    return http.post('Account/GetHomePageOfPersonnel');
+    return http.post('/Account/GetHomePageOfPersonnel');
   },
   //获取个人中心钱包等信息
   getWalletOfPersonnel() {
-    return http.post('Account/GetWalletOfPersonnel');
+    return http.post('/Account/GetWalletOfPersonnel');
   },
   //获取我的收藏列表
   getFavoriteList(pageIndex, pageSize) {
-    let url = `Account/GetFavoriteList?pageSize=${pageSize}&pageIndex=${pageIndex}&shopId=0`;
+    let url = `/Account/GetFavoriteList?pageSize=${pageSize}&pageIndex=${pageIndex}&shopId=0`;
     if (pageIndex > 1) {
       return http.post(url);
     }
@@ -72,39 +72,39 @@ const api = {
   },
   //根据商品Id取消收藏商品
   cancelFavoriteByGoodsId(goodsId) {
-    return http.post(`Account/CancelFavoriteByGoodsId?goodsId=${goodsId}`);
+    return http.post(`/Account/CancelFavoriteByGoodsId?goodsId=${goodsId}`);
   },
   //获取用户的基本信息
   getPersonnelProfile() {
-    return http.post('Account/GetPersonnelProfile');
+    return http.post('/Account/GetPersonnelProfile');
   },
   //获取会员等级数据
   getRoleOfPersonnel() {
-    return http.post('Account/GetRoleOfPersonnel');
+    return http.post('/Account/GetRoleOfPersonnel');
   },
   //设置会员头像
   setHeadPortrait(){
-    return http.upload('Account/SetHeadPortrait');
+    return http.upload('/Account/SetHeadPortrait');
   },
   //修改用户名
   changeUserName(userName) {
-    return http.post('Account/ChangeUserName?newLoginName=' + userName);
+    return http.post('/Account/ChangeUserName?newLoginName=' + userName);
   },
   //设置用户昵称
   setUserNick(nick) {
-    return http.post('Account/SetNick?nick=' + nick);
+    return http.post('/Account/SetNick?nick=' + nick);
   },
   //设置用户性别
   setUserSex(sex) {
-    return http.post('Account/SetSex?sex=' + sex);
+    return http.post('/Account/SetSex?sex=' + sex);
   },
   //设置生日
   setBirthday(birthday) {
-    return http.post('Account/SetBirthday?birthday=' + birthday);
+    return http.post('/Account/SetBirthday?birthday=' + birthday);
   },
   //获取优惠券列表
   getCouponsByState(conponState, pageIndex = 1, pageSize = 10){
-    let url = `Account/GetCouponsByState?conponState=${conponState}&pageIndex=${pageIndex}&pageSize=${pageSize}`
+    let url = `/Account/GetCouponsByState?conponState=${conponState}&pageIndex=${pageIndex}&pageSize=${pageSize}`
     if (pageIndex > 1) {
       return http.post(url);
     }
@@ -112,20 +112,20 @@ const api = {
   },
    //获取客服二维码
    getCustomerService() {
-    return http.post('Account/CustomerService');
+    return http.post('/Account/CustomerService');
     },
     //获取告状二维码
     getFeedBack() {
-      return http.post('Account/Feedback');
+      return http.post('/Account/Feedback');
     },
   //svip确认订单页
   getSvipPageData() {
-    return http.post('SvipBuy/ConfirmSvipOrder?versionNo=4.7.0');
+    return http.post('/SvipBuy/ConfirmSvipOrder?versionNo=5.0.0');
   },
   //svip提交订单
   submitSvipOrder(CouponNo,ConsigneeId,GoodsList) {
     return http.post(
-      `SvipBuy/SubmitSvipOrder`,
+      `/SvipBuy/SubmitSvipOrder`,
       {
         CouponNo:CouponNo,
         ConsigneeId:ConsigneeId,
@@ -138,11 +138,11 @@ const api = {
   },
   //svip获取权益照片
   SvipOrderImg() {
-    return http.post('Account/PrivilegeUrl');
+    return http.post('/Account/PrivilegeUrl');
   },
   //svip优惠券使用
   UseSvipCoupon(couponNo) {
-      return http.post(`SvipBuy/UseSvipCoupon?couponNo=${couponNo}`);
+      return http.post(`/SvipBuy/UseSvipCoupon?couponNo=${couponNo}`);
     },
    //微信支付
    payOrder(orderId, openId) {

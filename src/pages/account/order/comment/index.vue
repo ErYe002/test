@@ -344,15 +344,24 @@ export default {
                 else{
                     api.addGoodsComment(currentTemp.orderId,currentTemp.goodsId,currentTemp.goodsgrade,currentTemp.commentContent,currentTemp.uploadedImgPath,currentTemp.serviceGrade,currentTemp.expressGrade,currentTemp.tags)
                     .then(({Data})=>{
-                        wx.showToast({
-                            title:"评价成功!",
-                            icon:"none"
-                        });
-                        wx.setStorageSync('isCommentReturn',true)
-                        currentTemp.setCommentedId(currentTemp.goodsId);
-                        wx.navigateBack({
-                            delta:1
+                        wx.showModal({
+                            title: '提示',
+                            content: '感谢您的点评，快去联系客服领取您的好评返现!',
+                            showCancel:false,
+                            confirmColor:'#cab894',
+                            success (res) {
+                                if (res.confirm) {
+                                    wx.setStorageSync('isCommentReturn',true)
+                                    currentTemp.setCommentedId(currentTemp.goodsId);
+                                    wx.navigateBack({
+                                        delta:1
+                                    })
+                                } else if (res.cancel) {
+                                console.log('用户点击取消')
+                                }
+                            }
                         })
+                        
                     }).catch((err)=>{
                     })
                 }
@@ -363,15 +372,23 @@ export default {
         var that = this;
         if(this.images.length == 0){
             api.addGoodsComment(this.orderId,this.goodsId,this.goodsgrade,this.commentContent,null,this.serviceGrade,this.expressGrade,null).then(({Data}) => {
-                wx.showToast({
-                        title:"评价成功!",
-                        icon:"none"
-                    });
-                that.setCommentedId(that.goodsId);
-                wx.setStorageSync('isCommentReturn',true)
-                wx.navigateBack({
-                  delta:1
-                })
+                   wx.showModal({
+                        title: '提示',
+                        content: '感谢您的点评，快去联系客服领取您的好评返现!',
+                        showCancel:false,
+                        confirmColor:'#cab894',
+                        success (res) {
+                            if (res.confirm) {
+                                wx.setStorageSync('isCommentReturn',true)
+                                that.setCommentedId(that.goodsId);
+                                wx.navigateBack({
+                                    delta:1
+                                })
+                            } else if (res.cancel) {
+                            console.log('用户点击取消')
+                            }
+                        }
+                    })
             })
         }
         else{

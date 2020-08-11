@@ -98,9 +98,22 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.wrap{
+    padding: 10px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow-y: scroll;
+  background: #f2f2f2;
+  border-radius: 10px;
+}
 .list {
+  background: #fff;
+  border-radius: 10px;
   .item {
-    border-bottom: 0.5px solid #e5e5e5;
+    border-bottom: 0.5px solid #DEDEDE;
     position: relative;
     padding: 10px;
     .info-box {
@@ -110,6 +123,8 @@ export default {
         width: 70px;
         height: 70px;
         margin-right: 10px;
+        border-radius: 3px;
+        border: 0.5px solid #E4E2E2;
       }
       .info {
         flex: 1;
@@ -145,6 +160,9 @@ export default {
         width: 20px;
         height: 20px;
       }
+    }
+    &:last-child{
+      border: 0;
     }
   }
 }

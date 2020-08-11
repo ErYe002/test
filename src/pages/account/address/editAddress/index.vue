@@ -1,37 +1,39 @@
 <template>
-  <div class="userInfo">
-    <div class="item">
-      <p class="left">收货人姓名：</p>
-      <input class="input" :value="isEdit ? addressInfo.ConsigneeName : ''" v-model="addressInfo.ConsigneeName" placeholder="请填写收货人姓名"  type="text" confirm-type="done"/>
-    </div>
-    <div class="item">
-      <p class="left">手机号码；</p>
-      <input class="input" :value="isEdit ? addressInfo.ContactMobile : ''" v-model="addressInfo.ContactMobile" placeholder="请填写收货人手机号" maxlength="11" type="number" confirm-type="done"/>
-    </div>
-    <div class="item">
-      <p class="left">所在区域：</p>
-      <picker v-if="!isLoadRegion" class='pickerInput' mode="multiSelector" @change="regionPickerChange"  @columnchange="regionPickerColumnChange" :value="regionIndex"  :range="regionArray" range-key="name">
-        <p>{{region.length >0 ? addressInfo.ProvinceName + addressInfo.CityName + addressInfo.DistrictName : '请选择所在地区'}}</p>
-      </picker>
-   </div>
-    <div class="item">
-      <p class="left">详细地址：</p>
-      <input class="input" :value="isEdit ? addressInfo.Address : ''" v-model="addressInfo.Address" placeholder="请填写详细地址(街道/门牌号)" type="text" confirm-type="done"/>
-    </div>
-    <div class="item">
-      <p class="left">邮政编码：</p>
-      <input class="input" :value="isEdit ? addressInfo.PostalCode : ''" v-model="addressInfo.PostalCode" placeholder="请填写邮政编码" type="number" confirm-type="done"/>
-    </div>
-    <div class="default" v-if="!addressInfo.IsDefault">
-      <p class="title">设置为默认地址</p>
-      <div class="content">
-        <p class="contentText">提醒：每次下单时会默认使用该地址（客服代下单除外），实际下单地址请您在提交订单前仔细核对，您可以使用地址标签功能方便区分</p>
-        <switch class="swiper" checked="" @change="changeIndicatorDots" />
+  <div class="contain">
+    <div class="userInfo">
+      <div class="item">
+        <p class="left">收货人姓名：</p>
+        <input class="input" :value="isEdit ? addressInfo.ConsigneeName : ''" v-model="addressInfo.ConsigneeName" placeholder="请填写收货人姓名"  type="text" confirm-type="done"/>
       </div>
+      <div class="item">
+        <p class="left">手机号码；</p>
+        <input class="input" :value="isEdit ? addressInfo.ContactMobile : ''" v-model="addressInfo.ContactMobile" placeholder="请填写收货人手机号" maxlength="11" type="number" confirm-type="done"/>
+      </div>
+      <div class="item">
+        <p class="left">所在区域：</p>
+        <picker v-if="!isLoadRegion" class='pickerInput' mode="multiSelector" @change="regionPickerChange"  @columnchange="regionPickerColumnChange" :value="regionIndex"  :range="regionArray" range-key="name">
+          <p>{{region.length >0 ? addressInfo.ProvinceName + addressInfo.CityName + addressInfo.DistrictName : '请选择所在地区'}}</p>
+        </picker>
     </div>
+      <div class="item">
+        <p class="left">详细地址：</p>
+        <input class="input" :value="isEdit ? addressInfo.Address : ''" v-model="addressInfo.Address" placeholder="请填写详细地址(街道/门牌号)" type="text" confirm-type="done"/>
+      </div>
+      <div class="item last-item">
+        <p class="left">邮政编码：</p>
+        <input class="input" :value="isEdit ? addressInfo.PostalCode : ''" v-model="addressInfo.PostalCode" placeholder="请填写邮政编码" type="number" confirm-type="done"/>
+      </div>
+      <div class="default" v-if="!addressInfo.IsDefault">
+        <p class="title">设置为默认地址</p>
+        <div class="content">
+          <p class="contentText">提醒：每次下单时会默认使用该地址（客服代下单除外），实际下单地址请您在提交订单前仔细核对，您可以使用地址标签功能方便区分</p>
+          <switch class="swiper" color="#BCB092" checked="" @change="changeIndicatorDots" />
+        </div>
+      </div>
 
-    <div class="bottom-btn-box">
-      <div class="btn" @click="saveAddress">保存</div>
+      <div class="bottom-btn-box">
+        <div class="btn" @click="saveAddress">保存</div>
+      </div>
     </div>
   </div>
 </template>
@@ -312,11 +314,19 @@ export default {
 page {
   height: 100%;
 }
+.contain{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #f2f2f2;
+}
 .userInfo {
-  padding-top: 5rpx;
-  padding-left: 20rpx;
-  padding-right: 20rpx;
-  padding-bottom: 5rpx;
+  margin: 10px;
+  background: #fff;
+  border-radius: 10px;
+  padding-bottom: 5px;
 }
 .item {
   border-bottom: 1rpx solid #dcdcdc;
@@ -324,6 +334,10 @@ page {
   height: 80rpx;
   display: flex;
   align-items: center;
+  padding: 0 10px;
+}
+.last-item{
+  border: none;
 }
 .left {
   width: 150rpx;
@@ -345,8 +359,13 @@ page {
 
 .default {
   font-size: 24rpx;
+  margin: 0 10px;
+  padding: 5px 10px;
+  margin-top: 5px;
+  border-radius: 10px;
+  background: #313131;
   .title {
-      color: #000000;
+      color: #FAE5AA;
       margin-top: 10rpx;
       margin-bottom: 10rpx;
   }
@@ -355,7 +374,7 @@ page {
     align-items: center;
   }
   .contentText {
-    color: #616161;
+    color: #FAE5AA;
     font-size: 22rpx;
   }
   .swiper {
