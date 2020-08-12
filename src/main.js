@@ -54,6 +54,15 @@ let MIXIN = {
         } else {
           // console.log('其他路径');
           //除活动页、搜索页外，其余M站的页面都不能进行跳转
+          if(path.indexOf("sancity") != -1 ){
+            wx.showModal({
+              title:"提示",
+              showCancel:false,
+              content:"请下载可得APP体验，谢谢",
+              mask:true
+            })
+            return false;
+          }
           if (
             path.indexOf("/event/") != -1 ||
             path.indexOf("/templateforapp/") != -1 ||

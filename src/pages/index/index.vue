@@ -107,6 +107,7 @@ export default {
           }
           return ele
         })
+        list = list.filter(el=>{return el.TargetUrl!="code050" })
         this.menu = list;
         this.SearchKeyword = Data.SearchKeyword?Data.SearchKeyword:"";
         this.currentMenuCode = this.menu[0]["TargetUrl"];
