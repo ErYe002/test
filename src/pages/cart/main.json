@@ -1,0 +1,10 @@
+{
+    "navigationBarTitleText": "购物车",
+    "enablePullDownRefresh": true,
+    "usingComponents": {
+      "i-swipeout": "/static/iview/swipeout/index",
+      "i-cell": "/static/iview/cell/index",
+      "i-icon": "/static/iview/icon/index"
+    }
+  }
+  
