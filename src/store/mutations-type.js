@@ -5,6 +5,7 @@ export const TOKEN_SET = 'TOKEN_SET'
 export const TOKEN_CLEAR = 'TOKEN_CLEAR'
 export const USERID_SET = 'USERID_SET'
 export const USERID_CLEAR = 'USERID_CLEAR'
+export const FIRSTGIFT_SET = 'FIRSTGIFT_SET'
 
 //历史搜索记录
 export const HISTORY_SEARCH_SET = 'HISTORY_SEARCH_SET'

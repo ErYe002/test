@@ -3,28 +3,17 @@
     <div  class="bgcolor"></div>
     <ul class="list" v-if="list.length > 0">
       <li class="item" v-for="item in list" :key="item.GoodsId" >
-        <div class="info-box" @click="gotoDetail(item)">
-          <img class="g-img" :src="item.ImageUrl" />
-          <div class="info">
-            <div class="g-name">{{item.GoodsName}}</div>
-            <div class="g-price">¥{{item.FavoritePrice}}</div>
-          </div>
-        </div>
-        <div class="op-box">
-          <img
-            @click="del_img_click(item.GoodsId)"
-            src="/static/images/account_favorite_delete.png"
-          />
-        </div>
+        <div>下单时间：{{item.orderTime}}</div>
+        <div>订单号：{{item.orderId}}</div>
+        <div class="order-value">订单金额：{{item.ordervlaue}}</div>
+        <div class="svip-value">SVIP以省：{{item.svipValue}}</div>
       </li>
     </ul>
     <img class="loading" v-if="page == 1 && isLoading" src="/static/images/mu_loading.gif" />
     <div class="favo_Clear" v-else-if="isNoData">
-      <p>您还没有收藏任何商品!</p>
-      <a href="/pages/index/main" open-type="switchTab">去查看商品</a>
+      <p>暂时没有数据！</p>
     </div>
     <p class="no-more-tips" v-if="page == totalPage">没有更多了</p>
-    
   </article>
 </template>
 
@@ -39,7 +28,7 @@ export default {
       totalPage: 0,
       isLoading: false,
       isNoData: false,
-      size:10
+      size: 10
     };
   },
   onLoad() {
@@ -61,6 +50,30 @@ export default {
         api
           .getFavoriteList(this.page, this.size)
           .then(({ Data, TotalPage }) => {
+            Data = [{
+              orderTime:'2020-08-09 17:56:31',
+              orderId:'RT1234568451242333',
+              ordervlaue:'451',
+              svipValue:'20.1'
+            },
+            {
+              orderTime:'2020-08-09 17:56:31',
+              orderId:'RT1234568451242333',
+              ordervlaue:'451',
+              svipValue:'20.1'
+            },
+            {
+              orderTime:'2020-08-09 17:56:31',
+              orderId:'RT1234568451242333',
+              ordervlaue:'451',
+              svipValue:'20.1'
+            },
+            {
+              orderTime:'2020-08-09 17:56:31',
+              orderId:'RT1234568451242333',
+              ordervlaue:'451',
+              svipValue:'20.1'
+            }]
             this.list = this.page > 1 ? this.list.concat(Data) : Data;
             this.totalPage = TotalPage;
             //没有搜索到任何数据
@@ -88,12 +101,6 @@ export default {
           }
         }
       });
-    },
-    gotoDetail(item){
-       wx.navigateTo({
-          url:
-            "/pages/product/index/main?seocode="+item.SeoCode
-        });
     }
   }
 };
@@ -121,50 +128,18 @@ export default {
     border-bottom: 0.5px solid #DEDEDE;
     position: relative;
     padding: 10px;
-    .info-box {
-      display: flex;
-      .g-img {
-        display: block;
-        width: 70px;
-        height: 70px;
-        margin-right: 10px;
-        border-radius: 3px;
-        border: 0.5px solid #E4E2E2;
-      }
-      .info {
-        flex: 1;
-        .g-name {
-          font-size: 14px;
-          font-weight: 300;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          line-clamp: 2;
-          -webkit-box-orient: vertical;
-          height: 36px;
-        }
-        .g-price {
-          margin-top: 10px;
-          font-size: 16px;
-          color: #e31436;
-        }
-      }
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    font-weight: 540;
+    font-size: 12px;
+    color: #898989;
+    .order-value{
+      color: #000000;
     }
-    .op-box {
-      position: absolute;
-      right: 10px;
-      bottom: 10px;
-      height: 30px;
-      width: 30px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      img {
-        display: block;
-        width: 20px;
-        height: 20px;
-      }
+    .svip-value{
+      color: #FE668D;
     }
     &:last-child{
       border: 0;

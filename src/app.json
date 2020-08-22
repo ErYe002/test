@@ -9,6 +9,7 @@
     "pages/htmlPreview/main",
     "pages/svip/index/main",
     "pages/svip/dredgeSvip/main",
+    "pages/svip/svipDetail/main",
     "pages/template/main"
   ],
   "subpackages": [
@@ -30,7 +31,8 @@
         "balance/main",
         "cash/main",
         "logistics/main",
-        "coupon/main"
+        "coupon/main",
+        "redpackets/main"
       ]
     },
     {
