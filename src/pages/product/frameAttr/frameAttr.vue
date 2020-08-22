@@ -74,7 +74,7 @@
           左眼(L)
         </a>
         <a class="gd_choose_click" @click="openGdpop('L')" v-if="postInfoBean.sphL!==''">
-          {{'右眼 光度:'+postInfoBean.sphL+' 散光:'+postInfoBean.cylL+' 轴位:'+postInfoBean.axisL}}
+          {{'左眼 光度:'+postInfoBean.sphL+' 散光:'+postInfoBean.cylL+' 轴位:'+postInfoBean.axisL}}
         </a>
         <a class="gd_choose_click black" @click="openGdpop('P')">
           {{'瞳距：'+postInfoBean.pd}}
