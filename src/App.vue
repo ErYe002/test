@@ -7,6 +7,7 @@ import utils from "./utils"
 export default {
   onLaunch(options){
     TDSDK.App.onLaunch(options)
+    this.checkDeviceID()
   },
   async created () {
     // 调用API从本地缓存中获取数据
@@ -53,7 +54,7 @@ export default {
     // wx.setStorageSync('sysInfo', sysInfo)
     this.setSearchHistoryByStorage()
 
-    this.checkDeviceID()
+    
   },
   methods: {
     ...mapActions('user', [
