@@ -1,6 +1,6 @@
 <template>
   <article class="wrap">
-    <img src="/static/images/about.jpg" class="logo" />
+    <img src="https://pic.keede.com/WeChat/xiaochengxu/about.jpg" class="logo" />
     <button
       class="btn"
       type="primary"

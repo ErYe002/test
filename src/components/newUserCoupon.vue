@@ -3,7 +3,7 @@
     <div class="bf-cover-bg" @click="hide"></div>
     <div class="bf-container-t">
         <div class="coupon" v-if="!flag">
-            <img src="/static/images/newCoupon.png" alt="" mode='widthFix' class="action_btn">
+            <img src="https://pic.keede.com/WeChat/xiaochengxu/newCoupon.png" alt="" mode='widthFix' class="action_btn">
             <div class="total-price">新人{{totalCouponValue}}元福利礼包</div>
             <scroll-view scroll-y class="coupon-contain">
                 <div class="coupon-box" @click="receiveCoupon">
@@ -24,7 +24,7 @@
                 <div class="first">恭喜您</div>
                 <div class="two">收到{{totalCouponValue}}元新人礼券</div>
                 <div class="three">
-                    <img class="img" src="/static/images/totalCoupon.png" alt="">
+                    <img class="img" src="https://pic.keede.com/WeChat/xiaochengxu/totalCoupon.png" alt="">
                 </div>
                 <div class="four">/新人券48小时内有效/</div>
                 <div class="five">
@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import store from '@/store'
+
 export default {
   
   props: {
@@ -73,6 +75,7 @@ export default {
     hide() {
       this.$emit('update:isShow', false)
       this.$emit('hide') //事件回调
+      store.dispatch("user/setFirstGift",false)
     },
     getData(){
         let temp = 0

@@ -31,11 +31,11 @@
       <section class="assets-box">
         <ul class="assets-list">
           <li class="assets-item">
-            <button open-type="getUserInfo" @getuserinfo="getUserInfo" data-link="/pages/svip/svipDetail/main" v-if="!token" class="link">
+            <button open-type="getUserInfo" @getuserinfo="getUserInfo" data-link="/pages/account/svipDetail/main" v-if="!token" class="link">
               <p class="number">0</p>
               <p class="text">SVIP已节省</p>
             </button>
-            <a v-else href="/pages/svip/svipDetail/main"  class="link">
+            <a v-else href="/pages/account/svipDetail/main"  class="link">
               <p class="number">{{userInfoModel.SvipDeductionTotalAmount || 0.00}}</p>
               <p class="text">SVIP已节省</p>
             </a>
@@ -495,9 +495,9 @@ export default {
        handler: function(val, oldVal) {
         console.log("firstgift==val", val);
         console.log("firstgift==oldVal", oldVal);
-        if (val) {
-          this.isShowUserCoupon = true
-        } 
+        
+          this.isShowUserCoupon = val
+        
       },
       immediate: true
     }

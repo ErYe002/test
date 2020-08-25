@@ -9,7 +9,6 @@
     "pages/htmlPreview/main",
     "pages/svip/index/main",
     "pages/svip/dredgeSvip/main",
-    "pages/svip/svipDetail/main",
     "pages/template/main"
   ],
   "subpackages": [
@@ -32,7 +31,8 @@
         "cash/main",
         "logistics/main",
         "coupon/main",
-        "redpackets/main"
+        "redpackets/main",
+        "svipDetail/main"
       ]
     },
     {
@@ -55,7 +55,13 @@
         "normalAttr/main",
         "remark/main",
         "combineList/main"
-      ]
+      ],
+      "plugins": {
+        "goodsSharePlugin": {
+          "version": "3.2.1",
+          "provider": "wx56c8f077de74b07c"
+        }
+      }
     },
     {
       "root": "pages/order",
@@ -119,12 +125,7 @@
     ],
     "position": "bottom"
   },
-  "plugins": {
-		"goodsSharePlugin": {
-			"version": "3.2.1",
-			"provider": "wx56c8f077de74b07c"
-    }
-	},
+
   "navigateToMiniProgramAppIdList":[
     "wxbb2e8b1089947444"
   ]

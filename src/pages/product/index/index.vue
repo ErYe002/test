@@ -1743,9 +1743,9 @@ export default {
         handler: function(val, oldVal) {
           console.log("firstgift==val", val);
           console.log("firstgift==oldVal", oldVal);
-          if (val) {
-            this.isShowUserCoupon = true
-          } 
+          
+            this.isShowUserCoupon = val
+          
         },
         immediate: true
       }
