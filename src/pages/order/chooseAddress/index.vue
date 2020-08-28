@@ -25,6 +25,7 @@
     <div class="bottom-btn-box">
       <navigator url="/pages/account/address/editAddress/main?isEdit=fasle" class="btn">+ 新建收货地址</navigator>
     </div>
+    <div  class="bgcolor"></div>
   </div>
 </template>
 <script>
@@ -84,15 +85,21 @@ export default {
 page {
   height: 100%;
 }
+.bgcolor{
+  background: #F6F6F6;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow-y: scroll;
+  z-index: -1;
+}
+
 .list-box{
   padding: 10px;
   background: #f2f2f2;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 50px;
-  overflow-y: scroll;
+  padding-bottom: 50px;
 }
 .list .item {
   background: #fff;
