@@ -394,6 +394,7 @@
         </div>
       </article>
     </section>
+    <div class="quan" @click="clic" v-if="firstgift">券</div>
       <!-- 微信客服 -->
     <centerFlip :isShow.sync="isShowWxCodeUrl" @hide="_close">
       <div class="contact_wx" @click="_loadCode(CodeUrl)">
@@ -511,6 +512,9 @@ export default {
         this._getGoodsListData()
     }
   },
+  onHide(){
+    this.isShowUserCoupon = false
+  },
   //下拉刷新
   onPullDownRefresh() {
     if (this.token) {
@@ -519,6 +523,9 @@ export default {
     }
   },
   methods: {
+    clic(){
+      this.isShowUserCoupon = true
+    },
     getUserInfo(e) {
       const link = e.mp.currentTarget.dataset.link || "";
       authorization.doLogin(e.mp.detail.encryptedData, e.mp.detail.iv, () => {
@@ -1327,5 +1334,17 @@ export default {
     color: #ee1206;
     font-size: 18px;
   }
+}
+.quan{
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  position: fixed;
+  right: 10px;
+  bottom: 80px;
+  background: #FF668E;
+  border-radius: 50%;
+  color: #FFF;
 }
 </style>

@@ -58,7 +58,7 @@ export default {
           //登录完成保存token到本地
           this.setToken(Data.Token)
           this.setUserId(Data.UserId)
-          this.setFirstGift(Data.FirstGift)
+          this.setFirstGift(Data.IsNewUser)//IsNewUser 新用户弹新人礼券对外子段firstgift
           wx.showToast({
             title: '登录成功',
             duration: 2000

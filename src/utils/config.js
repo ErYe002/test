@@ -1,4 +1,5 @@
 module.exports = {
+  appVersion:"5.0.0",
   // apiurl: 'http://192.168.117.39:8004',
   apiurl: 'http://devapi.kede.net',
   // salePlatformId: '65322024-9A29-4393-BAD5-CDA5B8034ADE',//pintuan

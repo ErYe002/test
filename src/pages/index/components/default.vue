@@ -272,6 +272,7 @@ const defaultData = {
   id:"",
   select_recommendChannel:0,
   goodsType:"",
+  channelId:"",
   HasMore:false,
   channelTitle:"",
   hight:"123px"
@@ -385,6 +386,7 @@ export default {
           }
           if(Data.RecommendChannelList!=null){
               this.goodsType = Data.RecommendChannelList[0]['GoodsType'];
+              this.channelId = Data.RecommendChannelList[0]['Id'];
               this._getGoodsListData();
           }
           if(Data.EssentialGoodsList!=null){
@@ -452,7 +454,7 @@ export default {
         this.isLoding = true;
         wx.hideLoading();
         api
-          .getHomePageGoods(this.page, this.size,this.goodsType)
+          .getHomePageGoods(this.page, this.size,this.goodsType,this.channelId)
           .then(({ Data, TotalPage }) => {
             if (Data != null && Data.length > 0) {
               let list = Data.map(ele => {
@@ -506,6 +508,7 @@ export default {
         wx.showLoading();
         this.select_recommendChannel = index;
         this.goodsType = item.GoodsType;
+        this.channelId = item.Id;
         this.page=1;
         this.size=10;
         this.totalPage=0;

@@ -24,7 +24,8 @@
                 <div class="first">恭喜您</div>
                 <div class="two">收到{{totalCouponValue}}元新人礼券</div>
                 <div class="three">
-                    <img class="img" src="https://pic.keede.com/WeChat/xiaochengxu/totalCoupon.png" alt="">
+                    <span class="vlaue">{{totalCouponValue}}</span>
+                    <img class="img" src="/static/images/totalCoupon.png" alt="">
                 </div>
                 <div class="four">/新人券48小时内有效/</div>
                 <div class="five">
@@ -63,6 +64,7 @@ export default {
                 if (val === true) {
                 this.getData()
                 }else{
+                this.flag=false    
                 this.$emit('update:isShow', false)
                 }
             }
@@ -75,7 +77,8 @@ export default {
     hide() {
       this.$emit('update:isShow', false)
       this.$emit('hide') //事件回调
-      store.dispatch("user/setFirstGift",false)
+      this.flag=false   
+    //   store.dispatch("user/setFirstGift",false)
     },
     getData(){
         let temp = 0
@@ -112,6 +115,7 @@ export default {
     },
     receiveCoupon(){
         this.flag=true
+        store.dispatch("user/setFirstGift",false)//IsNewUser 新用户弹新人礼券对外子段firstgift
         wx.showToast({
             title: '领取成功',
             icon: 'success'
@@ -280,9 +284,25 @@ export default {
     }
     .three{
         margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        width: 175px;
+        height: 98px;
         .img{
+            position: absolute;
+            left: 0;
+            top: 0;
             width: 175px;
             height: 98px;
+        }
+        .vlaue{
+            position: absolute;
+            color: #fff;
+            font-weight: bold;
+            font-size: 40px;
+            z-index: 1;
         }
     }
     .four{
