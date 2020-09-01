@@ -1,5 +1,6 @@
 <template>
   <article class="wrap">
+    <div  class="bgcolor"></div>
     <ul class="list" v-if="list.length > 0">
       <li class="item" v-for="item in list" :key="item.GoodsId" >
         <div class="info-box" @click="gotoDetail(item)">
@@ -23,6 +24,7 @@
       <a href="/pages/index/main" open-type="switchTab">去查看商品</a>
     </div>
     <p class="no-more-tips" v-if="page == totalPage">没有更多了</p>
+
   </article>
 </template>
 
@@ -98,8 +100,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.wrap{
-    padding: 10px;
+.bgcolor{
   position: fixed;
   top: 0;
   bottom: 0;
@@ -107,6 +108,10 @@ export default {
   right: 0;
   overflow-y: scroll;
   background: #f2f2f2;
+  z-index: -1;
+}
+.wrap{
+    padding: 10px;
   border-radius: 10px;
 }
 .list {

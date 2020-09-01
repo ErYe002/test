@@ -64,7 +64,10 @@
             class="icon-question"
             @click="showTariffEvent"
           />
-          <em>{{shopId == 1 ? '满80包邮':'已包税'}}</em>
+          <block v-for="(cartItem, idx) in model.Carts" :key="idx">
+            <em v-if="cartItem.ShopId == 1">{{cartItem.ShopId == 1 ? cartItem.FreeCarriageTitle:'已包税'}}</em>
+          </block>
+          <!-- <em>{{shopId == 1 ? '满80包邮':'已包税'}}</em> -->
           <em class="space">|</em>
           <em class="coupon-btn" @click="showCouponListEvent">优惠券</em>
         </span>
