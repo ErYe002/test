@@ -24,7 +24,7 @@
       <a href="/pages/index/main" open-type="switchTab">去查看商品</a>
     </div>
     <p class="no-more-tips" v-if="page == totalPage">没有更多了</p>
-    
+
   </article>
 </template>
 
