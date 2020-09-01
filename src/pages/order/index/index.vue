@@ -113,8 +113,16 @@
     <!-- <div class="sectionLine"></div> -->
     <view class='amount-box'>
       <view class='flex-line'>
-        <view class='couponTitle'>优惠券</view>
+        <view class='couponTitle'>优惠券 <span class="new-tag">已为您自动选择最大优惠</span></view>
           <navigator :url="'/pages/order/useCoupon/main?shopId='+formModel.selectShopId+'&couponNo='+orderInfo.CouponNo">
+            <view class='couponSubtitle'>{{orderInfo.CouponContent + ' >'}}</view>
+          </navigator>
+      </view>
+    </view>
+    <view class='amount-box'>
+      <view class='flex-line'>
+        <view class='couponTitle'>红包 <span class="new-tag">已为您计算出本单可用红包</span></view>
+          <navigator :url="'/pages/account/redpackets/main'">
             <view class='couponSubtitle'>{{orderInfo.CouponContent + ' >'}}</view>
           </navigator>
       </view>
@@ -198,6 +206,7 @@
       </view>
     </view>
     <!-- <div class="sectionLine"></div> -->
+
     
     <!-- 用户协议 -->
     <view class="pay-protocol-box">
@@ -1195,6 +1204,16 @@ page {
     color: #000 !important;
     font-weight: bold !important;
   }
+}
+/**
+新增标签
+*/
+.new-tag{
+  color: #FAE5AA;
+  font-size: 9px;
+  background: #313131;
+  border-radius: 5px;
+  padding: 3px 5px;
 }
 
 </style>

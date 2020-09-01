@@ -15,6 +15,7 @@ function doLogin(encryptedData, iv, callback) {
                 // wx.setStorageSync('TOKEN', res.Data.Token)  //保存token到本地
                 store.dispatch('user/setToken', res.Data.Token)
                 store.dispatch("user/setUserId",res.Data.UserId)
+                store.dispatch("user/setFirstGift",res.Data.IsNewUser)//IsNewUser 新用户弹新人礼券对外子段firstgift
                 if (typeof callback == 'function') {
                     callback()
                 }

@@ -1598,6 +1598,7 @@
       :imid="immediately"
       @backData="gdBackInfoCart"
     />
+    <newUserCoupon :isShow.sync="isShowUserCoupon" ></newUserCoupon>
   </div>
 
 </template>
@@ -1608,6 +1609,7 @@ import userapi from "@/api/user";
 import cartapi from "@/api/cart";
 import attrapi from "@/api/attr";
 import gdNromalSelectPop from "@/components/gdNromalSelectPop";
+import newUserCoupon from "@/components/newUserCoupon";
 import gdSelectMore from "@/components/gdSelectMore";
 import { mapActions, mapState } from "vuex";
 import bottomFlip from "@/components/bottomFlip";
@@ -1714,10 +1716,13 @@ export default {
       selectAxis: '',
 
       isShowGdSelectPopMore:false,
-      immediately:false
+      immediately:false,
+      isShowUserCoupon:false
       };
   },
-  computed: {},
+  computed: {
+    ...mapState("user", ["firstgift"])
+  },
   watch: {
       leftNum: function (val, oldVal) {
         if (val < 0) {
@@ -1734,6 +1739,16 @@ export default {
           this.singleNum = 0;
         }
       },
+      firstgift:{
+        handler: function(val, oldVal) {
+          console.log("firstgift==val", val);
+          console.log("firstgift==oldVal", oldVal);
+          
+            this.isShowUserCoupon = val
+          
+        },
+        immediate: true
+      }
     },
   onReady(){
       this.Poster = this.$mp.page.selectComponent('#sharepost')
@@ -1796,7 +1811,8 @@ export default {
     bottomFlip,
     wxParse,
     gdNromalSelectPop,
-    gdSelectMore
+    gdSelectMore,
+    newUserCoupon
   },
   methods: {
     ...mapActions("remark", ["setData"]),

@@ -31,13 +31,29 @@
       <section class="assets-box">
         <ul class="assets-list">
           <li class="assets-item">
-            <button open-type="getUserInfo" @getuserinfo="getUserInfo" v-if="!token" class="link">
+            <button open-type="getUserInfo" @getuserinfo="getUserInfo" data-link="/pages/account/svipDetail/main" v-if="!token" class="link">
               <p class="number">0</p>
               <p class="text">SVIP已节省</p>
             </button>
-            <a v-else  class="link">
+            <a v-else href="/pages/account/svipDetail/main"  class="link">
               <p class="number">{{userInfoModel.SvipDeductionTotalAmount || 0.00}}</p>
               <p class="text">SVIP已节省</p>
+            </a>
+          </li>
+          <li class="assets-item">
+            <button
+              open-type="getUserInfo"
+              @getuserinfo="getUserInfo"
+              data-link="/pages/account/redpackets/main"
+              v-if="!token"
+              class="link"
+            >
+              <p class="number">0.00</p>
+              <p class="text">红包</p>
+            </button>
+            <a v-else href="/pages/account/redpackets/main" class="link">
+              <p class="number">{{walletModel.redpackets || 0.00}}</p>
+              <p class="text">红包</p>
             </a>
           </li>
           <li class="assets-item">
@@ -378,6 +394,7 @@
         </div>
       </article>
     </section>
+    <div class="quan" @click="clic" v-if="firstgift">券</div>
       <!-- 微信客服 -->
     <centerFlip :isShow.sync="isShowWxCodeUrl" @hide="_close">
       <div class="contact_wx" @click="_loadCode(CodeUrl)">
@@ -392,6 +409,7 @@
         <img :src="GzCodeUrl" alt="" class="codeurl">
       </div>
     </centerFlip>
+    <newUserCoupon :isShow.sync="isShowUserCoupon" ></newUserCoupon>
   </article>
 
 </template>
@@ -401,6 +419,7 @@ import api from "@/api/user";
 import goodsapi from "@/api";
 import authorization from "@/utils/authorization";
 import centerFlip from "@/components/centerFlip";
+import newUserCoupon from "@/components/newUserCoupon";
 import { mapState } from "vuex";
 import utils from "@/utils"; 
 const TDSDK = require('../../../static/tdsdk/tdweapp'); 
@@ -420,7 +439,8 @@ const userInfoModelTemp = {
 const walletModelTemp = {
   Balance: 0.0,
   CountOfCoupon: 0,
-  Score: 0
+  Score: 0,
+  redpackets:0
 };
 
 export default {
@@ -444,14 +464,16 @@ export default {
       goodsType:0,
       totalPage:0,
       isLoding:false,
-      goodsList:[]
+      goodsList:[],
+      isShowUserCoupon:false
     };
   },
    components: {
-    centerFlip
+    centerFlip,
+    newUserCoupon
   },
   computed: {
-    ...mapState("user", ["token"])
+    ...mapState("user", ["token","firstgift"])
   },
   watch: {
     token: {
@@ -469,6 +491,16 @@ export default {
         }
       },
       immediate: true
+    },
+    firstgift:{
+       handler: function(val, oldVal) {
+        console.log("firstgift==val", val);
+        console.log("firstgift==oldVal", oldVal);
+        
+          this.isShowUserCoupon = val
+        
+      },
+      immediate: true
     }
   },
   onShow(){
@@ -480,6 +512,9 @@ export default {
         this._getGoodsListData()
     }
   },
+  onHide(){
+    this.isShowUserCoupon = false
+  },
   //下拉刷新
   onPullDownRefresh() {
     if (this.token) {
@@ -488,6 +523,9 @@ export default {
     }
   },
   methods: {
+    clic(){
+      this.isShowUserCoupon = true
+    },
     getUserInfo(e) {
       const link = e.mp.currentTarget.dataset.link || "";
       authorization.doLogin(e.mp.detail.encryptedData, e.mp.detail.iv, () => {
@@ -1196,5 +1234,117 @@ export default {
       }
     }
   }
+}
+.coupon{
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    right: 0;
+    top:0;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 260px;
+    margin: 50px auto;
+    padding: 10px;
+      .action_btn{
+        width: 100%;
+        border: 0;
+      }
+  
+  .coupon-contain{
+    width: 100%;
+    background: #ee1206;
+    margin: 0 10px;
+    height: 260px;
+    margin-top: -1px;
+    overflow: hidden;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+  .coupon-box{
+    padding: 0 10px;
+    background: #ee1206;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    overflow: hidden;
+    .item{
+      width: 48%;
+      height: 70px;
+      background: #fff;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      .left-point,.right-point{
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background:#ee1206;
+        position: absolute;
+        top: 30px;
+      }
+      .left-point{
+        left: -5px;
+      }
+      .right-point{
+        right: -5px;
+      }
+      .des{
+        font-size: 14px;
+      }
+      .price{
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        color: #ee1206;
+        align-items: flex-end;
+        .left{
+          font-size: 12px;
+        }
+        .right{
+          font-size: 18px;
+        }
+      }
+      .btn{
+        padding: 1px 4px;
+        font-size: 12px;
+        color: #fff;
+        background:#ee1206;
+        border-radius: 10px;
+      }
+    }
+  }
+  .total-price{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    color: #ee1206;
+    font-size: 18px;
+  }
+}
+.quan{
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  position: fixed;
+  right: 10px;
+  bottom: 80px;
+  background: #FF668E;
+  border-radius: 50%;
+  color: #FFF;
 }
 </style>
