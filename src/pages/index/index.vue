@@ -48,6 +48,10 @@
     <frames v-if="currentMenuCode == 'code200'"/>
     <meitong v-if="currentMenuCode == 'code100'"/>
     <nurse v-if="currentMenuCode == 'code150'"/>
+    <div class="download" v-if="isdownloadshow" catchtouchmove="preventTouchMove">
+      <img src="/static/images/download.png" alt="" class="download_img">
+      <img src="/static/images/download_close.png" @click="download_close" alt="" class="download_close">
+    </div>
   </article>
 </template>
 
@@ -71,7 +75,8 @@ export default {
       menu: [],
       currentMenuCode: 'code001',
       SearchKeyword:"",
-      jifentext:"0"
+      jifentext:"0",
+      isdownloadshow:false
     };
   },
    computed: {
@@ -146,6 +151,23 @@ export default {
           this.jifentext = score
         }
       })
+    },
+    diff(){
+      const  lock = wx.getStorageSync('lock')
+      if(lock){
+        let flag = (Date.now() -lock) < 24*3600*1000 ?true :false
+        if(!flag){
+            wx.setStorageSync('lock',Date.now())
+            this.isdownloadshow = true
+        }
+        
+      }else{
+         wx.setStorageSync('lock',Date.now())
+        this.isdownloadshow = true
+      }
+    },
+    download_close(){
+      this.isdownloadshow = false
     }
   },
   onLoad(){
@@ -166,6 +188,7 @@ export default {
     this.currentMenuCode = "";
   },
   onShow() {
+    this.diff()
     this._getMenuData();
     this.getWalletOfPersonnel()
   },
@@ -305,5 +328,27 @@ export default {
   margin: 0;
   padding: 0;
   background: transparent;
+}
+.download{
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 10000;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .download_img{
+    width: 260px;
+    height: 370px;
+  }
+  .download_close{
+    width: 32px;
+    height: 32px;
+    margin-top: 20px;
+  }
 }
 </style>
