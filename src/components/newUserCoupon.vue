@@ -10,8 +10,8 @@
                     <div class="item" v-for="(item,index) in couponList" :key="index">
                     <span class="left-point"></span>
                     <span class="right-point"></span>
-                    <div class="price"><i class="left">￥</i><span class="right">{{item.price}}</span></div>
-                    <div class="des">{{item.title}}</div>
+                    <div class="price"><i class="left">￥</i><span class="right">{{item.DeductionAmount}}</span></div>
+                    <div class="des">{{item.UseDescription}}</div>
                     <div class="btn">去领券></div>
                     </div>
                 </div>
@@ -40,6 +40,7 @@
 
 <script>
 import store from '@/store'
+import api from "@/api/user";
 
 export default {
   
@@ -53,7 +54,8 @@ export default {
         return {
             couponList:[],
             totalCouponValue:'',
-            flag:false
+            flag:false,
+            CanReceived:null
         };
     },
     watch: {
@@ -81,45 +83,66 @@ export default {
     //   store.dispatch("user/setFirstGift",false)
     },
     getData(){
-        let temp = 0
-        this.couponList=[
-            {
-                price:8,
-            title:'无门槛券'
-            },
-            {
-                price:10,
-            title:'满70-减10'
-            },
-            {
-                price:20,
-            title:'满100-减20'
-            },
-            {
-                price:30,
-            title:'满200-减30'
-            },
-            {
-                price:40,
-            title:'满300-减40'
-            },
-            {
-                price:50,
-            title:'满400-减50'
-            },
-        ]
-        this.couponList.forEach(item=>{
-            temp+=item.price
+        var that = this;
+        api.GetNewUserCoupons().then(({Data})=>{
+          if(Data.CouponsList!=null&&Data.CouponsList.length>0){
+            that.couponList = Data.CouponsList
+          }
+          this.totalCouponValue = Data.SumCouponsAmount
+          this.CanReceived = Data.CanReceived
         })
-        this.totalCouponValue = temp
+        // let temp = 0
+        // this.couponList=[
+        //     {
+        //         price:8,
+        //     title:'无门槛券'
+        //     },
+        //     {
+        //         price:10,
+        //     title:'满70-减10'
+        //     },
+        //     {
+        //         price:20,
+        //     title:'满100-减20'
+        //     },
+        //     {
+        //         price:30,
+        //     title:'满200-减30'
+        //     },
+        //     {
+        //         price:40,
+        //     title:'满300-减40'
+        //     },
+        //     {
+        //         price:50,
+        //     title:'满400-减50'
+        //     },
+        // ]
+        // this.couponList.forEach(item=>{
+        //     temp+=item.price
+        // })
+        // this.totalCouponValue = temp
     },
     receiveCoupon(){
-        this.flag=true
-        store.dispatch("user/setFirstGift",false)//IsNewUser 新用户弹新人礼券对外子段firstgift
-        wx.showToast({
-            title: '领取成功',
-            icon: 'success'
-        })
+        if(this.CanReceived){
+          api.PresentNewUserCoupons().then((Data)=>{
+            if(Data.State){
+              this.flag=true
+              store.dispatch("user/setFirstGift",false)//IsNewUser 新用户弹新人礼券对外子段firstgift
+            }
+          })
+        }else{
+           wx.showToast({
+            title: '您现在不能领取新人优惠券~',
+            icon: 'none'
+          })
+        }
+        // this.flag=true
+        // store.dispatch("user/setFirstGift",false)//IsNewUser 新用户弹新人礼券对外子段firstgift
+        // wx.showToast({
+        //     title: '领取成功',
+        //     icon: 'success'
+        // })
     },
     goindex() {
         this.hide()

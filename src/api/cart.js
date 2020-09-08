@@ -83,8 +83,8 @@ const api = {
     return http.postByNoErrorTips(`/Cart/GetShopCartCouponList?shopId=${shopId}&isEffective=true`)
   },
   //使用礼券
-  useCoupon(couponNo, shopId){
-    return http.post(`/Cart/UseCoupon?couponNo=${couponNo}&shopId=${shopId}`)
+  useCoupon(couponNo, IsSingleGoodsBuy){
+    return http.post(`/Cart/UseCoupon?couponNo=${couponNo}&IsSingleGoodsBuy=${IsSingleGoodsBuy?IsSingleGoodsBuy:false}`)
   },
   //取消使用礼券
   cancelUseCoupon(shopId){
@@ -112,16 +112,16 @@ const api = {
     return http.post(`/Cart/GetCanUseCoupons?shopId=${shopId}&isEffective=true`)
   },
   //在订单确认页面的任何一项数据发生变化时调用
-  getConfirmOrderDetail({isUseScore, selectedConsigneeId, selectedPayMode, selectedExpressId, isUseBalance, IsBuySvip, invoiceType, invoiceTitle, invoiceItemId, selectInvoiceMode, axpayerIdentityNumber, bankName, bankAccount, companyAddress, mobileNo, IDCard, selectShopId} = {}){
-    return http.post(`/Cart/GetConfirmOrderDetail?IsUseScore=${isUseScore}&SelectConsigneeId=${selectedConsigneeId}&SelectPayMode=${selectedPayMode}&SelectExpressId=${selectedExpressId}&IsUseBalance=${isUseBalance}&IsBuySvip=${IsBuySvip}&InvoiceType=${invoiceType}&InvoiceTitle=${invoiceTitle}&InvoiceItemId=${invoiceItemId}&InvoiceMode=${selectInvoiceMode}&identityNumber=${axpayerIdentityNumber}&bankName=${bankName}&bankAccount=${bankAccount}&companyAddress=${companyAddress}&mobileNo=${mobileNo}&IDCard=${IDCard}&selectShopId=${selectShopId}`)
+  getConfirmOrderDetail({isUseScore, selectedConsigneeId, selectedPayMode, selectedExpressId, isUseBalance, IsBuySvip, invoiceType, invoiceTitle, invoiceItemId, selectInvoiceMode, axpayerIdentityNumber, bankName, bankAccount, companyAddress, mobileNo, IDCard, selectShopId, IsSingleGoodsBuy} = {}){
+    return http.post(`/Cart/GetConfirmOrderDetail?IsUseScore=${isUseScore}&SelectConsigneeId=${selectedConsigneeId}&SelectPayMode=${selectedPayMode}&SelectExpressId=${selectedExpressId}&IsUseBalance=${isUseBalance}&IsBuySvip=${IsBuySvip}&InvoiceType=${invoiceType}&InvoiceTitle=${invoiceTitle}&InvoiceItemId=${invoiceItemId}&InvoiceMode=${selectInvoiceMode}&identityNumber=${axpayerIdentityNumber}&bankName=${bankName}&bankAccount=${bankAccount}&companyAddress=${companyAddress}&mobileNo=${mobileNo}&IDCard=${IDCard}&selectShopId=${selectShopId}&IsSingleGoodsBuy=${IsSingleGoodsBuy?IsSingleGoodsBuy:false}`)
   },
   //获取支付配送页面的数据
   getPaymentAndDelivery(consigneeId, shopId){
     return http.post(`/Cart/GetPaymentAndDelivery?shopId=${shopId}&consigneeId=${consigneeId}`)
   },
   //修改支付配送页面的数据（修改快递）
-  editPaymentAndDelivery(expressId, price){
-    return http.post(`/Cart/EditPaymentAndDelivery?payMode=1&expressId=${expressId}&price=${price}`)
+  editPaymentAndDelivery(expressId, price,IsSingleGoodsBuy){
+    return http.post(`/Cart/EditPaymentAndDelivery?payMode=1&expressId=${expressId}&price=${price}&IsSingleGoodsBuy=${IsSingleGoodsBuy?IsSingleGoodsBuy:false}`)
   },
   //修改发票信息
   editInvoiceInfo({invoiceTypeId, invoiceTitle, invoiceMode, axpayerIdentityNumber} = {}){
@@ -140,8 +140,8 @@ const api = {
     return http.postByNoLoading(`/Goods/GoodsLike?shopId=${shopid}`)
   },
   //提交订单
-  submitOrder({isUseScore, selectedConsigneeId, selectedPayMode, selectedExpressId, isUseBalance, invoiceType, invoiceTitle, invoiceItemId, selectInvoiceMode, axpayerIdentityNumber, bankName, bankAccount, companyAddress, mobileNo, IDCard, warehouseId, selectShopId, IsBuySvip = false} = {}){
-    return http.post(`/Cart/SubmitOrder?IsUseScore=${isUseScore}&SelectConsigneeId=${selectedConsigneeId}&SelectPayMode=${selectedPayMode}&SelectExpressId=${selectedExpressId}&IsUseBalance=${isUseBalance}&SelectInvoiceType=${invoiceType}&InvoiceTitle=${invoiceTitle}&InvoiceItemId=${invoiceItemId}&SelectInvoiceMode=${selectInvoiceMode}&identityNumber=${axpayerIdentityNumber}&bankName=${bankName}&bankAccount=${bankAccount}&companyAddress=${companyAddress}&mobileNo=${mobileNo}&IDCard=${IDCard}&WarehouseId=${warehouseId}&SelectShopId=${selectShopId}&IsBuySvip=${IsBuySvip}`)
+  submitOrder({isUseScore, selectedConsigneeId, selectedPayMode, selectedExpressId, isUseBalance, invoiceType, invoiceTitle, invoiceItemId, selectInvoiceMode, axpayerIdentityNumber, bankName, bankAccount, companyAddress, mobileNo, IDCard, warehouseId, selectShopId, IsBuySvip = false,IsSingleGoodsBuy = false} = {}){
+    return http.post(`/Cart/SubmitOrder?IsUseScore=${isUseScore}&SelectConsigneeId=${selectedConsigneeId}&SelectPayMode=${selectedPayMode}&SelectExpressId=${selectedExpressId}&IsUseBalance=${isUseBalance}&SelectInvoiceType=${invoiceType}&InvoiceTitle=${invoiceTitle}&InvoiceItemId=${invoiceItemId}&SelectInvoiceMode=${selectInvoiceMode}&identityNumber=${axpayerIdentityNumber}&bankName=${bankName}&bankAccount=${bankAccount}&companyAddress=${companyAddress}&mobileNo=${mobileNo}&IDCard=${IDCard}&WarehouseId=${warehouseId}&SelectShopId=${selectShopId}&IsBuySvip=${IsBuySvip}&IsSingleGoodsBuy=${IsSingleGoodsBuy?IsSingleGoodsBuy:false}`)
   },
   //获取购物车商品总数量
   getCartCount(){
