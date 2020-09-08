@@ -44,12 +44,14 @@ export default {
     SelectedExpressId:'',
     shopId: 1,
     freight: 0,
+    IsSingleGoodsBuy:false
   },
   onLoad: function (options) {
     if (options) {
       this.SelectConsigneeId = options.SelectedConsigneeId
       this.SelectedExpressId = options.SelectedExpressId
       this.shopId = options.ShopId
+      this.IsSingleGoodsBuy = options.IsSingleGoodsBuy;
       api.getPaymentAndDelivery(this.SelectConsigneeId, this.shopId).then(({ Data }) => {
         // console.log(Data)
         this.model = Data;
@@ -64,7 +66,7 @@ export default {
       this._setFreight()
     },
     saveChange() {
-      api.editPaymentAndDelivery(this.SelectConsigneeId, this.freight).then(() => {
+      api.editPaymentAndDelivery(this.SelectConsigneeId, this.freight,this.IsSingleGoodsBuy).then(() => {
         this.setSelectedExpressId(this.SelectedExpressId)
         wx.setStorageSync('isRefreshOrder',true)//返回确认订单页onshow开关
         wx.navigateBack({

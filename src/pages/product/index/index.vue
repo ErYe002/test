@@ -267,7 +267,7 @@
             <span class="act-con">积分至多抵扣￥{{Data.GoodsBase.ScoreDeductionPrice}}</span>
           </div> -->
           <div class="discountsFull" 
-              v-if="(Data.GoodsBase.FirstBuyContent!=null&&Data.GoodsBase.FirstBuyContent.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.Gift != null && Data.GoodsPagePromotion.Gift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FullGift != null && Data.GoodsPagePromotion.FullGift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FreeCollocation != null && Data.GoodsPagePromotion.FreeCollocation.length>0)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.FullReducePromotion != null)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.ChangeBuy != null && Data.GoodsPagePromotion.ChangeBuy.length>0)||(Data.ErpGifts != null && Data.ErpGifts.length>0)"  
+              v-if="(Data.GoodsBase.FirstBuyContent!=null&&Data.GoodsBase.FirstBuyContent.length>0)||(Data.GoodsPagePromotion!= null&&Data.GoodsPagePromotion.RedPackageActivity!=null)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.Gift != null && Data.GoodsPagePromotion.Gift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FullGift != null && Data.GoodsPagePromotion.FullGift.length>0)||(Data.GoodsPagePromotion!= null && Data.GoodsPagePromotion.FreeCollocation != null && Data.GoodsPagePromotion.FreeCollocation.length>0)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.FullReducePromotion != null)||(Data.GoodsPagePromotion != null && Data.GoodsPagePromotion.ChangeBuy != null && Data.GoodsPagePromotion.ChangeBuy.length>0)||(Data.ErpGifts != null && Data.ErpGifts.length>0)"  
             >
               <div class="discountsFull-item">
                 <div
@@ -278,6 +278,19 @@
                   <span>
                     <span class="act-name-icon"><img src="/static/images/icon_newuser@2x.png" class="act-name-icon" alt=""></span>
                     <span class="act-con">新人专享价:￥{{Data.GoodsBase.FirstBuyContent}}</span>
+                  </span>
+                </div>
+                <div
+                  class="act-peijian actLine"
+                  v-if="Data.GoodsPagePromotion!=null&&Data.GoodsPagePromotion.RedPackageActivity!=null"
+                >
+                  <!-- <span class="act-name">红包活动</span> -->
+                  <span>
+                    <span class="act-name-icon"><img src="/static/images/de_maizeng.png" class="act-name-icon" alt=""></span>
+                    <span class="act-con">{{Data.GoodsPagePromotion.RedPackageActivity.PromotionTheme}}</span>
+                  </span>
+                   <span class="act-info">
+                    <!-- <span class="icon">></span> -->
                   </span>
                 </div>
                 <!-- <div
@@ -2081,7 +2094,9 @@ export default {
         "&goodsId=" +
         this.Data.GoodsBase.GoodsId +
         "&IsFreeCarriage=" +
-        this.Data.GoodsBase.IsFreeCarriage;
+        this.Data.GoodsBase.IsFreeCarriage +
+        "&RoleId=" +
+        this.Data.UserInfo.RoleId;
       var frameAttrHref =
         "../frameAttr/main?MaxSellNumber=" +
         this.Data.GoodsBase.MaxSellNumber +
@@ -2106,7 +2121,9 @@ export default {
         "&goodsId=" +
         this.Data.GoodsBase.GoodsId +
         "&IsFreeCarriage=" +
-        this.Data.GoodsBase.IsFreeCarriage;
+        this.Data.GoodsBase.IsFreeCarriage +
+        "&RoleId=" +
+        this.Data.UserInfo.RoleId;
       this.normalAttrHref = normalAttrHref;
       this.frameAttrHref = frameAttrHref;
     },
@@ -2535,6 +2552,7 @@ export default {
         var MaxDeduction = this.Data.GoodsBase.MaxSellNumber;
         var ShopId = this.Data.GoodsBase.ShopId;
         var IsFreeCarriage = this.Data.GoodsBase.IsFreeCarriage;
+        var IsSingleGoodsBuy = true;//标记是否是单买商品。
         api
           .buyNoProperty(
             GoodsId,
@@ -2548,19 +2566,28 @@ export default {
             SellPrice,
             MaxDeduction,
             ShopId,
-            IsFreeCarriage
+            IsFreeCarriage,
+            IsSingleGoodsBuy
           )
           .then(({ State }) => {
             if (State) {
-              wx.showToast({
-                title: "加入购物车成功~",
-                icon: "none"
-              });
-              setTimeout(function() {
-                wx.switchTab({
-                  url: "/pages/cart/main"
+               wx.navigateTo({
+                  url:
+                    "/pages/order/index/main?shopId=" +
+                    that.Data.GoodsBase.ShopId +
+                    "&RoleId=" +
+                    that.Data.UserInfo.RoleId +
+                    "&IsSingleGoodsBuy=" + IsSingleGoodsBuy
                 });
-              }, 1000);
+              // wx.showToast({
+              //   title: "加入购物车成功~",
+              //   icon: "none"
+              // });
+              // setTimeout(function() {
+              //   wx.switchTab({
+              //     url: "/pages/cart/main"
+              //   });
+              // }, 1000);
             }
           })
           .catch(error => {
@@ -2588,6 +2615,7 @@ export default {
           var IsFreeCarriage = this.Data.GoodsBase.IsFreeCarriage;
           var GDPropertyItems = [];
           var NoPropertyItems = [];
+          var IsSingleGoodsBuy = true;//标记是否是单买商品。
           //遍历选中的打包光度属性selectCompData并赋值给GDPropertyItems;
           //无属性商品数量赋值NoPropertyItems
           this.Data.Items.map(function(value, index) {
@@ -2656,19 +2684,28 @@ export default {
               ShopId,
               IsFreeCarriage,
               GDPropertyItems,
-              NoPropertyItems
+              NoPropertyItems,
+              IsSingleGoodsBuy
             )
             .then(({ State }) => {
               if (State) {
-                wx.showToast({
-                  title: "加入购物车成功~",
-                  icon: "none"
-                });
-                setTimeout(function() {
-                  wx.switchTab({
-                    url: "/pages/cart/main"
+                   wx.navigateTo({
+                    url:
+                      "/pages/order/index/main?shopId=" +
+                      that.Data.GoodsBase.ShopId +
+                      "&RoleId=" +
+                      that.Data.UserInfo.RoleId +
+                      "&IsSingleGoodsBuy=" + IsSingleGoodsBuy
                   });
-                }, 1000);
+                // wx.showToast({
+                //   title: "加入购物车成功~",
+                //   icon: "none"
+                // });
+                // setTimeout(function() {
+                //   wx.switchTab({
+                //     url: "/pages/cart/main"
+                //   });
+                // }, 1000);
               }
             });
         } else {
@@ -3024,7 +3061,9 @@ export default {
               postData.set('IsConfirmedBuy', this.IsConfirmedBuy);
               postData.set('ShopId', this.mainData.MainGoods.ShopId);
               postData.set('RightQuantity', 0)
-              
+              if(obj.imid){
+                  postData.set('IsSingleGoodsBuy', true);//标记是否是单买商品。
+              }
             if (obj.joinCylList.length !== 0 ) {
               postData.set('LeftQuantity', 1);
               postData.set('LeftGD', obj.joinGoodsList[0].SphereId);
@@ -3051,7 +3090,8 @@ export default {
                       "SalePrice": this.Data.GoodsBase.SalePrice,
                       "IsFreeCarriage": this.Data.GoodsBase.IsFreeCarriage,
                       "ShopId": this.Data.GoodsBase.ShopId,
-                      "RealGoodsId": obj.goodsId
+                      "RealGoodsId": obj.goodsId,
+                      "IsSingleGoodsBuy":obj.imid?true:false
                     }
           attrapi.buyMoreProperty(data).then(res=>{
             console.log(res)
@@ -3091,6 +3131,9 @@ export default {
         postData.set('goodsId', this.mainData.MainGoods.GoodsId);
         postData.set('IsConfirmedBuy', this.IsConfirmedBuy);
         postData.set('ShopId', this.mainData.MainGoods.ShopId);
+        if(immediately){
+          postData.set('IsSingleGoodsBuy', true);//标记是否是单买商品。
+        }
 
         if (buyNoProperty === this.mainData.BuyUrl) {
           postData.set('Quantity', this.noPropertyQuantity);
@@ -3151,7 +3194,7 @@ export default {
           }
 
           if (this.postIdDouble.sphRId !== '' && this.rightNum > 0) {
-            postData.set('RightQuantity', this.leftNum);
+            postData.set('RightQuantity', this.rightNum);
             postData.set('RightGD', this.postIdDouble.sphRId);
             postData.set('RightSG', this.postIdDouble.cylRId);
             postData.set('RightZW', this.postIdDouble.axisRId);
@@ -3254,9 +3297,17 @@ export default {
       },
       goToCart(imid) {
         if (imid) {
-          wx.switchTab({
-            url: '/pages/cart/main?shopId=' + this.shopId
-          });
+          // wx.switchTab({
+          //   url: '/pages/cart/main?shopId=' + this.shopId
+          // });
+            wx.navigateTo({
+              url:
+                "/pages/order/index/main?shopId=" +
+                this.shopId +
+                "&RoleId=" +
+                this.Data.UserInfo.RoleId +
+                "&IsSingleGoodsBuy=" + true
+            });
         } else {
           wx.showToast({
             title: "加入购物车成功",

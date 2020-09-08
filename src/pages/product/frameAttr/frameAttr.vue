@@ -202,6 +202,8 @@
         IsFreeCarriage: '',
         RealGoodsId: '',
         goodsId: '',
+        shopId:"",
+        RoleId:"",
         isConfirmedBuy: false,
         glassSelectPosiition: -1,
         groupSelectPosition: -1
@@ -232,6 +234,7 @@
       this.IsFreeCarriage = options.IsFreeCarriage;
       this.RealGoodsId = options.RealGoodsId;
       this.goodsId = options.goodsId;
+       this.RoleId =  options.RoleId;
       this._getFrameData(options.goodsId);
       this._getOptometryBillBaiscDataLibrary();
       if(wx.getStorageSync('postIdBean')&&wx.getStorageSync('postInfoBean')){
@@ -318,6 +321,7 @@
           this.mainData = Data;
           this.groupGlassData = Data.GlassGroup;
           this.frameSalePrice = Data.MainGoods.SalePrice;
+          this.shopId = Data.MainGoods.ShopId;
         });
       },
       _getOptometryBillBaiscDataLibrary() {
@@ -391,12 +395,15 @@
         });
       },
       buyGoods(immediately) {
-
+        let that = this;
         let pushData = new Map();
 
         pushData.set('goodsId', this.mainData.GoodsId);
         pushData.set('IsConfirmedBuy', this.isConfirmedBuy);
         pushData.set('ShopId', this.mainData.MainGoods.ShopId);
+         if(immediately){
+          pushData.set('IsSingleGoodsBuy', true);//标记是否是单买商品。
+        }
         if (this.buyType === 2) {
           pushData.set('Quantity', this.onlyBuyFrameNum);
           pushData.set('GDPropertyGifts', '');
@@ -419,8 +426,16 @@
             console.log("提交订单", Data);
             this.$getCartCount();
             if (immediately) {
-              wx.switchTab({
-                url: '/pages/cart/main'
+              // wx.switchTab({
+              //   url: '/pages/cart/main'
+              // });
+               wx.navigateTo({
+                url:
+                    "/pages/order/index/main?shopId=" +
+                    that.shopId +
+                    "&RoleId=" +
+                    that.RoleId + 
+                    "&IsSingleGoodsBuy=" + true
               });
             } else {
               wx.showToast({
@@ -492,8 +507,16 @@
 
             this.$getCartCount();
             if (immediately) {
-              wx.switchTab({
-                url: '/pages/cart/main'
+              // wx.switchTab({
+              //   url: '/pages/cart/main'
+              // });
+              wx.navigateTo({
+                url:
+                    "/pages/order/index/main?shopId=" +
+                    that.shopId +
+                    "&RoleId=" +
+                    that.RoleId + 
+                    "&IsSingleGoodsBuy=" + true
               });
             } else {
               wx.showToast({

@@ -52,7 +52,7 @@
               <p class="text">红包</p>
             </button>
             <a v-else href="/pages/account/redpackets/main" class="link">
-              <p class="number">{{walletModel.redpackets || 0.00}}</p>
+              <p class="number">{{walletModel.PresentBalance || 0.00}}</p>
               <p class="text">红包</p>
             </a>
           </li>
@@ -440,7 +440,7 @@ const walletModelTemp = {
   Balance: 0.0,
   CountOfCoupon: 0,
   Score: 0,
-  redpackets:0
+  PresentBalance:0
 };
 
 export default {

@@ -114,7 +114,7 @@
     <view class='amount-box'>
       <view class='flex-line'>
         <view class='couponTitle'>优惠券 <span class="new-tag">已为您自动选择最大优惠</span></view>
-          <navigator :url="'/pages/order/useCoupon/main?shopId='+formModel.selectShopId+'&couponNo='+orderInfo.CouponNo">
+          <navigator :url="'/pages/order/useCoupon/main?shopId='+formModel.selectShopId+'&couponNo='+orderInfo.CouponNo + '&IsSingleGoodsBuy='+formModel.IsSingleGoodsBuy">
             <view class='couponSubtitle'>{{orderInfo.CouponContent + ' >'}}</view>
           </navigator>
       </view>
@@ -123,7 +123,7 @@
       <view class='flex-line'>
         <view class='couponTitle'>红包 <span class="new-tag">已为您计算出本单可用红包</span></view>
           <navigator :url="'/pages/account/redpackets/main'">
-            <view class='couponSubtitle'>{{orderInfo.CouponContent + ' >'}}</view>
+            <view class='couponSubtitle'>{{orderInfo.AvailablePresentBalance + ' >'}}</view>
           </navigator>
       </view>
     </view>
@@ -321,6 +321,7 @@ export default {
     this.wxadDealIdTime()//判断是否是在广告有效时间转化 目前默认30分钟 30*60=1800s
     if(options){
       this.formModel.selectShopId = options.shopId;
+      this.formModel.IsSingleGoodsBuy = options.IsSingleGoodsBuy;
       if (this.formModel.selectShopId == 2) {
         this.formModel.isUseBalance = false;
         this.formModel.isUseScore = false;
@@ -451,7 +452,7 @@ export default {
         return;
       }
       wx.navigateTo({
-          url: '/pages/order/logistics/main?ShopId='+this.formModel.selectShopId+'&SelectedConsigneeId='+this.formModel.selectedConsigneeId+'&SelectedExpressId='+this.formModel.selectedExpressId,
+          url: '/pages/order/logistics/main?ShopId='+this.formModel.selectShopId+'&SelectedConsigneeId='+this.formModel.selectedConsigneeId+'&SelectedExpressId='+this.formModel.selectedExpressId+'&IsSingleGoodsBuy='+this.formModel.IsSingleGoodsBuy,
       })
     },
     /**
@@ -529,6 +530,9 @@ export default {
         eventname:"点击提交订单",
         eventval:""
       })
+      wx.showLoading({
+        mask:true
+      })
       api.submitOrder({...this.formModel}).then(({Data,Msg,State}) => {
         console.log(Data)
         this.submitResultInfo = Data;
@@ -568,7 +572,9 @@ export default {
             icon: 'none',
           });
         } 
-      })
+      }).finally(() => {
+            wx.hideLoading()
+          });
     },
     // 微信支付
     _wechatPay(orderId) {

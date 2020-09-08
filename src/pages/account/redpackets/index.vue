@@ -7,12 +7,12 @@
           </div>
           <div class="value">
             <div>红包余额</div>
-            <div>￥100</div>
+            <div>￥{{model.PresentBalance}}</div>
           </div>
         </div>
         <div class="title">
             <div class="title-des">
-              <div class="des">您的红包中有30.00元将于2020年12月31日到期</div>
+              <div class="des">您的红包中有{{model.ExpireInfo.ExpireBalance}}元将于{{model.ExpireInfo.ExpireDate}}日到期</div>
               <div class="labels">红包明细</div>
             </div>
         </div>
@@ -25,10 +25,11 @@
                 v-for="(item,index) in detailsList" 
                 :key="index">
                 <div class="left">
-                  <div class="title">新人任务</div>
-                  <div class="date">2020-04-01 09:02:06</div>
+                  <div class="title">{{item.BalanceFlowKindName}}</div>
+                  <div class="date">{{item.CreateTime}}</div>
                 </div>
-                <div class="right">+ 30</div>
+                <div class="right">+ {{item.IncreaseAmount}}</div>
+                <!-- <div class="right" v-if="item.SubtractAmount<0">-{{item.SubtractAmount}}</div> -->
             </div>
             <div class="no-more-tips" v-if="isNoData">
               <p>暂无数据</p>
@@ -43,7 +44,6 @@
 
 <script>
 import api from "@/api/user";
-import goodsapi from "@/api";
 import authorization from "@/utils/authorization";
 import { mapState } from "vuex";
 import utils from "@/utils"; 
@@ -51,6 +51,7 @@ import utils from "@/utils";
 export default {
   data() {
     return {
+      model:"",
       page: 1,
       size: 10,
       goodsType:0,
@@ -61,10 +62,10 @@ export default {
     };
   },
   onLoad(){
-    this._getGoodsListData()
+    this._getPageData();
+    this.GetRedPackageDetail()
   },
   onReachBottom() {
-    console.log(5555)
       if (this.page < this.totalPage) {
         this.page++;
         this._getGoodsListData();
@@ -79,24 +80,29 @@ export default {
       });
     },
     _getPageData() {
-     
+      api.GetRedPackage().then(({ Data }) => {
+        this.model = Object.assign({}, Data);
+      });
     },
     error(r){
       this.userInfoModel.HeadUrl = 'https://pic.keede.com/app/images/login_img.png';
     },
     //获取猜你喜欢商品列表
-    _getGoodsListData() {
+    GetRedPackageDetail() {
       if (!this.isLoding) {
         this.isLoding = true;
         wx.hideLoading();
-        goodsapi
-          .getHomePageGoods(this.page, this.size,this.goodsType)
+        api
+          .GetRedPackageDetail(this.page, this.size)
           .then(({ Data, TotalPage }) => {
-            if (Data != null && Data.length > 0) {
               let list = Data;
               this.detailsList =
                 this.page > 1 ? this.detailsList.concat(list) : list;
               this.totalPage = TotalPage;
+            
+            if (!Data || Data.length <= 0) {
+              this.isNoData = true;
+              this.totalPage = 0
             }
           })
           .finally(() => {

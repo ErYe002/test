@@ -3,10 +3,10 @@
     <div  class="bgcolor"></div>
     <ul class="list" v-if="list.length > 0">
       <li class="item" v-for="item in list" :key="item.GoodsId" >
-        <div>下单时间：{{item.orderTime}}</div>
-        <div>订单号：{{item.orderId}}</div>
-        <div class="order-value">订单金额：{{item.ordervlaue}}</div>
-        <div class="svip-value">SVIP以省：{{item.svipValue}}</div>
+        <div>下单时间：{{item.OrderTime}}</div>
+        <div>订单号：{{item.OrderNo}}</div>
+        <div class="order-value">订单金额：{{item.OrderPayment}}</div>
+        <div class="svip-value">SVIP以省：{{item.PreferentialPrice}}</div>
       </li>
     </ul>
     <img class="loading" v-if="page == 1 && isLoading" src="/static/images/mu_loading.gif" />
@@ -48,32 +48,8 @@ export default {
       if (!this.isLoading) {
         this.isLoading = true;
         api
-          .getFavoriteList(this.page, this.size)
+          .GetSvipOrderDeductionList(this.page, this.size)
           .then(({ Data, TotalPage }) => {
-            Data = [{
-              orderTime:'2020-08-09 17:56:31',
-              orderId:'RT1234568451242333',
-              ordervlaue:'451',
-              svipValue:'20.1'
-            },
-            {
-              orderTime:'2020-08-09 17:56:31',
-              orderId:'RT1234568451242333',
-              ordervlaue:'451',
-              svipValue:'20.1'
-            },
-            {
-              orderTime:'2020-08-09 17:56:31',
-              orderId:'RT1234568451242333',
-              ordervlaue:'451',
-              svipValue:'20.1'
-            },
-            {
-              orderTime:'2020-08-09 17:56:31',
-              orderId:'RT1234568451242333',
-              ordervlaue:'451',
-              svipValue:'20.1'
-            }]
             this.list = this.page > 1 ? this.list.concat(Data) : Data;
             this.totalPage = TotalPage;
             //没有搜索到任何数据
@@ -85,22 +61,6 @@ export default {
             this.isLoading = false;
           });
       }
-    },
-    del_img_click(key) {
-      var current = this;
-      wx.showModal({
-        title: "提示",
-        content: "确定要删除该收藏吗？",
-        confirmColor: "#cab894",
-        success(res) {
-          if (res.confirm) {
-            api.cancelFavoriteByGoodsId(key).then(()=>{
-              current.page = 1;
-              current._getPageData();
-            }).catch()
-          }
-        }
-      });
     }
   }
 };
