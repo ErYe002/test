@@ -157,7 +157,7 @@ const api = {
     return http.post(`/Account/PresentNewUserCoupons`)
   },
   //svip订单明细
-  GetSvipOrderDeductionList(pageSize = 10,pageIndex = 1){
+  GetSvipOrderDeductionList(pageIndex = 1,pageSize = 10){
     return http.get(`/Order/GetSvipOrderDeductionList?pageSize=${pageSize}&pageIndex=${pageIndex}`)
   },
   //红包头信息
@@ -165,7 +165,7 @@ const api = {
     return http.get(`/Account/GetRedPackage`)
   },
   //红包明细
-  GetRedPackageDetail(pageSize = 10,pageIndex = 1){
+  GetRedPackageDetail(pageIndex = 1,pageSize = 10){
     return http.get(`/Account/GetRedPackageDetail?pageSize=${pageSize}&pageIndex=${pageIndex}`)
   },
 };
