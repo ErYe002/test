@@ -394,7 +394,14 @@
         </div>
       </article>
     </section>
-    <div class="quan" @click="clic" v-if="firstgift">券</div>
+    <button class="quan"  open-type="getUserInfo" @getuserinfo="getUserInfo" v-if="!token">
+        <img src="/static/images/userAppicon.png" alt="" class="img">
+    </button>
+    <block v-else>
+      <div v-if="firstgift" @click="clic" class="quan">
+        <img src="/static/images/userAppicon.png" alt="" class="img">
+      </div>
+    </block>
       <!-- 微信客服 -->
     <centerFlip :isShow.sync="isShowWxCodeUrl" @hide="_close">
       <div class="contact_wx" @click="_loadCode(CodeUrl)">
@@ -494,16 +501,16 @@ export default {
     },
     firstgift:{
        handler: function(val, oldVal) {
-        console.log("firstgift==val", val);
-        console.log("firstgift==oldVal", oldVal);
-        
-          this.isShowUserCoupon = val
+        console.log("home==val", val);
+        console.log("home==oldVal", oldVal);
+          this.isShowUserCoupon = val&&wx.getStorageSync("newUserCoupon")
         
       },
       immediate: true
     }
   },
   onShow(){
+    this.isShowUserCoupon = this.firstgift&&wx.getStorageSync("newUserCoupon");
      let value = wx.getStorageSync('isSvipRedirect');
     if(value){
        wx.setStorageSync('isSvipRedirect',false)
@@ -1336,15 +1343,18 @@ export default {
   }
 }
 .quan{
-  width: 30px;
-  height: 30px;
   text-align: center;
   line-height: 30px;
   position: fixed;
   right: 10px;
   bottom: 80px;
-  background: #FF668E;
-  border-radius: 50%;
+  background: transparent;
+  padding: 0;
   color: #FFF;
+  z-index: 99;
+  .img{
+    width: 37px;
+    height: 60px;
+  }
 }
 </style>

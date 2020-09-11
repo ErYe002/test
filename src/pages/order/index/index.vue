@@ -113,7 +113,7 @@
     <!-- <div class="sectionLine"></div> -->
     <view class='amount-box'>
       <view class='flex-line'>
-        <view class='couponTitle'>优惠券 <span class="new-tag">已为您自动选择最大优惠</span></view>
+        <view class='couponTitle'>优惠券 <span v-if="orderInfo.CouponContent!='无可用 '" class="new-tag">已为您自动选择最大优惠</span></view>
           <navigator :url="'/pages/order/useCoupon/main?shopId='+formModel.selectShopId+'&couponNo='+orderInfo.CouponNo + '&IsSingleGoodsBuy='+formModel.IsSingleGoodsBuy">
             <view class='couponSubtitle'>{{orderInfo.CouponContent + ' >'}}</view>
           </navigator>
@@ -121,9 +121,9 @@
     </view>
     <view class='amount-box'>
       <view class='flex-line'>
-        <view class='couponTitle'>红包 <span class="new-tag">已为您计算出本单可用红包</span></view>
+        <view class='couponTitle'>红包 <span v-if="orderInfo.AvailablePresentBalance>0" class="new-tag">已为您计算出本单可用红包</span></view>
           <navigator :url="'/pages/account/redpackets/main'">
-            <view class='couponSubtitle'>{{orderInfo.AvailablePresentBalance + ' >'}}</view>
+            <view class='couponSubtitle'>{{orderInfo.AvailablePresentBalance + '元可用 >'}}</view>
           </navigator>
       </view>
     </view>
@@ -259,7 +259,7 @@
       </view>
     </view>
     <!-- 用户协议 -->
-    <goodsList :is-show.sync="isShowGoodsList" :shop-id="formModel.selectShopId" :roleId="RoleId" />
+    <goodsList :is-show.sync="isShowGoodsList" :shop-id="formModel.selectShopId" :issinglegoodsbuy='formModel.IsSingleGoodsBuy' :roleId="RoleId" />
   </article>
 </template>
 

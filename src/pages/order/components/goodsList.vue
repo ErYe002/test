@@ -82,6 +82,10 @@ export default {
     roleId: {
       type: String,
       default: ""
+    },
+    issinglegoodsbuy:{
+      type:Boolean,
+      default: false
     }
   },
   watch:{
@@ -107,7 +111,7 @@ export default {
     _getGoodsList(){
       console.log("shopId = "+this.shopId);
       console.log("roleId = "+this.roleId);
-      cartApi.getPendingBuyGoods(this.shopId).then(({Data}) => {
+      cartApi.getPendingBuyGoods(this.shopId,this.issinglegoodsbuy).then(({Data}) => {
         console.log("--- 获取商品清单 ----")
         this.PackageGoods = Data.PackageGoods
         this.NormalGoods = Data.NormalGoods

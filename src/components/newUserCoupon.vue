@@ -69,8 +69,9 @@ export default {
                 this.flag=false    
                 this.$emit('update:isShow', false)
                 }
-            }
-        },
+            },
+            immediate: true
+        }
     },
   methods: {
     // show(){
@@ -80,6 +81,7 @@ export default {
       this.$emit('update:isShow', false)
       this.$emit('hide') //事件回调
       this.flag=false   
+      wx.setStorageSync("newUserCoupon",false)
     //   store.dispatch("user/setFirstGift",false)
     },
     getData(){
@@ -91,37 +93,6 @@ export default {
           this.totalCouponValue = Data.SumCouponsAmount
           this.CanReceived = Data.CanReceived
         })
-        // let temp = 0
-        // this.couponList=[
-        //     {
-        //         price:8,
-        //     title:'无门槛券'
-        //     },
-        //     {
-        //         price:10,
-        //     title:'满70-减10'
-        //     },
-        //     {
-        //         price:20,
-        //     title:'满100-减20'
-        //     },
-        //     {
-        //         price:30,
-        //     title:'满200-减30'
-        //     },
-        //     {
-        //         price:40,
-        //     title:'满300-减40'
-        //     },
-        //     {
-        //         price:50,
-        //     title:'满400-减50'
-        //     },
-        // ]
-        // this.couponList.forEach(item=>{
-        //     temp+=item.price
-        // })
-        // this.totalCouponValue = temp
     },
     receiveCoupon(){
         if(this.CanReceived){
@@ -137,12 +108,6 @@ export default {
             icon: 'none'
           })
         }
-        // this.flag=true
-        // store.dispatch("user/setFirstGift",false)//IsNewUser 新用户弹新人礼券对外子段firstgift
-        // wx.showToast({
-        //     title: '领取成功',
-        //     icon: 'success'
-        // })
     },
     goindex() {
         this.hide()

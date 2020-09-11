@@ -28,8 +28,8 @@
                   <div class="title">{{item.BalanceFlowKindName}}</div>
                   <div class="date">{{item.CreateTime}}</div>
                 </div>
-                <div class="right">+ {{item.IncreaseAmount}}</div>
-                <!-- <div class="right" v-if="item.SubtractAmount<0">-{{item.SubtractAmount}}</div> -->
+                <div class="right" v-if="item.IncreaseAmount>0">+ {{item.IncreaseAmount}}</div>
+                <div class="right_out" v-if="item.SubtractAmount<0">-{{item.SubtractAmount}}</div>
             </div>
             <div class="no-more-tips" v-if="isNoData">
               <p>暂无数据</p>
@@ -222,6 +222,9 @@ export default {
         font-weight: 500;
         color: #FF7C7C;
         font-size: 18px;
+      }
+      .right_out{
+        color: #000;
       }
       &:last-child{
         border: 0;

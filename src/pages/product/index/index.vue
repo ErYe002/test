@@ -190,7 +190,7 @@
               <!-- <span>再享10项特权</span> -->
             </div>
           </div>
-          <block v-if="!Data.UserInfo.IsSvip">
+          <div v-if="!Data.UserInfo.IsSvip">
             <button v-if="isLogin" @click="goSvip" class="right" >
               立即开通 <span class="tral"></span>
             </button>
@@ -198,7 +198,7 @@
                   @getuserinfo="loginEventCoupon">
               立即开通 <span class="tral"></span>
             </button>
-          </block>
+          </div>
         </div>
         <div class="goods-te">
           <block v-if="Data.GoodsBase.ShopId == 1">
@@ -1143,6 +1143,14 @@
             </block>
           </block>
         </div>
+           <button class="quan"  open-type="getUserInfo" @getuserinfo="loginEvent" v-if="!isLogin">
+              <img src="/static/images/userAppicon.png" alt="" class="img">
+          </button>
+          <block v-else>
+            <div v-if="firstgift" @click="clic" class="quan">
+              <img src="/static/images/userAppicon.png" alt="" class="img">
+            </div>
+          </block>
       </div>
     </template>
     <!-- 打包参数弹出框 -->
@@ -1754,10 +1762,9 @@ export default {
       },
       firstgift:{
         handler: function(val, oldVal) {
-          console.log("firstgift==val", val);
-          console.log("firstgift==oldVal", oldVal);
-          
-            this.isShowUserCoupon = val
+          console.log("pro==val", val);
+          console.log("pro==oldVal", oldVal);
+            this.isShowUserCoupon = val&&wx.getStorageSync("newUserCoupon")
           
         },
         immediate: true
@@ -1815,7 +1822,6 @@ export default {
       eventname:"商详页",
       eventval:JSON.stringify({"seocode":this.seocode})
     })
-
     timeId = setTimeout(()=>{
       this.isShowTag = false;
     },6000)
@@ -1830,6 +1836,9 @@ export default {
   methods: {
     ...mapActions("remark", ["setData"]),
     ...mapActions("userInfo", ["setUserInfo"]),
+    clic(){
+      this.isShowUserCoupon = true
+    },
     getisComp(seocode) {
       api
         .IsCompGoods(seocode)

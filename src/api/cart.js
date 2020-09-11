@@ -132,8 +132,8 @@ const api = {
     return http.post(`/Cart/GetInvoiceBasicLibrary`)
   },
   //获取商品清单
-  getPendingBuyGoods(shopid){
-    return http.post(`/Cart/GetPendingBuyGoods?shopId=${shopid}`)
+  getPendingBuyGoods(shopid,issinglegoodsbuy){
+    return http.post(`/Cart/GetPendingBuyGoods?shopId=${shopid}&IsSingleGoodsBuy=${issinglegoodsbuy?issinglegoodsbuy:false}`)
   },
   //获取猜你喜欢商品
   getGoodsLike(shopid){
