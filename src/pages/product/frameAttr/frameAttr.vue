@@ -135,11 +135,11 @@
 
       </div>
 
-      <a class="btn-50-percent black" v-if="buyType===2" @click="buyGoods(false)">
+      <a class="btn-50-percent black" :style="buyType===2?'':'background:#BCB092'"  @click="buyGoods(false)">
         加入购物车
       </a>
 
-      <a class="btn-50-percent gold" @click="buyGoods(true)">
+      <a class="btn-50-percent gold" v-if="buyType===2" @click="buyGoods(true)">
         立即购买
       </a>
     </section>
