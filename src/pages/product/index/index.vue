@@ -1773,6 +1773,9 @@ export default {
   onReady(){
       this.Poster = this.$mp.page.selectComponent('#sharepost')
   },
+  onShow() {
+	  this.isShowUserCoupon = this.firstgift&&wx.getStorageSync("newUserCoupon");
+  },
   onLoad(options) {
       //处理来源微信广告的click_id参数
       if(options.weixinadinfo){
