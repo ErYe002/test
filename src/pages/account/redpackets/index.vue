@@ -26,7 +26,7 @@
                 :key="index">
                 <div class="left">
                   <div class="title">{{item.BalanceFlowKindName}}</div>
-                  <div class="date">{{item.CreateTime}}</div>
+                  <div class="date">{{item.CreateTimeStr}}</div>
                 </div>
                 <div class="right" v-if="item.Amount>0">+ {{item.Amount}}</div>
                 <div class="right_out" v-if="item.Amount<0">-{{item.Amount}}</div>

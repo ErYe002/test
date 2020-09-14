@@ -3,7 +3,7 @@
     <div  class="bgcolor"></div>
     <ul class="list" v-if="list.length > 0">
       <li class="item" v-for="item in list" :key="item.GoodsId" >
-        <div>下单时间：{{item.OrderTime}}</div>
+        <div>下单时间：{{item.OrderTimeStr}}</div>
         <div>订单号：{{item.OrderNo}}</div>
         <div class="order-value">订单金额：{{item.OrderPayment}}</div>
         <div class="svip-value">SVIP以省：{{item.PreferentialPrice}}</div>
