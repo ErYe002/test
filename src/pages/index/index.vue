@@ -60,7 +60,8 @@
 	<div class="download" v-if="isdownloadshow" catchtouchmove="preventTouchMove">
       <img src="/static/images/download.png" alt="" class="download_img">
       <img src="/static/images/download_close.png" @click="download_close" alt="" class="download_close">
-    </div>  </article>
+    </div>  
+    </article>
 </template>
 
 <script>
@@ -85,6 +86,7 @@ export default {
       currentMenuCode: 'code001',
       SearchKeyword:"",
       jifentext:"0",
+      isdownloadshow:false,
       isShowUserCoupon:false
     };
   },
