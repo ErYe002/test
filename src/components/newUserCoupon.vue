@@ -95,19 +95,19 @@ export default {
         })
     },
     receiveCoupon(){
-        if(this.CanReceived){
+        // if(this.CanReceived){
           api.PresentNewUserCoupons().then((Data)=>{
             if(Data.State){
               this.flag=true
               store.dispatch("user/setFirstGift",false)//IsNewUser 新用户弹新人礼券对外子段firstgift
             }
           })
-        }else{
-           wx.showToast({
-            title: '您现在不能领取新人优惠券~',
-            icon: 'none'
-          })
-        }
+        // }else{
+        //    wx.showToast({
+        //     title: '您现在不能领取新人优惠券~',
+        //     icon: 'none'
+        //   })
+        // }
     },
     goindex() {
         this.hide()
