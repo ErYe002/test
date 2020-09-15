@@ -12,7 +12,7 @@
         </div>
         <div class="title">
             <div class="title-des">
-              <div class="des">您的红包中有{{model.ExpireInfo.ExpireBalance}}元将于{{model.ExpireInfo.ExpireDate}}日到期</div>
+              <div class="des">您的红包中有{{model.ExpireInfo?model.ExpireInfo.ExpireBalance:0}}元将于{{model.ExpireInfo?model.ExpireInfo.ExpireDate:''}}日到期</div>
               <div class="labels">红包明细</div>
             </div>
         </div>

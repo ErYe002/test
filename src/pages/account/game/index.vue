@@ -61,6 +61,13 @@ export default {
       animationData:{}
     };
   },
+  onShow(){
+    let animation1 = wx.createAnimation({
+      duration:0
+    })
+    animation1.rotate(0).step()
+    this.animationData=animation1.export()
+  },
   components: {
     centerFlip
   },
@@ -88,7 +95,7 @@ export default {
                 if (res.confirm) {
                   that.gotobalance()
                 } else if (res.cancel) {
-                  console.log('用户点击取消');
+
                 }
               }
             });
@@ -137,7 +144,7 @@ export default {
               }
             }
           });
-      },2100)
+      },2500)
     },
     rulerShow(){
       this.isShow = true
