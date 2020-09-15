@@ -260,7 +260,7 @@
             if (glassList.length > val.glassosition) {
               this.glassBean = glassList[val.glassosition];
               this.glassSelected = true;
-              this.glassSalePrice = glassList[val.glassosition].SellPrice;
+              this.glassSalePrice = parseFloat(glassList[val.glassosition].SellPrice);
               this.postIdBean.groupPId = this.groupGlassData[val.groupPosition].GlassGroupId;
               this.postIdBean.glassPId = glassList[val.glassosition].GlassGoodsId;
               console.log('姜片集合', this.groupGlassData[val.groupPosition].GlassGroupId, glassList[val.glassosition].GlassGoodsId);
@@ -320,7 +320,7 @@
           console.log("主数据", Data);
           this.mainData = Data;
           this.groupGlassData = Data.GlassGroup;
-          this.frameSalePrice = this.SalePrice;
+          this.frameSalePrice = parseFloat(this.SalePrice);
           this.shopId = Data.MainGoods.ShopId;
         });
       },
