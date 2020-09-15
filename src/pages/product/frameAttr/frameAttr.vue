@@ -320,7 +320,7 @@
           console.log("主数据", Data);
           this.mainData = Data;
           this.groupGlassData = Data.GlassGroup;
-          this.frameSalePrice = Data.MainGoods.SalePrice;
+          this.frameSalePrice = this.SalePrice;
           this.shopId = Data.MainGoods.ShopId;
         });
       },
