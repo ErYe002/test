@@ -5,6 +5,7 @@
         <div class="coupon" v-if="!flag">
             <img src="https://pic.keede.com/WeChat/xiaochengxu/newCoupon.png" alt="" mode='widthFix' class="action_btn">
             <div class="total-price">新人{{totalCouponValue}}元福利礼包</div>
+            <img class="close" src="/static/images/X.png" alt="" @click="hide">
             <scroll-view scroll-y class="coupon-contain">
                 <div class="coupon-box" @click="receiveCoupon">
                     <div class="item" v-for="(item,index) in couponList" :key="index">
@@ -253,6 +254,13 @@ export default {
     font-weight: bold;
     color: #ee1206;
     font-size: 18px;
+  }
+  .close{
+    position: absolute;
+    right: 28px;
+    top: 11px;
+    width: 23px;
+    height: 23px;
   }
 }
 .content{
