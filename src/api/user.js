@@ -168,5 +168,9 @@ const api = {
   GetRedPackageDetail(pageIndex = 1,pageSize = 10){
     return http.get(`/Account/GetRedPackageDetail?pageSize=${pageSize}&pageIndex=${pageIndex}`)
   },
+   //大转盘抽奖
+   startGame(UnionId) {
+    return http.post(`/Game/LotteryNew?openId=${UnionId}`)
+  },
 };
 export default api;

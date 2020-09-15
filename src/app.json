@@ -32,7 +32,8 @@
         "logistics/main",
         "coupon/main",
         "redpackets/main",
-        "svipDetail/main"
+        "svipDetail/main",
+        "game/main"
       ]
     },
     {
