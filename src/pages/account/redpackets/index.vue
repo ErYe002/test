@@ -16,7 +16,7 @@
               <div class="labels">红包明细</div>
             </div>
         </div>
-        <div class="qa">常见问题</div>
+        <div class="qa" @click="gotoQuestion">常见问题</div>
     </section>
     <section class="red-detail">
         <div class="detail_list">
@@ -72,6 +72,9 @@ export default {
       }
     },
   methods: {
+    gotoQuestion(){
+        wx.navigateTo({ url: "/pages/htmlPreview/main?path=" + 'https://m.kede.com/templateforapp/redpacketrules' });
+    },
     toAppTips(content) {
       wx.showModal({
         title: "提示",

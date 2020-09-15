@@ -282,6 +282,7 @@
                 </div>
                 <div
                   class="act-peijian actLine"
+                  @click="gotoQuestion"
                   v-if="Data.GoodsPagePromotion!=null&&Data.GoodsPagePromotion.RedPackageActivity!=null"
                 >
                   <!-- <span class="act-name">红包活动</span> -->
@@ -290,7 +291,7 @@
                     <span class="act-con">{{Data.GoodsPagePromotion.RedPackageActivity.PromotionTheme}}</span>
                   </span>
                    <span class="act-info">
-                    <!-- <span class="icon">></span> -->
+                    <span class="icon">></span>
                   </span>
                 </div>
                 <!-- <div
@@ -1841,6 +1842,9 @@ export default {
     ...mapActions("userInfo", ["setUserInfo"]),
     clic(){
       this.isShowUserCoupon = true
+    },
+     gotoQuestion(){
+        wx.navigateTo({ url: "/pages/htmlPreview/main?path=" + 'https://m.kede.com/templateforapp/redpacketrules' });
     },
     getisComp(seocode) {
       api
