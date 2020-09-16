@@ -2552,6 +2552,20 @@ export default {
       }
     },
     buyNow(IsConfirmedBuy) {
+      //统计
+      TDSDK.Event.event({id: '立即购买'})
+
+      this.$onInformationCollection({
+        token:"WeChat",
+        uid:wx.getStorageSync('USERID'),
+        opentype:"click",
+        time:Date.now().toString(),
+        page:utils.getCurrentPageUrl(),
+        eventname:"立即购买",
+        eventval:JSON.stringify({"Seocode":this.seocode,'GoodsId':this.Data.GoodsBase.GoodsId})
+      })
+      //
+
       var that = this;
       // 判断是否是无属性商品
       if (!this.Data.GoodsBase.IsSpecificationGoods && !this.isComp&&!this.HasGifts) {

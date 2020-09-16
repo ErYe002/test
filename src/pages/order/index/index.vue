@@ -330,7 +330,21 @@ export default {
         this.formModel.isUseScore = true;
       }
       this.RoleId = options.RoleId
-      console.log(options)
+      if(this.formModel.IsSingleGoodsBuy){
+         //统计
+        TDSDK.Event.event({id: '结算页-立即购买'})
+
+        this.$onInformationCollection({
+          token:"WeChat",
+          uid:wx.getStorageSync('USERID'),
+          opentype:"view",
+          time:Date.now().toString(),
+          page:utils.getCurrentPageUrl(),
+          eventname:"结算页-立即购买",
+          eventval:""
+        })
+        //
+      }
       this.getConfirmOrderDetail();
     }
     //kede行为统计
@@ -530,6 +544,21 @@ export default {
         eventname:"点击提交订单",
         eventval:""
       })
+      if(this.formModel.IsSingleGoodsBuy){
+         //统计
+        TDSDK.Event.event({id: '点击提交订单-立即购买'})
+
+        this.$onInformationCollection({
+          token:"WeChat",
+          uid:wx.getStorageSync('USERID'),
+          opentype:"click",
+          time:Date.now().toString(),
+          page:utils.getCurrentPageUrl(),
+          eventname:"点击提交订单-立即购买",
+          eventval:""
+        })
+        //
+      }
       wx.showLoading({
         mask:true
       })
@@ -548,6 +577,23 @@ export default {
               url: '/pages/order/submitResult/main?resultMsg='+Msg+'&shopId='+this.formModel.selectShopId+'&orderNo='+Data.OrderNo+'&OrderAmount='+Data.OrderAmount+'&OrderId='+Data.OrderId,
             })
           }
+
+          if(this.formModel.IsSingleGoodsBuy){
+              //统计
+              TDSDK.Event.event({id: '提交成功-立即购买'})
+
+              this.$onInformationCollection({
+                token:"WeChat",
+                uid:wx.getStorageSync('USERID'),
+                opentype:"click",
+                time:Date.now().toString(),
+                page:utils.getCurrentPageUrl(),
+                eventname:"提交成功-立即购买",
+                eventval:JSON.stringify({"OrderId":Data.OrderId})
+              })
+              //
+            }
+          
           //
           this.$onInformationCollection({
             token:"WeChat",
