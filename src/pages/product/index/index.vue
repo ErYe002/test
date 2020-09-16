@@ -1844,7 +1844,7 @@ export default {
       this.isShowUserCoupon = true
     },
      gotoQuestion(){
-        wx.navigateTo({ url: "/pages/htmlPreview/main?path=" + 'https://m.kede.com/templateforapp/redpacketrules' });
+        wx.navigateTo({ url: "/pages/htmlPreview/main?path=" + 'https://m.kede.com/templatefornewapp/redpacketrules' });
     },
     getisComp(seocode) {
       api

@@ -73,7 +73,7 @@ export default {
     },
   methods: {
     gotoQuestion(){
-        wx.navigateTo({ url: "/pages/htmlPreview/main?path=" + 'https://m.kede.com/templateforapp/redpacketrules' });
+        wx.navigateTo({ url: "/pages/htmlPreview/main?path=" + 'https://m.kede.com/templatefornewapp/redpacketrules' });
     },
     toAppTips(content) {
       wx.showModal({
