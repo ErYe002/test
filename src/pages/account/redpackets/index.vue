@@ -29,7 +29,7 @@
                   <div class="date">{{item.CreateTimeStr}}</div>
                 </div>
                 <div class="right" v-if="item.Amount>0">+ {{item.Amount}}</div>
-                <div class="right_out" v-if="item.Amount<0">-{{item.Amount}}</div>
+                <div class="right_out" v-if="item.Amount<0">{{item.Amount}}</div>
             </div>
             <div class="no-more-tips" v-if="isNoData">
               <p>暂无数据</p>
