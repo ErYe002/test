@@ -100,7 +100,7 @@ export default {
           api.PresentNewUserCoupons().then((Data)=>{
             if(Data.State){
               this.flag=true
-              store.dispatch("user/setFirstGift",false)//IsNewUser 新用户弹新人礼券对外子段firstgift
+              // store.dispatch("user/setFirstGift",false)//IsNewUser 新用户弹新人礼券对外子段firstgift
             }
           })
         // }else{
@@ -112,12 +112,14 @@ export default {
     },
     goindex() {
         this.hide()
+        store.dispatch("user/setFirstGift",false)
         wx.switchTab({
             url: "/pages/index/main"
         });
     },
     gocoupon() {
         this.hide()
+        store.dispatch("user/setFirstGift",false)
         wx.navigateTo({
             url: "/pages/account/coupon/main"
         });
