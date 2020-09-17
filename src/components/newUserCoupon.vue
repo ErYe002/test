@@ -196,7 +196,7 @@ export default {
     overflow: hidden;
     .item{
       width: 48%;
-      height: 70px;
+      height: 75px;
       background: #fff;
       border-radius: 8px;
       margin-bottom: 10px;
@@ -221,7 +221,14 @@ export default {
         right: -5px;
       }
       .des{
-        font-size: 14px;
+        font-size: 12px;
+        padding: 0 8px;
+        white-space: initial;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        display: -webkit-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       .price{
         font-weight: bold;
