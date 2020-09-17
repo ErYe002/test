@@ -218,6 +218,7 @@ export default {
   },
   onHide(){
     this.currentMenuCode = "";
+    this.isShowUserCoupon = false
   },
   onShow() {
 	this.isShowUserCoupon = this.firstgift&&wx.getStorageSync("newUserCoupon");

@@ -1777,6 +1777,9 @@ export default {
   onShow() {
 	  this.isShowUserCoupon = this.firstgift&&wx.getStorageSync("newUserCoupon");
   },
+  onHide(){
+    this.isShowUserCoupon = false
+  },
   onLoad(options) {
       //处理来源微信广告的click_id参数
       if(options.weixinadinfo){
