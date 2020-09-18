@@ -177,7 +177,7 @@ export default {
     gotobalance(){
        wx.navigateTo({
           url:
-            '/pages/account/balance/main'
+            '/pages/account/redpackets/main'
         });
     },
     gotocoupon(){
