@@ -8,7 +8,7 @@
         <div id="fLottery">
             <!--大转盘-->
             <div class="lotteryDrawContent">
-                <img :animation="animationData" src="https://pic.keede.com//app/images/gameimg/turntable_table.png" mode="widthFix" class="turnImg">
+                <img :animation="animationData" src="https://pic.keede.com//app/images/gameimg/turntable_tables.png" mode="widthFix" class="turnImg">
                 <img src="https://pic.keede.com//app/images/gameimg/turntable_pointer.png" mode="widthFix" class="pointImg">
                 <block v-if="token">
                   <a class="startBtn" @click="startGame"></a>
@@ -28,7 +28,7 @@
                 <button class="opBtn"></button>
             </div>
         </div>
-        <div><img class="dsp-b" src="https://pic.keede.com//app/images/gameimg/gamebtm.png" mode="widthFix" style="width:100%" /></div>
+        <div><img class="dsp-b" src="https://pic.keede.com//app/images/gameimg/gamebtms.jpg" mode="widthFix" style="width:100%" /></div>
     </div>
     <centerFlip :isShow.sync="isShow" @hide="_close">
       <div class="gamerule">
@@ -37,9 +37,10 @@
         </div>
         <div class="text">1.本活动仅限可得眼镜网注册3年以上、收到邀请且首次绑定官方微信的可得眼镜网用户参与，每位用户限参与1次。</div>
         <div class="text">2.获得戴森吹风机、花西子套装、星巴克卡等礼品的用户，客服将在24小时内联系您并沟通领奖事宜，请正确填写手机号码。</div> 
-        <div class="text">3.获得爱奇艺视频VIP会员将以券码形式通过短信发送，请中奖用户注意查收，并在2020年9月30日前兑换使用，过期作废。</div>
-        <div class="text">4.获得红包的用户可得眼镜网将会在24小时内将红包金额充值入您的可得眼镜网账户余额中，余额内金额任意消费可抵扣，不可提现。</div>
-        <div class="text">5.本次活动所有虚拟奖品或兑换券奖品，使用规则以品牌方规定为准。如有问题请咨询可得眼镜网在线客服。</div>
+        <div class="text">3.获得爱奇艺视频VIP会员将以券码形式通过短信发送，请中奖用户注意查收，<span class="imp">并在2020年9月30日前兑换使用，过期作废。</span></div>
+        <div class="text">4.获得红包的用户可得眼镜网将会在24小时内将红包金额充值入您的可得眼镜网账户余额中，余额内金额任意消费可抵扣，<span class="imp">不可提现。</span></div>
+        <div class="text">5.获得心の拉花日抛试戴片的用户可前往可得眼镜网app进行兑换，活动奖品将会在24小时内以抵用券的形式发放到您的账户中，前往产品页面下单即可抵扣商品金额，<span class="imp">仅抵扣商品金额不抵扣运费。</span></div>
+        <div class="text">6.本次活动所有虚拟奖品或兑换券奖品，使用规则以品牌方规定为准。如有问题请咨询可得眼镜网在线客服。</div>
         <div class="closeBtn" @click="_close">×</div>
     </div>
     </centerFlip>
@@ -55,8 +56,8 @@ export default {
   data() {
     return {
       isShow:false,
-      prizeText : ["戴森吹风机", "花西子彩妆套装", "星巴克礼品卡", "爱奇艺VIP月卡", "10元红包"],
-      prizeAngle: [36, 108, 180, 252, 324],
+      prizeText : ["戴森吹风机", "花西子彩妆套装", "星巴克礼品卡", "爱奇艺VIP月卡", "10元红包",'心の拉花日剖'],
+      prizeAngle: [30, 90, 210, 270, 330,150],
       isrote:false,
       animationData:{}
     };
@@ -217,7 +218,7 @@ export default {
     top: 50%;
     left: 50%;
     width: 290px;
-    height: 400px;
+    // height: 400px;
     margin-left: -145px;
     margin-top: -250px;
     z-index: 14000;
@@ -227,7 +228,7 @@ export default {
     padding: 10px;
     box-sizing: border-box;
     background: #FDE3EA;
-    font-size: 14px;
+    font-size: 13px;
     .ruletitle{
       display: flex;
       justify-content: center;
@@ -239,6 +240,10 @@ export default {
     }
     .text{
       margin-top: 10px;
+    }
+    .imp{
+      background: #fe668d;
+      color: #fff;
     }
 }
 
