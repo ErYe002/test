@@ -56,7 +56,7 @@ export default {
   data() {
     return {
       isShow:false,
-      prizeText : ["戴森吹风机", "花西子彩妆套装", "星巴克礼品卡", "爱奇艺VIP月卡", "10元红包",'心の拉花日剖'],
+      prizeText : ["戴森吹风机", "花西子彩妆套装", "星巴克礼品卡", "爱奇艺VIP月卡", "10元红包",'心の拉花日抛'],
       prizeAngle: [30, 90, 210, 270, 330,150],
       isrote:false,
       animationData:{}
