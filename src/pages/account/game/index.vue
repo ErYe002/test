@@ -187,7 +187,7 @@ export default {
       });
     },
     gotocenter(){
-      wx.navigateTo({
+      wx.switchTab({
         url:
           '/pages/home/main'
       });
