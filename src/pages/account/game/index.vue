@@ -94,7 +94,7 @@ export default {
               confirmColor: '#CAB894',
               success(res) {
                 if (res.confirm) {
-                  that.gotobalance()
+                  that.gotocenter()
                 } else if (res.cancel) {
 
                 }
@@ -184,6 +184,12 @@ export default {
       wx.navigateTo({
         url:
           '/pages/account/coupon/main'
+      });
+    },
+    gotocenter(){
+      wx.navigateTo({
+        url:
+          '/pages/home/main'
       });
     },
     _close(){
