@@ -132,7 +132,7 @@ export default {
               if (res.confirm) {
                 if(PrizeType==1){//优惠券
                   that.gotocoupon()
-                }else{//余额
+                }else if(PrizeType==2){//红包余额
                   that.gotobalance()
                 }
                 
