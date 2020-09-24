@@ -42,17 +42,26 @@
         </div>
       </scroll-view>
     </section>
+    <button class="quan"  open-type="getUserInfo" @getuserinfo="getCoupon" v-if="!token">
+        <img src="/static/images/userAppicon.png" alt="" class="img">
+    </button>
+    <block v-else>
+      <div v-if="firstgift" @click="clic" class="quan">
+        <img src="/static/images/userAppicon.png" alt="" class="img">
+      </div>
+    </block>
     <defaultIndex v-if="currentMenuCode == 'code001'"/>
     <recommend v-if="currentMenuCode == 'code000'"/>
     <oversea v-if="currentMenuCode == 'code050'"/>
     <frames v-if="currentMenuCode == 'code200'"/>
     <meitong v-if="currentMenuCode == 'code100'"/>
     <nurse v-if="currentMenuCode == 'code150'"/>
-    <div class="download" v-if="isdownloadshow" catchtouchmove="preventTouchMove">
+	<newUserCoupon :isShow.sync="isShowUserCoupon" ></newUserCoupon>    
+	<div class="download" v-if="isdownloadshow" catchtouchmove="preventTouchMove">
       <img src="/static/images/download.png" alt="" class="download_img">
       <img src="/static/images/download_close.png" @click="download_close" alt="" class="download_close">
-    </div>
-  </article>
+    </div>  
+    </article>
 </template>
 
 <script>
@@ -62,6 +71,7 @@ import frames from "./components/frames";
 import meitong from "./components/meitong";
 import nurse from "./components/nurse";
 import defaultIndex from "./components/default";
+import newUserCoupon from "@/components/newUserCoupon";
 import { mapState } from "vuex";
 import api from "@/api";
 import userapi from "@/api/user";
@@ -76,11 +86,22 @@ export default {
       currentMenuCode: 'code001',
       SearchKeyword:"",
       jifentext:"0",
-      isdownloadshow:false
+      isdownloadshow:false,
+      isShowUserCoupon:false
     };
   },
    computed: {
-    ...mapState("user", ["token"])
+    ...mapState("user", ["token","firstgift"])
+  },
+  watch: {
+    firstgift:{
+       handler: function(val, oldVal) {
+        console.log("home==val", val);
+        console.log("home==oldVal", oldVal);
+          this.isShowUserCoupon = val&&wx.getStorageSync("newUserCoupon")
+      },
+      immediate: true
+    }
   },
   components: {
     recommend,
@@ -88,9 +109,13 @@ export default {
     frames,
     meitong,
     nurse,
-    defaultIndex
+    defaultIndex,
+    newUserCoupon
   },
   methods: {
+     clic(){
+      this.isShowUserCoupon = true
+    },
     getUserInfo(e) {
       let that = this;
       authorization.doLogin(e.mp.detail.encryptedData, e.mp.detail.iv, () => {
@@ -98,6 +123,13 @@ export default {
           url:
             "/pages/svip/dredgeSvip/main"
         });
+      });
+    },
+    getCoupon(e) {
+      let that = this;
+      authorization.doLogin(e.mp.detail.encryptedData, e.mp.detail.iv, () => {
+          this._getMenuData();
+          this.getWalletOfPersonnel()
       });
     },
     _getMenuData() {
@@ -186,9 +218,11 @@ export default {
   },
   onHide(){
     this.currentMenuCode = "";
+    this.isShowUserCoupon = false
   },
   onShow() {
-    this.diff()
+	this.isShowUserCoupon = this.firstgift&&wx.getStorageSync("newUserCoupon");
+	this.diff()
     this._getMenuData();
     this.getWalletOfPersonnel()
   },
@@ -351,4 +385,18 @@ export default {
     margin-top: 20px;
   }
 }
-</style>
+.quan{
+  text-align: center;
+  line-height: 30px;
+  position: fixed;
+  right: 10px;
+  bottom: 80px;
+  background: transparent;
+  padding: 0;
+  color: #FFF;
+  z-index: 99;
+  .img{
+    width: 37px;
+    height: 60px;
+  }
+}</style>

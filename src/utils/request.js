@@ -30,6 +30,7 @@ const request = (url, method, data, header, showLoading = true, isNeedErrorTips 
       header: {
         SalePlatformId: config.salePlatformId,
         token: wx.getStorageSync('TOKEN'),
+        AppVersion:config.appVersion,
         ...header
       },
       success(result) {

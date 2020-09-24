@@ -42,11 +42,11 @@ const api = {
     return http.post(`/Goods/GoodsField?GoodsId=${goodsId}`);
   },
   //打包商品提交
-  buyCompGoods(GoodsId, Quantity, IsConfirmedBuy, ShopId, IsFreeCarriage, GDPropertyItems, NoPropertyItems) {
-    return http.post(`/Cart/BuyCompGoods?GoodsId=${GoodsId}&Quantity=${Quantity}&IsConfirmedBuy=${IsConfirmedBuy}&ShopId=${ShopId}&IsFreeCarriage=${IsFreeCarriage}&GDPropertyItems=${GDPropertyItems}&NoPropertyItems=${NoPropertyItems}`);
+  buyCompGoods(GoodsId, Quantity, IsConfirmedBuy, ShopId, IsFreeCarriage, GDPropertyItems, NoPropertyItems,IsSingleGoodsBuy = false) {
+    return http.post(`/Cart/BuyCompGoods?GoodsId=${GoodsId}&Quantity=${Quantity}&IsConfirmedBuy=${IsConfirmedBuy}&ShopId=${ShopId}&IsFreeCarriage=${IsFreeCarriage}&GDPropertyItems=${GDPropertyItems}&NoPropertyItems=${NoPropertyItems}&IsSingleGoodsBuy=${IsSingleGoodsBuy?IsSingleGoodsBuy:false}`);
   },
   //无属性商品提交
-  buyNoProperty(GoodsId, IsBuyByScore, IsConfirmedBuy, Quantity, RealGoodsId, MaxSellNumber, GoodsName,SeriesId,MarketPrice,SalePrice,SaleScore,MaxDeduction,ShopId,IsFreeCarriage) {
+  buyNoProperty(GoodsId, IsBuyByScore, IsConfirmedBuy, Quantity, RealGoodsId, MaxSellNumber, GoodsName,SeriesId,MarketPrice,SalePrice,SaleScore,MaxDeduction,ShopId,IsFreeCarriage,IsSingleGoodsBuy = false) {
     return http.postByNoErrorTips(`/Cart/BuyNoProperty?
     GoodsId=${GoodsId}
     &IsBuyByScore=${IsBuyByScore}
@@ -59,7 +59,8 @@ const api = {
     &SalePrice=${SalePrice}
     &MaxDeduction=${MaxDeduction}
     &ShopId=${ShopId}
-    &IsFreeCarriage=${IsFreeCarriage}`);
+    &IsFreeCarriage=${IsFreeCarriage}
+    &IsSingleGoodsBuy=${IsSingleGoodsBuy?IsSingleGoodsBuy:false}`);
   },
   //获取关于商品社区文章
   getHotCommentList(GoodsId, PageSize) {

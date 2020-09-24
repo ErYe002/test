@@ -1,11 +1,13 @@
-import { TOKEN_SET, TOKEN_CLEAR,USERID_SET,USERID_CLEAR } from '@/store/mutations-type'
+import { TOKEN_SET, TOKEN_CLEAR,USERID_SET,USERID_CLEAR,FIRSTGIFT_SET } from '@/store/mutations-type'
 
 const TOKEN_STORAGE_KEY = 'TOKEN'
 const USERID_STORAGE_KEY = 'USERID'
+const FIRSTGIFT_STORAGE_KEY = 'FIRSTGIFT'
 
 const state = {
     token: '',
-    userId:''
+    userId:'',
+    firstgift:false
 }
 
 const mutations = {
@@ -24,6 +26,10 @@ const mutations = {
     [USERID_CLEAR](state){
         state.userId = ''
         wx.removeStorageSync(USERID_STORAGE_KEY)
+    },
+    [FIRSTGIFT_SET](state, info){
+        state.firstgift = info
+        wx.setStorageSync(FIRSTGIFT_STORAGE_KEY, state.firstgift)
     }
 }
 
@@ -43,7 +49,10 @@ const actions = {
     },
     removeUserId({ commit }){
         commit(USERID_CLEAR)
-    }
+    },
+    setFirstGift({ commit }, firstgift) {
+        commit(FIRSTGIFT_SET, firstgift)
+    },
 }
 
 export default {

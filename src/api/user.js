@@ -147,6 +147,30 @@ const api = {
    //微信支付
    payOrder(orderId, openId) {
     return http.post(`/Payment/WechatPayForMinprogram?orderId=${orderId}&ip=&wechatOpenId=${openId}`)
-  }
+  },
+  //获取新人礼券【登录后仅新人时调用】
+  GetNewUserCoupons() {
+    return http.post(`/Account/GetNewUserCoupons`)
+  },
+   //领取新人礼券
+   PresentNewUserCoupons() {
+    return http.post(`/Account/PresentNewUserCoupons`)
+  },
+  //svip订单明细
+  GetSvipOrderDeductionList(pageIndex = 1,pageSize = 10){
+    return http.get(`/Order/GetSvipOrderDeductionList?pageSize=${pageSize}&pageIndex=${pageIndex}`)
+  },
+  //红包头信息
+  GetRedPackage(){
+    return http.get(`/Account/GetRedPackage`)
+  },
+  //红包明细
+  GetRedPackageDetail(pageIndex = 1,pageSize = 10){
+    return http.get(`/Account/GetRedPackageDetail?pageSize=${pageSize}&pageIndex=${pageIndex}`)
+  },
+   //大转盘抽奖
+   startGame(UnionId) {
+    return http.post(`/Game/LotteryNew?openId=${UnionId}`)
+  },
 };
 export default api;

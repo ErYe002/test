@@ -32,7 +32,8 @@ const api = {
 &IsSpecialOffer=${mapPrams.get('IsSpecialOffer')}
 &SaleStockType=${mapPrams.get('SaleStockType')}
 &MaxDeduction=${mapPrams.get('MaxDeduction')}
-&IsFreeCarriage=${mapPrams.get('IsFreeCarriage')}`);
+&IsFreeCarriage=${mapPrams.get('IsFreeCarriage')}
+&IsSingleGoodsBuy=${mapPrams.get('IsSingleGoodsBuy')?mapPrams.get('IsSingleGoodsBuy'):false}`);
   },
   //购买框架和镜片（框架配镜）
   buyFrameAndGlass(mapParms) {
@@ -50,7 +51,7 @@ const api = {
     &RightSG=${mapParms.get('RightSG')}
     &LeftZW=${mapParms.get('LeftZW')}
     &RightZW=${mapParms.get('RightZW')}
-    &TongJu=${mapParms.get('TongJu')}`.replace(" ","");
+    &TongJu=${mapParms.get('TongJu')}&IsSingleGoodsBuy=${mapParms.get('IsSingleGoodsBuy')?mapParms.get('IsSingleGoodsBuy'):false}`.replace(" ","");
 
     return http.postByNoErrorTips(href);
   },
@@ -122,7 +123,7 @@ const api = {
 &LeftRealGoodsId=${mapPrams.get('LeftRealGoodsId')}
 &RightRealGoodsId=${mapPrams.get('RightRealGoodsId')}
 &RealGoodsId=${mapPrams.get('RealGoodsId')}
-    ` + otherUrl);
+&IsSingleGoodsBuy=${mapPrams.get('IsSingleGoodsBuy')?mapPrams.get('IsSingleGoodsBuy'):false}` + otherUrl);
   },
   //获取商品属性
   getGoodsField(GId){

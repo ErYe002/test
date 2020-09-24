@@ -204,7 +204,8 @@
         shopId: '',
         selectSph: '',
         selectCyl: '',
-        selectAxis: ''
+        selectAxis: '',
+        RoleId:""
       };
     },
     onLoad(options) {
@@ -222,6 +223,7 @@
       this.IsFreeCarriage = options.IsFreeCarriage;
       this.RealGoodsId = options.RealGoodsId;
       this.goodsId = options.goodsId;
+      this.RoleId =  options.RoleId;
       this._getData(this.goodsId);
     },
     watch: {
@@ -393,6 +395,9 @@
         postData.set('goodsId', this.mainData.MainGoods.GoodsId);
         postData.set('IsConfirmedBuy', this.IsConfirmedBuy);
         postData.set('ShopId', this.mainData.MainGoods.ShopId);
+        if(immediately){
+          postData.set('IsSingleGoodsBuy', true);//标记是否是单买商品。
+        }
 
         if (buyNoProperty === this.mainData.BuyUrl) {
           postData.set('Quantity', this.noPropertyQuantity);
@@ -453,7 +458,7 @@
           }
 
           if (this.postIdDouble.sphRId !== '' && this.rightNum > 0) {
-            postData.set('RightQuantity', this.leftNum);
+            postData.set('RightQuantity', this.rightNum);
             postData.set('RightGD', this.postIdDouble.sphRId);
             postData.set('RightSG', this.postIdDouble.cylRId);
             postData.set('RightZW', this.postIdDouble.axisRId);
@@ -556,9 +561,17 @@
       },
       goToCart(imid) {
         if (imid) {
-          wx.switchTab({
-            url: '/pages/cart/main?shopId=' + this.shopId
-          });
+          // wx.switchTab({
+          //   url: '/pages/cart/main?shopId=' + this.shopId
+          // });
+            wx.navigateTo({
+              url:
+                "/pages/order/index/main?shopId=" +
+                this.shopId +
+                "&RoleId=" +
+                this.RoleId +
+                "&IsSingleGoodsBuy=" + true
+            });
         } else {
           wx.showToast({
             title: "加入购物车成功",

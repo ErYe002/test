@@ -113,9 +113,17 @@
     <!-- <div class="sectionLine"></div> -->
     <view class='amount-box'>
       <view class='flex-line'>
-        <view class='couponTitle'>优惠券</view>
-          <navigator :url="'/pages/order/useCoupon/main?shopId='+formModel.selectShopId+'&couponNo='+orderInfo.CouponNo">
+        <view class='couponTitle'>优惠券 <span v-if="orderInfo.CouponContent!='无可用 '" class="new-tag">已为您自动选择最大优惠</span></view>
+          <navigator :url="'/pages/order/useCoupon/main?shopId='+formModel.selectShopId+'&couponNo='+orderInfo.CouponNo + '&IsSingleGoodsBuy='+formModel.IsSingleGoodsBuy">
             <view class='couponSubtitle'>{{orderInfo.CouponContent + ' >'}}</view>
+          </navigator>
+      </view>
+    </view>
+    <view class='amount-box'>
+      <view class='flex-line'>
+        <view class='couponTitle'>红包 <span v-if="orderInfo.AvailablePresentBalance>0" class="new-tag">已为您计算出本单可用红包</span></view>
+          <navigator :url="'/pages/account/redpackets/main'">
+            <view class='couponSubtitle'>{{orderInfo.AvailablePresentBalance + '元可用 >'}}</view>
           </navigator>
       </view>
     </view>
@@ -198,6 +206,7 @@
       </view>
     </view>
     <!-- <div class="sectionLine"></div> -->
+
     
     <!-- 用户协议 -->
     <view class="pay-protocol-box">
@@ -250,7 +259,7 @@
       </view>
     </view>
     <!-- 用户协议 -->
-    <goodsList :is-show.sync="isShowGoodsList" :shop-id="formModel.selectShopId" :roleId="RoleId" />
+    <goodsList :is-show.sync="isShowGoodsList" :shop-id="formModel.selectShopId" :issinglegoodsbuy='formModel.IsSingleGoodsBuy' :roleId="RoleId" />
   </article>
 </template>
 
@@ -312,6 +321,7 @@ export default {
     this.wxadDealIdTime()//判断是否是在广告有效时间转化 目前默认30分钟 30*60=1800s
     if(options){
       this.formModel.selectShopId = options.shopId;
+      this.formModel.IsSingleGoodsBuy = options.IsSingleGoodsBuy;
       if (this.formModel.selectShopId == 2) {
         this.formModel.isUseBalance = false;
         this.formModel.isUseScore = false;
@@ -320,7 +330,21 @@ export default {
         this.formModel.isUseScore = true;
       }
       this.RoleId = options.RoleId
-      console.log(options)
+      if(this.formModel.IsSingleGoodsBuy){
+         //统计
+        TDSDK.Event.event({id: '结算页-立即购买'})
+
+        this.$onInformationCollection({
+          token:"WeChat",
+          uid:wx.getStorageSync('USERID'),
+          opentype:"view",
+          time:Date.now().toString(),
+          page:utils.getCurrentPageUrl(),
+          eventname:"结算页-立即购买",
+          eventval:""
+        })
+        //
+      }
       this.getConfirmOrderDetail();
     }
     //kede行为统计
@@ -442,7 +466,7 @@ export default {
         return;
       }
       wx.navigateTo({
-          url: '/pages/order/logistics/main?ShopId='+this.formModel.selectShopId+'&SelectedConsigneeId='+this.formModel.selectedConsigneeId+'&SelectedExpressId='+this.formModel.selectedExpressId,
+          url: '/pages/order/logistics/main?ShopId='+this.formModel.selectShopId+'&SelectedConsigneeId='+this.formModel.selectedConsigneeId+'&SelectedExpressId='+this.formModel.selectedExpressId+'&IsSingleGoodsBuy='+this.formModel.IsSingleGoodsBuy,
       })
     },
     /**
@@ -520,6 +544,24 @@ export default {
         eventname:"点击提交订单",
         eventval:""
       })
+      if(this.formModel.IsSingleGoodsBuy){
+         //统计
+        TDSDK.Event.event({id: '点击提交订单-立即购买'})
+
+        this.$onInformationCollection({
+          token:"WeChat",
+          uid:wx.getStorageSync('USERID'),
+          opentype:"click",
+          time:Date.now().toString(),
+          page:utils.getCurrentPageUrl(),
+          eventname:"点击提交订单-立即购买",
+          eventval:""
+        })
+        //
+      }
+      wx.showLoading({
+        mask:true
+      })
       api.submitOrder({...this.formModel}).then(({Data,Msg,State}) => {
         console.log(Data)
         this.submitResultInfo = Data;
@@ -535,6 +577,23 @@ export default {
               url: '/pages/order/submitResult/main?resultMsg='+Msg+'&shopId='+this.formModel.selectShopId+'&orderNo='+Data.OrderNo+'&OrderAmount='+Data.OrderAmount+'&OrderId='+Data.OrderId,
             })
           }
+
+          if(this.formModel.IsSingleGoodsBuy){
+              //统计
+              TDSDK.Event.event({id: '提交成功-立即购买'})
+
+              this.$onInformationCollection({
+                token:"WeChat",
+                uid:wx.getStorageSync('USERID'),
+                opentype:"click",
+                time:Date.now().toString(),
+                page:utils.getCurrentPageUrl(),
+                eventname:"提交成功-立即购买",
+                eventval:JSON.stringify({"OrderId":Data.OrderId})
+              })
+              //
+            }
+          
           //
           this.$onInformationCollection({
             token:"WeChat",
@@ -559,7 +618,9 @@ export default {
             icon: 'none',
           });
         } 
-      })
+      }).finally(() => {
+            wx.hideLoading()
+          });
     },
     // 微信支付
     _wechatPay(orderId) {
@@ -1195,6 +1256,16 @@ page {
     color: #000 !important;
     font-weight: bold !important;
   }
+}
+/**
+新增标签
+*/
+.new-tag{
+  color: #FAE5AA;
+  font-size: 9px;
+  background: #313131;
+  border-radius: 5px;
+  padding: 3px 5px;
 }
 
 </style>

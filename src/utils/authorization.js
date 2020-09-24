@@ -15,6 +15,9 @@ function doLogin(encryptedData, iv, callback) {
                 // wx.setStorageSync('TOKEN', res.Data.Token)  //保存token到本地
                 store.dispatch('user/setToken', res.Data.Token)
                 store.dispatch("user/setUserId",res.Data.UserId)
+                wx.setStorageSync('UnionId',res.Data.UnionId)
+                store.dispatch("user/setFirstGift",res.Data.CanReceivedNewUserCoupons)//IsNewUser 新用户弹新人礼券对外子段firstgift
+                wx.setStorageSync("newUserCoupon",true)
                 if (typeof callback == 'function') {
                     callback()
                 }

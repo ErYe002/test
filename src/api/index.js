@@ -10,8 +10,8 @@ const api = {
     return http.get(`/Home/AppHomePage202005?versionNo=5.0.0`)
   },
    //获取首页-新首页-v7.8-数据
-  getHomePageGoods(pageIndex, pageSize,goodsType){
-    let url = `/Home/AppHomeRecommendGoodsByPage?PageSize=${pageSize}&PageIndex=${pageIndex}&GoodsType=${goodsType}`
+  getHomePageGoods(pageIndex, pageSize,goodsType,channelId){
+    let url = `/Home/AppHomeRecommendGoodsByPage?PageSize=${pageSize}&PageIndex=${pageIndex}&GoodsType=${goodsType}&channelId=${channelId}`
     if(pageIndex == 1){
       return http.getByNoLoading(url)
     }

@@ -1,26 +1,13 @@
 <template>
   <article class="contain">
-    <!-- <img src="/static/images/svip_big_bg.png" class="big_bg"> -->
     <div class="big_bg"></div>
-    <!-- <section>
-      <div class="page_title">
-        <div class="page_title"></div>
-        <div class="point"></div>
-        <span class="page_title_text">SVIP会员卡</span>
-        <div class="point"></div>
-        <div class="page_title"></div>
-      </div>
-    </section> -->
     <section class="top-view">
         <div class="top-box" :style="Data.SvipBuyInfo!=null&&Data.SvipBuyInfo.PrivilegeBackground?'background-image:url('+Data.SvipBuyInfo.PrivilegeBackground+')':'background:#1C1C1C'">
           <div class="module-first">
             <div class="module-first-title">
               <span>SVIP会员专享10大特权</span>
-              <!-- <span class="title-r">查看权益<img  src="/static/images/icon_right_grey.png" /></span> -->
             </div>
             <div class="banner_box" v-if="Data.SvipBuyInfo!=null&&Data.SvipBuyInfo.PrivilegeIconList.length>0">
-              <!-- 图片 -->
-              <!-- <img :src="Data.PrivilegeUrl" mode="widthFix" class="banner"> -->
               <div v-for="(item,index) in Data.SvipBuyInfo.PrivilegeIconList" :key="index" class="item">
                   <div>
                     <img :src="item.ImageUrl" alt="" class="img">
@@ -40,7 +27,6 @@
             </div>
           </div>
           <div class="module-three">
-            <!-- <div class="item">活动价：<span class="ac-price">￥149</span></div> -->
             <div class="item">
               <div>已享优惠：<span class="de-price">-￥{{Data.SvipDeductionCouponAmount}}</span></div>
               <div class="quan-box">
@@ -172,22 +158,6 @@
           </navigator>
         </div>
     </section>
-    <!-- <section class="top-view">
-      <div class="bottom-box">
-        <div class="item">
-          <div><span>发票信息</span><span class="span-first">电子普通发票</span><span  class="span-two">(会员服务个人)</span></div>
-          <img  src="/static/images/icon_right_grey.png" />
-        </div>
-        <div class="item">
-          <div>兑换码购买</div>
-          <img  src="/static/images/icon_right_grey.png" />
-        </div>
-        <div class="item">
-          <div>企业采购</div>
-          <img  src="/static/images/icon_right_grey.png" />
-        </div>
-      </div>
-    </section> -->
     <section class="bottom-nav">
       <div class="tcp">
           <div @click="checkboxChange">

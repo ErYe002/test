@@ -79,6 +79,10 @@
             <b class="lable">运费</b>
             <span class="text">¥{{orderInfo.Carriage}}</span>
           </li>
+          <li class="item">
+            <b class="lable">红包</b>
+            <span class="text">¥{{orderInfo.PaymentByRedPackBalance}}</span>
+          </li>
           <li class="item" v-if="orderInfo.ShopId != 2">
             <b class="lable">使用账户余额</b>
             <span class="text">-¥{{orderInfo.PaymentByBalance}}</span>

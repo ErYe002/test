@@ -38,6 +38,7 @@ export default {
       couponInputNo:'',
       couponNo:'',
       shopId: '1',
+      IsSingleGoodsBuy:false
     }
   },
   onLoad: function (options) {
@@ -45,6 +46,7 @@ export default {
       console.log(options)
       this.shopId = options.shopId
       this.couponNo = options.couponNo;
+      this.IsSingleGoodsBuy = options.IsSingleGoodsBuy;
       api.getCanUseCouponsInOrder( this.shopId).then(({ Data }) => {
         console.log(Data)
         this.coupons = Data;
@@ -76,7 +78,7 @@ export default {
     },
     //使用优惠券
     useCoupon(couponNo){
-      api.useCoupon(couponNo).then(({State, Data,Msg}) => {
+      api.useCoupon(couponNo,this.IsSingleGoodsBuy).then(({State, Data,Msg}) => {
         if (State){
           console.log('====couponNo ======'+"使用优惠券成功 "+couponNo)
           this.setIsChangeCoupon(true)
