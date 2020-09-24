@@ -1819,16 +1819,6 @@ export default {
     if (store.state.userInfo.userInfo != null) {
       this.hasUserInfo = true
     }
-  //kede行为统计
-     this.$onInformationCollection({
-      token:"WeChat",
-      uid:wx.getStorageSync('USERID'),
-      opentype:"view",
-      time:Date.now().toString(),
-      page:utils.getCurrentPageUrl(),
-      eventname:"商详页",
-      eventval:JSON.stringify({"seocode":this.seocode})
-    })
     timeId = setTimeout(()=>{
       this.isShowTag = false;
     },6000)
@@ -2007,6 +1997,16 @@ export default {
         }
         this._AttrHref();
         this._getData(this.Data.GoodsBase.GoodsId);
+                  //kede行为统计
+          this.$onInformationCollection({
+            token:"WeChat",
+            uid:wx.getStorageSync('USERID'),
+            opentype:"view",
+            time:Date.now().toString(),
+            page:utils.getCurrentPageUrl(),
+            eventname:"商详页",
+            eventval:JSON.stringify({"SeoCode":this.seocode,"GoodsId":this.Data.GoodsBase.GoodsId})
+          })
       });
     },
     _getGoodsAbout() {

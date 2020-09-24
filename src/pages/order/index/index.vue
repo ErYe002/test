@@ -585,11 +585,11 @@ export default {
               this.$onInformationCollection({
                 token:"WeChat",
                 uid:wx.getStorageSync('USERID'),
-                opentype:"click",
+                opentype:"view",
                 time:Date.now().toString(),
                 page:utils.getCurrentPageUrl(),
                 eventname:"提交成功-立即购买",
-                eventval:JSON.stringify({"OrderId":Data.OrderId})
+                eventval:JSON.stringify({"OrderId":Data.OrderId,"OrderNo":Data.OrderNo})
               })
               //
             }
@@ -598,11 +598,11 @@ export default {
           this.$onInformationCollection({
             token:"WeChat",
             uid:wx.getStorageSync('USERID'),
-            opentype:"click",
+            opentype:"view",
             time:Date.now().toString(),
             page:utils.getCurrentPageUrl(),
-            eventname:"下单成功",
-            eventval:JSON.stringify({"OrderId":Data.OrderId})
+            eventname:"提交成功",
+            eventval:JSON.stringify({"OrderId":Data.OrderId,"OrderNo":Data.OrderNo})
           })
           //微信广告转化统计
           this.wxadInfo();
